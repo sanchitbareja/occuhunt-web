@@ -28,6 +28,11 @@
             <li><a href="#">Logout</a></li>
           </ul>
         </li>
+        {% if user.is_authenticated %}
+        <li><a href="/logout/" style="background:black;color:white;">Logout</a></li>
+        {% else %}
+        <li><a href="/login/linkedin/" style="background:black;color:white;">LOGIN</a></li>
+        {% endif %}
       </ul>
     </div><!--/.nav-collapse -->
   </div>
