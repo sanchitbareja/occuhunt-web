@@ -3,6 +3,64 @@
 {% load i18n %}
 {% load url from future %}
 
+{% block extra_script %}
+<script type="text/javascript">
+  function getCompany(id){
+    $.ajax({
+      url: '/api/v1/companies/'+id+'/',
+      data: {},
+      success: function(data, textStatus, jqXHR) {
+          console.log(data);
+          console.log(textStatus);
+          console.log(jqXHR);
+          $("#company_name").text(data['name']);
+          $("#company_description").text(data['company_description']);
+          $("#company_looking_for").text(data['position_types']);
+          $("#company_number_of_expected_hires").text(data['expected_hires']);
+        },
+      dataType: 'json',
+    });
+  }
+
+  function toggleTable(cssID){
+    if($(cssID).css('background-color') == "rgb(255, 255, 255)") {
+      if(cssID == '.btn-categorydisabled'){
+        recolorTables(cssID,'grey');
+      }
+      if(cssID == '.btn-engineering'){
+        recolorTables(cssID,'#c4dff9');
+      }
+      if(cssID == '.btn-finance'){
+        recolorTables(cssID,'#c4dff9');
+      }
+      if(cssID == '.btn-government'){
+        recolorTables(cssID,'');
+      }
+      if(cssID == '.btn-health'){
+        recolorTables(cssID,'#fe9f9f');
+      }
+      if(cssID == '.btn-technology'){
+        recolorTables(cssID,'#c4dff9');
+      }
+      if(cssID == '.btn-other'){
+        recolorTables(cssID,'#ffcfaf');
+      }
+    } else {
+      decolorTables(cssID)
+    }
+  }
+
+  function decolorTables(cssID){
+    $(cssID).css('background-color','white');
+  }
+
+  function recolorTables(cssID, color){
+    $(cssID).css('background-color',color);
+  }
+
+</script>
+{% endblock %}
+
 {% block content %}
 
   <!-- Filters -->
@@ -13,13 +71,13 @@
         <br />
         <br />
         <br />
-        <button type="button" class="btn btn-categorydisabled btn-sm">Disabled</button>
-        <button type="button" class="btn btn-engineering-dark btn-sm">Engineering</button>
-        <button type="button" class="btn btn-finance-dark btn-sm">Finance</button>
-        <button type="button" class="btn btn-government-dark btn-sm">Government</button>
-        <button type="button" class="btn btn-health-dark btn-sm">Health</button>
-        <button type="button" class="btn btn-technology-dark btn-sm">Technology</button>
-        <button type="button" class="btn btn-other-dark btn-sm">Other</button>
+        <button type="button" class="btn btn-categorydisabled btn-sm" onclick="toggleTable('.btn-categorydisabled');">Disabled</button>
+        <button type="button" class="btn btn-engineering-dark btn-sm" onclick="toggleTable('.btn-engineering');">Engineering</button>
+        <button type="button" class="btn btn-finance-dark btn-sm" onclick="toggleTable('.btn-finance');">Finance</button>
+        <button type="button" class="btn btn-government-dark btn-sm" onclick="toggleTable('.btn-government');">Government</button>
+        <button type="button" class="btn btn-health-dark btn-sm" onclick="toggleTable('.btn-health');">Health</button>
+        <button type="button" class="btn btn-technology-dark btn-sm" onclick="toggleTable('.btn-technology');">Technology</button>
+        <button type="button" class="btn btn-other-dark btn-sm" onclick="toggleTable('.btn-other');">Other</button>
       </div>
     </div>
   </div>
@@ -29,6 +87,16 @@
       <style type="text/css">
         .fair-table {
           height:50px;
+          width: 50px;
+          text-align: left;
+          padding-left: 2px; 
+        }
+
+        td#career_fair_map{
+          min-width: 50px;
+          min-height: 50px;
+          width: 50px;
+          height: 50px;
         }
       </style>
       <div class="jumbotron" style="padding-top:19px;">
@@ -44,142 +112,178 @@
             <h4 style="text-align:right">Pauley Ballroom, MLK</h4>
           </div>
         </div>
-       <!--  <div class="row" style="padding-bottom:50px;">
-          <div class="btn-group" data-toggle="buttons">
-            <button type="button" class="btn btn-default fair-table">Twtr</button>
-            <button type="button" class="btn btn-primary fair-table">Finc</button>
-            <button type="button" class="btn btn-success fair-table">Govt</button>
-            <button type="button" class="btn btn-info fair-table">Hlth</button>
-            <button type="button" class="btn btn-warning fair-table">Tech</button>
-            <button type="button" class="btn btn-danger fair-table">Othr</button>
-            <button type="button" class="btn btn-default fair-table">Twtr</button>
-            <button type="button" class="btn btn-primary fair-table">Fince</button>
-            <button type="button" class="btn btn-success fair-table">Govt</button>
-            <button type="button" class="btn btn-info fair-table">Hlth</button>
-            <button type="button" class="btn btn-warning fair-table">Tech</button>
-            <button type="button" class="btn btn-default fair-table">Twtr</button>
-          </div>
-        </div> -->
         <div class="row">
-          <div class="btn-group-vertical" style="padding-right:45px;">
-            <button type="button" class="btn btn-other fair-table">Twtr</button>
-            <button type="button" class="btn btn-government fair-table">Twtr</button>
-            <button type="button" class="btn btn-technology fair-table">Twtr</button>
-            <button type="button" class="btn btn-health fair-table">Twtr</button>
-            <button type="button" class="btn btn-other fair-table">Twtr</button>
-            <button type="button" class="btn btn-engineering fair-table">Twtr</button>
-            <button type="button" class="btn btn-other fair-table">Twtr</button>
-            <button type="button" class="btn btn-engineering fair-table">Twtr</button>
-            <button type="button" class="btn btn-other fair-table">Twtr</button>
-            <button type="button" class="btn btn-health fair-table">Twtr</button>
-          </div>
-
-          <div class="btn-group-vertical" style="padding:0px;margin:0px;">
-            <button type="button" class="btn btn-government fair-table">Twtr</button>
-            <button type="button" class="btn btn-other fair-table">Twtr</button>
-            <button type="button" class="btn btn-other fair-table">Twtr</button>
-            <button type="button" class="btn btn-health fair-table">Twtr</button>
-            <button type="button" class="btn btn-other fair-table">Twtr</button>
-            <button type="button" class="btn btn-engineering fair-table">Twtr</button>
-            <button type="button" class="btn btn-health fair-table">Twtr</button>
-            <button type="button" class="btn btn-health fair-table">Twtr</button>
-            <button type="button" class="btn btn-other fair-table">Twtr</button>
-            <button type="button" class="btn btn-health fair-table">Twtr</button>
-          </div>
-          <div class="btn-group-vertical" style="padding-right:45px;margin:0px;">
-            <button type="button" class="btn btn-health fair-table">Twtr</button>
-            <button type="button" class="btn btn-government fair-table">Twtr</button>
-            <button type="button" class="btn btn-technology fair-table">Twtr</button>
-            <button type="button" class="btn btn-health fair-table">Twtr</button>
-            <button type="button" class="btn btn-other fair-table">Twtr</button>
-            <button type="button" class="btn btn-technology fair-table">Twtr</button>
-            <button type="button" class="btn btn-technology fair-table">Twtr</button>
-            <button type="button" class="btn btn-engineering fair-table">Twtr</button>
-            <button type="button" class="btn btn-other fair-table">Twtr</button>
-            <button type="button" class="btn btn-health fair-table">Twtr</button>
-          </div>
-
-          <div class="btn-group-vertical" style="padding:0px;margin:0px;">
-            <button type="button" class="btn btn-technology fair-table">Twtr</button>
-            <button type="button" class="btn btn-government fair-table">Twtr</button>
-            <button type="button" class="btn btn-technology fair-table">Twtr</button>
-            <button type="button" class="btn btn-health fair-table">Twtr</button>
-            <button type="button" class="btn btn-other fair-table">Twtr</button>
-            <button type="button" class="btn btn-engineering fair-table">Twtr</button>
-            <button type="button" class="btn btn-technology fair-table">Twtr</button>
-            <button type="button" class="btn btn-engineering fair-table">Twtr</button>
-            <button type="button" class="btn btn-other fair-table">Twtr</button>
-            <button type="button" class="btn btn-technology fair-table">Twtr</button>
-          </div>
-          <div class="btn-group-vertical" style="padding-right:45px;margin:0px;">
-            <button type="button" class="btn btn-technology fair-table">Twtr</button>
-            <button type="button" class="btn btn-technology fair-table">Twtr</button>
-            <button type="button" class="btn btn-technology fair-table">Twtr</button>
-            <button type="button" class="btn btn-health fair-table">Twtr</button>
-            <button type="button" class="btn btn-other fair-table">Twtr</button>
-            <button type="button" class="btn btn-engineering fair-table">Twtr</button>
-            <button type="button" class="btn btn-finance fair-table">Twtr</button>
-            <button type="button" class="btn btn-finance fair-table">Twtr</button>
-            <button type="button" class="btn btn-other fair-table">Twtr</button>
-            <button type="button" class="btn btn-technology fair-table">Twtr</button>
-          </div>
-
-
-          <div class="btn-group-vertical" style="padding:0px;margin:0px;">
-            <button type="button" class="btn btn-government fair-table">Twtr</button>
-            <button type="button" class="btn btn-finance fair-table">Twtr</button>
-            <button type="button" class="btn btn-technology fair-table">Twtr</button>
-            <button type="button" class="btn btn-health fair-table">Twtr</button>
-            <button type="button" class="btn btn-other fair-table">Twtr</button>
-            <button type="button" class="btn btn-engineering fair-table">Twtr</button>
-            <button type="button" class="btn btn-technology fair-table">Twtr</button>
-            <button type="button" class="btn btn-technology fair-table">Twtr</button>
-            <button type="button" class="btn btn-other fair-table">Twtr</button>
-            <button type="button" class="btn btn-health fair-table">Twtr</button>
-          </div>
-          <div class="btn-group-vertical" style="padding-right:45px;margin:0px;">
-            <button type="button" class="btn btn-finance fair-table">Twtr</button>
-            <button type="button" class="btn btn-government fair-table">Twtr</button>
-            <button type="button" class="btn btn-technology fair-table">Twtr</button>
-            <button type="button" class="btn btn-finance fair-table">Twtr</button>
-            <button type="button" class="btn btn-other fair-table">Twtr</button>
-            <button type="button" class="btn btn-engineering fair-table">Twtr</button>
-            <button type="button" class="btn btn-finance fair-table">Twtr</button>
-            <button type="button" class="btn btn-engineering fair-table">Twtr</button>
-            <button type="button" class="btn btn-other fair-table">Twtr</button>
-            <button type="button" class="btn btn-other fair-table">Twtr</button>
-          </div>
-
-          <div class="btn-group-vertical" style="padding:0px;margin:0px;">
-            <button type="button" class="btn btn-government fair-table">Twtr</button>
-            <button type="button" class="btn btn-finance fair-table">Twtr</button>
-            <button type="button" class="btn btn-technology fair-table">Twtr</button>
-            <button type="button" class="btn btn-health fair-table">Twtr</button>
-            <button type="button" class="btn btn-other fair-table">Twtr</button>
-            <button type="button" class="btn btn-engineering fair-table">Twtr</button>
-            <button type="button" class="btn btn-finance fair-table">Twtr</button>
-            <button type="button" class="btn btn-engineering fair-table">Twtr</button>
-            <button type="button" class="btn btn-other fair-table">Twtr</button>
-            <button type="button" class="btn btn-engineering fair-table">Twtr</button>
-          </div>
+          <table id="career_fair_map">
+            <tr>
+              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(1)">10gen</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-government fair-table" onclick="getCompany(2)">247 Customer Inc</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-technology fair-table">Twtr</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-health fair-table">Twtr</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table">Twtr</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-health fair-table">Twtr</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table">Twtr</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table">Twtr</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-government fair-table">Twtr</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-technology fair-table">Twtr</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-health fair-table">Twtr</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-health fair-table">Twtr</button></td>
+            </tr>
+            <tr>
+              <td id="career_fair_map"><button type="button" class="btn btn-health fair-table">Twtr</button></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>              
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+            </tr>
+            <tr>
+              <td id="career_fair_map"><button type="button" class="btn btn-health fair-table">Twtr</button></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>              
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+            </tr>
+            <tr>
+              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table">Twtr</button></td>
+              <td id="career_fair_map"></td>              
+              <td id="career_fair_map"><button type="button" class="btn btn-government fair-table">Twtr</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-technology fair-table">Twtr</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-health fair-table">Twtr</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table">Twtr</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table">Twtr</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table">Twtr</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-government fair-table">Twtr</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-technology fair-table">Twtr</button></td>
+              <td id="career_fair_map"></td>  
+              <td id="career_fair_map"><button type="button" class="btn btn-health fair-table">Twtr</button></td>
+            </tr>
+            <tr>
+              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table">Twtr</button></td>
+              <td id="career_fair_map"></td>              
+              <td id="career_fair_map"><button type="button" class="btn btn-government fair-table">Twtr</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-technology fair-table">Twtr</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-health fair-table">Twtr</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table">Twtr</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-health fair-table">Twtr</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table">Twtr</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-government fair-table">Twtr</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-technology fair-table">Twtr</button></td>
+              <td id="career_fair_map"></td>  
+              <td id="career_fair_map"><button type="button" class="btn btn-health fair-table">Twtr</button></td>
+            </tr>
+            <tr>
+              <td id="career_fair_map"><button type="button" class="btn btn-health fair-table">Twtr</button></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>              
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-health fair-table">Twtr</button></td>
+            </tr>
+            <tr>
+              <td id="career_fair_map"><button type="button" class="btn btn-health fair-table">Twtr</button></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>              
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-health fair-table">Twtr</button></td>
+            </tr>
+            <tr>
+              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table">Twtr</button></td>
+              <td id="career_fair_map"></td>              
+              <td id="career_fair_map"><button type="button" class="btn btn-government fair-table">Twtr</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-technology fair-table">Twtr</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-health fair-table">Twtr</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table">Twtr</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table">Twtr</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table">Twtr</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-government fair-table">Twtr</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-technology fair-table">Twtr</button></td>
+              <td id="career_fair_map"></td>  
+              <td id="career_fair_map"><button type="button" class="btn btn-health fair-table">Twtr</button></td>
+            </tr>
+            <tr>
+              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table">Twtr</button></td>
+              <td id="career_fair_map"></td>              
+              <td id="career_fair_map"><button type="button" class="btn btn-government fair-table">Twtr</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-technology fair-table">Twtr</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-health fair-table">Twtr</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table">Twtr</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-health fair-table">Twtr</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table">Twtr</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-government fair-table">Twtr</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-technology fair-table">Twtr</button></td>
+              <td id="career_fair_map"></td>  
+              <td id="career_fair_map"><button type="button" class="btn btn-health fair-table">Twtr</button></td>
+            </tr>
+            <tr>
+              <td id="career_fair_map"><button type="button" class="btn btn-health fair-table">Twtr</button></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>              
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+            </tr>
+            <tr>
+              <td id="career_fair_map"><button type="button" class="btn btn-health fair-table">Twtr</button></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>              
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+            </tr>
+            <tr>
+              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table">Twtr</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-government fair-table">Twtr</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-technology fair-table">Twtr</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-health fair-table">Twtr</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table">Twtr</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-health fair-table">Twtr</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-health fair-table">Twtr</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table">Twtr</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-government fair-table">Twtr</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-technology fair-table">Twtr</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-health fair-table">Twtr</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-health fair-table">Twtr</button></td>
+            </tr>
+          </table>
         </div>
-
-        <!-- <div class="row" style="padding-top:50px;">
-          <div class="btn-group" data-toggle="buttons">
-            <button type="button" class="btn btn-default fair-table">Twtr</button>
-            <button type="button" class="btn btn-primary fair-table">Finc</button>
-            <button type="button" class="btn btn-success fair-table">Govt</button>
-            <button type="button" class="btn btn-info fair-table">Hlth</button>
-            <button type="button" class="btn btn-warning fair-table">Tech</button>
-            <button type="button" class="btn btn-danger fair-table">Othr</button>
-            <button type="button" class="btn btn-default fair-table">Twtr</button>
-            <button type="button" class="btn btn-primary fair-table">Fince</button>
-            <button type="button" class="btn btn-success fair-table">Govt</button>
-            <button type="button" class="btn btn-info fair-table">Hlth</button>
-            <button type="button" class="btn btn-warning fair-table">Tech</button>
-            <button type="button" class="btn btn-default fair-table">Twtr</button>
-          </div>
-        </div> -->
       </div>
     </div>
     <div class="col-lg-4">
@@ -191,13 +295,13 @@
               <img src="{% static "images/accenture-logo.jpg" %}" style="height:50px;">
             </div>
             <div class="col-lg-5">
-              <h3 style="margin-top:11.5px;margin-bottom:0px;">
+              <h3 style="margin-top:11.5px;margin-bottom:0px;" id="company_name">
                 Accenture
               </h3>
             </div>
             <div class="col-lg-4">
               <h4 style="color:#7B4D9A;text-align:right;padding:0px;margin-top:15px;margin-bottom:0px; margin-right:-30px;">
-                10 Jobs
+                <span id="company_number_of_expected_hires">10</span> Jobs
               </h4>
             </div>
           </div>
@@ -205,13 +309,13 @@
           <div class="row">
             <div class="col-lg-12">
               <h4>Description</h4>
-              <p>
+              <p id="company_description">
                 Accenture helps organizations assess how to maximize their performance and works with them to achieve their vision. We develop and implement technology to improve our clients’ productivity and efficiency – and may run parts of their business. Ultimately, we enable our clients to become high-performance businesses and governments.
               </p>
               <p style="margin-top:20px; margin-bottom:20px">
               </p>
               <h4>Who We're Looking For</h4>
-              <p>
+              <p id="company_looking_for">
                 Engineers familiar with the full-stack framework.
               </p>
               <br />

@@ -34,6 +34,11 @@
         {% endblock %}
 
         {% block script_base %}
+            <!-- Bootstrap core JavaScript
+            ================================================== -->
+            <!-- Placed at the end of the document so the pages load faster -->
+            <script src="{% static "bootstrap/assets/js/jquery.js" %}"></script>
+            <script src="{% static "bootstrap/dist/js/bootstrap.min.js" %}"></script>
             {% block extra_script %}{% endblock %}
         {% endblock %}
     </head>
@@ -55,11 +60,6 @@
         {% include "_footer.html" %}
       {% endblock %}
 
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="{% static "bootstrap/assets/js/jquery.js" %}"></script>
-    <script src="{% static "bootstrap/dist/js/bootstrap.min.js" %}"></script>
     <script type="text/javascript">
       $("#recruiter_popover").popover();
     </script>

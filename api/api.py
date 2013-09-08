@@ -61,8 +61,8 @@ class CompanyResource(ModelResource):
 
     def alter_list_data_to_serialize(self, request, data):
         # rename "objects" to "response"
-        # data['response'] = {"clubs":data['objects']}
-        # del(data['objects'])
+        data['response'] = {"companies":data['objects']}
+        del(data['objects'])
         return data
 
     def determine_format(self, request):
