@@ -115,7 +115,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # Uncomment the next line to enable the admin:
-    # 'django.contrib.admin',
+    'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
 
@@ -126,6 +126,11 @@ INSTALLED_APPS = (
     'storages',
     'social_auth',
     'gunicorn',
+
+    # local apps
+    'companies',
+    'users',
+    'api',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -157,10 +162,66 @@ LOGGING = {
     }
 }
 
+# EMAIL SETTINGS
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'occuhunt@gmail.com'
+EMAIL_HOST_PASSWORD = 'downtownberkeleysbsk'
+EMAIL_PORT = 587
+
+# Tastypie settings
+TASTYPIE_DEFAULT_FORMATS = ['json']
+API_LIMIT_PER_PAGE = 20
+
+# Django Social Auth setup
+AUTHENTICATION_BACKENDS = (
+    'social_auth.backends.contrib.linkedin.LinkedinBackend',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+LOGIN_URL = '/login-form/'
+LOGIN_REDIRECT_URL = '/'
+LOGIN_ERROR_URL = '/login-error/'
+
+AUTH_USER_MODEL = 'users.User'
+SOCIAL_AUTH_USER_MODEL = AUTH_USER_MODEL
+
+SOCIAL_AUTH_RAISE_EXCEPTIONS = True
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.contrib.auth.context_processors.auth',
+    'django.core.context_processors.debug',
+    'django.core.context_processors.i18n',
+    'django.core.context_processors.media',
+    'django.contrib.messages.context_processors.messages',
+    'social_auth.context_processors.social_auth_by_type_backends',
+    'social_auth.context_processors.social_auth_login_redirect',
+)
+
+# LinkedIn specific config
+LINKEDIN_CONSUMER_KEY = 'xu79xm7p77of'
+LINKEDIN_CONSUMER_SECRET = 'UnJhJkwNuUru2m4Y'
+LINKEDIN_SCOPE = ['r_basicprofile', 'r_emailaddress', 'r_fullprofile','r_contactinfo','r_network']
+
+LINKEDIN_EXTRA_FIELD_SELECTORS = [
+    'email-address',
+    'headline',
+    'industry',
+    'location',
+    'summary',
+    'specialties',
+    'positions',
+    'educations',
+    'skills',
+    'summary',
+]
+
+# Honor the 'X-Forwarded-Proto' header for request.is_secure()
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
 # Parse database configuration from $DATABASE_URL
 import dj_database_url
 DATABASES = {'default': dj_database_url.config()}
-
 
 try:
     from occuhunt.settings_local import DATABASES

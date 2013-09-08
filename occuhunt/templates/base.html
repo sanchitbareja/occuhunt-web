@@ -1,0 +1,68 @@
+{% load static from staticfiles %}
+{% load i18n %}
+<!DOCTYPE html>
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="Occuhunt">
+        <meta name="author" content="Occuhunt">
+        <link rel="shortcut icon" href="{% "bootstrap/assets/ico/favicon.png" }%">
+
+        {% block viewport %}
+            <!-- Set the viewport width to device width for mobile -->
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        {% endblock %}
+
+        <title>{% block head_title_base %}Occuhunt{% block head_title %}{% endblock %}{% endblock %}</title>
+
+        {% block style_base %}
+            <!-- Bootstrap core CSS -->
+            <link href="{% static "bootstrap/dist/css/bootstrap.css" %}" rel="stylesheet">
+            {% block extra_style %}{% endblock %}
+        {% endblock %}
+
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+          <script src="{% static "bootstrap/assets/js/html5shiv.js" %}"></script>
+          <script src="{% static "bootstrap/assets/js/respond.min.js" %}"></script>
+        <![endif]-->
+
+        {% block extra_head_base %}
+            {% block extra_head %}{% endblock %}
+        {% endblock %}
+
+        {% block script_base %}
+            {% block extra_script %}{% endblock %}
+        {% endblock %}
+    </head>
+
+    <body class="{% block body_class %}{% endblock %}" id="{% block body_id %}{% endblock %}" style="padding-top:70px;">
+      {% block topbar_base %}
+        {% include "_top_bar.html" %}
+      {% endblock %}
+
+      <div class="container">
+        {% block body_base %}
+          {% include "_messages.html" %}
+          {% block content %}
+          {% endblock %}
+        {% endblock %}
+      </div>
+
+      {% block footer_base %}
+        {% include "_footer.html" %}
+      {% endblock %}
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="{% static "bootstrap/assets/js/jquery.js" %}"></script>
+    <script src="{% static "bootstrap/dist/js/bootstrap.min.js" %}"></script>
+    <script type="text/javascript">
+      $("#recruiter_popover").popover();
+    </script>
+
+    </body>
+</html>
