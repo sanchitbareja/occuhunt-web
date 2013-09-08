@@ -3,6 +3,7 @@
 from django.core.management.base import BaseCommand, CommandError
 from companies.models import Company
 import csv
+import os
 
 class Command(BaseCommand):
     args = '<poll_id poll_id ...>'
@@ -10,7 +11,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
 
-        data = csv.reader(open('/Users/sidwyn/Documents/Code/occuhunt-web/occuhunt-web/companies/management/commands/CCFInfo3.csv', 'rU'), quotechar='"', delimiter = ',') 
+        data = csv.reader(open(os.getcwd()+'/companies/management/commands/CCFInfo3.csv', 'rU'), quotechar='"', delimiter = ',') 
         # print (data)
         for row in data:
             # print "0"+row[0]
