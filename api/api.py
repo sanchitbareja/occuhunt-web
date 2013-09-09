@@ -18,8 +18,40 @@ from django.http import Http404
 # misc
 from django.db.models import Q
 from companies.models import Company
+from favorites.models import Favorite
+from users.models import User
 import datetime
 
+
+class UserResource(ModelResource):
+    class Meta:
+        queryset = User.objects.all()
+        resource_name = 'users'
+        # Add it here.
+        # authentication = BasicAuthentication()
+        authorization = DjangoAuthorization()
+
+        allowed_methods = ['get']
+        filtering = {
+            "first_name": ("exact")
+        }
+        excludes = ['password','last_login','is_active','is_admin','is_superuser']
+
+    def dehydrate(self, bundle):
+        """
+        Return a list of clubs formatted according to what the developer expects
+        """
+
+        return bundle
+
+    def alter_list_data_to_serialize(self, request, data):
+        # rename "objects" to "response"
+        data['response'] = {"users":data['objects']}
+        del(data['objects'])
+        return data
+
+    def determine_format(self, request):
+        return 'application/json'
 
 class CompanyResource(ModelResource):
     class Meta:
@@ -38,30 +70,43 @@ class CompanyResource(ModelResource):
         """
         Return a list of clubs formatted according to what the developer expects
         """
-        # # no renaming required for 'name'
-        # bundle.data['name'] = bundle.obj.name
-
-        # # no renaming required for 'description'
-        # bundle.data['description'] = bundle.obj.description
-
-        # # no renaming required for 'typeOfOrganization'
-        # bundle.data['typeOfOrganization'] = bundle.obj.typeOfOrganization
-
-        # # no renaming required for 'urlPersonal'
-        # bundle.data['urlPersonal'] = bundle.obj.urlPersonal
-
-        # # rename 'image' to 'imageUrl'
-        # bundle.data['imageUrl'] = bundle.obj.image
-        # del(bundle.data['image'])
-
-        # # no renaming required for 'founded'
-        # bundle.data['founded'] = bundle.obj.founded
 
         return bundle
 
     def alter_list_data_to_serialize(self, request, data):
         # rename "objects" to "response"
         data['response'] = {"companies":data['objects']}
+        del(data['objects'])
+        return data
+
+    def determine_format(self, request):
+        return 'application/json'
+
+class FavoriteResource(ModelResource):
+    user = fields.OneToOneField(UserResource, 'user', full=True)
+    company = fields.OneToOneField(CompanyResource, 'company', full=True)
+    class Meta:
+        queryset = Favorite.objects.all()
+        resource_name = 'favorites'
+        # Add it here.
+        # authentication = BasicAuthentication()
+        authorization = DjangoAuthorization()
+
+        allowed_methods = ['get','post']
+        filtering = {
+            "user": ("exact")
+        }
+
+    def dehydrate(self, bundle):
+        """
+        Return a list of clubs formatted according to what the developer expects
+        """
+
+        return bundle
+
+    def alter_list_data_to_serialize(self, request, data):
+        # rename "objects" to "response"
+        data['response'] = {"favorites":data['objects']}
         del(data['objects'])
         return data
 

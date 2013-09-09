@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, include, url
-from companies.views import home
+from companies.views import home, companies
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -9,15 +9,17 @@ admin.autodiscover()
 
 # API
 from tastypie.api import Api
-from api.api import CompanyResource
+from api.api import CompanyResource, FavoriteResource
 from api.views import logout_view, login_error
 
 v1_api = Api(api_name='v1')
 v1_api.register(CompanyResource())
+v1_api.register(FavoriteResource())
 
 urlpatterns = patterns('',
     # Examples:
     url(r'^$', home, name='home'),
+    url(r'^companies/$', companies, name='companies'),
     url(r'^logout/$', logout_view, name='logout'),
     url(r'^login-error/$', login_error, name='login-error'),
 

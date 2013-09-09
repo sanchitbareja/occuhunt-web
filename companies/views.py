@@ -16,3 +16,9 @@ def home(request):
     """Home view"""
     return render_to_response('index.html', {'version': version},
                                   RequestContext(request))
+
+
+def companies(request):
+    """Companies view"""
+    return render_to_response('companies.html', {'version': version},
+                                  RequestContext(request))

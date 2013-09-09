@@ -130,6 +130,7 @@ INSTALLED_APPS = (
     # local apps
     'companies',
     'users',
+    'favorites',
     'api',
 )
 

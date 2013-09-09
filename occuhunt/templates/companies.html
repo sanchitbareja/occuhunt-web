@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% load static from staticfiles %}
+{% load i18n %}
+{% load url from future %}
+
+{% block extra_script %}
+<script type="text/javascript">
+  function getCompanies(){
+    $.ajax({
+      url: '/api/v1/companies/',
+      data: {},
+      success: function(data, textStatus, jqXHR) {
+          console.log(data);
+          console.log(textStatus);
+          console.log(jqXHR);
+          for(i in data['response']['companies']){
+            $("#companies_list").append('<div class="col-lg-4">'+
+                                          '<div class="thumbnail">'+
+                                            '<img src="{% static "images/accenture-advert.jpg" %}">'+
+                                            '<div class="caption">'+
+                                              '<div class="row">'+
+                                                '<div class="col-lg-2">'+
+                                                  '<img src="{% static "images/accenture-logo.jpg" %}" style="height:50px;">'+
+                                                '</div>'+
+                                                '<div class="col-lg-6">'+
+                                                  '<p style="margin-bottom:0px; color:#717171;">'+
+                                                    data['response']['companies'][i]['name']+
+                                                  '</p>'+
+                                                '</div>'+
+                                                '<div class="col-lg-4">'+
+                                                  '<h3 style="color:#7B4D9A;text-align:right;padding:0px;margin-bottom:0px; margin-right:0px;">'+
+                                                    data['response']['companies'][i]['expected_hires']+' jobs'+
+                                                  '</h3>'+
+                                                '</div>'+
+                                              '</div>'+
+                                            '</div>'+
+                                          '</div>'+
+                                        '</div>');
+          }
+        },
+      dataType: 'json',
+    });
+  }
+
+  // get all companies on launch
+  $(document).ready(getCompanies);
+
+</script>
+{% endblock %}
+
+{% block content %}
+
+<div class="row" id="companies_list">
+
+</div>
+
+
+{% endblock %}
