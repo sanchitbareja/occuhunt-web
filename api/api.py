@@ -59,6 +59,7 @@ class CompanyResource(ModelResource):
         resource_name = 'companies'
         # Add it here.
         # authentication = BasicAuthentication()
+        limit = 0
         authorization = DjangoAuthorization()
 
         allowed_methods = ['get']
