@@ -22,6 +22,27 @@
     });
   }
 
+  function setHunting(id){
+    $.ajax({
+      url: '/api/v1/hunting/'+id+'/',
+      type: 'POST',
+      contentType: 'application/json',
+      data: {
+        "fair":"1",
+        "user":"2",
+      },
+      processData: false
+      success: function(data, textStatus, jqXHR) {
+          console.log(data);
+          console.log(textStatus);
+          console.log(jqXHR);
+          $("#fair").text(data['fair']);
+          $("#user").text(data['user']);
+        },
+      dataType: 'json',
+    });
+  }
+
   function toggleTable(cssID){
     if($(cssID).css('background-color') == "rgb(255, 255, 255)") {
       if(cssID == '.btn-categorydisabled'){

@@ -117,7 +117,7 @@ class FavoriteResource(ModelResource):
 
 
 class HuntingResource(ModelResource):
-    name_of_fair = fields.OneToOneField(UserResource, 'name_of_fair', full=True)
+    fair = fields.OneToOneField(UserResource, 'fair', full=True)
     user = fields.OneToOneField(CompanyResource, 'user', full=True)
     class Meta:
         queryset = Hunting.objects.all()
