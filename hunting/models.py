@@ -1,11 +1,12 @@
 from django.db import models
-import datetime
+from users.models import User
+from fairs.models import Fair
 
 # Create your models here.
 
-class Fair(models.Model):
-	fair = models.CharField(max_length=512)
-	user = models.CharField(max_length=512)
+class Hunting(models.Model):
+	user = models.ForeignKey(User, blank = True, null = True)
+	fair = models.ForeignKey(Fair, blank = True, null = True)
 
 	def __unicode__(self):
-		return self.name
+		return self.user.first_name+":"+self.fair.name
