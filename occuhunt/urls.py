@@ -9,13 +9,14 @@ admin.autodiscover()
 
 # API
 from tastypie.api import Api
-from api.api import CompanyResource, FavoriteResource, UserResource
+from api.api import CompanyResource, FavoriteResource, HuntingResource ,UserResource
 from api.views import logout_view, login_error
 
 v1_api = Api(api_name='v1')
 v1_api.register(CompanyResource())
 v1_api.register(FavoriteResource())
 v1_api.register(UserResource())
+v1_api.register(HuntingResource())
 
 urlpatterns = patterns('',
     # Examples:

@@ -19,7 +19,9 @@ from django.http import Http404
 from django.db.models import Q
 from companies.models import Company
 from favorites.models import Favorite
+from fairs.models import Fair
 from users.models import User
+from hunting.models import Hunting
 import datetime
 
 
@@ -114,6 +116,50 @@ class FavoriteResource(ModelResource):
         new_favorite = Favorite(user=user, company=company)
         new_favorite.save()
         bundle.obj = new_favorite
+        return bundle
+
+    def alter_list_data_to_serialize(self, request, data):
+        # rename "objects" to "response"
+        data['response'] = {"favorites":data['objects']}
+        del(data['objects'])
+        return data
+
+    def determine_format(self, request):
+        return 'application/json'
+
+class FairResource(ModelResource):
+    class Meta:
+        queryset = Fair.objects.all()
+        resource_name = 'fairs'
+        # Add it here.
+        # authentication = BasicAuthentication()
+        authorization = DjangoAuthorization()
+
+        allowed_methods = ['get']
+
+    def determine_format(self, request):
+        return 'application/json'
+
+class HuntingResource(ModelResource):
+    fair = fields.OneToOneField(FairResource, 'fair', full=True)
+    user = fields.OneToOneField(UserResource, 'user', full=True)
+    class Meta:
+        queryset = Hunting.objects.all()
+        resource_name = 'hunting'
+        # Add it here.
+        # authentication = BasicAuthentication()
+        authorization = DjangoAuthorization()
+        limit = 0
+        allowed_methods = ['get','post']
+        filtering = {
+            "user": ("exact")
+        }
+
+    def dehydrate(self, bundle):
+        """
+        Return a list of clubs formatted according to what the developer expects
+        """
+
         return bundle
 
     def alter_list_data_to_serialize(self, request, data):
