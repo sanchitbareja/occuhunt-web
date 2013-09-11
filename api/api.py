@@ -105,6 +105,17 @@ class FavoriteResource(ModelResource):
 
         return bundle
 
+    def obj_create(self, bundle, **kwargs):
+        """
+        Posts a new favorite
+        """
+        user = User.objects.get(id=bundle.data["user"])
+        company = Company.objects.get(id=bundle.data["company"])
+        new_favorite = Favorite(user=user, company=company)
+        new_favorite.save()
+        bundle.obj = new_favorite
+        return bundle
+
     def alter_list_data_to_serialize(self, request, data):
         # rename "objects" to "response"
         data['response'] = {"favorites":data['objects']}

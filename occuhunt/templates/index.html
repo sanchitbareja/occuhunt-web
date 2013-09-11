@@ -5,6 +5,30 @@
 
 {% block extra_script %}
 <script type="text/javascript">
+
+
+  function favoriteCompany(){
+    company_id = $("#company_id").val();
+    user_id = $("#user_id").val();
+    $.ajax({ 
+      url:'/api/v1/favorites/', 
+      type:'POST',
+      dataType: 'json',
+      data: JSON.stringify({
+        'company': company_id, 
+        'user':user_id
+      }), 
+      contentType: 'application/json',
+      statusCode : {
+        201: function(data, textStatus, jsXHR){
+          console.log("Successfully favorited company!");
+          $("#favorite_company_btn").text("Favorited!");
+          $("#favorite_company_btn").attr('disabled', 'disabled');
+        }
+      }
+    });
+  }
+
   function getCompany(id){
     $.ajax({
       url: '/api/v1/companies/'+id+'/',
@@ -17,6 +41,7 @@
           $("#company_description").text(data['company_description']);
           $("#company_looking_for").text(data['position_types']);
           $("#company_number_of_expected_hires").text(data['expected_hires']);
+          $("#company_id").val(id);
         },
       dataType: 'json',
     });
@@ -129,7 +154,7 @@
         <div class="row">
           <table>
             <tr>
-              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(6)">10gen (the MongoDB company)</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(1)">10gen (the MongoDB company)</button></td>
               <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(7)">247 Customer Inc</button></td>
               <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(8)">2H Offshore Inc</button></td>
               <td id="career_fair_map"><button type="button" class="btn btn-technology fair-table" onclick="getCompany(9)">ABS</button></td>
@@ -565,7 +590,8 @@
                 <button id="recruiter_popover" type="button" class="btn btn-primary" data-container="body" data-toggle="popover" data-placement="right" data-content="LinkedIn:linkedin.com/sanchit Email:recruiter@twitter.com" data-original-title="" title="Sanchit Bareja">
                   Contact Recruiter
                 </button>
-                <button class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span>&nbsp;Favorite</button>
+                <input type="hidden" value="0" name="company_id" id="company_id">
+                <button class="btn btn-primary" onclick="favoriteCompany()" id="favorite_company_btn"><span class="glyphicon glyphicon-plus"></span>&nbsp;Favorite</button>
               </p>
             </div>
           </div>
