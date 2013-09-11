@@ -20,6 +20,7 @@ from django.db.models import Q
 from companies.models import Company
 from favorites.models import Favorite
 from users.models import User
+from hunting.models import Hunting
 import datetime
 
 
@@ -89,6 +90,38 @@ class FavoriteResource(ModelResource):
     class Meta:
         queryset = Favorite.objects.all()
         resource_name = 'favorites'
+        # Add it here.
+        # authentication = BasicAuthentication()
+        authorization = DjangoAuthorization()
+
+        allowed_methods = ['get','post']
+        filtering = {
+            "user": ("exact")
+        }
+
+    def dehydrate(self, bundle):
+        """
+        Return a list of clubs formatted according to what the developer expects
+        """
+
+        return bundle
+
+    def alter_list_data_to_serialize(self, request, data):
+        # rename "objects" to "response"
+        data['response'] = {"favorites":data['objects']}
+        del(data['objects'])
+        return data
+
+    def determine_format(self, request):
+        return 'application/json'
+
+
+class HuntingResource(ModelResource):
+    name_of_fair = fields.OneToOneField(UserResource, 'name_of_fair', full=True)
+    user = fields.OneToOneField(CompanyResource, 'user', full=True)
+    class Meta:
+        queryset = Hunting.objects.all()
+        resource_name = 'hunting'
         # Add it here.
         # authentication = BasicAuthentication()
         authorization = DjangoAuthorization()
