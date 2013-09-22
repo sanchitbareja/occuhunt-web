@@ -46,6 +46,76 @@ function unfavoriteCompany(){
   });
 }
 
+function favoriteCompanyWithId(company_id,element){
+  user_id = $("#user_id").val();
+  console.log(user_id);
+  $.ajax({ 
+    url:'/api/v1/favorites/', 
+    type:'POST',
+    dataType: 'json',
+    data: JSON.stringify({
+      'company': company_id, 
+      'user': user_id,
+      'unfavorite': false
+    }), 
+    contentType: 'application/json',
+    statusCode : {
+      201: function(data, textStatus, jsXHR){
+        console.log("Successfully favorited company!");
+        $(element).html('<span class="glyphicon glyphicon-minus"></span>&nbsp;Unfavorite');
+        $(element).attr('onclick', 'unfavoriteCompanyWithId('+company_id+',this);');
+      }
+    }
+  });
+}
+
+function unfavoriteCompanyWithId(company_id,element){
+  user_id = $("#user_id").val();
+  console.log(user_id);
+  $.ajax({ 
+    url:'/api/v1/favorites/', 
+    type:'POST',
+    dataType: 'json',
+    data: JSON.stringify({
+      'company': company_id, 
+      'user': user_id,
+      'unfavorite': true,
+    }), 
+    contentType: 'application/json',
+    statusCode : {
+      201: function(data, textStatus, jsXHR){
+        console.log("Successfully favorited company!");
+        $(element).html('<span class="glyphicon glyphicon-plus"></span>&nbsp;Favorite');
+        $(element).attr('onclick', 'favoriteCompanyWithId('+company_id+',this);');
+      }
+    }
+  });
+}
+
+function getCompanies(){
+  user_id = $("#user_id").val();
+  console.log("get companies");
+  $.ajax({
+    url: '/api/v1/companies/',
+    data: {},
+    success: function(data, textStatus, jqXHR) {
+        console.log(data);
+        console.log(textStatus);
+        console.log(jqXHR);
+        if(user_id){
+          for (var i = data['response']['companies'].length - 1; i >= 0; i--) {
+            // need to check if need to display favorite or unfavorite icon
+            if(data['response']['companies'][i]['favorites'].indexOf(parseInt(user_id)) >= 0){
+              console.log($("button[value=company_"+data['response']['companies'][i]['id']+"]"));
+              $("button[value=company_"+data['response']['companies'][i]['id']+"]").addClass("favorited-company");
+            }
+          };
+        }
+      },
+    dataType: 'json',
+  });
+}
+
 function getCompany(id){
   user_id = $("#user_id").val();
   $.ajax({
@@ -94,31 +164,85 @@ function getHunting(id){
   });
 }
 
+function updateHunts(){
+  user_id = $("#user_id").val();
+  console.log(user_id);
+  $.ajax({
+    url: '/api/v1/hunting/',
+    type: 'GET',
+    contentType: 'application/json',
+    processData: false,
+    success: function(data, textStatus, jqXHR) {
+        $("#hunting_number").text(data['meta']['total_count']);
+        if(user_id){
+          for (var i = data['response']['favorites'].length - 1; i >= 0; i--) {
+            if(data['response']['favorites'][i]['user']['id'] == parseInt(user_id)){
+              $("#hunting_button").attr("disabled","disabled");
+              $("#hunting_button").text("Hunted!");
+            }
+          };
+        }
+      },
+    dataType: 'json',
+  });
+}
+
+function registerHunt(){
+  user_id = $("#user_id").val();
+  console.log(user_id);
+  $.ajax({ 
+    url:'/api/v1/hunting/', 
+    type:'POST',
+    dataType: 'json',
+    data: JSON.stringify({
+      'fair': '1', 
+      'user': user_id,
+    }), 
+    contentType: 'application/json',
+    statusCode : {
+      201: function(data, textStatus, jsXHR){
+        console.log("Successfully hunted at fair!");
+        updateHunts();
+      }
+    }
+  });
+}
+
 function toggleTable(cssID){
-  if($(cssID).css('background-color') == "rgb(255, 255, 255)") {
-    if(cssID == '.btn-categorydisabled'){
-      recolorTables(cssID,'grey');
-    }
-    if(cssID == '.btn-engineering'){
-      recolorTables(cssID,'#baf198');
-    }
-    if(cssID == '.btn-finance'){
-      recolorTables(cssID,'#ffb8e7');
-    }
-    if(cssID == '.btn-government'){
-      recolorTables(cssID,'');
-    }
-    if(cssID == '.btn-health'){
-      recolorTables(cssID,'#fe9f9f');
-    }
-    if(cssID == '.btn-technology'){
-      recolorTables(cssID,'#c4dff9');
-    }
-    if(cssID == '.btn-other'){
-      recolorTables(cssID,'#ffcfaf');
+  console.log(cssID);
+  if(cssID == '.favorited-company'){
+    console.log($(cssID).css('background-image'));
+    if($(cssID).css('background-image') == "none"){
+      $(cssID).css('background-image', "url('/static/images/axe.png')");
+    } else {
+      $(cssID).css('background-image','none');
     }
   } else {
-    decolorTables(cssID)
+    if($(cssID).css('background-color') == "rgb(255, 255, 255)") {
+      if(cssID == '.btn-categorydisabled'){
+        recolorTables(cssID,'grey');
+      }
+      if(cssID == '.btn-engineering'){
+        recolorTables(cssID,'#baf198');
+      }
+      if(cssID == '.btn-finance'){
+        recolorTables(cssID,'#ffb8e7');
+      }
+      if(cssID == '.btn-government'){
+        recolorTables(cssID,'');
+      }
+      if(cssID == '.btn-health'){
+        recolorTables(cssID,'#fe9f9f');
+      }
+      if(cssID == '.btn-technology'){
+        recolorTables(cssID,'#c4dff9');
+      }
+      if(cssID == '.btn-other'){
+        recolorTables(cssID,'#ffcfaf');
+      }
+    } else {
+      decolorTables(cssID)
+    }
   }
 }
 

@@ -96,7 +96,7 @@ class FavoriteResource(ModelResource):
         # Add it here.
         # authentication = BasicAuthentication()
         authorization = DjangoAuthorization()
-
+        always_return_data = True
         allowed_methods = ['get','post']
         filtering = {
             "user": ("exact")
@@ -113,29 +113,15 @@ class FavoriteResource(ModelResource):
         """
         Posts a new favorite
         """
-        print "11"
-        print bundle.data
-        print '12'
-        print bundle.data['user']
-        print bundle.data['company']
-        print bundle.data["unfavorite"]
         user = User.objects.get(id=bundle.data["user"])
         company = Company.objects.get(id=bundle.data["company"])
-        print user
-        print company.id
-        print "22"
         if bundle.data['unfavorite']:
-            print "23"
             a = Favorite.objects.filter(user=user).filter(company=company)
-            print a
             a.delete()
-            # bundle.obj = None
         else:
-            print "24"
             new_favorite = Favorite(user=user, company=company)
             new_favorite.save()
             bundle.obj = new_favorite
-        print "33"
         return bundle
 
     def alter_list_data_to_serialize(self, request, data):
@@ -171,15 +157,25 @@ class HuntingResource(ModelResource):
         authorization = DjangoAuthorization()
         limit = 0
         allowed_methods = ['get','post']
-        filtering = {
-            "user": ("exact")
-        }
 
     def dehydrate(self, bundle):
         """
         Return a list of clubs formatted according to what the developer expects
         """
 
+        return bundle
+
+    def obj_create(self, bundle, **kwargs):
+        """
+        Posts a new "hunt"
+        """
+        user = User.objects.get(id=bundle.data["user"])
+        fair = Fair.objects.get(id=bundle.data["fair"])
+        old_hunting = Hunting.objects.filter(user=user).filter(fair=fair)
+        if len(old_hunting) <= 0:
+            new_hunting = Hunting(user=user, fair=fair)
+            new_hunting.save()
+            bundle.obj = new_hunting
         return bundle
 
     def alter_list_data_to_serialize(self, request, data):

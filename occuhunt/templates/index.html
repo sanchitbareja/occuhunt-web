@@ -3,23 +3,26 @@
 {% load i18n %}
 {% load url from future %}
 
+{% block extra_style %}
+
+<style type="text/css">
+
+.favorited-company {
+  background-image: url('/static/images/axe.png');
+  background-repeat: no-repeat;
+  background-size: 30px;
+}
+
+</style>
+
+{% endblock %}
+
 {% block extra_script %}
 <script type="text/javascript">
   
   $(document).ready(function(){
-    $.ajax({ 
-      url: '/api/v1/hunting/',
-      type: 'GET',
-      contentType: 'application/json',
-      processData: false,
-      success: function(data, textStatus, jqXHR) {
-          console.log(data);
-          console.log(textStatus);
-          console.log(jqXHR);
-          $("#hunting_number").text(data['meta']['total_count']);
-        },
-      dataType: 'json',
-    });
+    updateHunts();
+    getCompanies();
   });
 
   $(window).bind('scroll resize', function() {
@@ -34,22 +37,20 @@
   <!-- Filters -->
   <div class="row pull-left" style="margin-left:-120px; position:relative;" id="filter_bar">
     <div class="col-lg-12" style="text-align:center;">
-      <div class="btn-group-vertical" data-toggle="buttons">
-      <!-- <span class="glyphicon glyphicon-bullhorn" style="text-align:center"></span> -->
-      <p style="font-weight:700; text-align:center; margin-top: 0.6em; margin-bottom: 0em;" id="hunting_number">...</p>
+      <div style="line-height:32px; position:relative;">
+        <p style="font-weight:600; text-align:center; margin-top: 0.8em; margin-bottom: 0em; font-size:20pt; display:inline; position:relative;" id="hunting_number">...</p>
+        <img src="{% static "images/hunting.jpg" %}" style="height:32px; top:-5px; position:relative;">
+      </div>
       <p style="text-align:center">hunting</p>
-    <button class="btn btn-danger">HUNT</button>
-    </br>
-    </div>
+      {% if user.is_authenticated %}
+        <button class="btn btn-danger" onclick="registerHunt();" id="hunting_button">HUNT</button><br />
+      {% endif %}
     </div>
 
     <div class="col-lg-12">
       <div class="btn-group-vertical" data-toggle="buttons">
         <br />
-        <br />
-        <br />
-        <br />
-        <button type="button" class="btn btn-categorydisabled btn-sm" onclick="toggleTable('.btn-categorydisabled');">Disabled</button>
+        <button type="button" class="btn btn-categorydisabled btn-sm" onclick="toggleTable('.favorited-company');"><img src="/static/images/axe.png" style="height:20px; float:left; position:relative; margin-left:-10px;">&nbsp;Favs</button>
         <button type="button" class="btn btn-engineering btn-sm" onclick="toggleTable('.btn-engineering');">Engineering</button>
         <button type="button" class="btn btn-finance btn-sm" onclick="toggleTable('.btn-finance');">Finance</button>
         <button type="button" class="btn btn-government btn-sm" onclick="toggleTable('.btn-government');">Government</button>
@@ -93,21 +94,21 @@
         <div class="row">
           <table>
             <tr>
-              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(6)">10gen (the MongoDB company)</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(7)">247 Customer Inc</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(8)">2H Offshore Inc</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-technology fair-table" onclick="getCompany(9)">ABS</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-government fair-table" onclick="getCompany(29)">Berkeley Research Group</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-finance fair-table" onclick="getCompany(10)">Accenture</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-finance fair-table" onclick="getCompany(11)">Acumen, LLC</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(12)">ADP (Automatic Data Processing)</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(13)">Alpine Data Labs</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(14)">Altera Corporation</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-finance fair-table" onclick="getCompany(124)">Morningstar</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(15)">Altria Group</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-health fair-table" onclick="getCompany(16)">Alvarez & Marsal (A&M)</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(6)" value="company_6">10gen (the MongoDB company)</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(7)" value="company_7">247 Customer Inc</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(8)" value="company_8">2H Offshore Inc</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-technology fair-table" onclick="getCompany(9)" value="company_9">ABS</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-government fair-table" onclick="getCompany(29)" value="company_29">Berkeley Research Group</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-finance fair-table" onclick="getCompany(10)" value="company_10">Accenture</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-finance fair-table" onclick="getCompany(11)" value="company_11">Acumen, LLC</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(12)" value="company_12">ADP (Automatic Data Processing)</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(13)" value="company_13">Alpine Data Labs</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(14)" value="company_14">Altera Corporation</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-finance fair-table" onclick="getCompany(124)" value="company_124">Morningstar</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(15)" value="company_15">Altria Group</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-health fair-table" onclick="getCompany(16)" value="company_16">Alvarez & Marsal (A&M)</button></td>
             </tr><tr>  
-              <td id="career_fair_map"><button type="button" class="btn btn-health fair-table" onclick="getCompany(17)">Ancestry.com</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-health fair-table" onclick="getCompany(17)" value="company_17">Ancestry.com</button></td>
               <td></td>
               <td></td>
               <td></td>
@@ -119,50 +120,38 @@
               <td></td>
               <td></td>
             </tr><tr>
-              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(18)">Angie's List</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(18)" value="company_18">Angie's List</button></td>
               <td></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(19)">Anheuser-Busch InBev</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-finance fair-table" onclick="getCompany(20)">Applied Materials</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(21)">Applied Predictive Technologies</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-finance fair-table" onclick="getCompany(22)">Applied Predictive Technologies</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(43)">Chevron Corporation (Finance)</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(23)">Arista Networks</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-government fair-table" onclick="getCompany(24)">Arizona Public Service- Palo Verde Nuclear Generating Station</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-technology fair-table" onclick="getCompany(25)">Ask.com</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-technology fair-table" onclick="getCompany(26)">AT&T</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(27)">Becton Dickinson</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-finance fair-table" onclick="getCompany(28)">BEGHOU CONSULTING</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(19)" value="company_19">Anheuser-Busch InBev</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-finance fair-table" onclick="getCompany(20)" value="company_20">Applied Materials</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(21)" value="company_21">Applied Predictive Technologies</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-finance fair-table" onclick="getCompany(22)" value="company_22">Applied Predictive Technologies</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(43)" value="company_43">Chevron Corporation (Finance)</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(23)" value="company_23">Arista Networks</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-government fair-table" onclick="getCompany(24)" value="company_24">Arizona Public Service- Palo Verde Nuclear Generating Station</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-technology fair-table" onclick="getCompany(25)" value="company_25">Ask.com</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-technology fair-table" onclick="getCompany(26)" value="company_26">AT&T</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(27)" value="company_27">Becton Dickinson</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-finance fair-table" onclick="getCompany(28)" value="company_28">BEGHOU CONSULTING</button></td>
             </tr><tr>
-              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(133)">Peace Corps (San Francisco Regional Office)</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(133)" value="company_133">Peace Corps (San Francisco Regional Office)</button></td>
               <td></td>
               
-              <td id="career_fair_map"><button type="button" class="btn btn-finance fair-table" onclick="getCompany(31)">Bloomberg</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-government fair-table" onclick="getCompany(32)">BNSF Railway</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-finance fair-table" onclick="getCompany(31)" value="company_31">Bloomberg</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-government fair-table" onclick="getCompany(32)" value="company_32">BNSF Railway</button></td>
             
-              <td id="career_fair_map"><button type="button" class="btn btn-technology fair-table" onclick="getCompany(33)">Box</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-health fair-table" onclick="getCompany(34)">BP</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(35)">BrightEdge Technologies Inc</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-health fair-table" onclick="getCompany(36)">BrightRoll, Inc.</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-technology fair-table" onclick="getCompany(37)">C3 Energy</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-government fair-table" onclick="getCompany(38)">California State Auditor</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-technology fair-table" onclick="getCompany(39)">Cambridge Associates</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(40)">Central Contra Costa Sanitary District</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-finance fair-table" onclick="getCompany(41)">Charles River Associates</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-technology fair-table" onclick="getCompany(33)" value="company_33">Box</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-health fair-table" onclick="getCompany(34)" value="company_34">BP</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(35)" value="company_35">BrightEdge Technologies Inc</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-health fair-table" onclick="getCompany(36)" value="company_36">BrightRoll, Inc.</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-technology fair-table" onclick="getCompany(37)" value="company_37">C3 Energy</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-government fair-table" onclick="getCompany(38)" value="company_38">California State Auditor</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-technology fair-table" onclick="getCompany(39)" value="company_39">Cambridge Associates</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(40)" value="company_40">Central Contra Costa Sanitary District</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-finance fair-table" onclick="getCompany(41)" value="company_41">Charles River Associates</button></td>
             </tr><tr>
-              <td id="career_fair_map"><button type="button" class="btn btn-finance fair-table" onclick="getCompany(42)">Chevron Corporation</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-finance fair-table" onclick="getCompany(42)" value="company_42">Chevron Corporation</button></td>
               <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr><tr>
-              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(30)">BlackEdge Capital</button></td>
               <td></td>
               <td></td>
               <td></td>
@@ -174,49 +163,48 @@
               <td></td>
               <td></td>
             </tr><tr>
-              <td id="career_fair_map"><button type="button" class="btn btn-technology fair-table" onclick="getCompany(44)">Cisco SF</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(30)" value="company_30">BlackEdge Capital</button></td>
               <td></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(45)">Cisco Systems, Inc.</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-technology fair-table" onclick="getCompany(46)">Citrix</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(47)">Comcast</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-finance fair-table" onclick="getCompany(67)">E. & J. Gallo Winery</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(48)">COMPASS Lexecon</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(49)">Compass Quality Insight</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(50)">Consumer Financial Protection Bureau</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-finance fair-table" onclick="getCompany(51)">Contact Singapore</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(52)">Cornerstone Research</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(53)">Coverity, Inc.</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-technology fair-table" onclick="getCompany(68)">eBay, Inc.</button></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
             </tr><tr>
-              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(54)">creativeLIVE</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-technology fair-table" onclick="getCompany(44)" value="company_44">Cisco SF</button></td>
+              <td></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(45)" value="company_45">Cisco Systems, Inc.</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-technology fair-table" onclick="getCompany(46)" value="company_46">Citrix</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(47)" value="company_47">Comcast</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-finance fair-table" onclick="getCompany(67)" value="company_67">E. & J. Gallo Winery</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(48)" value="company_48">COMPASS Lexecon</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(49)" value="company_49">Compass Quality Insight</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(50)" value="company_50">Consumer Financial Protection Bureau</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-finance fair-table" onclick="getCompany(51)" value="company_51">Contact Singapore</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(52)" value="company_52">Cornerstone Research</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(53)" value="company_53">Coverity, Inc.</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-technology fair-table" onclick="getCompany(68)" value="company_68">eBay, Inc.</button></td>
+            </tr><tr>
+              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(54)" value="company_54">creativeLIVE</button></td>
               <td></td>
               
-              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(56)">CSAA Insurance Group</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-finance fair-table" onclick="getCompany(57)">Cutler Group, LP</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-government fair-table" onclick="getCompany(58)">D. E. Shaw & Co.</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-government fair-table" onclick="getCompany(59)">D. E. Shaw Research</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(101)">IXL Learning</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(60)">DaVita, Inc.</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-finance fair-table" onclick="getCompany(61)">Deloitte Consulting LLP</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-technology fair-table" onclick="getCompany(62)">Dropbox</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(63)">Drug Enforcement Administration (DEA)</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-finance fair-table" onclick="getCompany(64)">Duff and Phelps, LLC</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(65)">DuPont Industrial Biosciences</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(56)" value="company_56">CSAA Insurance Group</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-finance fair-table" onclick="getCompany(57)" value="company_57">Cutler Group, LP</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-government fair-table" onclick="getCompany(58)" value="company_58">D. E. Shaw & Co.</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-government fair-table" onclick="getCompany(59)" value="company_59">D. E. Shaw Research</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(101)" value="company_101">IXL Learning</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(60)" value="company_60">DaVita, Inc.</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-finance fair-table" onclick="getCompany(61)" value="company_61">Deloitte Consulting LLP</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-technology fair-table" onclick="getCompany(62)" value="company_62">Dropbox</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(63)" value="company_63">Drug Enforcement Administration (DEA)</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-finance fair-table" onclick="getCompany(64)" value="company_64">Duff and Phelps, LLC</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(65)" value="company_65">DuPont Industrial Biosciences</button></td>
             </tr><tr>
-              <td id="career_fair_map"><button type="button" class="btn btn-finance fair-table" onclick="getCompany(66)">E. & J. Gallo Winery</button></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr><tr>
-              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(55)">Crowe Horwath LLP</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-finance fair-table" onclick="getCompany(66)" value="company_66">E. & J. Gallo Winery</button></td>
               <td></td>
               <td></td>
               <td></td>
@@ -229,35 +217,7 @@
               <td></td>
               <td></td>
             </tr><tr>
-              <td id="career_fair_map"><button type="button" class="btn btn-health fair-table" onclick="getCompany(69)">eBay, Inc.</button></td>
-              <td></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(70)">Enterprise Holdings</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-technology fair-table" onclick="getCompany(71)">Ericsson Inc.</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(72)">Exponent</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(73)">FactSet Research Systems</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(74)">Federal Deposit Insurance Corporation</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-government fair-table" onclick="getCompany(75)">First Investors Corporation</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(76)">Fisher Investments</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-government fair-table" onclick="getCompany(77)">Fitbit</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-technology fair-table" onclick="getCompany(78)">FiveStars</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(79)">Flixster</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(80)">Ford Motor Company</button></td>
-            </tr><tr>
-              <td id="career_fair_map"><button type="button" class="btn btn-technology fair-table" onclick="getCompany(81)">Fortinet, Inc</button></td>
-              <td></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-finance fair-table" onclick="getCompany(84)">Gap Inc.</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-finance fair-table" onclick="getCompany(85)">General Dynamics Advanced Information Systems</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-technology fair-table" onclick="getCompany(86)">General Motors</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(87)">Genomic Health, Inc.</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(88)">GoDaddy.com</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-finance fair-table" onclick="getCompany(89)">Goldman Sachs</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-finance fair-table" onclick="getCompany(90)">Guidewire Software, Inc.</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(91)">Hall Capital Partners LLC.</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(92)">Health Advances</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-technology fair-table" onclick="getCompany(93)">Hewlett-Packard Co.</button></td>            
-              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(94)">Hillstone Restaurant Group</button></td>
-            </tr><tr>
-              <td id="career_fair_map"><button type="button" class="btn btn-technology fair-table" onclick="getCompany(82)">Fourth Valley Concierge Corporation</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(55)" value="company_55">Crowe Horwath LLP</button></td>
               <td></td>
               <td></td>
               <td></td>
@@ -270,7 +230,35 @@
               <td></td>
               <td></td>
             </tr><tr>
-              <td id="career_fair_map"><button type="button" class="btn btn-technology fair-table" onclick="getCompany(110)">Lam Research</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-health fair-table" onclick="getCompany(69)" value="company_69">eBay, Inc.</button></td>
+              <td></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(70)" value="company_70">Enterprise Holdings</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-technology fair-table" onclick="getCompany(71)" value="company_71">Ericsson Inc.</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(72)" value="company_72">Exponent</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(73)" value="company_73">FactSet Research Systems</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(74)" value="company_74">Federal Deposit Insurance Corporation</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-government fair-table" onclick="getCompany(75)" value="company_75">First Investors Corporation</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(76)" value="company_76">Fisher Investments</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-government fair-table" onclick="getCompany(77)" value="company_77">Fitbit</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-technology fair-table" onclick="getCompany(78)" value="company_78">FiveStars</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(79)" value="company_79">Flixster</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(80)" value="company_80">Ford Motor Company</button></td>
+            </tr><tr>
+              <td id="career_fair_map"><button type="button" class="btn btn-technology fair-table" onclick="getCompany(81)" value="company_81">Fortinet, Inc</button></td>
+              <td></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-finance fair-table" onclick="getCompany(84)" value="company_84">Gap Inc.</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-finance fair-table" onclick="getCompany(85)" value="company_85">General Dynamics Advanced Information Systems</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-technology fair-table" onclick="getCompany(86)" value="company_86">General Motors</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(87)" value="company_87">Genomic Health, Inc.</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(88)" value="company_88">GoDaddy.com</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-finance fair-table" onclick="getCompany(89)" value="company_89">Goldman Sachs</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-finance fair-table" onclick="getCompany(90)" value="company_90">Guidewire Software, Inc.</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(91)" value="company_91">Hall Capital Partners LLC.</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(92)" value="company_92">Health Advances</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-technology fair-table" onclick="getCompany(93)" value="company_93">Hewlett-Packard Co.</button></td>            
+              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(94)" value="company_94">Hillstone Restaurant Group</button></td>
+            </tr><tr>
+              <td id="career_fair_map"><button type="button" class="btn btn-technology fair-table" onclick="getCompany(82)" value="company_82">Fourth Valley Concierge Corporation</button></td>
               <td></td>
               <td></td>
               <td></td>
@@ -283,35 +271,7 @@
               <td></td>
               <td></td>
             </tr><tr>
-              <td id="career_fair_map"><button type="button" class="btn btn-finance fair-table" onclick="getCompany(95)">Hilti North America</button></td>
-              <td></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-finance fair-table" onclick="getCompany(96)">Hitachi Consulting</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(97)">Imerys</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-finance fair-table" onclick="getCompany(98)">IMS Consulting Group</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(99)">Indiegogo Inc</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-finance fair-table" onclick="getCompany(100)">Iris Technology Corporation</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-technology fair-table" onclick="getCompany(102)">JusticeCorps</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-technology fair-table" onclick="getCompany(103)">Kaiser Permanente</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-technology fair-table" onclick="getCompany(104)">Kenandy, Inc.</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-technology fair-table" onclick="getCompany(105)">Khan Academy</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(106)">KLA-Tencor Corporation</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(107)">Kurt Salmon</button></td>
-            </tr><tr>
-              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(108)">L.E.K. Consulting</button></td>
-              <td></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(111)">Lightning Bolt Solutions</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-health fair-table" onclick="getCompany(112)">LinkedIn</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(113)">LitiNomics, Inc.</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-technology fair-table" onclick="getCompany(114)">Magoosh</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-technology fair-table" onclick="getCompany(115)">Malabs, Inc</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(116)">Marin Software</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-government fair-table" onclick="getCompany(117)">Maxim Integrated</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-finance fair-table" onclick="getCompany(118)">Medallia, Inc.</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(119)">Mercer</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-technology fair-table" onclick="getCompany(120)">Microsoft</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(121)">MindTribe</button></td>
-            </tr><tr>
-              <td id="career_fair_map"><button type="button" class="btn btn-technology fair-table" onclick="getCompany(122)">MobiTV</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-technology fair-table" onclick="getCompany(110)" value="company_110">Lam Research</button></td>
               <td></td>
               <td></td>
               <td></td>
@@ -324,7 +284,48 @@
               <td></td>
               <td></td>
             </tr><tr>
-              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(109)">Lab126</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-finance fair-table" onclick="getCompany(95)" value="company_95">Hilti North America</button></td>
+              <td></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-finance fair-table" onclick="getCompany(96)" value="company_96">Hitachi Consulting</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(97)" value="company_97">Imerys</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-finance fair-table" onclick="getCompany(98)" value="company_98">IMS Consulting Group</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(99)" value="company_99">Indiegogo Inc</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-finance fair-table" onclick="getCompany(100)" value="company_100">Iris Technology Corporation</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-technology fair-table" onclick="getCompany(102)" value="company_102">JusticeCorps</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-technology fair-table" onclick="getCompany(103)" value="company_103">Kaiser Permanente</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-technology fair-table" onclick="getCompany(104)" value="company_104">Kenandy, Inc.</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-technology fair-table" onclick="getCompany(105)" value="company_105">Khan Academy</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(106)" value="company_106">KLA-Tencor Corporation</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(107)" value="company_107">Kurt Salmon</button></td>
+            </tr><tr>
+              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(108)" value="company_108">L.E.K. Consulting</button></td>
+              <td></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(111)" value="company_111">Lightning Bolt Solutions</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-health fair-table" onclick="getCompany(112)" value="company_112">LinkedIn</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(113)" value="company_113">LitiNomics, Inc.</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-technology fair-table" onclick="getCompany(114)" value="company_114">Magoosh</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-technology fair-table" onclick="getCompany(115)" value="company_115">Malabs, Inc</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(116)" value="company_116">Marin Software</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-government fair-table" onclick="getCompany(117)" value="company_117">Maxim Integrated</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-finance fair-table" onclick="getCompany(118)" value="company_118">Medallia, Inc.</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(119)" value="company_119">Mercer</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-technology fair-table" onclick="getCompany(120)" value="company_120">Microsoft</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(121)" value="company_121">MindTribe</button></td>
+            </tr><tr>
+              <td id="career_fair_map"><button type="button" class="btn btn-technology fair-table" onclick="getCompany(122)" value="company_122">MobiTV</button></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr><tr>
+              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(109)" value="company_109">Lab126</button></td>
             <td></td>
               <td></td>
               <td></td>
@@ -337,47 +338,35 @@
               <td></td>
               <td></td>
             </tr><tr>
-              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(123)">Moka5</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(123)" value="company_123">Moka5</button></td>
               <td></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-technology fair-table" onclick="getCompany(125)">NASA Ames Research Center</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-finance fair-table" onclick="getCompany(127)">Nielsen</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-finance fair-table" onclick="getCompany(128)">Opera Solutions</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-government fair-table" onclick="getCompany(129)">Oracle</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-government fair-table" onclick="getCompany(130)">Oracle America</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(131)">OSIsoft</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-government fair-table" onclick="getCompany(132)">Palantir Technologies</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(134)">Perceptive Software</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-finance fair-table" onclick="getCompany(135)">PernixData</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(136)">Pivotal Labs</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(83)">FTI Consulting</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-technology fair-table" onclick="getCompany(125)" value="company_125">NASA Ames Research Center</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-finance fair-table" onclick="getCompany(127)" value="company_127">Nielsen</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-finance fair-table" onclick="getCompany(128)" value="company_128">Opera Solutions</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-government fair-table" onclick="getCompany(129)" value="company_129">Oracle</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-government fair-table" onclick="getCompany(130)" value="company_130">Oracle America</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(131)" value="company_131">OSIsoft</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-government fair-table" onclick="getCompany(132)" value="company_132">Palantir Technologies</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(134)" value="company_134">Perceptive Software</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-finance fair-table" onclick="getCompany(135)" value="company_135">PernixData</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(136)" value="company_136">Pivotal Labs</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(83)" value="company_83">FTI Consulting</button></td>
             </tr><tr>
-              <td id="career_fair_map"><button type="button" class="btn btn-finance fair-table" onclick="getCompany(137)">Pocket Gems</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-finance fair-table" onclick="getCompany(137)" value="company_137">Pocket Gems</button></td>
               <td></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(139)">PricewaterhouseCoopers LLP (Assurance, Tax and Advisory)</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(140)">Procter & Gamble</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-government fair-table" onclick="getCompany(141)">Procter & Gamble</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(142)">Proofpoint</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(143)">Protiviti</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(144)">Prudential Financial</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(145)">QuinStreet</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(146)">Rackspace</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(157)">Schlumberger</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(147)">RAININ</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(148)">Raybeam, Inc.</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(139)" value="company_139">PricewaterhouseCoopers LLP (Assurance, Tax and Advisory)</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(140)" value="company_140">Procter & Gamble</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-government fair-table" onclick="getCompany(141)" value="company_141">Procter & Gamble</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(142)" value="company_142">Proofpoint</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(143)" value="company_143">Protiviti</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(144)" value="company_144">Prudential Financial</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(145)" value="company_145">QuinStreet</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(146)" value="company_146">Rackspace</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(157)" value="company_157">Schlumberger</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(147)" value="company_147">RAININ</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(148)" value="company_148">Raybeam, Inc.</button></td>
             </tr><tr>
-              <td id="career_fair_map"><button type="button" class="btn btn-finance fair-table" onclick="getCompany(149)">Redfin</button></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr><tr>
-              <td id="career_fair_map"><button type="button" class="btn btn-government fair-table" onclick="getCompany(150)">Reputation.com</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-finance fair-table" onclick="getCompany(149)" value="company_149">Redfin</button></td>
               <td></td>
               <td></td>
               <td></td>
@@ -389,35 +378,7 @@
               <td></td>
               <td></td>
             </tr><tr>
-              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(151)">Riviera Partners</button></td>
-              <td></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-finance fair-table" onclick="getCompany(158)">Sequoia Capital</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(152)">Ross Stores, Inc</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-government fair-table" onclick="getCompany(153)">Rothstein Kass</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(154)">Safeway Inc.</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-finance fair-table" onclick="getCompany(155)">Salesforce.com</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(156)">Sandia National Laboratories</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-finance fair-table" onclick="getCompany(159)">SHAMROCK REAL ESTATE CO</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-government fair-table" onclick="getCompany(160)">Snapchat</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(161)">Sony</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(162)">Southern California Edison</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(163)">Southern California Edison</button></td>
-            </tr><tr>
-              <td id="career_fair_map"><button type="button" class="btn btn-finance fair-table" onclick="getCompany(138)">Praetorian</button></td>
-              <td></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(165)">Spokeo</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-government fair-table" onclick="getCompany(166)">State Board of Equalization</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-finance fair-table" onclick="getCompany(167)">Stottler Henke Artificial Intelligence</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(168)">Stryker</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(169)">SugarCRM</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(170)">Supertex, Inc.</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-finance fair-table" onclick="getCompany(171)">Symantec Corporation</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-government fair-table" onclick="getCompany(172)">Synapse Product Development</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(173)">Target</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(174)">Tektronix</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(175)">Teradata Corporation</button></td>
-            </tr><tr>
-              <td id="career_fair_map"><button type="button" class="btn btn-finance fair-table" onclick="getCompany(176)">Tesoro Companies, Inc.</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-government fair-table" onclick="getCompany(150)" value="company_150">Reputation.com</button></td>
               <td></td>
               <td></td>
               <td></td>
@@ -429,7 +390,35 @@
               <td></td>
               <td></td>
             </tr><tr>
-              <td id="career_fair_map"><button type="button" class="btn btn-government fair-table" onclick="getCompany(177)">The Boeing Company</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(151)" value="company_151">Riviera Partners</button></td>
+              <td></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-finance fair-table" onclick="getCompany(158)" value="company_158">Sequoia Capital</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(152)" value="company_152">Ross Stores, Inc</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-government fair-table" onclick="getCompany(153)" value="company_153">Rothstein Kass</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(154)" value="company_154">Safeway Inc.</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-finance fair-table" onclick="getCompany(155)" value="company_155">Salesforce.com</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(156)" value="company_156">Sandia National Laboratories</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-finance fair-table" onclick="getCompany(159)" value="company_159">SHAMROCK REAL ESTATE CO</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-government fair-table" onclick="getCompany(160)" value="company_160">Snapchat</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(161)" value="company_161">Sony</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(162)" value="company_162">Southern California Edison</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(163)" value="company_163">Southern California Edison</button></td>
+            </tr><tr>
+              <td id="career_fair_map"><button type="button" class="btn btn-finance fair-table" onclick="getCompany(138)" value="company_138">Praetorian</button></td>
+              <td></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(165)" value="company_165">Spokeo</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-government fair-table" onclick="getCompany(166)" value="company_166">State Board of Equalization</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-finance fair-table" onclick="getCompany(167)" value="company_167">Stottler Henke Artificial Intelligence</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(168)" value="company_168">Stryker</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(169)" value="company_169">SugarCRM</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(170)" value="company_170">Supertex, Inc.</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-finance fair-table" onclick="getCompany(171)" value="company_171">Symantec Corporation</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-government fair-table" onclick="getCompany(172)" value="company_172">Synapse Product Development</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(173)" value="company_173">Target</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(174)" value="company_174">Tektronix</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(175)" value="company_175">Teradata Corporation</button></td>
+            </tr><tr>
+              <td id="career_fair_map"><button type="button" class="btn btn-finance fair-table" onclick="getCompany(176)" value="company_176">Tesoro Companies, Inc.</button></td>
               <td></td>
               <td></td>
               <td></td>
@@ -441,35 +430,47 @@
               <td></td>
               <td></td>
             </tr><tr>
-              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(178)">The Clorox Company</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-government fair-table" onclick="getCompany(177)" value="company_177">The Boeing Company</button></td>
               <td></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(179)">The Clorox Company</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-government fair-table" onclick="getCompany(206)">ZS Associates</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(180)">The Parthenon Group</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(164)">SpaceX</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-finance fair-table" onclick="getCompany(181)">Theranos</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(182)">TiVo Inc</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-finance fair-table" onclick="getCompany(183)">TM Financial Forensics</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-government fair-table" onclick="getCompany(184)">Towers Watson</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(185)">Toyota Motor Engineering & Manufacturing North America</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(186)">TransPerfect</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-government fair-table" onclick="getCompany(187)">Triage Consulting Group</button></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
             </tr><tr>
-              <td id="career_fair_map"><button type="button" class="btn btn-finance fair-table" onclick="getCompany(188)">TripAdvisor</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(178)" value="company_178">The Clorox Company</button></td>
               <td></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(191)">U.S. Department of State; Bureau of Diplomatic Security</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(192)">U.S. NAVY</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-government fair-table" onclick="getCompany(193)">Uber Technologies, Inc.</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(194)">United States Marine Corps</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(195)">Urban Teacher Center</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(196)">USDA</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-government fair-table" onclick="getCompany(197)">Vdopia Inc.</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-finance fair-table" onclick="getCompany(198)">Veeva Systems</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(199)">Visa Inc.</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(200)">VMware</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-finance fair-table" onclick="getCompany(190)">Twilio</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(179)" value="company_179">The Clorox Company</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-government fair-table" onclick="getCompany(206)" value="company_206">ZS Associates</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(180)" value="company_180">The Parthenon Group</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(164)" value="company_164">SpaceX</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-finance fair-table" onclick="getCompany(181)" value="company_181">Theranos</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(182)" value="company_182">TiVo Inc</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-finance fair-table" onclick="getCompany(183)" value="company_183">TM Financial Forensics</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-government fair-table" onclick="getCompany(184)" value="company_184">Towers Watson</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(185)" value="company_185">Toyota Motor Engineering & Manufacturing North America</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(186)" value="company_186">TransPerfect</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-government fair-table" onclick="getCompany(187)" value="company_187">Triage Consulting Group</button></td>
+            </tr><tr>
+              <td id="career_fair_map"><button type="button" class="btn btn-finance fair-table" onclick="getCompany(188)" value="company_188">TripAdvisor</button></td>
+              <td></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(191)" value="company_191">U.S. Department of State; Bureau of Diplomatic Security</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(192)" value="company_192">U.S. NAVY</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-government fair-table" onclick="getCompany(193)" value="company_193">Uber Technologies, Inc.</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(194)" value="company_194">United States Marine Corps</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(195)" value="company_195">Urban Teacher Center</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(196)" value="company_196">USDA</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-government fair-table" onclick="getCompany(197)" value="company_197">Vdopia Inc.</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-finance fair-table" onclick="getCompany(198)" value="company_198">Veeva Systems</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(199)" value="company_199">Visa Inc.</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(200)" value="company_200">VMware</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-finance fair-table" onclick="getCompany(190)" value="company_190">Twilio</button></td>
             </tr><tr>  
-              <td id="career_fair_map"><button type="button" class="btn btn-government fair-table" onclick="getCompany(201)">Wedbush Securities</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-government fair-table" onclick="getCompany(201)" value="company_201">Wedbush Securities</button></td>
               <td></td>
               <td></td>
               <td></td>
@@ -481,12 +482,12 @@
               <td></td>
               <td></td>
             </tr><tr>
-              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(202)">Wolverine Trading LLC</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(203)">WTAS LLC</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(204)">Yelp</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-finance fair-table" onclick="getCompany(205)">Zoosk</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(126)">NetApp, Inc</button></td>
-              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(189)">TubeMogul</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(202)" value="company_202">Wolverine Trading LLC</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(203)" value="company_203">WTAS LLC</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(204)" value="company_204">Yelp</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-finance fair-table" onclick="getCompany(205)" value="company_205">Zoosk</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-other fair-table" onclick="getCompany(126)" value="company_126">NetApp, Inc</button></td>
+              <td id="career_fair_map"><button type="button" class="btn btn-engineering fair-table" onclick="getCompany(189)" value="company_189">TubeMogul</button></td>
             </tr>
           </table>
         </div>
