@@ -73,7 +73,9 @@ class CompanyResource(ModelResource):
         """
         Return a list of clubs formatted according to what the developer expects
         """
-
+        favorite_objects = Favorite.objects.filter(company=bundle.obj.id)
+        favorites = [fav.user.id for fav in favorite_objects]
+        bundle.data['favorites'] = favorites
         return bundle
 
     def alter_list_data_to_serialize(self, request, data):
@@ -111,11 +113,29 @@ class FavoriteResource(ModelResource):
         """
         Posts a new favorite
         """
+        print "11"
+        print bundle.data
+        print '12'
+        print bundle.data['user']
+        print bundle.data['company']
+        print bundle.data["unfavorite"]
         user = User.objects.get(id=bundle.data["user"])
         company = Company.objects.get(id=bundle.data["company"])
-        new_favorite = Favorite(user=user, company=company)
-        new_favorite.save()
-        bundle.obj = new_favorite
+        print user
+        print company.id
+        print "22"
+        if bundle.data['unfavorite']:
+            print "23"
+            a = Favorite.objects.filter(user=user).filter(company=company)
+            print a
+            a.delete()
+            # bundle.obj = None
+        else:
+            print "24"
+            new_favorite = Favorite(user=user, company=company)
+            new_favorite.save()
+            bundle.obj = new_favorite
+        print "33"
         return bundle
 
     def alter_list_data_to_serialize(self, request, data):

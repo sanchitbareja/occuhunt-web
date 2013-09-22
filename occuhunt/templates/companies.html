@@ -6,6 +6,7 @@
 {% block extra_script %}
 <script type="text/javascript">
   function getCompanies(){
+    user_id = $("#user_id").val();
     $.ajax({
       url: '/api/v1/companies/',
       data: {},
@@ -36,6 +37,30 @@
                                             '</div>'+
                                           '</div>'+
                                         '</div>');
+            if(data['response']['companies'][i]['favorites'].indexOf(parseInt(user_id)) >= 0){
+              $("#favorites_list").append('<div class="col-lg-4">'+
+                                          '<div class="thumbnail">'+
+                                            '<img src="{% static "images/accenture-advert.jpg" %}">'+
+                                            '<div class="caption">'+
+                                              '<div class="row">'+
+                                                '<div class="col-lg-2">'+
+                                                  '<img src="{% static "images/accenture-logo.jpg" %}" style="height:50px;">'+
+                                                '</div>'+
+                                                '<div class="col-lg-6">'+
+                                                  '<p style="margin-bottom:0px; color:#717171;">'+
+                                                    data['response']['companies'][i]['name']+
+                                                  '</p>'+
+                                                '</div>'+
+                                                '<div class="col-lg-4">'+
+                                                  '<h3 style="color:#7B4D9A;text-align:right;padding:0px;margin-bottom:0px; margin-right:0px;">'+
+                                                    data['response']['companies'][i]['expected_hires']+' jobs'+
+                                                  '</h3>'+
+                                                '</div>'+
+                                              '</div>'+
+                                            '</div>'+
+                                          '</div>'+
+                                        '</div>');
+            }
           }
         },
       dataType: 'json',
@@ -50,9 +75,14 @@
 
 {% block content %}
 
-<div class="row" id="companies_list">
+<h3>Favorites</h3>
+<div class="row" id="favorites_list">
 
 </div>
 
+<h3>Companies</h3>
+<div class="row" id="companies_list">
+
+</div>
 
 {% endblock %}
