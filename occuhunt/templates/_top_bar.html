@@ -23,7 +23,9 @@
         {% if user.is_authenticated %}
 <!--         <li><a class='btn btn-primary' style="color:white;height:50px;"><span class="glyphicon glyphicon-send"></span>&nbsp;&nbsp;Upload Resume</a></li> -->
         <li class="dropdown" style="font-weight:500">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="padding-top:10px; padding-bottom:10px;">{{user.first_name}}<img src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-ash3/c46.46.579.579/s160x160/1001605_10151715057849110_1659770280_n.jpg" style="height:30px;padding-left:10px"><b class="caret"></b></a>
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{user.first_name}}
+<!--             <img src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-ash3/c46.46.579.579/s160x160/1001605_10151715057849110_1659770280_n.jpg" style="height:30px;padding-left:10px"> -->
+            <b class="caret"></b></a>
           <ul class="dropdown-menu">
             <!-- <li><a href="#">Settings</a></li> -->
             <!-- <li><a href="#">Favorite Jobs</a></li> -->
@@ -32,7 +34,7 @@
           </ul>
         </li>
         {% else %}
-        <li><a href="/login/linkedin/">LOGIN</a></li>
+        <li><a href="/login/linkedin/"><img src="{% static 'images/login-with-linkedin.png' %}"></a></li>
         {% endif %}
       </ul>
     </div><!--/.nav-collapse -->

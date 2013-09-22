@@ -50,7 +50,9 @@
     <div class="col-lg-12">
       <div class="btn-group-vertical" data-toggle="buttons">
         <br />
+        {% if user.is_authenticated %}
         <button type="button" class="btn btn-categorydisabled btn-sm" onclick="toggleTable('.favorited-company');"><img src="/static/images/axe.png" style="height:20px; float:left; position:relative; margin-left:-10px;">&nbsp;Favs</button>
+        {% endif %}
         <button type="button" class="btn btn-engineering btn-sm" onclick="toggleTable('.btn-engineering');">Engineering</button>
         <button type="button" class="btn btn-finance btn-sm" onclick="toggleTable('.btn-finance');">Finance</button>
         <button type="button" class="btn btn-government btn-sm" onclick="toggleTable('.btn-government');">Government</button>
@@ -526,13 +528,24 @@
                 Engineers familiar with the full-stack framework.
               </p>
               <br />
+              <input type="hidden" value="0" name="company_id" id="company_id">
+              {% if user.is_authenticated %}
               <p style="text-align:center;">
                 <button id="recruiter_popover" type="button" class="btn btn-primary" data-container="body" data-toggle="popover" data-placement="right" data-content="LinkedIn:linkedin.com/sanchit Email:recruiter@twitter.com" data-original-title="" title="Sanchit Bareja">
                   Contact Recruiter
                 </button>
-                <input type="hidden" value="0" name="company_id" id="company_id">
+                
                 <button class="btn btn-primary" onclick="favoriteCompany()" id="favorite_company_btn"><span class="glyphicon glyphicon-plus"></span>&nbsp;Favorite</button>
               </p>
+              {% else %}
+              <h4>Login for:</h4>
+              <p style="text-align:center;">
+                <button type="button" class="btn btn-primary" disabled="disabled">
+                  Contact Recruiter
+                </button>
+                <button class="btn btn-primary" disabled="disabled"><span class="glyphicon glyphicon-plus"></span>&nbsp;Favorite</button>
+              </p>
+              {% endif %}
             </div>
           </div>
         </div>

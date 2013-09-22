@@ -128,7 +128,11 @@ function getCompany(id){
         $("#company_name").text(data['name']);
         $("#company_description").text(data['company_description']);
         $("#company_looking_for").text(data['position_types']);
-        $("#company_number_of_expected_hires").text(data['expected_hires']);
+        if(data['expected_hires']){
+          $("#company_number_of_expected_hires").text(data['expected_hires']);
+        } else {
+          $("#company_number_of_expected_hires").text(">0");
+        }
         $("#company_id").val(id);
         // need to check if need to display favorite or unfavorite icon
         if(data['favorites'].indexOf(parseInt(user_id)) >= 0){
