@@ -8,7 +8,6 @@ class CompanyType(models.Model):
 	def __unicode__(self):
 		return self.type
 
-
 class Company(models.Model):
 	name = models.CharField(max_length=512)
 	founded = models.CharField(max_length=64, null=True, blank=True)
