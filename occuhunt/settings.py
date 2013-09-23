@@ -9,6 +9,8 @@ ADMINS = (
     ('Sanchit Bareja', 'sanchitbareja@gmail.com'), ('Sidwyn Koh', 'sidwyn@gmail.com'), ('Occuhunt Founders', 'occuhunt@gmail.com'),
 )
 
+EMAIL_MASTERS = [email[1] for email in ADMINS]
+
 MANAGERS = ADMINS
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False

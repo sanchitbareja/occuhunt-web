@@ -35,7 +35,7 @@
 {% block content %}
 
   <!-- Filters -->
-  <div class="row pull-left" style="margin-left:-120px; position:relative;" id="filter_bar">
+  <div class="row pull-left visible-lg" style="margin-left:-120px; position:relative;" id="filter_bar">
     <div class="col-lg-12" style="text-align:center;">
       <div style="line-height:32px; position:relative;">
         <p style="font-weight:600; text-align:center; margin-top: 0.8em; margin-bottom: 0em; font-size:20pt; display:inline; position:relative;" id="hunting_number">...</p>
@@ -64,7 +64,7 @@
   </div>
   <!-- Main content -->
   <div class="row">
-    <div class="col-lg-8">
+    <div class="col-lg-8 col-md-12 col-sm-12 col-xs-12">
       <style type="text/css">
         .fair-table {
           height:50px;
@@ -80,19 +80,23 @@
           height: 50px;
         }
       </style>
-      <div class="jumbotron" style="padding-top:19px;">
+      <div class="jumbotron" style="padding-top:19px; width:760px;">
         <!-- Information about the career fair -->
-        <div class="row" style="margin-bottom:19px;">
+        <div class="row visible-lg" style="height:2em;">
           <div class="col-lg-4" style="padding-left:0px;">
-            <h4 align="left">Cal Career Fair</h4>
+            <h4 align="left">EECS Career Fair</h4>
           </div>
           <div class="col-lg-4">
-            <h4>September 17-19</h4>
+            <h4>September 25</h4>
           </div>
           <div class="col-lg-4" style="padding-right:0px;">
-            <h4 style="text-align:right">Pauley Ballroom, MLK</h4>
+            <h4 style="text-align:right">RSF - Field House Gym</h4>
           </div>
         </div>
+        <div class="row hidden-lg" style="height:2em;">
+            <h4 align="left">EECS Career Fair, September 25, RSF - Field House Gym</h4>
+        </div>
+        
         <div class="row">
           <table>
             <tr>
@@ -503,13 +507,13 @@
             <div class="col-lg-2">
               <img src="{% static "images/accenture-logo.jpg" %}" style="height:50px;">
             </div>
-            <div class="col-lg-5">
+            <div class="col-lg-6">
               <h3 style="margin-top:11.5px;margin-bottom:0px;" id="company_name">
                 Accenture
               </h3>
             </div>
             <div class="col-lg-4">
-              <h4 style="color:#7B4D9A;text-align:right;padding:0px;margin-top:15px;margin-bottom:0px; margin-right:-30px;">
+              <h4 style="color:#7B4D9A;text-align:right;padding:0px;margin-top:15px;margin-bottom:0px;">
                 <span id="company_number_of_expected_hires">10</span> Jobs
               </h4>
             </div>

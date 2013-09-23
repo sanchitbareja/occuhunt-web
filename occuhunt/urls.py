@@ -10,7 +10,7 @@ admin.autodiscover()
 # API
 from tastypie.api import Api
 from api.api import CompanyResource, FavoriteResource, HuntingResource ,UserResource
-from api.views import logout_view, login_error
+from api.views import logout_view, login_error, feedback_form
 
 v1_api = Api(api_name='v1')
 v1_api.register(CompanyResource())
@@ -19,9 +19,9 @@ v1_api.register(UserResource())
 v1_api.register(HuntingResource())
 
 urlpatterns = patterns('',
-    # Examples:
     url(r'^$', home, name='home'),
     url(r'^companies/$', companies, name='companies'),
+    url(r'^feedback/$',feedback_form),
     url(r'^logout/$', logout_view, name='logout'),
     url(r'^login-error/$', login_error, name='login-error'),
 

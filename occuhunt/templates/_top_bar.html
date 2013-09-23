@@ -2,15 +2,26 @@
 {% load i18n %}
 {% load url from future %}
 
-<div class="navbar navbar-default navbar-fixed-top">
+{% csrf_token %}
+
+
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <img src="{% static "images/beta.png" %}" style="clear:none;position:absolute:top:0px;left:0px;height:50px;float:left;" />
-  <div class="container">
+  <div class="container">    
     <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse" style="background-color:black;border-color:black;">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
       <a class="navbar-brand" href="#"><img src="{% static "images/logo/Occuhunt-Logo-small.png" %}" style="height:18px;"></a>
     </div>
-    <div class="collapse navbar-collapse">
+    <div class="collapse navbar-collapse navbar-ex1-collapse">
       <ul class="nav navbar-nav" style="font-weight:500">
         <li><a href="/">Home</a></li>
+        <li><a data-toggle="modal" href="#feedbackModal">Feedback</a></li>
+
         <!-- <li><a href="/companies/">Companies</a></li> -->
       </ul>
 <!--       <form class="navbar-form navbar-left" role="search">
@@ -40,3 +51,105 @@
     </div><!--/.nav-collapse -->
   </div>
 </div>
+
+<style type="text/css">
+
+/* -----------------------------------------
+   Spinner
+----------------------------------------- */
+    
+div.spinner {
+  position: relative;
+  width: 54px;
+  height: 54px;
+  display: inline-block;
+}
+
+div.spinner div {
+  width: 12%;
+  height: 26%;
+  background: #000;
+  position: absolute;
+  left: 44.5%;
+  top: 37%;
+  opacity: 0;
+  -webkit-animation: fade 1s linear infinite;
+  -webkit-border-radius: 50px;
+  -webkit-box-shadow: 0 0 3px rgba(0,0,0,0.2);
+}
+
+div.spinner div.bar1 {-webkit-transform:rotate(0deg) translate(0, -142%); -webkit-animation-delay: 0s;}    
+div.spinner div.bar2 {-webkit-transform:rotate(30deg) translate(0, -142%); -webkit-animation-delay: -0.9167s;}
+div.spinner div.bar3 {-webkit-transform:rotate(60deg) translate(0, -142%); -webkit-animation-delay: -0.833s;}
+div.spinner div.bar4 {-webkit-transform:rotate(90deg) translate(0, -142%); -webkit-animation-delay: -0.75s;}
+div.spinner div.bar5 {-webkit-transform:rotate(120deg) translate(0, -142%); -webkit-animation-delay: -0.667s;}
+div.spinner div.bar6 {-webkit-transform:rotate(150deg) translate(0, -142%); -webkit-animation-delay: -0.5833s;}
+div.spinner div.bar7 {-webkit-transform:rotate(180deg) translate(0, -142%); -webkit-animation-delay: -0.5s;}
+div.spinner div.bar8 {-webkit-transform:rotate(210deg) translate(0, -142%); -webkit-animation-delay: -0.41667s;}
+div.spinner div.bar9 {-webkit-transform:rotate(240deg) translate(0, -142%); -webkit-animation-delay: -0.333s;}
+div.spinner div.bar10 {-webkit-transform:rotate(270deg) translate(0, -142%); -webkit-animation-delay: -0.25s;}
+div.spinner div.bar11 {-webkit-transform:rotate(300deg) translate(0, -142%); -webkit-animation-delay: -0.1667s;}
+div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -webkit-animation-delay: -0.0833s;}
+
+ @-webkit-keyframes fade {
+  from {opacity: 1;}
+  to {opacity: 0.25;}
+}
+
+
+</style>
+
+<!-- Modal -->
+<div class="modal fade" id="feedbackModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Feedback</h4>
+      </div>
+      <div class="modal-body">
+        <div id="feedbackForm">
+          <div class="row">
+            <div class="col-lg-12">
+              <textarea class="form-control" rows="5" id="feedbackFormText">This site is awesome! However, I really wished there was a way for me to find out where the free food was!</textarea>
+            </div>
+          </div>
+          <br />
+          <div class="row">
+            <div class="form-group">
+              <label for="feedbackReplyTo" class="col-lg-3 control-label">Email (Optional)</label>
+              <div class="col-lg-9">
+                <input type="email" class="form-control" id="feedbackReplyTo" placeholder="Email">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="feedbackFormSubmit">Send feedback!</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+<script type="text/javascript">
+  $("#feedbackFormSubmit").click(function(){
+    $("#feedbackForm").before('<div id="spinnerWait" style="text-align:center;"><div class="spinner"><div class="bar1"></div><div class="bar2"></div><div class="bar3"></div><div class="bar4"></div><div class="bar5"></div><div class="bar6"></div><div class="bar7"></div><div class="bar8"></div><div class="bar9"></div><div class="bar10"></div><div class="bar11"></div><div class="bar12"></div></div><p>Sending your feedback...</p></div>');
+    $.ajax({
+      type: "POST",
+      url: "/feedback/",
+      data: { feedback: $("#feedbackFormText").val(), replyToEmail:$("#feedbackReplyTo").val(), csrfmiddlewaretoken: $('input[name="csrfmiddlewaretoken"]').val() }
+    }).done(function( returnData ) {
+      if(returnData['success']){
+        $("#feedbackForm").empty();
+        $("#feedbackFormSubmit").remove()
+        $("#spinnerWait").replaceWith("<p>Thanks for your feedback! Your feedback has reached us :)</p>");
+      } else {
+        $("#spinnerWait").remove();
+        $("#feedbackForm").replaceWith("<p>Oops! Something broke. Please try again in a while :( </p>");
+      }
+    });
+  });
+</script>
