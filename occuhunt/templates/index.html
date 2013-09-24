@@ -281,7 +281,9 @@
               {% if user.is_authenticated %}
                 <button class="btn btn-primary" onclick="favoriteCompany()" id="favorite_company_btn"><span class="glyphicon glyphicon-plus"></span>&nbsp;Favorite</button>
               {% else %}
-                <button class="btn btn-primary" disabled="disabled"><span class="glyphicon glyphicon-plus"></span>&nbsp;Fav (login required)</button>
+                <button id="favorite_popover" type="button" class="btn btn-primary" data-container="body" data-toggle="popover" data-placement="right" data-content="Login to favorite" data-original-title="fav" title="Favorite">
+                  Favorite
+                </button>
               {% endif %}
             </div>
           </div>
@@ -310,10 +312,9 @@
                 
               </p>
               {% else %}
-              <h4>Login for:</h4>
               <p style="text-align:center;">
-                <button type="button" class="btn btn-primary" disabled="disabled">
-                  Contact Recruiter (Login required)
+                <button id="recruiter_popover" type="button" class="btn btn-primary" data-container="body" data-toggle="popover" data-placement="right" data-content="Login to view" data-original-title="rec" title="Recruiter">
+                  Contact Recruiter
                 </button>
               </p>
               {% endif %}
