@@ -295,10 +295,6 @@
                 <div class="col-lg-7"><p id="company_website"><a href='http://www.accenture.com/us-en/pages/index.aspx' target='_blank'>Accenture</a></p></div>
               </div>
               <div class="row">
-                <div class="col-lg-5"><b>Careers Website:</b></div>
-                <div class="col-lg-7"><p id="company_careers_website"><a href='http://careers.accenture.com/us-en/your-future/Pages/index.aspx' target='_blank'>Careers @ Accenture</a></p></div>
-              </div>
-              <div class="row">
                 <div class="col-lg-5"><b>Company Size:</b></div>
                 <div class="col-lg-7"><p id="company_size">234500<p></div>
               </div>
@@ -313,16 +309,15 @@
               <br />
               <input type="hidden" value="207" name="company_id" id="company_id">
               {% if user.is_authenticated %}
-              <p style="text-align:center;">
-                <button id="recruiter_popover" type="button" class="btn btn-primary" data-container="body" data-toggle="popover" data-placement="right" data-content="Will be available asap!" data-original-title="" title="Recruiter">
-                  Contact Recruiter
-                </button>
-                
+              <p style="text-align:center;" id="company_careers_website">
+                <a href="http://careers.accenture.com/us-en/your-future/Pages/index.aspx" class="btn btn-primary" target="_blank">
+                  Visit Careers Site
+                </a>
               </p>
               {% else %}
               <p style="text-align:center;">
-                <button id="recruiter_popover" type="button" class="btn btn-primary" data-container="body" data-toggle="popover" data-placement="right" data-content="Login to view" data-original-title="rec" title="Recruiter">
-                  Contact Recruiter
+                <button id="recruiter_popover" type="button" class="btn btn-primary" data-container="body" data-toggle="popover" data-placement="right" data-content="Login to view" data-original-title="rec" title="Careers">
+                  Visit Careers Site
                 </button>
               </p>
               {% endif %}

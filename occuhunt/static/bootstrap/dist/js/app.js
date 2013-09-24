@@ -149,7 +149,7 @@ function getCompany(id){
         $("#company_size").text(data['number_employees']);
         $("#company_founded").text(data['founded']);
         $("#company_website").html("<a href='"+data['website']+"' target='_blank'>"+data['name']+"</a>");
-        $("#company_careers_website").html("<a href='"+data['careers_website']+"' target='_blank'>Careers @ "+data['name']+"</a>");
+        $("#company_careers_website").html("<a class='btn btn-primary' href='"+data['careers_website']+"' target='_blank'>Visit Careers Site</a>");
         $("#company_id").val(id);
         // need to check if need to display favorite or unfavorite icon
         if(data['favorites'].indexOf(parseInt(user_id)) >= 0){
