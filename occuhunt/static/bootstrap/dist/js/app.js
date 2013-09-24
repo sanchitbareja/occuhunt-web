@@ -15,7 +15,7 @@ function favoriteCompany(){
     statusCode : {
       201: function(data, textStatus, jsXHR){
         console.log("Successfully favorited company!");
-        $("#favorite_company_btn").html('<span class="glyphicon glyphicon-minus"></span>&nbsp;Unfavorite');
+        $("#favorite_company_btn").html('<span class="glyphicon glyphicon-minus"></span>&nbsp;Unfav');
         $("#favorite_company_btn").attr('onclick', 'unfavoriteCompany();');
       }
     }
@@ -62,7 +62,7 @@ function favoriteCompanyWithId(company_id,element){
     statusCode : {
       201: function(data, textStatus, jsXHR){
         console.log("Successfully favorited company!");
-        $(element).html('<span class="glyphicon glyphicon-minus"></span>&nbsp;Unfavorite');
+        $(element).html('<span class="glyphicon glyphicon-minus"></span>&nbsp;Unfav');
         $(element).attr('onclick', 'unfavoriteCompanyWithId('+company_id+',this);');
       }
     }
@@ -134,7 +134,7 @@ function getCompany(id){
         $("#company_id").val(id);
         // need to check if need to display favorite or unfavorite icon
         if(data['favorites'].indexOf(parseInt(user_id)) >= 0){
-          $("#favorite_company_btn").html('<span class="glyphicon glyphicon-minus"></span>&nbsp;Unfavorite');
+          $("#favorite_company_btn").html('<span class="glyphicon glyphicon-minus"></span>&nbsp;Unfav');
           $("#favorite_company_btn").attr('onclick', 'unfavoriteCompany();');
         } else {
           $("#favorite_company_btn").html('<span class="glyphicon glyphicon-plus"></span>&nbsp;Favorite');
@@ -215,7 +215,7 @@ function toggleTable(cssID){
   if(cssID == '.favorited-company'){
     console.log($(cssID).css('background-image'));
     if($(cssID).css('background-image') == "none"){
-      $(cssID).css('background-image', "url('/static/images/axe.png')");
+      $(cssID).css('background-image', "url('/static/images/target.png')");
     } else {
       $(cssID).css('background-image','none');
     }

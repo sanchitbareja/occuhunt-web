@@ -8,9 +8,9 @@
 <style type="text/css">
 
 .favorited-company {
-  background-image: url('/static/images/axe.png');
+  background-image: url('/static/images/target.png');
   background-repeat: no-repeat;
-  background-size: 30px;
+  background-size: 20px;
 }
 
 </style>
@@ -51,7 +51,7 @@
       <div class="btn-group-vertical" data-toggle="buttons">
         <br />
         {% if user.is_authenticated %}
-        <button type="button" class="btn btn-categorydisabled btn-sm" onclick="toggleTable('.favorited-company');"><img src="/static/images/axe.png" style="height:20px; float:left; position:relative; margin-left:-10px;">&nbsp;Favs</button>
+        <button type="button" class="btn btn-categorydisabled btn-sm" onclick="toggleTable('.favorited-company');"><img src="/static/images/target.png" style="height:20px; float:left; position:relative; margin-left:-10px;">&nbsp;Favs</button>
         {% endif %}
         <button type="button" class="btn btn-engineering btn-sm" onclick="toggleTable('.btn-engineering');">Engineering</button>
         <button type="button" class="btn btn-finance btn-sm" onclick="toggleTable('.btn-finance');">Finance</button>
@@ -102,163 +102,163 @@
             <tr>
               <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(207)' value='company_207'>Accenture</button></td>
               <td id="career_fair_map"></td>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(208)' value='company_208'>Adap.tv</button></td>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(209)' value='company_209'>Adobe</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-technology fair-table' onclick='getCompany(208)' value='company_208'>Adap.tv</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-technology fair-table' onclick='getCompany(209)' value='company_209'>Adobe</button></td>
               <td id="career_fair_map"></td>
               <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(210)' value='company_210'>Airbnb</button></td>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(211)' value='company_211'>Akamai Technologies</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-technology fair-table' onclick='getCompany(211)' value='company_211'>Akamai Technologies</button></td>
               <td id="career_fair_map"></td>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(212)' value='company_212'>Amazon</button></td>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(213)' value='company_213'>AppDynamics</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-technology fair-table' onclick='getCompany(212)' value='company_212'>Amazon</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-technology fair-table' onclick='getCompany(213)' value='company_213'>AppDynamics</button></td>
               <td id="career_fair_map"></td>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(214)' value='company_214'>Apple</button></td>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(215)' value='company_215'>Arista Networks</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-engineering fair-table' onclick='getCompany(214)' value='company_214'>Apple</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-engineering fair-table' onclick='getCompany(215)' value='company_215'>Arista Networks</button></td>
               <td id="career_fair_map"></td>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(216)' value='company_216'>Arm, Inc</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-engineering fair-table' onclick='getCompany(216)' value='company_216'>Arm, Inc</button></td>
             </tr><tr>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(217)' value='company_217'>Asana</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-technology fair-table' onclick='getCompany(217)' value='company_217'>Asana</button></td>
               <td id="career_fair_map"></td>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(218)' value='company_218'>Aspera Inc.</button></td>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(219)' value='company_219'>AT&T</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-engineering fair-table' onclick='getCompany(218)' value='company_218'>Aspera Inc.</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-engineering fair-table' onclick='getCompany(219)' value='company_219'>AT&T</button></td>
               <td id="career_fair_map"></td>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(220)' value='company_220'>athenahealth Inc.</button></td>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(221)' value='company_221'>Bechtel Corporation</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-health fair-table' onclick='getCompany(220)' value='company_220'>athenahealth Inc.</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-engineering fair-table' onclick='getCompany(221)' value='company_221'>Bechtel Corporation</button></td>
               <td id="career_fair_map"></td>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(222)' value='company_222'>Box</button></td>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(223)' value='company_223'>Zynga</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-technology fair-table' onclick='getCompany(222)' value='company_222'>Box</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-technology fair-table' onclick='getCompany(223)' value='company_223'>Zynga</button></td>
               <td id="career_fair_map"></td>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(224)' value='company_224'>Zazzle</button></td>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(225)' value='company_225'>Yelp</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-engineering fair-table' onclick='getCompany(224)' value='company_224'>Zazzle</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-technology fair-table' onclick='getCompany(225)' value='company_225'>Yelp</button></td>
               <td id="career_fair_map"></td>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(226)' value='company_226'>Yahoo!</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-technology fair-table' onclick='getCompany(226)' value='company_226'>Yahoo!</button></td>
             </tr><tr>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(227)' value='company_227'>Workday</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-technology fair-table' onclick='getCompany(227)' value='company_227'>Workday</button></td>
               <td id="career_fair_map"></td>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(228)' value='company_228'>VMware</button></td>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(229)' value='company_229'>Venmo</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-engineering fair-table' onclick='getCompany(228)' value='company_228'>VMware</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-technology fair-table' onclick='getCompany(229)' value='company_229'>Venmo</button></td>
               <td id="career_fair_map"></td>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(230)' value='company_230'>Two Sigma Investments</button></td>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(231)' value='company_231'>Twitter</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-finance fair-table' onclick='getCompany(230)' value='company_230'>Two Sigma Investments</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-technology fair-table' onclick='getCompany(231)' value='company_231'>Twitter</button></td>
               <td id="career_fair_map"></td>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(232)' value='company_232'>Twilio</button></td>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(233)' value='company_233'>The Aerospace Corporation</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-technology fair-table' onclick='getCompany(232)' value='company_232'>Twilio</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-engineering fair-table' onclick='getCompany(233)' value='company_233'>The Aerospace Corporation</button></td>
               <td id="career_fair_map"></td>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(234)' value='company_234'>Texas Instruments</button></td>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(235)' value='company_235'>Switchfly</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-engineering fair-table' onclick='getCompany(234)' value='company_234'>Texas Instruments</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-technology fair-table' onclick='getCompany(235)' value='company_235'>Switchfly</button></td>
               <td id="career_fair_map"></td>
               <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(236)' value='company_236'>Stottler Henke Artifiical Intelligence</button></td>
             </tr><tr>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(237)' value='company_237'>Storm8</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-technology fair-table' onclick='getCompany(237)' value='company_237'>Storm8</button></td>
               <td id="career_fair_map"></td>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(238)' value='company_238'>Square</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-technology fair-table' onclick='getCompany(238)' value='company_238'>Square</button></td>
               <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(239)' value='company_239'>SK Hynix Memory Solutions Inc.</button></td>
               <td id="career_fair_map"></td>
               <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(240)' value='company_240'>Shoretel</button></td>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(241)' value='company_241'>Sandisk</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-engineering fair-table' onclick='getCompany(241)' value='company_241'>Sandisk</button></td>
               <td id="career_fair_map"></td>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(242)' value='company_242'>Sandia National Laboratories</button></td>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(243)' value='company_243'>Samsung Mobile STA</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-engineering fair-table' onclick='getCompany(242)' value='company_242'>Sandia National Laboratories</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-engineering fair-table' onclick='getCompany(243)' value='company_243'>Samsung Mobile STA</button></td>
               <td id="career_fair_map"></td>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(244)' value='company_244'>Broadcom</button></td>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(273)' value='company_273'>IXL Learning</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-engineering fair-table' onclick='getCompany(244)' value='company_244'>Broadcom</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-technology fair-table' onclick='getCompany(273)' value='company_273'>IXL Learning</button></td>
               <td id="career_fair_map"></td>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(245)' value='company_245'>Chevron Corporation (Information Technology)</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-engineering fair-table' onclick='getCompany(245)' value='company_245'>Chevron Corporation (Information Technology)</button></td>
             </tr><tr>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(246)' value='company_246'>Cisco SF - Meraki</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-engineering fair-table' onclick='getCompany(246)' value='company_246'>Cisco SF - Meraki</button></td>
               <td id="career_fair_map"></td>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(247)' value='company_247'>Cisco Systems, Inc.</button></td>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(250)' value='company_250'>Crunchyroll, Inc.</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-technology fair-table' onclick='getCompany(247)' value='company_247'>Cisco Systems, Inc.</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-technology fair-table' onclick='getCompany(250)' value='company_250'>Crunchyroll, Inc.</button></td>
               <td id="career_fair_map"></td>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(248)' value='company_248'>Comcast</button></td>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(249)' value='company_249'>Counsyl</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-engineering fair-table' onclick='getCompany(248)' value='company_248'>Comcast</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-engineering fair-table' onclick='getCompany(249)' value='company_249'>Counsyl</button></td>
               <td id="career_fair_map"></td>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(251)' value='company_251'>DataStax, Inc.</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-technology fair-table' onclick='getCompany(251)' value='company_251'>DataStax, Inc.</button></td>
               <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(252)' value='company_252'>Deloitte LLP</button></td>
               <td id="career_fair_map"></td>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(253)' value='company_253'>Dropbox</button></td>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(254)' value='company_254'>EMC</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-technology fair-table' onclick='getCompany(253)' value='company_253'>Dropbox</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-engineering fair-table' onclick='getCompany(254)' value='company_254'>EMC</button></td>
               <td id="career_fair_map"></td>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(255)' value='company_255'>F5 Networks, Inc.</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-technology fair-table' onclick='getCompany(255)' value='company_255'>F5 Networks, Inc.</button></td>
             </tr><tr>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(256)' value='company_256'>Facebook</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-technology fair-table' onclick='getCompany(256)' value='company_256'>Facebook</button></td>
               <td id="career_fair_map"></td>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(257)' value='company_257'>FactSet Research Systems Inc.</button></td>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(258)' value='company_258'>Fairchild Semiconductor</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-engineering fair-table' onclick='getCompany(257)' value='company_257'>FactSet Research Systems Inc.</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-engineering fair-table' onclick='getCompany(258)' value='company_258'>Fairchild Semiconductor</button></td>
               <td id="career_fair_map"></td>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(259)' value='company_259'>FiveStars Loyalty</button></td>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(260)' value='company_260'>Foxconn</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-technology fair-table' onclick='getCompany(259)' value='company_259'>FiveStars Loyalty</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-engineering fair-table' onclick='getCompany(260)' value='company_260'>Foxconn</button></td>
               <td id="career_fair_map"></td>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(281)' value='company_281'>Microsoft</button></td>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(261)' value='company_261'>General Electric</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-technology fair-table' onclick='getCompany(281)' value='company_281'>Microsoft</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-engineering fair-table' onclick='getCompany(261)' value='company_261'>General Electric</button></td>
               <td id="career_fair_map"></td>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(262)' value='company_262'>General Motors</button></td>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(263)' value='company_263'>GoDaddy</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-engineering fair-table' onclick='getCompany(262)' value='company_262'>General Motors</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-technology fair-table' onclick='getCompany(263)' value='company_263'>GoDaddy</button></td>
               <td id="career_fair_map"></td>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(264)' value='company_264'>Goodreads</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-technology fair-table' onclick='getCompany(264)' value='company_264'>Goodreads</button></td>
             </tr><tr>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(265)' value='company_265'>Google</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-technology fair-table' onclick='getCompany(265)' value='company_265'>Google</button></td>
               <td id="career_fair_map"></td>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(266)' value='company_266'>Gree International</button></td>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(267)' value='company_267'>Groupon</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-technology fair-table' onclick='getCompany(266)' value='company_266'>Gree International</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-technology fair-table' onclick='getCompany(267)' value='company_267'>Groupon</button></td>
               <td id="career_fair_map"></td>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(268)' value='company_268'>Hewlett-Packard</button></td>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(269)' value='company_269'>IBM</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-engineering fair-table' onclick='getCompany(268)' value='company_268'>Hewlett-Packard</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-engineering fair-table' onclick='getCompany(269)' value='company_269'>IBM</button></td>
               <td id="career_fair_map"></td>
               <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(270)' value='company_270'>Indiegogo Inc</button></td>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(271)' value='company_271'>Intel Corporation</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-engineering fair-table' onclick='getCompany(271)' value='company_271'>Intel Corporation</button></td>
               <td id="career_fair_map"></td>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(272)' value='company_272'>Intuit Inc</button></td>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(283)' value='company_283'>Motorola</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-technology fair-table' onclick='getCompany(272)' value='company_272'>Intuit Inc</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-engineering fair-table' onclick='getCompany(283)' value='company_283'>Motorola</button></td>
               <td id="career_fair_map"></td>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(274)' value='company_274'>Juniper Networks</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-engineering fair-table' onclick='getCompany(274)' value='company_274'>Juniper Networks</button></td>
             </tr><tr>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(275)' value='company_275'>Kabam</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-technology fair-table' onclick='getCompany(275)' value='company_275'>Kabam</button></td>
               <td id="career_fair_map"></td>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(276)' value='company_276'>KLA-Tencor Corporation</button></td>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(277)' value='company_277'>Lab126</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-technology fair-table' onclick='getCompany(276)' value='company_276'>KLA-Tencor Corporation</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-engineering fair-table' onclick='getCompany(277)' value='company_277'>Lab126</button></td>
               <td id="career_fair_map"></td>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(278)' value='company_278'>LinkedIn</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-technology fair-table' onclick='getCompany(278)' value='company_278'>LinkedIn</button></td>
               <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(279)' value='company_279'>Macy's</button></td>
               <td id="career_fair_map"></td>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(280)' value='company_280'>Maxim Integrated</button></td>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(282)' value='company_282'>MoPub</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-engineering fair-table' onclick='getCompany(280)' value='company_280'>Maxim Integrated</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-technology fair-table' onclick='getCompany(282)' value='company_282'>MoPub</button></td>
               <td id="career_fair_map"></td>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(284)' value='company_284'>Mozilla</button></td>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(285)' value='company_285'>National Instruments</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-technology fair-table' onclick='getCompany(284)' value='company_284'>Mozilla</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-engineering fair-table' onclick='getCompany(285)' value='company_285'>National Instruments</button></td>
               <td id="career_fair_map"></td>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(286)' value='company_286'>NetApp, Inc</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-engineering fair-table' onclick='getCompany(286)' value='company_286'>NetApp, Inc</button></td>
             </tr><tr>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(287)' value='company_287'>Nvidia</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-engineering fair-table' onclick='getCompany(287)' value='company_287'>Nvidia</button></td>
               <td id="career_fair_map"></td>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(288)' value='company_288'>Oracle</button></td>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(289)' value='company_289'>Palantir Technologies</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-engineering fair-table' onclick='getCompany(288)' value='company_288'>Oracle</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-government fair-table' onclick='getCompany(289)' value='company_289'>Palantir Technologies</button></td>
               <td id="career_fair_map"></td>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(290)' value='company_290'>Pandora</button></td>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(291)' value='company_291'>Path</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-technology fair-table' onclick='getCompany(290)' value='company_290'>Pandora</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-technology fair-table' onclick='getCompany(291)' value='company_291'>Path</button></td>
               <td id="career_fair_map"></td>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(292)' value='company_292'>Pinterest</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-technology fair-table' onclick='getCompany(292)' value='company_292'>Pinterest</button></td>
               <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(293)' value='company_293'>Pivotal Labs</button></td>
               <td id="career_fair_map"></td>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(294)' value='company_294'>Pixar Animation Studios</button></td>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(295)' value='company_295'>Pocket Gems</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-technology fair-table' onclick='getCompany(294)' value='company_294'>Pixar Animation Studios</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-technology fair-table' onclick='getCompany(295)' value='company_295'>Pocket Gems</button></td>
               <td id="career_fair_map"></td>
               <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(296)' value='company_296'>PriceWaterhouseCoopers LLP</button></td>
             </tr><tr>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(297)' value='company_297'>Quizlet.com</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-technology fair-table' onclick='getCompany(297)' value='company_297'>Quizlet.com</button></td>
               <td id="career_fair_map"></td>
               <td id="career_fair_map"></td>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(298)' value='company_298'>Rackspace</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-engineering fair-table' onclick='getCompany(298)' value='company_298'>Rackspace</button></td>
               <td id="career_fair_map"></td>
               <td id="career_fair_map"></td>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(299)' value='company_299'>Redfin</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-technology fair-table' onclick='getCompany(299)' value='company_299'>Redfin</button></td>
               <td id="career_fair_map"></td>
               <td id="career_fair_map"></td>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(300)' value='company_300'>Riverbed Technology</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-engineering fair-table' onclick='getCompany(300)' value='company_300'>Riverbed Technology</button></td>
               <td id="career_fair_map"></td>
               <td id="career_fair_map"></td>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(301)' value='company_301'>Rocket Fuel</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-technology fair-table' onclick='getCompany(301)' value='company_301'>Rocket Fuel</button></td>
               <td id="career_fair_map"></td>
-              <td id='career_fair_map'><button type='button' class='btn btn-other fair-table' onclick='getCompany(302)' value='company_302'>Salesforce</button></td>
+              <td id='career_fair_map'><button type='button' class='btn btn-technology fair-table' onclick='getCompany(302)' value='company_302'>Salesforce</button></td>
             </tr>
           </table>
         </div>
@@ -278,7 +278,11 @@
               </h3>
             </div>
             <div class="col-lg-4 pull-right">
-              <button class="btn btn-primary" onclick="favoriteCompany()" id="favorite_company_btn"><span class="glyphicon glyphicon-plus"></span>&nbsp;Favorite</button>
+              {% if user.is_authenticated %}
+                <button class="btn btn-primary" onclick="favoriteCompany()" id="favorite_company_btn"><span class="glyphicon glyphicon-plus"></span>&nbsp;Favorite</button>
+              {% else %}
+                <button class="btn btn-primary" disabled="disabled"><span class="glyphicon glyphicon-plus"></span>&nbsp;Favorite</button>
+              {% endif %}
             </div>
           </div>
           <hr style="margin-top:20px;margin-bottom:10px" />
@@ -311,7 +315,6 @@
                 <button type="button" class="btn btn-primary" disabled="disabled">
                   Contact Recruiter
                 </button>
-                <button class="btn btn-primary" disabled="disabled"><span class="glyphicon glyphicon-plus"></span>&nbsp;Favorite</button>
               </p>
               {% endif %}
             </div>
