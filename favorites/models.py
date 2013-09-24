@@ -8,4 +8,4 @@ class Favorite(models.Model):
 	company = models.ForeignKey(Company, blank = True, null = True)
 
 	def __unicode__(self):
-		return self.user.first_name+':'+self.company.name
+		return unicode("Fav")

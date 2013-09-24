@@ -18,6 +18,11 @@ function favoriteCompany(){
         $("#favorite_company_btn").html('<span class="glyphicon glyphicon-minus"></span>&nbsp;Unfav');
         $("#favorite_company_btn").attr('onclick', 'unfavoriteCompany();');
         $("button[value=company_"+company_id+"]").addClass("favorited-company");
+      },
+      500: function(data, textStatus, jsXHR){
+        console.log(data);
+        console.log(textStatus);
+        console.log(jsXHR);
       }
     }
   });
@@ -42,6 +47,17 @@ function unfavoriteCompany(){
         console.log("Successfully favorited company!");
         $("#favorite_company_btn").html('<span class="glyphicon glyphicon-plus"></span>&nbsp;Favorite');
         $("#favorite_company_btn").attr('onclick', 'favoriteCompany();');
+        $("button[value=company_"+company_id+"]").removeClass("favorited-company");
+      }, 
+      500: function(data, textStatus, jsXHR){
+        console.log(data);
+        console.log(textStatus);
+        console.log(jsXHR);
+      },
+      400: function(data, textStatus, jsXHR){
+        console.log(data);
+        console.log(textStatus);
+        console.log(jsXHR);
       }
     }
   });
@@ -132,6 +148,8 @@ function getCompany(id){
         $("#company_logo").attr("src",data["logo"]);
         $("#company_size").text(data['number_employees']);
         $("#company_founded").text(data['founded']);
+        $("#company_website").html("<a href='"+data['website']+"' target='_blank'>"+data['name']+"</a>");
+        $("#company_careers_website").html("<a href='"+data['careers_website']+"' target='_blank'>Careers @ "+data['name']+"</a>");
         $("#company_id").val(id);
         // need to check if need to display favorite or unfavorite icon
         if(data['favorites'].indexOf(parseInt(user_id)) >= 0){

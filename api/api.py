@@ -96,7 +96,7 @@ class FavoriteResource(ModelResource):
         # Add it here.
         # authentication = BasicAuthentication()
         authorization = DjangoAuthorization()
-        always_return_data = True
+        always_return_data = False
         allowed_methods = ['get','post']
         filtering = {
             "user": ("exact")
