@@ -83,18 +83,18 @@
       <div class="jumbotron" style="padding-top:19px; width:760px;">
         <!-- Information about the career fair -->
         <div class="row visible-lg" style="height:2em;">
-          <div class="col-lg-4" style="padding-left:0px;">
+          <div class="col-lg-3" style="padding-left:0px;">
             <h4 align="left">EECS Career Fair</h4>
           </div>
-          <div class="col-lg-4">
-            <h4>September 25</h4>
+          <div class="col-lg-5">
+            <h4>September 25, 11am-3pm</h4>
           </div>
           <div class="col-lg-4" style="padding-right:0px;">
             <h4 style="text-align:right">RSF - Field House Gym</h4>
           </div>
         </div>
         <div class="row hidden-lg" style="height:2em;">
-            <h4 align="left">EECS Career Fair, September 25, RSF - Field House Gym</h4>
+            <h4 align="left">EECS Career Fair, September 25 11am-3pm, RSF - Field House Gym</h4>
         </div>
         
         <div class="row">
@@ -281,7 +281,7 @@
               {% if user.is_authenticated %}
                 <button class="btn btn-primary" onclick="favoriteCompany()" id="favorite_company_btn"><span class="glyphicon glyphicon-plus"></span>&nbsp;Favorite</button>
               {% else %}
-                <button class="btn btn-primary" disabled="disabled"><span class="glyphicon glyphicon-plus"></span>&nbsp;Favorite</button>
+                <button class="btn btn-primary" disabled="disabled"><span class="glyphicon glyphicon-plus"></span>&nbsp;Fav (login required)</button>
               {% endif %}
             </div>
           </div>
@@ -313,7 +313,7 @@
               <h4>Login for:</h4>
               <p style="text-align:center;">
                 <button type="button" class="btn btn-primary" disabled="disabled">
-                  Contact Recruiter
+                  Contact Recruiter (Login required)
                 </button>
               </p>
               {% endif %}

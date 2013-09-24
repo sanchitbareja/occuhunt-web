@@ -17,6 +17,7 @@ function favoriteCompany(){
         console.log("Successfully favorited company!");
         $("#favorite_company_btn").html('<span class="glyphicon glyphicon-minus"></span>&nbsp;Unfav');
         $("#favorite_company_btn").attr('onclick', 'unfavoriteCompany();');
+        $("button[value=company_"+company_id+"]").addClass("favorited-company");
       }
     }
   });
