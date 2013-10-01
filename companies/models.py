@@ -21,6 +21,8 @@ class Company(models.Model):
 	company_description = models.TextField(null=True, blank=True)
 	competitors = models.CharField(max_length=512, null=True, blank=True)
 	avg_salary = models.CharField(max_length=64, null=True, blank=True)
+	location = models.CharField(max_length=512, null=True, blank=True)
+	intro_video = models.TextField(null=True, blank=True)
 
 	def __unicode__(self):
 		return self.name
