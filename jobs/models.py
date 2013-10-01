@@ -1,4 +1,6 @@
 from django.db import models
+from companies.models import Company
+from fairs.models import Fair
 import datetime
 
 # Create your models here.
@@ -27,6 +29,8 @@ class Job(models.Model):
 	name = models.CharField(max_length=512)
 	job_type = models.CharField(max_length=512, null=True, blank=True, choices=JOB_TYPES_LIST)
 	location = models.CharField(max_length=512, null=True, blank=True)
+	company = models.ForeignKey(Company)
+	fair = models.ForeignKey(Fair, null=True, blank=True)
 
 	def __unicode__(self):
 		return self.name
