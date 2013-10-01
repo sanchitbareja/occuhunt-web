@@ -57,7 +57,7 @@ class Company(models.Model):
 	logo = models.URLField(max_length=512, null=True, blank=True)
 	banner_image = models.URLField(max_length=512, null=True, blank=True)
 	number_employees = models.CharField(max_length=48, null=True, blank=True)
-	organization_type = models.TextField(null=True, blank=True, choices=ORGANIZATION_TYPES_LIST)
+	organization_type = models.CharField(max_length=512, null=True, blank=True, choices=ORGANIZATION_TYPES_LIST)
 	company_description = models.TextField(null=True, blank=True)
 	competitors = models.CharField(max_length=512, null=True, blank=True)
 	avg_salary = models.CharField(max_length=64, null=True, blank=True)
