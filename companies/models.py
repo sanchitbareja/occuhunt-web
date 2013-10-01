@@ -11,7 +11,7 @@ class CompanyType(models.Model):
 
 ORGANIZATION_TYPES_LIST = (
 	('Accounting Services', 'Accounting Services'),
-	('Aerospace/Defense', 'Aerospace/Defense')
+	('Aerospace/Defense', 'Aerospace/Defense'),
 	('Agriculture', 'Agriculture'),
 	('Architecture/Planning', 'Architecture/Planning'),
 	('Arts and Entertainment', 'Arts and Entertainment'),
@@ -45,7 +45,7 @@ ORGANIZATION_TYPES_LIST = (
 	('Telecommunications', 'Telecommunications'),
 	('Transportation Services', 'Transportation Services'),
 	('Utilities', 'Utilities'),
-	('Other', 'Other')
+	('Other', 'Other'),
 	)
 
 class Company(models.Model):
