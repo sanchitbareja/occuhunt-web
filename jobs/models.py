@@ -12,6 +12,15 @@ JOB_TYPES_LIST = (
 	('Technical/Customer Support', 'Technical/Customer Support'),
 	('Manufacturing', 'Manufacturing'),
 	('Life Sciences', 'Life Sciences'),
+	('Marketing/PR/Product Mktg', 'Marketing/PR/Product Mktg'),
+	('Sales','Sales'),
+	('Business Dev', 'Business Dev'),
+	('Professional Svcs', 'Professional Svcs'),
+	('Accounting/Finance', 'Accounting/Finance'),
+	('HR/Recruiting','HR/Recruiting'),
+	('Administration', 'Administration'),
+	('Legal', 'Legal'),
+	('Operations', 'Operations'),
 	)
 
 class Job(models.Model):
