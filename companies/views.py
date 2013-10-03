@@ -22,3 +22,9 @@ def companies(request):
     """Companies view"""
     return render_to_response('companies.html', {'version': version},
                                   RequestContext(request))
+
+
+def company_one(request):
+    """Individual Company view"""
+    return render_to_response('company_one.html', {'version': version},
+                                  RequestContext(request))

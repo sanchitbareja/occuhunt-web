@@ -274,3 +274,28 @@ function decolorTables(cssID){
 function recolorTables(cssID, color){
   $(cssID).css('background-color',color);
 }
+
+function get_favorites(){
+  user_id = $("#user_id").val();
+  console.log(user_id);
+  $.ajax({ 
+    url:'/api/v1/favorites/', 
+    type:'GET',
+    dataType: 'json',
+    data: JSON.stringify({
+      'user_id': user_id
+    }), 
+    contentType: 'application/json',
+    processData: false,
+    success: function(data, textStatus, jqXHR) {
+        $("#hunting_number").text(data['meta']['total_count']);
+        if(user_id){
+          for (var i = data['response']['favorites'].length - 1; i >= 0; i--) {
+            if(data['response']['favorites'][i]['user']['id'] == parseInt(user_id)){
+              
+            }
+          };
+        }
+      },
+  });
+}

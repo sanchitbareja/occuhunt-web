@@ -1,0 +1,195 @@
+{% extends "base.html" %}
+{% load static from staticfiles %}
+{% load i18n %}
+{% load url from future %}
+
+{% block extra_style %}
+
+<style type="text/css">
+
+.favorited-company {
+  background-image: url('/static/images/target.png');
+  background-repeat: no-repeat;
+  background-size: 20px;
+}
+
+body.dragging, body.dragging * {
+  cursor: move !important;
+}
+
+.dragged {
+  position: absolute;
+  opacity: 0.5;
+  z-index: 2000;
+}
+
+.activate {
+  border: 1px solid blue;
+}
+
+#write-note {
+  display: none;
+}
+
+.list-group-item:hover > #write-note {
+  display: block;
+}
+
+</style>
+
+{% endblock %}
+
+{% block extra_script %}
+<script src="{% static "bootstrap/dist/js/jquery-sortable.js" %}"></script>
+<script type="text/javascript">
+  $(function  () {
+    var oldContainer;
+    $("div.list-group").sortable({
+      containerSelector:"div", 
+      itemSelector:"a", 
+      group:"list-group", 
+      pullPlaceholder:true, 
+      placeholder:'<a href="#" class="list-group-item"/>',
+      afterMove: function (placeholder, container) {
+        console.log("switching!");
+        if(oldContainer != container){
+          if(oldContainer)
+            oldContainer.el.removeClass("activate")
+          container.el.addClass("activate")
+          
+          oldContainer = container
+        }
+      },
+      onDrop: function ($item, container, _super) {
+        $item.removeClass("dragged").removeAttr("style");
+        $("body").removeClass("dragging");
+        oldContainer.el.removeClass("activate");
+      },
+    });
+  });
+
+  function addInputField(e){
+    // Here you'll do whatever you want to happen when they click
+    var textareaHtml = $('<textarea class="form-control" rows="3"></textarea>');
+    var doneButton = $('<button id="icon-button" class="btn btn-link"><span class="glyphicon glyphicon-trash"></span></button>'+
+      '<button id="icon-button" class="btn btn-link"><span class="glyphicon glyphicon-ok"></span></button>'+
+      '<button type="submit" class="btn btn-default pull-right" onclick="addNote($(this).parent());">Submit</button>');
+    var note = $(e).find('.list-group-item-text').text();
+    console.log($(e).find("textarea").length);
+    if($(e).find("textarea").length == 0){
+      if(note){
+        $(e).find('.list-group-item-text').text('');
+      }
+      $(e).append(textareaHtml);
+      $(e).find('textarea').val(note);
+      $(e).append(doneButton);
+      $(textareaHtml).focus();
+    }
+  }
+
+  function addNote(e){
+    console.log($(e).find('textarea').val());
+    var note = $(e).find('textarea').val();
+    if(note){
+      $(e).find('.list-group-item-text').text(note);
+      // $(e).append('<p class="list-group-item-text">'+note+'</p>');
+    }
+    $(e).find('textarea').remove();
+    // need to remove everything at once instead of one by one
+    $(e).find('button[type=submit]').remove();
+    $(e).find('button#icon-button').remove();
+  }
+</script>
+{% endblock %}
+
+{% block content %}
+
+<!-- BEGIN: Twitter website widget (http://twitterforweb.com) -->
+<!-- <div style="width:100%;font-size:10px;text-align:right;"><script type="text/javascript">
+document.write(unescape("%3Cscript src='http://twitterforweb.com/twitterbox.js?username=accenture&settings=1,0,3,300,550,f4f4f4,0,c4c4c4,101010,1,1,336699' type='text/javascript'%3E%3C/script%3E"));</script></div>
+ --><!-- END: Twitter website widget (http://twitterforweb.com) -->
+
+<div class="row">
+  <div class="col-lg-4">
+    <h1>Reach</h1>
+    <div class="list-group">
+      <a href="#" class="list-group-item">
+        <button type="button" class="btn btn-link pull-right" id="write-note" onclick="addInputField($(this).parent());"><span class="glyphicon glyphicon-pencil"></span></button>
+        <h4 class="list-group-item-heading">Google</h4>
+        <p class="list-group-item-text"></p>
+      </a>
+      <a href="#" class="list-group-item">
+        <button type="button" class="btn btn-link pull-right" id="write-note" onclick="addInputField($(this).parent());"><span class="glyphicon glyphicon-pencil"></span></button>
+        <h4 class="list-group-item-heading">Facebook</h4>
+        <p class="list-group-item-text"></p>
+      </a>
+      <a href="#" class="list-group-item">
+        <button type="button" class="btn btn-link pull-right" id="write-note" onclick="addInputField($(this).parent());"><span class="glyphicon glyphicon-pencil"></span></button>
+        <h4 class="list-group-item-heading">Twitter</h4>
+        <p class="list-group-item-text"></p>
+      </a>
+    </div>
+  </div>
+  <div class="col-lg-4">
+    <h1>Match</h1>
+    <div class="list-group">
+      <a href="#" class="list-group-item">
+        <button type="button" class="btn btn-link pull-right" id="write-note" onclick="addInputField($(this).parent());"><span class="glyphicon glyphicon-pencil"></span></button>
+        <h4 class="list-group-item-heading">Google</h4>
+        <p class="list-group-item-text"></p>
+
+      </a>
+      <a href="#" class="list-group-item">
+        <button type="button" class="btn btn-link pull-right" id="write-note" onclick="addInputField($(this).parent());"><span class="glyphicon glyphicon-pencil"></span></button>
+        <h4 class="list-group-item-heading">Facebook</h4>
+        <p class="list-group-item-text"></p>
+      </a>
+      <a href="#" class="list-group-item">
+        <button type="button" class="btn btn-link pull-right" id="write-note" onclick="addInputField($(this).parent());"><span class="glyphicon glyphicon-pencil"></span></button>
+        <h4 class="list-group-item-heading">Twitter</h4>
+        <p class="list-group-item-text"></p>
+      </a>
+      <a href="#" class="list-group-item">
+        <button type="button" class="btn btn-link pull-right" id="write-note" onclick="addInputField($(this).parent());"><span class="glyphicon glyphicon-pencil"></span></button>
+        <h4 class="list-group-item-heading">Quora</h4>
+        <p class="list-group-item-text"></p>
+      </a>
+      <a href="#" class="list-group-item">
+        <button type="button" class="btn btn-link pull-right" id="write-note" onclick="addInputField($(this).parent());"><span class="glyphicon glyphicon-pencil"></span></button>
+        <h4 class="list-group-item-heading">Flipboard</h4>
+        <p class="list-group-item-text"></p>
+      </a>
+      <a href="#" class="list-group-item">
+        <button type="button" class="btn btn-link pull-right" id="write-note" onclick="addInputField($(this).parent());"><span class="glyphicon glyphicon-pencil"></span></button>
+        <h4 class="list-group-item-heading">Stripe</h4>
+        <p class="list-group-item-text"></p>
+      </a>
+    </div>
+  </div>
+  <div class="col-lg-4">
+    <h1>Safety</h1>
+    <div class="list-group">
+      <a href="#" class="list-group-item">
+        <button type="button" class="btn btn-link pull-right" id="write-note" onclick="addInputField($(this).parent());"><span class="glyphicon glyphicon-pencil"></span></button>
+        <h4 class="list-group-item-heading">Twitter</h4>
+        <p class="list-group-item-text"></p>
+      </a>
+      <a href="#" class="list-group-item">
+        <button type="button" class="btn btn-link pull-right" id="write-note" onclick="addInputField($(this).parent());"><span class="glyphicon glyphicon-pencil"></span></button>
+        <h4 class="list-group-item-heading">Quora</h4>
+        <p class="list-group-item-text"></p>
+      </a>
+      <a href="#" class="list-group-item">
+        <button type="button" class="btn btn-link pull-right" id="write-note" onclick="addInputField($(this).parent());"><span class="glyphicon glyphicon-pencil"></span></button>
+        <h4 class="list-group-item-heading">Flipboard</h4>
+        <p class="list-group-item-text"></p>
+      </a>
+      <a href="#" class="list-group-item">
+        <button type="button" class="btn btn-link pull-right" id="write-note" onclick="addInputField($(this).parent());"><span class="glyphicon glyphicon-pencil"></span></button>
+        <h4 class="list-group-item-heading">Stripe</h4>
+        <p class="list-group-item-text"></p>
+      </a>
+    </div>
+  </div>
+</div>
+{% endblock %}

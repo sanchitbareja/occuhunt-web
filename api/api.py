@@ -102,6 +102,25 @@ class FavoriteResource(ModelResource):
             "user": ("exact")
         }
 
+    def build_filters(self, filters=None):
+        if filters is None:
+            filters = {}
+
+        orm_filters = super(FavoriteResource, self).build_filters(filters)
+
+        if "user_id" in filters:
+            try:
+                user_id = filters['user_id']
+                user = User.objects.get(id=user_id)
+                sqs = Favorite.objects.filter(user=user)
+            except:
+                sqs = []
+            if "pk__in" not in orm_filters.keys():
+                orm_filters["pk__in"] = []
+            orm_filters["pk__in"] = orm_filters["pk__in"] + [i.pk for i in sqs]
+
+        return orm_filters
+
     def dehydrate(self, bundle):
         """
         Return a list of clubs formatted according to what the developer expects

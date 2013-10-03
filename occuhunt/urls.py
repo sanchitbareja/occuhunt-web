@@ -1,5 +1,6 @@
 from django.conf.urls import patterns, include, url
-from companies.views import home, companies
+from companies.views import home, companies, company_one
+from jobs.views import favorites
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -21,6 +22,8 @@ v1_api.register(HuntingResource())
 urlpatterns = patterns('',
     url(r'^$', home, name='home'),
     url(r'^companies/$', companies, name='companies'),
+    url(r'^company/1/$', company_one, name='company'),
+    url(r'^favorites/$', favorites, name='favorites'),
     url(r'^feedback/$',feedback_form),
     url(r'^logout/$', logout_view, name='logout'),
     url(r'^login-error/$', login_error, name='login-error'),
