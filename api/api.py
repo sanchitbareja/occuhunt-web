@@ -97,7 +97,7 @@ class FavoriteResource(ModelResource):
         # authentication = BasicAuthentication()
         authorization = DjangoAuthorization()
         always_return_data = False
-        allowed_methods = ['get','post']
+        allowed_methods = ['get','post','put']
         filtering = {
             "user": ("exact")
         }
@@ -141,6 +141,19 @@ class FavoriteResource(ModelResource):
             new_favorite = Favorite(user=user, company=company)
             new_favorite.save()
             bundle.obj = new_favorite
+        return bundle
+
+    def obj_update(self, bundle, **kwargs):
+        """
+        Updates an existing favorite
+        """
+        favorite = Favorite.objects.get(id=bundle.data["favorite"])
+        if bundle.data['note']:
+            favorite.note = bundle.data['note']
+        if bundle.data['category']:
+            favorite.category = bundle.data['category']
+        favorite.save()
+        bundle.obj = favorite
         return bundle
 
     def alter_list_data_to_serialize(self, request, data):

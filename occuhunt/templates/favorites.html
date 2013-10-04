@@ -24,15 +24,67 @@ body.dragging, body.dragging * {
 }
 
 .activate {
-  border: 1px solid blue;
+  border: 2px solid blue !important;
 }
 
 #write-note {
+  cursor: default;
   display: none;
 }
 
-.list-group-item:hover > #write-note {
+.list-group-item:hover > .row > .col-lg-12 > .row > .col-lg-2 > #write-note {
+  cursor: pointer;
   display: block;
+}
+
+.list-group-header {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 15px;
+  padding-right: 10px;
+  background: grey;
+}
+
+.list-group-header-title {
+  text-align: left;
+  text-transform: uppercase;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.list-group-header-stats {
+  text-align: right;
+}
+
+#category-uncategorized {
+  background: rgb(220,220,220);
+}
+
+#category-applied {
+  background: rgb(240, 255, 180);
+}
+
+#category-interviewing {
+  background: rgb(188, 239, 220);
+}
+
+#category-offered {
+  background: rgb(174, 229, 239);
+}
+
+#fixed-height-draggable {
+  height: 500px;
+  border: 1px solid grey;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+#note-options {
+  padding-top: 0px;
+}
+
+#note-buttons {
+  padding-top: 10px;
 }
 
 </style>
@@ -43,61 +95,108 @@ body.dragging, body.dragging * {
 <script src="{% static "bootstrap/dist/js/jquery-sortable.js" %}"></script>
 <script type="text/javascript">
   $(function  () {
+    refreshStats();
     var oldContainer;
     $("div.list-group").sortable({
-      containerSelector:"div", 
-      itemSelector:"a", 
+      containerSelector:"div.list-group-item", 
+      itemSelector:"div.list-group-item",
       group:"list-group", 
       pullPlaceholder:true, 
-      placeholder:'<a href="#" class="list-group-item"/>',
+      placeholder:'<div class="list-group-item"/>',
       afterMove: function (placeholder, container) {
         console.log("switching!");
         if(oldContainer != container){
-          if(oldContainer)
-            oldContainer.el.removeClass("activate")
-          container.el.addClass("activate")
+          if(oldContainer) {
+            oldContainer.el.removeClass("activate");
+          }
+          container.el.addClass("activate");
           
-          oldContainer = container
+          oldContainer = container;
         }
       },
       onDrop: function ($item, container, _super) {
         $item.removeClass("dragged").removeAttr("style");
         $("body").removeClass("dragging");
         oldContainer.el.removeClass("activate");
+        refreshStats();
+        favorite_id = $($item).find('#favorite_id').val();
+        note = $($item).find('.list-group-item-text').text();
+        category = $($item).parent().find('.list-group-header-title').text();
+        // make AJAX request to update favorites on drop
+        updateFavorite(favorite_id, category, note);
       },
     });
   });
 
   function addInputField(e){
     // Here you'll do whatever you want to happen when they click
-    var textareaHtml = $('<textarea class="form-control" rows="3"></textarea>');
-    var doneButton = $('<button id="icon-button" class="btn btn-link"><span class="glyphicon glyphicon-trash"></span></button>'+
+    var textareaHtml = $('');
+    var doneButton = $('<div id="note-options">'+
+      '<textarea id="note-options" class="form-control" rows="3"></textarea>'+
+      '<div id="note-buttons"><button id="icon-button" class="btn btn-link"><span class="glyphicon glyphicon-trash"></span></button>'+
       '<button id="icon-button" class="btn btn-link"><span class="glyphicon glyphicon-ok"></span></button>'+
-      '<button type="submit" class="btn btn-default pull-right" onclick="addNote($(this).parent());">Submit</button>');
+      '<button type="submit" class="btn btn-done btn-sm pull-right" onclick="addNote($(this).parent().parent());">Done</button></div></div>');
     var note = $(e).find('.list-group-item-text').text();
     console.log($(e).find("textarea").length);
     if($(e).find("textarea").length == 0){
       if(note){
         $(e).find('.list-group-item-text').text('');
       }
-      $(e).append(textareaHtml);
       $(e).find('textarea').val(note);
       $(e).append(doneButton);
-      $(textareaHtml).focus();
+      $(e).find('textarea').focus();
     }
   }
 
   function addNote(e){
-    console.log($(e).find('textarea').val());
     var note = $(e).find('textarea').val();
     if(note){
-      $(e).find('.list-group-item-text').text(note);
-      // $(e).append('<p class="list-group-item-text">'+note+'</p>');
+      $(e).parent().find('.list-group-item-text').text(note);
+      favorite_id = $(e).parent().parent().parent().find('#favorite_id').val();
+      note = $(e).parent().parent().parent().find('.list-group-item-text').text();
+      category = $(e).parent().parent().parent().parent().find('.list-group-header-title').text();
+      // make AJAX request to update
+      updateFavorite(favorite_id, category, note);
     }
-    $(e).find('textarea').remove();
-    // need to remove everything at once instead of one by one
-    $(e).find('button[type=submit]').remove();
-    $(e).find('button#icon-button').remove();
+    console.log(e);
+    $(e).remove();
+  }
+
+  function updateFavorite(favorite_id, category, note){
+    console.log(favorite_id);
+    console.log(category);
+    console.log(note);
+    favorite_url = '/api/v1/favorites/'+favorite_id+'/';
+    console.log(favorite_url);
+    $.ajax({ 
+      url: favorite_url, 
+      type:'PUT',
+      dataType: 'json',
+      data: JSON.stringify({
+        'favorite': favorite_id,
+        'note': note,
+        'category': category
+      }), 
+      contentType: 'application/json',
+      statusCode : {
+        201: function(data, textStatus, jsXHR){
+          console.log("Successfully changed favorite company!");
+        },
+        400: function(data, textStatus, jsXHR){
+          console.log(data);
+          console.log(textStatus);
+          console.log(jsXHR);
+        }
+      }
+    });
+  }
+
+  function refreshStats(){
+    // update the number of companies left in the list
+    var listGroups = $(".list-group");
+    for (var i = listGroups.length - 1; i >= 0; i--) {
+      $(listGroups[i]).find('.list-group-header-stats').text($(listGroups[i]).find('.list-group-item').length);
+    };
   }
 </script>
 {% endblock %}
@@ -110,85 +209,156 @@ document.write(unescape("%3Cscript src='http://twitterforweb.com/twitterbox.js?u
  --><!-- END: Twitter website widget (http://twitterforweb.com) -->
 
 <div class="row">
-  <div class="col-lg-4">
-    <h1>Reach</h1>
-    <div class="list-group">
-      <a href="#" class="list-group-item">
-        <button type="button" class="btn btn-link pull-right" id="write-note" onclick="addInputField($(this).parent());"><span class="glyphicon glyphicon-pencil"></span></button>
-        <h4 class="list-group-item-heading">Google</h4>
-        <p class="list-group-item-text"></p>
-      </a>
-      <a href="#" class="list-group-item">
-        <button type="button" class="btn btn-link pull-right" id="write-note" onclick="addInputField($(this).parent());"><span class="glyphicon glyphicon-pencil"></span></button>
-        <h4 class="list-group-item-heading">Facebook</h4>
-        <p class="list-group-item-text"></p>
-      </a>
-      <a href="#" class="list-group-item">
-        <button type="button" class="btn btn-link pull-right" id="write-note" onclick="addInputField($(this).parent());"><span class="glyphicon glyphicon-pencil"></span></button>
-        <h4 class="list-group-item-heading">Twitter</h4>
-        <p class="list-group-item-text"></p>
-      </a>
+  <div class="col-lg-3">
+    <div class="list-group" id="fixed-height-draggable">
+      <div class="list-group-header" id="category-uncategorized">
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="list-group-header-title">Uncategorized</div>
+          </div>
+          <div class="col-lg-6">
+            <div class="list-group-header-stats">1</div>
+          </div>
+        </div>
+      </div>
+      {% for favorite in favorites %}
+        {% if favorite.category  == "Uncategorized" %}  
+          <div class="list-group-item">
+            <input id="favorite_id" type="hidden" value="{{ favorite.id }}"/>
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="row">
+                  <div class="col-lg-10">
+                    <h4 class="list-group-item-heading">{{ favorite.company }}</h4>
+                  </div>
+                  <div class="col-lg-2">
+                    <a class="pull-right" id="write-note" onclick="addInputField($(this).parent().parent().parent());"><span class="glyphicon glyphicon-pencil"></span></a>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-lg-12">
+                    <p class="list-group-item-text">{{ favorite.note }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
     </div>
   </div>
-  <div class="col-lg-4">
-    <h1>Match</h1>
-    <div class="list-group">
-      <a href="#" class="list-group-item">
-        <button type="button" class="btn btn-link pull-right" id="write-note" onclick="addInputField($(this).parent());"><span class="glyphicon glyphicon-pencil"></span></button>
-        <h4 class="list-group-item-heading">Google</h4>
-        <p class="list-group-item-text"></p>
-
-      </a>
-      <a href="#" class="list-group-item">
-        <button type="button" class="btn btn-link pull-right" id="write-note" onclick="addInputField($(this).parent());"><span class="glyphicon glyphicon-pencil"></span></button>
-        <h4 class="list-group-item-heading">Facebook</h4>
-        <p class="list-group-item-text"></p>
-      </a>
-      <a href="#" class="list-group-item">
-        <button type="button" class="btn btn-link pull-right" id="write-note" onclick="addInputField($(this).parent());"><span class="glyphicon glyphicon-pencil"></span></button>
-        <h4 class="list-group-item-heading">Twitter</h4>
-        <p class="list-group-item-text"></p>
-      </a>
-      <a href="#" class="list-group-item">
-        <button type="button" class="btn btn-link pull-right" id="write-note" onclick="addInputField($(this).parent());"><span class="glyphicon glyphicon-pencil"></span></button>
-        <h4 class="list-group-item-heading">Quora</h4>
-        <p class="list-group-item-text"></p>
-      </a>
-      <a href="#" class="list-group-item">
-        <button type="button" class="btn btn-link pull-right" id="write-note" onclick="addInputField($(this).parent());"><span class="glyphicon glyphicon-pencil"></span></button>
-        <h4 class="list-group-item-heading">Flipboard</h4>
-        <p class="list-group-item-text"></p>
-      </a>
-      <a href="#" class="list-group-item">
-        <button type="button" class="btn btn-link pull-right" id="write-note" onclick="addInputField($(this).parent());"><span class="glyphicon glyphicon-pencil"></span></button>
-        <h4 class="list-group-item-heading">Stripe</h4>
-        <p class="list-group-item-text"></p>
-      </a>
+  <div class="col-lg-3">
+    <div class="list-group" id="fixed-height-draggable">
+      <div class="list-group-header" id="category-applied">
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="list-group-header-title">Applied</div>
+          </div>
+          <div class="col-lg-6">
+            <div class="list-group-header-stats">3</div>
+          </div>
+        </div>
+      </div>
+      {% for favorite in favorites %}
+        {% if favorite.category  == "Applied" %}  
+          <div class="list-group-item">
+            <input id="favorite_id" type="hidden" value="{{ favorite.id }}"/>
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="row">
+                  <div class="col-lg-10">
+                    <h4 class="list-group-item-heading">{{ favorite.company }}</h4>
+                  </div>
+                  <div class="col-lg-2">
+                    <a class="pull-right" id="write-note" onclick="addInputField($(this).parent().parent().parent());"><span class="glyphicon glyphicon-pencil"></span></a>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-lg-12">
+                    <p class="list-group-item-text">{{ favorite.note }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
     </div>
   </div>
-  <div class="col-lg-4">
-    <h1>Safety</h1>
-    <div class="list-group">
-      <a href="#" class="list-group-item">
-        <button type="button" class="btn btn-link pull-right" id="write-note" onclick="addInputField($(this).parent());"><span class="glyphicon glyphicon-pencil"></span></button>
-        <h4 class="list-group-item-heading">Twitter</h4>
-        <p class="list-group-item-text"></p>
-      </a>
-      <a href="#" class="list-group-item">
-        <button type="button" class="btn btn-link pull-right" id="write-note" onclick="addInputField($(this).parent());"><span class="glyphicon glyphicon-pencil"></span></button>
-        <h4 class="list-group-item-heading">Quora</h4>
-        <p class="list-group-item-text"></p>
-      </a>
-      <a href="#" class="list-group-item">
-        <button type="button" class="btn btn-link pull-right" id="write-note" onclick="addInputField($(this).parent());"><span class="glyphicon glyphicon-pencil"></span></button>
-        <h4 class="list-group-item-heading">Flipboard</h4>
-        <p class="list-group-item-text"></p>
-      </a>
-      <a href="#" class="list-group-item">
-        <button type="button" class="btn btn-link pull-right" id="write-note" onclick="addInputField($(this).parent());"><span class="glyphicon glyphicon-pencil"></span></button>
-        <h4 class="list-group-item-heading">Stripe</h4>
-        <p class="list-group-item-text"></p>
-      </a>
+  <div class="col-lg-3">
+    <div class="list-group" id="fixed-height-draggable">
+      <div class="list-group-header" id="category-interviewing">
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="list-group-header-title">Interviewing</div>
+          </div>
+          <div class="col-lg-6">
+            <div class="list-group-header-stats">7</div>
+          </div>
+        </div>
+      </div>
+      {% for favorite in favorites %}
+        {% if favorite.category  == "Interviewing" %}  
+          <div class="list-group-item">
+            <input id="favorite_id" type="hidden" value="{{ favorite.id }}"/>
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="row">
+                  <div class="col-lg-10">
+                    <h4 class="list-group-item-heading">{{ favorite.company }}</h4>
+                  </div>
+                  <div class="col-lg-2">
+                    <a class="pull-right" id="write-note" onclick="addInputField($(this).parent().parent().parent());"><span class="glyphicon glyphicon-pencil"></span></a>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-lg-12">
+                    <p class="list-group-item-text">{{ favorite.note }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+  <div class="col-lg-3">
+    <div class="list-group" id="fixed-height-draggable">
+      <div class="list-group-header" id="category-offered">
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="list-group-header-title">Offered</div>
+          </div>
+          <div class="col-lg-6">
+            <div class="list-group-header-stats">3</div>
+          </div>
+        </div>
+      </div>
+      {% for favorite in favorites %}
+        {% if favorite.category  == "Offered" %}  
+          <div class="list-group-item">
+            <input id="favorite_id" type="hidden" value="{{ favorite.id }}"/>
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="row">
+                  <div class="col-lg-10">
+                    <h4 class="list-group-item-heading">{{ favorite.company }}</h4>
+                  </div>
+                  <div class="col-lg-2">
+                    <a class="pull-right" id="write-note" onclick="addInputField($(this).parent().parent().parent());"><span class="glyphicon glyphicon-pencil"></span></a>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-lg-12">
+                    <p class="list-group-item-text">{{ favorite.note }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
     </div>
   </div>
 </div>

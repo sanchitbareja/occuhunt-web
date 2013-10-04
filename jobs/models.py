@@ -27,11 +27,6 @@ JOB_TYPES_LIST = (
 	('Operations', 'Operations'),
 	)
 
-JOB_RANKING_CATEGORIES = (
-	('Reach', 'Reach'),
-	('Match', 'Match'),
-	('Safety', 'Safety'),
-	)
 
 class Job(models.Model):
 	name = models.CharField(max_length=512)
@@ -42,9 +37,3 @@ class Job(models.Model):
 
 	def __unicode__(self):
 		return self.name
-
-class JobRanking(models.Model):
-	job = models.ForeignKey(Job)
-	user = models.ForeignKey(User)
-	category = models.CharField(max_length=256, null=True, blank=True, choices=JOB_RANKING_CATEGORIES)
-	notes = models.TextField()
