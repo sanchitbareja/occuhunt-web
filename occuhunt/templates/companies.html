@@ -78,6 +78,46 @@
     });
   }
 
+  function searchCompanies(){
+    user_id = $("#user_id").val();
+    search_query = $("#inputCompanySearch").val();
+    $.ajax({
+      url: '/api/v1/companies/search/',
+      data: {
+        'q': search_query
+      }, 
+      success: function(data, textStatus, jqXHR) {
+          console.log(data);
+          console.log(textStatus);
+          console.log(jqXHR);
+          console.log("searching done");
+          $("#companies_list").empty();
+          for(i in data['response']['companies']){
+            if(data['response']['companies'][i]['favorites'].indexOf(parseInt(user_id)) > -1){
+              $("#companies_list").append('<div class="col-lg-3 no-margin" id="company_info">'+
+                                            '<div class="thumbnail" id="company_thumbnail">'+
+                                              '<img id="company_thumbnail_logo" src="'+data['response']['companies'][i]['logo']+'">'+
+                                            '</div>'+
+                                            '<div id="company_thumbnail_favorite">'+
+                                              '<a class="btn-link" onclick="unfavoriteCompanyWithId('+data['response']['companies'][i]['id']+',this)"><span class="glyphicon glyphicon-minus"></span></a>'+
+                                            '</div>'+
+                                          '</div>');
+            } else {
+              $("#companies_list").append('<div class="col-lg-3 no-margin" id="company_info">'+
+                                            '<div class="thumbnail" id="company_thumbnail">'+
+                                              '<img id="company_thumbnail_logo" src="'+data['response']['companies'][i]['logo']+'">'+
+                                            '</div>'+
+                                            '<div id="company_thumbnail_favorite">'+
+                                              '<a class="btn-link" onclick="favoriteCompanyWithId('+data['response']['companies'][i]['id']+',this)"><span class="glyphicon glyphicon-plus"></span></a>'+
+                                            '</div>'+
+                                          '</div>');
+            }
+          }
+        },
+      dataType: 'json',
+    });
+  }
+
   // get all companies on launch
   $(document).ready(getCompanies);
 
@@ -90,9 +130,7 @@
   <div class="col-lg-3">
     <h1 style="color:white;">Search</h1>
     <p style="color:white;">526 companies found</p>
-    <input type="text" class="form-control input-lg" id="inputCompanyName" placeholder="COMPANY NAME">
-    <br />
-    <input type="text" class="form-control input-lg" id="inputJobLocation" placeholder="JOB LOCATION">
+    <input type="text" class="form-control input-lg" id="inputCompanySearch" placeholder="Company, Location">
     <br />
     <select class="form-control input-lg">
       <option>Accounting</option>
@@ -101,6 +139,8 @@
       <option>Government</option>
       <option>Software</option>
     </select>
+    <br />
+    <button type="submit" class="btn btn-done btn-lg pull-right" onclick="searchCompanies();">Done</button>
   </div>
 
   <div class="col-lg-9">
