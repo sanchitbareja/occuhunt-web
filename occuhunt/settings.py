@@ -128,6 +128,7 @@ INSTALLED_APPS = (
     'storages',
     'social_auth',
     'gunicorn',
+    'haystack',
 
     # local apps
     'companies',
@@ -224,6 +225,16 @@ LINKEDIN_EXTRA_FIELD_SELECTORS = [
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# Django-Haystack settings - used for search and indexing
+
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
+        'URL': 'http://127.0.0.1:9200/',
+        'INDEX_NAME': 'haystack',
+    },
+}
 
 # Parse database configuration from $DATABASE_URL
 import dj_database_url

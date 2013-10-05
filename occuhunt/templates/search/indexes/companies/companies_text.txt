@@ -1,0 +1,6 @@
+{{ object.name }}
+{{ object.website }}
+{{ object.organization_type }}
+{{ object.company_description }}
+{{ object.competitors }}
+{{ object.location }}
