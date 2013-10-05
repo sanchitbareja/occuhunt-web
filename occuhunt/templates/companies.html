@@ -3,6 +3,44 @@
 {% load i18n %}
 {% load url from future %}
 
+{% block extra_style %}
+
+<style type="text/css">
+
+  #company_thumbnail {
+    height:200px;
+    vertical-align: center;
+  }
+
+  #company_thumbnail_logo {
+    max-height: 200px;
+  }
+
+  .no-margin {
+    margin-left: 0px;
+    margin-right: 0px;
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+
+  #company_thumbnail_favorite {
+    display: none;
+    position: absolute;
+    top: 3px;
+    right: 6px;
+  }
+
+  #company_info:hover > #company_thumbnail_favorite {
+    display: block;
+  }
+
+  .glyphicon-plus {
+    font-size: 20px;
+  }
+
+</style>
+{% endblock %}
+
 {% block extra_script %}
 <script type="text/javascript">
   function getCompanies(){
@@ -15,52 +53,24 @@
           console.log(textStatus);
           console.log(jqXHR);
           for(i in data['response']['companies']){
-            $("#companies_list").append('<div class="col-lg-4">'+
-                                          '<div class="thumbnail">'+
-                                            '<img src="{% static "images/accenture-advert.jpg" %}">'+
-                                            '<div class="caption">'+
-                                              '<div class="row">'+
-                                                '<div class="col-lg-2">'+
-                                                  '<img src="{% static "images/accenture-logo.jpg" %}" style="height:50px;">'+
-                                                '</div>'+
-                                                '<div class="col-lg-6">'+
-                                                  '<p style="margin-bottom:0px; color:#717171;">'+
-                                                    data['response']['companies'][i]['name']+
-                                                  '</p>'+
-                                                '</div>'+
-                                                '<div class="col-lg-4">'+
-                                                  '<h3 style="color:#7B4D9A;text-align:right;padding:0px;margin-bottom:0px; margin-right:0px;">'+
-                                                    data['response']['companies'][i]['expected_hires']+' jobs'+
-                                                  '</h3>'+
-                                                '</div>'+
-                                              '</div>'+
+            if(data['response']['companies'][i]['favorites'].indexOf(parseInt(user_id)) > -1){
+              $("#companies_list").append('<div class="col-lg-3 no-margin" id="company_info">'+
+                                            '<div class="thumbnail" id="company_thumbnail">'+
+                                              '<img id="company_thumbnail_logo" src="'+data['response']['companies'][i]['logo']+'">'+
                                             '</div>'+
-                                          '</div>'+
-                                        '</div>');
-            if(data['response']['companies'][i]['favorites'].indexOf(parseInt(user_id)) >= 0){
-              $("#favorites_list").append('<div class="col-lg-4">'+
-                                          '<div class="thumbnail">'+
-                                            '<img src="{% static "images/accenture-advert.jpg" %}">'+
-                                            '<div class="caption">'+
-                                              '<div class="row">'+
-                                                '<div class="col-lg-2">'+
-                                                  '<img src="{% static "images/accenture-logo.jpg" %}" style="height:50px;">'+
-                                                '</div>'+
-                                                '<div class="col-lg-6">'+
-                                                  '<p style="margin-bottom:0px; color:#717171;">'+
-                                                    data['response']['companies'][i]['name']+
-                                                  '</p>'+
-                                                '</div>'+
-                                                '<div class="col-lg-4">'+
-                                                  '<h3 style="color:#7B4D9A;text-align:right;padding:0px;margin-bottom:0px; margin-right:0px;">'+
-                                                    data['response']['companies'][i]['expected_hires']+' jobs'+
-                                                  '</h3>'+
-                                                  '<button class="btn btn-primary" onclick="unfavoriteCompanyWithId('+data['response']['companies'][i]['id']+',this)" id="favorite_company_btn"><span class="glyphicon glyphicon-minus">'+
-                                                '</div>'+
-                                              '</div>'+
+                                            '<div id="company_thumbnail_favorite">'+
+                                              '<a class="btn-link" onclick="unfavoriteCompanyWithId('+data['response']['companies'][i]['id']+',this)"><span class="glyphicon glyphicon-minus"></span></a>'+
                                             '</div>'+
-                                          '</div>'+
-                                        '</div>');
+                                          '</div>');
+            } else {
+              $("#companies_list").append('<div class="col-lg-3 no-margin" id="company_info">'+
+                                            '<div class="thumbnail" id="company_thumbnail">'+
+                                              '<img id="company_thumbnail_logo" src="'+data['response']['companies'][i]['logo']+'">'+
+                                            '</div>'+
+                                            '<div id="company_thumbnail_favorite">'+
+                                              '<a class="btn-link" onclick="favoriteCompanyWithId('+data['response']['companies'][i]['id']+',this)"><span class="glyphicon glyphicon-plus"></span></a>'+
+                                            '</div>'+
+                                          '</div>');
             }
           }
         },
@@ -76,14 +86,28 @@
 
 {% block content %}
 
-<h3>Favorites</h3>
-<div class="row" id="favorites_list">
+<div class="row">
+  <div class="col-lg-3">
+    <h1 style="color:white;">Search</h1>
+    <p style="color:white;">526 companies found</p>
+    <input type="text" class="form-control input-lg" id="inputCompanyName" placeholder="COMPANY NAME">
+    <br />
+    <input type="text" class="form-control input-lg" id="inputJobLocation" placeholder="JOB LOCATION">
+    <br />
+    <select class="form-control input-lg">
+      <option>Accounting</option>
+      <option>Finance</option>
+      <option>Health</option>
+      <option>Government</option>
+      <option>Software</option>
+    </select>
+  </div>
 
-</div>
+  <div class="col-lg-9">
+    <div class="row" id="companies_list">
 
-<h3>Companies</h3>
-<div class="row" id="companies_list">
-
+    </div>    
+  </div>
 </div>
 
 {% endblock %}

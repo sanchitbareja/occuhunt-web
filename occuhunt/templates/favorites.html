@@ -32,6 +32,10 @@ body.dragging, body.dragging * {
   display: none;
 }
 
+.list-group-item:hover {
+  cursor: move;
+}
+
 .list-group-item:hover > .row > .col-lg-12 > .row > .col-lg-2 > #write-note {
   cursor: pointer;
   display: block;
@@ -43,6 +47,7 @@ body.dragging, body.dragging * {
   padding-left: 15px;
   padding-right: 10px;
   background: grey;
+  line-height: 30px;
 }
 
 .list-group-header-title {
@@ -56,8 +61,13 @@ body.dragging, body.dragging * {
   text-align: right;
 }
 
+.logo-thumbnail {
+  height:30px;
+  max-width: 30px;
+}
+
 #category-uncategorized {
-  background: rgb(220,220,220);
+  background: rgb(249,231,248);
 }
 
 #category-applied {
@@ -77,6 +87,7 @@ body.dragging, body.dragging * {
   border: 1px solid grey;
   overflow-y: scroll;
   overflow-x: hidden;
+  background: white;
 }
 
 #note-options {
@@ -137,13 +148,12 @@ body.dragging, body.dragging * {
       '<button id="icon-button" class="btn btn-link"><span class="glyphicon glyphicon-ok"></span></button>'+
       '<button type="submit" class="btn btn-done btn-sm pull-right" onclick="addNote($(this).parent().parent());">Done</button></div></div>');
     var note = $(e).find('.list-group-item-text').text();
-    console.log($(e).find("textarea").length);
     if($(e).find("textarea").length == 0){
       if(note){
         $(e).find('.list-group-item-text').text('');
       }
-      $(e).find('textarea').val(note);
       $(e).append(doneButton);
+      $(e).find('textarea').val(note);
       $(e).find('textarea').focus();
     }
   }
@@ -228,7 +238,10 @@ document.write(unescape("%3Cscript src='http://twitterforweb.com/twitterbox.js?u
             <div class="row">
               <div class="col-lg-12">
                 <div class="row">
-                  <div class="col-lg-10">
+                  <div class="col-lg-2">
+                    <img class="logo-thumbnail" src="{{ favorite.company.logo }}">
+                  </div>
+                  <div class="col-lg-8">
                     <h4 class="list-group-item-heading">{{ favorite.company }}</h4>
                   </div>
                   <div class="col-lg-2">
@@ -236,7 +249,7 @@ document.write(unescape("%3Cscript src='http://twitterforweb.com/twitterbox.js?u
                   </div>
                 </div>
                 <div class="row">
-                  <div class="col-lg-12">
+                  <div class="col-lg-10 col-lg-offset-2">
                     <p class="list-group-item-text">{{ favorite.note }}</p>
                   </div>
                 </div>
@@ -266,7 +279,10 @@ document.write(unescape("%3Cscript src='http://twitterforweb.com/twitterbox.js?u
             <div class="row">
               <div class="col-lg-12">
                 <div class="row">
-                  <div class="col-lg-10">
+                  <div class="col-lg-2">
+                    <img class="logo-thumbnail" src="{{ favorite.company.logo }}">
+                  </div>
+                  <div class="col-lg-8">
                     <h4 class="list-group-item-heading">{{ favorite.company }}</h4>
                   </div>
                   <div class="col-lg-2">
@@ -274,7 +290,7 @@ document.write(unescape("%3Cscript src='http://twitterforweb.com/twitterbox.js?u
                   </div>
                 </div>
                 <div class="row">
-                  <div class="col-lg-12">
+                  <div class="col-lg-10 col-lg-offset-2">
                     <p class="list-group-item-text">{{ favorite.note }}</p>
                   </div>
                 </div>
@@ -304,7 +320,10 @@ document.write(unescape("%3Cscript src='http://twitterforweb.com/twitterbox.js?u
             <div class="row">
               <div class="col-lg-12">
                 <div class="row">
-                  <div class="col-lg-10">
+                  <div class="col-lg-2">
+                    <img class="logo-thumbnail" src="{{ favorite.company.logo }}">
+                  </div>
+                  <div class="col-lg-8">
                     <h4 class="list-group-item-heading">{{ favorite.company }}</h4>
                   </div>
                   <div class="col-lg-2">
@@ -312,7 +331,7 @@ document.write(unescape("%3Cscript src='http://twitterforweb.com/twitterbox.js?u
                   </div>
                 </div>
                 <div class="row">
-                  <div class="col-lg-12">
+                  <div class="col-lg-10 col-lg-offset-2">
                     <p class="list-group-item-text">{{ favorite.note }}</p>
                   </div>
                 </div>
@@ -342,7 +361,10 @@ document.write(unescape("%3Cscript src='http://twitterforweb.com/twitterbox.js?u
             <div class="row">
               <div class="col-lg-12">
                 <div class="row">
-                  <div class="col-lg-10">
+                  <div class="col-lg-2">
+                    <img class="logo-thumbnail" src="{{ favorite.company.logo }}">
+                  </div>
+                  <div class="col-lg-8">
                     <h4 class="list-group-item-heading">{{ favorite.company }}</h4>
                   </div>
                   <div class="col-lg-2">
@@ -350,7 +372,7 @@ document.write(unescape("%3Cscript src='http://twitterforweb.com/twitterbox.js?u
                   </div>
                 </div>
                 <div class="row">
-                  <div class="col-lg-12">
+                  <div class="col-lg-10 col-lg-offset-2">
                     <p class="list-group-item-text">{{ favorite.note }}</p>
                   </div>
                 </div>
