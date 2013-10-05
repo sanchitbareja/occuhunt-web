@@ -18,8 +18,7 @@
 		margin-top: 30px;
 		margin-bottom: 30px;
 	}
-	#company_description {
-		background-color: #55606e;
+	.company_description {
 		padding-left: 0px;
 		padding-right: 0px;
 	}
@@ -27,7 +26,6 @@
 		width: 100%;
 	}
 	#company_stats {
-		text-align: center;
 		color: white;
 		font-size: 17px;
 		font-family: "Proxima Nova";
@@ -36,7 +34,7 @@
 	}
 	#company_logo {
 		padding-top: 50px;
-		width: 290px;
+		width: 100%;
 		margin-bottom: 30px;
 	}
 	#company_info {
@@ -57,6 +55,15 @@
 		font-size: 17px;
 		color: white;
 		line-height: 1.3em;
+	}
+	#job_description {
+		font-weight: 300;
+		font-size: 22px;
+		font-family: "Proxima Nova";
+		color: #24afb2;
+	}
+	#job_location {
+
 	}
 </style>
 
@@ -79,28 +86,42 @@
 	</div>
 </div>
 <div class="row">
-	<div class="col-lg-8 col-lg-offset-2" id="company_description">
+	<div class="col-lg-8 col-lg-offset-2" id="company_description" style="background-color: #55606e;">
 		<div class="row">
-			<div class="col-lg-6" id="company_stats" style="margin-bottom:30px">
+			<div class="col-lg-4 col-lg-offset-1" id="company_stats" style="margin-bottom:50px">
 				<img id="company_logo" src="http://newgovtjobs.com/wp-content/uploads/2013/02/Accenture-Logo.png">
-
-				<p>San Francisco, CA</p>
-				<p>Founded September 2011</p>
-				<p>115 employees</p>
+				<div style="text-align:center">
+					<p>San Francisco, CA</p>
+					<p>Founded September 2011</p>
+					<p>115 employees</p>
+				</div>
 			</div>
-			<div class="col-lg-5" style="margin-bottom:30px">
+			<div class="col-lg-5 col-lg-offset-1" style="margin-bottom:50px">
 				<div>
 					<h4 id="company_info">COMPANY INFO</h4>
 					<a class="btn-link" style="position: absolute; right: 5px; top: 60px; display: inline-block;"><span class="glyphicon glyphicon-plus"></span></a>
 				</div>
 				<p id="company_detailed_info">Accenture is a global management consulting, technology services and outsourcing company, with approximately 204,000 people serving clients in more than 120 countries.</p>
 			</div>
-
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-lg-8 col-lg-offset-2" id="company_description" style="background-color: #343a41;">
+		<div class="row">
+			<div class="col-lg-offset-1 col-lg-10" style="margin-bottom:60px">
+				<h4 id="company_info">JOB DESCRIPTION</h4>
+				<p id="job_description">Product Manager<span id="job_description" style="font-size:16px; font-weight:100;">&nbsp;San Francisco, CA</span></p>
+				<p id="company_detailed_info">The Project Manager has the overall responsibility for a project, taking it from concept to completion. Each Project Manager has full profit and performance responsibility for his/her jobs. The Intern will support the Project Manager with estimating, scheduling, design meetings, buyout, permitting, shop drawing and submittal review, billing, and job site visits.</p>
+				<br />
+				<br />
+				<div style="text-align:center">
+					<button class="btn btn-done" style="font-family:'Open Sans'; font-size:14px; padding-left:20px; padding-top:10px; padding-right:20px; padding-bottom:10px; font-weight:600">APPLY NOW</button>
+				</div>
 			</div>
 		</div>
 	</div>
 </div>
-<p>
 
 
 <!-- hard code everything for design -->
