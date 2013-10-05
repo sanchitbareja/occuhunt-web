@@ -16,6 +16,6 @@ from social_auth.utils import setting
 
 def favorites(request):
     """Companies view"""
-    favorites_data = Favorite.objects.filter(user=request.user)
+    favorites_data = Favorite.objects.filter(user__id=request.user.id)
     return render_to_response('favorites.html', {'version': version,'favorites':favorites_data},
                                   RequestContext(request))
