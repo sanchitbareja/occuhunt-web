@@ -9,7 +9,9 @@
 	body {
 		background-color: white;
 		background:url("http://f.cl.ly/items/051H1F0S2S3p2B2l192i/BlurKing.jpg");
-
+		-webkit-font-smoothing: antialiased;
+		font-smoothing: antialiased;
+		font-smooth: always;
 	}
 	#company_title {
 		text-align: center;
@@ -29,8 +31,8 @@
 		color: white;
 		font-size: 17px;
 		font-family: "Proxima Nova";
-		font-weight: 100;
-		line-height: 0.9em;
+		font-weight: 400;
+		line-height: 0.8em;
 	}
 	#company_logo {
 		padding-top: 50px;
@@ -41,26 +43,28 @@
 		padding-top: 50px;
 		width: 290px;
 		text-align: left;
-		font-weight: 600;
+		font-weight: bold;
 		font-family: "Proxima Nova";
 		font-size: 22px;
-		margin-bottom: 18px;
+		margin-bottom: 22px;
 		color: white;
 		line-height: 0.9em;
+		/*letter-spacing: 1px;*/
 	}
 	#company_detailed_info {
 		font-family: "Proxima Nova";
-		font-weight: 200;
-		/*letter-spacing: 0.5px;*/
+		font-weight: 400;
 		font-size: 17px;
 		color: white;
-		line-height: 1.3em;
+		line-height: 1.4em;
+		/*letter-spacing: 0.02em;*/
 	}
 	#job_description {
-		font-weight: 300;
+		font-weight: 500;
 		font-size: 22px;
 		font-family: "Proxima Nova";
 		color: #24afb2;
+		letter-spacing: 0px;
 	}
 	#job_location {
 
@@ -88,7 +92,7 @@
 <div class="row">
 	<div class="col-lg-8 col-lg-offset-2" id="company_description" style="background-color: #55606e;">
 		<div class="row">
-			<div class="col-lg-4 col-lg-offset-1" id="company_stats" style="margin-bottom:50px">
+			<div class="col-lg-4 col-lg-offset-1" id="company_stats" style="margin-bottom:60px">
 				<img id="company_logo" src="http://newgovtjobs.com/wp-content/uploads/2013/02/Accenture-Logo.png">
 				<div style="text-align:center">
 					<p>San Francisco, CA</p>
@@ -96,10 +100,10 @@
 					<p>115 employees</p>
 				</div>
 			</div>
-			<div class="col-lg-5 col-lg-offset-1" style="margin-bottom:50px">
+			<div class="col-lg-5 col-lg-offset-1" style="margin-bottom:60px">
 				<div>
+					<a class="btn-link" style="position:absolute; top:55px; right:15px; display:inline;"><i class="icon-plus-sign-alt icon-2x pull-right"></i></a>
 					<h4 id="company_info">COMPANY INFO</h4>
-					<a class="btn-link" style="position: absolute; right: 5px; top: 60px; display: inline-block;"><span class="glyphicon glyphicon-plus"></span></a>
 				</div>
 				<p id="company_detailed_info">Accenture is a global management consulting, technology services and outsourcing company, with approximately 204,000 people serving clients in more than 120 countries.</p>
 			</div>
@@ -110,13 +114,13 @@
 	<div class="col-lg-8 col-lg-offset-2" id="company_description" style="background-color: #343a41;">
 		<div class="row">
 			<div class="col-lg-offset-1 col-lg-10" style="margin-bottom:60px">
-				<h4 id="company_info">JOB DESCRIPTION</h4>
-				<p id="job_description">Product Manager<span id="job_description" style="font-size:16px; font-weight:100;">&nbsp;San Francisco, CA</span></p>
+				<h4 id="company_info">JOBS</h4>
+				<p id="job_description">Product Manager <span id="job_description" style="font-size:18px; font-weight:100; 		-webkit-font-smoothing: antialiased;">&nbsp;San Francisco, CA</span></p>
 				<p id="company_detailed_info">The Project Manager has the overall responsibility for a project, taking it from concept to completion. Each Project Manager has full profit and performance responsibility for his/her jobs. The Intern will support the Project Manager with estimating, scheduling, design meetings, buyout, permitting, shop drawing and submittal review, billing, and job site visits.</p>
 				<br />
 				<br />
 				<div style="text-align:center">
-					<button class="btn btn-done" style="font-family:'Open Sans'; font-size:14px; padding-left:20px; padding-top:10px; padding-right:20px; padding-bottom:10px; font-weight:600">APPLY NOW</button>
+					<button class="btn btn-done" style="font-family:'Open Sans'; font-size:14px; padding-left:20px; padding-top:10px; padding-right:20px; padding-bottom:10px; font-weight:700; -webkit-font-smoothing: antialiased;">APPLY NOW</button>
 				</div>
 			</div>
 		</div>

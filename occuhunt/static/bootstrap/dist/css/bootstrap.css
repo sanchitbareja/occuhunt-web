@@ -2588,7 +2588,7 @@ fieldset[disabled] .btn-other.active {
   border-color: #f8c4a0;
 }
 .btn-link {
-  color: #428bca;
+  color: #343a41;
   font-weight: normal;
   cursor: pointer;
   border-radius: 0;
@@ -2609,7 +2609,7 @@ fieldset[disabled] .btn-link {
 }
 .btn-link:hover,
 .btn-link:focus {
-  color: #2a6496;
+  color: #24afb2;
   text-decoration: underline;
   background-color: transparent;
 }
@@ -2675,11 +2675,6 @@ input[type="button"].btn-block {
   font-family: 'Glyphicons Halflings';
   src: url('../fonts/glyphicons-halflings-regular.eot');
   src: url('../fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('../fonts/glyphicons-halflings-regular.woff') format('woff'), url('../fonts/glyphicons-halflings-regular.ttf') format('truetype'), url('../fonts/glyphicons-halflings-regular.svg#glyphicons-halflingsregular') format('svg');
-}
-@font-face {
-  font-family: 'Proxima Nova';
-  src: url('../fonts/proximanova-regular-webfont.eot');
-  src: url('../fonts/proximanova-regular-webfont.eot?#iefix') format('embedded-opentype'), url('../fonts/proximanova-regular-webfont.woff') format('woff'), url('../fonts/proximanova-regular-webfont.ttf') format('truetype'), url('../fonts/proximanova-regular-webfont.svg#glyphicons-halflingsregular') format('svg');
 }
 .glyphicon {
   position: relative;
