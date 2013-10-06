@@ -154,7 +154,7 @@ body.dragging, body.dragging * {
     var textareaHtml = $('');
     var doneButton = $('<div id="note-options">'+
       '<textarea id="note-options" class="form-control" rows="3" style="width:226px; margin-top:5px"></textarea>'+
-      '<div id="note-buttons"><button id="icon-button" class="btn btn-link"><span class="glyphicon glyphicon-trash"></span></button>'+
+      '<div id="note-buttons"><button id="icon-button" class="btn btn-link" style="padding-left:0px;padding-right:0px;"><span class="glyphicon glyphicon-trash"></span></button>'+
       '<button id="icon-button" class="btn btn-link"><span class="glyphicon glyphicon-ok"></span></button>'+
       '<button type="submit" class="btn btn-done btn-sm pull-right" onclick="addNote($(this).parent().parent());">DONE</button></div></div>');
     var note = $(e).find('.list-group-item-text').text();
