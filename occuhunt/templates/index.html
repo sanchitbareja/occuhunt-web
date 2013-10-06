@@ -30,6 +30,10 @@ td#career_fair_map{
   height: 50px;
 }
 
+.jumbotron {
+  padding-top: 12px;
+}
+
 </style>
 
 {% endblock %}
@@ -52,258 +56,337 @@ td#career_fair_map{
 {% block content %}
 
   <!-- Filters -->
-  <div class="row visible-lg">
-    <div class="col-lg-12">
-    <h1 style="color:white; margin-bottom:15px text-align:center">Fairs</h1>
-    <p style="color:white; font-family:'Proxima Nova'; font-weight:400; font-size:18px; padding-bottom:0px;  margin-bottom:20px; line-height:22px;">Next upcoming fair: Startup Fair, October 9th, International House</p>
+  <div class="row" style="margin-bottom:10px; text-align:center;">
+  <h1 style="color:white; margin-bottom:15px text-align:center">Fairs</h1>
+    <p style="color:white; font-family:'Proxima Nova'; font-weight:400; font-size:18px; padding-bottom:0px;  margin-bottom:20px; line-height:22px;">Check out upcoming career fairs at Cal.</p>
+    <div class="col-lg-12" id="filter_bar" style="z-index:100;">
+      <div class="btn-group" data-toggle="buttons">
+        {% if user.is_authenticated %}
+        <button type="button" class="btn btn-categorydisabled btn-sm" onclick="toggleTable('.favorited-company');"><img src="/static/images/target.png" style="height:18px; float:left; position:relative; margin-left:-10px;">&nbsp;Favs</button>
+        {% endif %}
+        <button type="button" class="btn btn-engineering btn-sm" onclick="toggleTable('.btn-engineering');">Engineering</button>
+        <button type="button" class="btn btn-finance btn-sm" onclick="toggleTable('.btn-finance');">Finance</button>
+        <button type="button" class="btn btn-government btn-sm" onclick="toggleTable('.btn-government');">Government</button>
+        <button type="button" class="btn btn-health btn-sm" onclick="toggleTable('.btn-health');">Health</button>
+        <button type="button" class="btn btn-technology btn-sm" onclick="toggleTable('.btn-technology');">Technology</button>
+        <button type="button" class="btn btn-other btn-sm" onclick="toggleTable('.btn-other');">Other</button>
+      </div>
     </div>
-    
-    <div class="col-lg-2">
-      <div class="col-lg-12">
-        <div class="btn-group-vertical" data-toggle="buttons">
-          {% if user.is_authenticated %}
-          <button type="button" class="btn btn-categorydisabled btn-sm" onclick="toggleTable('.favorited-company');"><img src="/static/images/target.png" style="height:20px; float:left; position:relative; margin-left:-10px;">&nbsp;Favs</button>
-          {% endif %}
-          <button type="button" class="btn btn-engineering btn-sm" onclick="toggleTable('.btn-engineering');">Engineering</button>
-          <button type="button" class="btn btn-finance btn-sm" onclick="toggleTable('.btn-finance');">Finance</button>
-          <button type="button" class="btn btn-government btn-sm" onclick="toggleTable('.btn-government');">Government</button>
-          <button type="button" class="btn btn-health btn-sm" onclick="toggleTable('.btn-health');">Health</button>
-          <button type="button" class="btn btn-technology btn-sm" onclick="toggleTable('.btn-technology');">Technology</button>
-          <button type="button" class="btn btn-other btn-sm" onclick="toggleTable('.btn-other');">Other</button>
+  </div>
+
+  <!-- Main content - STARTUP CAREER FAIR -->
+  <div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+      <div class="jumbotron">
+        <!-- Information about the career fair -->
+        <div class="row visible-lg" style="height:2em;">
+          <div class="col-lg-3 col-lg-offset-2">
+            <h4 align="left">Startup Fair</h4>
+          </div>
+          <div class="col-lg-3">
+            <h4>October 9, 12-4pm</h4>
+          </div>
+          <div class="col-lg-2">
+            <h4 style="text-align:right">International House</h4>
+          </div>
+        </div>
+        <div class="row hidden-lg" style="height:2em;">
+            <h4 align="left"></h4>
+        </div>
+        <!-- EECS Career -->
+        <div class="row">
+          <div class="col-lg-offset-2 col-lg-8">
+            <table>
+              <tr>
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/339/'>MongoDB</a></td>
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/340/'>AeroFS</a></td>
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/321/'>Aerospike</a></td>
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/325/'>Alpine Data Labs</a></td>
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/326/'>Andreessen Horowitz</a></td>
+              </tr><tr>
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/324/'>Apartment List</a></td>
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/323/'>Arista Networks</a></td>
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/322/'>Brightedge</a></td>
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/320/'>C3 Energy</a></td>
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/319/'>EasyESI</a></td>
+              </tr><tr>  
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/318/'>IXL Learning</a></td>
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/317/'>Lumosity</a></td>
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/316/'>Lyft</a></td>
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/315/'>Magoosh</a></td>
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/314/'>Poshmark</a></td>
+              </tr><tr>  
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/313/'>Pure Storage</a></td>
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/312/'>Readyforce</a></td>
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/311/'>Redfin</a></td>
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/310/'>Saleae</a></td>
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/309/'>Sequoia</a></td>
+              </tr><tr>  
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/308/'>Sift Science</a></td>
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/341/'>Storm8</a></td>
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/307/'>Stripe</a></td>
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/306/'>Suitable Technologies</a></td>
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/305/'>TellApart</a></td>
+              </tr><tr>  
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/327/'>AdRoll</a></td>
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/328/'>AutoGrid Systems</a></td>
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/329/'>Brandcast</a></td>
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/330/'>Doximity</a></td>
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/331/'>Evernote</a></td>
+              </tr><tr>  
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/332/'>Humin</a></td>
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/333/'>Inflection</a></td>
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/334/'>Kloudless</a></td>
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/335/'>Reflektion</a></td>
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/336/'>Room 77</a></td>
+              </tr><tr>  
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/337/'>Twilio</a></td>
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/338/'>Zuora</a></td>
+              </tr>
+            </table>
+          </div>
         </div>
       </div>
     </div>
-  <!-- Main content -->
-    <div class="col-lg-10 col-md-11 col-sm-11 col-xs-11">
-      <div class="jumbotron" style="padding-top:19px; width:100%">
+  </div>
+
+  <br />
+  <br />
+
+  <!-- Main content - EECS CAREER FAIR -->
+  <div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+      <div class="jumbotron" style="padding-top:19px;">
         <!-- Information about the career fair -->
         <div class="row visible-lg" style="height:2em;">
-          <div class="col-lg-4" style="padding-left:0px;">
+          <div class="col-lg-offset-2 col-lg-3">
             <h4 align="left">EECS Career Fair</h4>
           </div>
-          <div class="col-lg-4">
+          <div class="col-lg-3">
             <h4>September 25, 11am-3pm</h4>
           </div>
-          <div class="col-lg-4" style="padding-right:0px;">
+          <div class="col-lg-2">
             <h4 style="text-align:right">RSF - Field House Gym</h4>
           </div>
         </div>
         <div class="row hidden-lg" style="height:2em;">
             <h4 align="left">EECS Career Fair, September 25 11am-3pm, RSF - Field House Gym</h4>
         </div>
-        
+        <!-- EECS Career -->
         <div class="row">
-          <table>
-            <tr>
-              <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/231/'>Twitter</a></td>
-              <td id="career_fair_map"></td>
-              <td id='career_fair_map'><a class='btn btn-government fair-table' target='_blank;' href='/company/303/'>CIA</a></td>
-              <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/287/'>Nvidia</a></td>
-              <td id="career_fair_map"></td>
-              <td id='career_fair_map'><a class='btn btn-engineering fair-table' target='_blank;' href='/company/233/'>Aerospace Corp</a></td>
-              <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/278/'>LinkedIn / Slideshare</a></td>
-              <td id="career_fair_map"></td>
-              <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/292/'>Pinterest</a></td>
-              <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/256/'>Facebook</a></td>
-              <td id="career_fair_map"></td>
-              <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/227/'>Workday</a></td>
-              <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/226/'>Yahoo!</a></td>
-              <td id="career_fair_map"></td>
-              <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/289/'>Palantir</a></td>
-            </tr><tr>
-              <td id='career_fair_map'><a class='btn btn-engineering fair-table' target='_blank;' href='/company/285/'>National Instruments</a></td>
-              <td id="career_fair_map"></td>
-              <td id='career_fair_map'><a class='btn btn-engineering fair-table' target='_blank;' href='/company/258/'>Fairchild</a></td>
-              <td id='career_fair_map'><a class='btn btn-engineering fair-table' target='_blank;' href='/company/234/'>Texas Instruments</a></td>
-              <td id="career_fair_map"></td>
-              <td id='career_fair_map'><a class='btn btn-engineering fair-table' target='_blank;' href='/company/260/'>Foxconn Electronics</a></td>
-              <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/223/'>Zynga</a></td>
-              <td id="career_fair_map"></td>
-              <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/217/'>Asana</a></td>
-              <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/229/'>Venmo</a></td>
-              <td id="career_fair_map"></td>
-              <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/297/'>Quizlet.com</a></td>
-              <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/250/'>Crunchyroll</a></td>
-              <td id="career_fair_map"></td>
-              <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/295/'>PocketGems</a></td>
-            </tr><tr>
-              <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/225/'>Yelp</a></td>
-              <td id="career_fair_map"></td>
-              <td id='career_fair_map'><a class='btn btn-engineering fair-table' target='_blank;' href='/company/269/'>IBM</a></td>
-              <td id='career_fair_map'><a class='btn btn-engineering fair-table' target='_blank;' href='/company/283/'>Motorola</a></td>
-              <td id="career_fair_map"></td>
-              <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/254/'>EMC</a></td>
-              <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/224/'>Zazzle</a></td>
-              <td id="career_fair_map"></td>
-              <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/291/'>Path</a></td>
-              <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/209/'>Adobe</a></td>
-              <td id="career_fair_map"></td>
-              <td id='career_fair_map'><a class='btn btn-engineering fair-table' target='_blank;' href='/company/222/'>Box</a></td>
-              <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/267/'>Groupon</a></td>
-              <td id="career_fair_map"></td>
-              <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/293/'>Pivotal Labs</a></td>
-            </tr><tr>
-              <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/300/'>Riverbed Technology</a></td>
-              <td id="career_fair_map"></td>
-              <td id='career_fair_map'><a class='btn btn-finance fair-table' target='_blank;' href='/company/221/'>Bechtel</a></td>
-              <td id='career_fair_map'><a class='btn btn-engineering fair-table' target='_blank;' href='/company/276/'>KLA-Tencor</a></td>
-              <td id="career_fair_map"></td>
-              <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/232/'>Twilio</a></td>
-              <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/251/'>Datastax</a></td>
-              <td id="career_fair_map"></td>
-              <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/286/'>Netapp</a></td>
-              <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/263/'>GoDaddy</a></td>
-              <td id="career_fair_map"></td>
-              <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/288/'>Oracle</a></td>
-              <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/294/'>Pixar Animation</a></td>
-              <td id="career_fair_map"></td>
-              <td id='career_fair_map'><a class='btn btn-other fair-table' target='_blank;' href='/company/299/'>Redfin</a></td>
-            </tr><tr>
-              <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/210/'>Airbnb</a></td>
-              <td id="career_fair_map"></td>
-              <td id="career_fair_map"></td>
-              <td id="career_fair_map"></td>
-              <td id="career_fair_map"></td>
-              <td id='career_fair_map'><a class='btn btn-engineering fair-table' target='_blank;' href='/company/241/'>Sandisk</a></td>
-              <td id='career_fair_map'><a class='btn btn-engineering fair-table' target='_blank;' href='/company/240/'>Shoretel</a></td>
-              <td id="career_fair_map"></td>
-              <td id="career_fair_map"></td>
-              <td id="career_fair_map"></td>
-              <td id="career_fair_map"></td>
-              <td id="career_fair_map"></td>
-              <td id="career_fair_map"></td>
-              <td id="career_fair_map"></td>
-              <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/264/'>Goodreads</a></td>
-            </tr><tr>
-              <td id='career_fair_map'><a class='btn btn-engineering fair-table' target='_blank;' href='/company/208/'>Adap.tv</a></td>
-              <td id="career_fair_map"></td>
-              <td id="career_fair_map"></td>
-              <td id="career_fair_map"></td>
-              <td id="career_fair_map"></td>
-              <td id="career_fair_map"></td>
-              <td id="career_fair_map"></td>
-              <td id="career_fair_map"></td>
-              <td id="career_fair_map"></td>
-              <td id="career_fair_map"></td>
-              <td id="career_fair_map"></td>
-              <td id="career_fair_map"></td>
-              <td id="career_fair_map"></td>
-              <td id="career_fair_map"></td>
-              <td id='career_fair_map'><a class='btn btn-other fair-table' target='_blank;' href='/company/275/'>Kabam</a></td>
-            </tr><tr>
-              <td id='career_fair_map'><a class='btn btn-engineering fair-table' target='_blank;' href='/company/268/'>HP</a></td>
-              <td id="career_fair_map"></td>
-              <td id="career_fair_map"></td>
-              <td id="career_fair_map"></td>
-              <td id="career_fair_map"></td>
-              <td id="career_fair_map"></td>
-              <td id="career_fair_map"></td>
-              <td id="career_fair_map"></td>
-              <td id="career_fair_map"></td>
-              <td id="career_fair_map"></td>
-              <td id="career_fair_map"></td>
-              <td id="career_fair_map"></td>
-              <td id="career_fair_map"></td>
-              <td id="career_fair_map"></td>
-              <td id='career_fair_map'><a class='btn btn-engineering fair-table' target='_blank;' href='/company/257/'>Factset Research</a></td>
-            </tr><tr>
-              <td id='career_fair_map'><a class='btn btn-engineering fair-table' target='_blank;' href='/company/262/'>General Motors</a></td>
-              <td id="career_fair_map"></td>
-              <td id='career_fair_map'><a class='btn btn-government fair-table' target='_blank;' href='/company/242/'>Sandia National Labs</a></td>
-              <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/211/'>Akamai Technologies</a></td>
-              <td id="career_fair_map"></td>
-              <td id='career_fair_map'><a class='btn btn-engineering fair-table' target='_blank;' href='/company/216/'>ARM</a></td>
-              <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/219/'>AT&T</a></td>
-              <td id="career_fair_map"></td>
-              <td id='career_fair_map'><a class='btn btn-engineering fair-table' target='_blank;' href='/company/246/'>Cisco SF</a></td>
-              <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/281/'>Microsoft</a></td>
-              <td id="career_fair_map"></td>
-              <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/298/'>Rackspace</a></td>
-              <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/265/'>Google</a></td>
-              <td id="career_fair_map"></td>
-              <td id='career_fair_map'><a class='btn btn-health fair-table' target='_blank;' href='/company/249/'>Counsyl</a></td>
-            </tr><tr>
-              <td id='career_fair_map'><a class='btn btn-engineering fair-table' target='_blank;' href='/company/248/'>Comcast / NBC Universal</a></td>
-              <td id="career_fair_map"></td>
-              <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/243/'>Samsung Mobile STA</a></td>
-              <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/302/'>Salesforce.com</a></td>
-              <td id="career_fair_map"></td>
-              <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/236/'>Stottler Henke AI</a></td>
-              <td id='career_fair_map'><a class='btn btn-other fair-table' target='_blank;' href='/company/282/'>Mopub</a></td>
-              <td id="career_fair_map"></td>
-              <td id='career_fair_map'><a class='btn btn-engineering fair-table' target='_blank;' href='/company/247/'>Cisco Systems</a></td>
-              <td id='career_fair_map'><a class='btn btn-other fair-table' target='_blank;' href='/company/261/'>Demeterr</a></td>
-              <td id="career_fair_map"></td>
-              <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/284/'>Mozilla</a></td>
-              <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/266/'>Gree International</a></td>
-              <td id="career_fair_map"></td>
-              <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/213/'>AppDynamics</a></td>
-            </tr><tr>
-              <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/228/'>VMWare</a></td>
-              <td id="career_fair_map"></td>
-              <td id='career_fair_map'><a class='btn btn-engineering fair-table' target='_blank;' href='/company/215/'>Arista Networks</a></td>
-              <td id='career_fair_map'><a class='btn btn-finance fair-table' target='_blank;' href='/company/230/'>Two Sigma Investments</a></td>
-              <td id="career_fair_map"></td>
-              <td id='career_fair_map'><a class='btn btn-finance fair-table' target='_blank;' href='/company/252/'>Deloitte</a></td>
-              <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/218/'>Aspera</a></td>
-              <td id="career_fair_map"></td>
-              <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/238/'>Square</a></td>
-              <td id='career_fair_map'><a class='btn btn-finance fair-table' target='_blank;' href='/company/272/'>Intuit</a></td>
-              <td id="career_fair_map"></td>
-              <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/301/'>Rocket Fuel</a></td>
-              <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/290/'>Pandora</a></td>
-              <td id="career_fair_map"></td>
-              <td id='career_fair_map'><a class='btn btn-health fair-table' target='_blank;' href='/company/220/'>AthenaHealth</a></td>
-            </tr><tr>
-              <td id="career_fair_map"></td>
-              <td id="career_fair_map"></td>
-              <td id='career_fair_map'><a class='btn btn-engineering fair-table' target='_blank;' href='/company/271/'>Intel</a></td>
-              <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/212/'>Amazon</a></td>
-              <td id="career_fair_map"></td>
-              <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/261/'>General Electric</a></td>
-              <td id='career_fair_map'><a class='btn btn-other fair-table' target='_blank;' href='/company/207/'>Accenture</a></td>
-              <td id="career_fair_map"></td>
-              <td id='career_fair_map'><a class='btn btn-engineering fair-table' target='_blank;' href='/company/274/'>Juniper Networks</a></td>
-              <td id='career_fair_map'><a class='btn btn-finance fair-table' target='_blank;' href='/company/296/'>PWC</a></td>
-              <td id="career_fair_map"></td>
-              <td id='career_fair_map'><a class='btn btn-other fair-table' target='_blank;' href='/company/279/'>Macys.com</a></td>
-              <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/259/'>Fivestars</a></td>
-              <td id="career_fair_map"></td>
-              <td id="career_fair_map"></td>
-            </tr><tr>
-              <td id='career_fair_map'><a class='btn btn-engineering fair-table' target='_blank;' href='/company/244/'>Broadcom</a></td>
-              <td id="career_fair_map"></td>
-              <td id='career_fair_map'><a class='btn btn-engineering fair-table' target='_blank;' href='/company/239/'>SK Hynix</a></td>
-              <td id='career_fair_map'><a class='btn btn-engineering fair-table' target='_blank;' href='/company/277/'>Lab126</a></td>
-              <td id="career_fair_map"></td>
-              <td id='career_fair_map'><a class='btn btn-engineering fair-table' target='_blank;' href='/company/280/'>Maxim Integrated</a></td>
-              <td id='career_fair_map'><a class='btn btn-other fair-table' target='_blank;' href='/company/245/'>Chevron</a></td>
-              <td id="career_fair_map"></td>
-              <td id='career_fair_map'><a class='btn btn-engineering fair-table' target='_blank;' href='/company/270/'>Indiegogo</a></td>
-              <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/255/'>F5 Networks</a></td>
-              <td id="career_fair_map"></td>
-              <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/253/'>Dropbox</a></td>
-              <td id='career_fair_map'><a class='btn btn-engineering fair-table' target='_blank;' href='/company/237/'>Storm8</a></td>
-              <td id="career_fair_map"></td>
-              <td id='career_fair_map'><a class='btn btn-other fair-table' target='_blank;' href='/company/273/'>IXL Learning</a></td>
-            </tr><tr>
-              <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/214/'>Apple</a></td>
-              <td id="career_fair_map"></td>
-              <td id="career_fair_map"></td>
-              <td id="career_fair_map"></td>
-              <td id="career_fair_map"></td>
-              <td id="career_fair_map"></td>
-              <td id="career_fair_map"></td>
-              <td id="career_fair_map"></td>
-              <td id="career_fair_map"></td>
-              <td id="career_fair_map"></td>
-              <td id="career_fair_map"></td>
-              <td id="career_fair_map"></td>
-              <td id="career_fair_map"></td>
-              <td id="career_fair_map"></td>
-              <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/235/'>Switchfly</a></td>
-            </tr>
-          </table>
+          <div class="col-lg-offset-2 col-lg-8">
+            <table>
+              <tr>
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/231/'>Twitter</a></td>
+                <td id="career_fair_map"></td>
+                <td id='career_fair_map'><a class='btn btn-government fair-table' target='_blank;' href='/company/303/'>CIA</a></td>
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/287/'>Nvidia</a></td>
+                <td id="career_fair_map"></td>
+                <td id='career_fair_map'><a class='btn btn-engineering fair-table' target='_blank;' href='/company/233/'>Aerospace Corp</a></td>
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/278/'>LinkedIn / Slideshare</a></td>
+                <td id="career_fair_map"></td>
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/292/'>Pinterest</a></td>
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/256/'>Facebook</a></td>
+                <td id="career_fair_map"></td>
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/227/'>Workday</a></td>
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/226/'>Yahoo!</a></td>
+                <td id="career_fair_map"></td>
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/289/'>Palantir</a></td>
+              </tr><tr>
+                <td id='career_fair_map'><a class='btn btn-engineering fair-table' target='_blank;' href='/company/285/'>National Instruments</a></td>
+                <td id="career_fair_map"></td>
+                <td id='career_fair_map'><a class='btn btn-engineering fair-table' target='_blank;' href='/company/258/'>Fairchild</a></td>
+                <td id='career_fair_map'><a class='btn btn-engineering fair-table' target='_blank;' href='/company/234/'>Texas Instruments</a></td>
+                <td id="career_fair_map"></td>
+                <td id='career_fair_map'><a class='btn btn-engineering fair-table' target='_blank;' href='/company/260/'>Foxconn Electronics</a></td>
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/223/'>Zynga</a></td>
+                <td id="career_fair_map"></td>
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/217/'>Asana</a></td>
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/229/'>Venmo</a></td>
+                <td id="career_fair_map"></td>
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/297/'>Quizlet.com</a></td>
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/250/'>Crunchyroll</a></td>
+                <td id="career_fair_map"></td>
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/295/'>PocketGems</a></td>
+              </tr><tr>
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/225/'>Yelp</a></td>
+                <td id="career_fair_map"></td>
+                <td id='career_fair_map'><a class='btn btn-engineering fair-table' target='_blank;' href='/company/269/'>IBM</a></td>
+                <td id='career_fair_map'><a class='btn btn-engineering fair-table' target='_blank;' href='/company/283/'>Motorola</a></td>
+                <td id="career_fair_map"></td>
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/254/'>EMC</a></td>
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/224/'>Zazzle</a></td>
+                <td id="career_fair_map"></td>
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/291/'>Path</a></td>
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/209/'>Adobe</a></td>
+                <td id="career_fair_map"></td>
+                <td id='career_fair_map'><a class='btn btn-engineering fair-table' target='_blank;' href='/company/222/'>Box</a></td>
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/267/'>Groupon</a></td>
+                <td id="career_fair_map"></td>
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/293/'>Pivotal Labs</a></td>
+              </tr><tr>
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/300/'>Riverbed Technology</a></td>
+                <td id="career_fair_map"></td>
+                <td id='career_fair_map'><a class='btn btn-finance fair-table' target='_blank;' href='/company/221/'>Bechtel</a></td>
+                <td id='career_fair_map'><a class='btn btn-engineering fair-table' target='_blank;' href='/company/276/'>KLA-Tencor</a></td>
+                <td id="career_fair_map"></td>
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/232/'>Twilio</a></td>
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/251/'>Datastax</a></td>
+                <td id="career_fair_map"></td>
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/286/'>Netapp</a></td>
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/263/'>GoDaddy</a></td>
+                <td id="career_fair_map"></td>
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/288/'>Oracle</a></td>
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/294/'>Pixar Animation</a></td>
+                <td id="career_fair_map"></td>
+                <td id='career_fair_map'><a class='btn btn-other fair-table' target='_blank;' href='/company/299/'>Redfin</a></td>
+              </tr><tr>
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/210/'>Airbnb</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id='career_fair_map'><a class='btn btn-engineering fair-table' target='_blank;' href='/company/241/'>Sandisk</a></td>
+                <td id='career_fair_map'><a class='btn btn-engineering fair-table' target='_blank;' href='/company/240/'>Shoretel</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/264/'>Goodreads</a></td>
+              </tr><tr>
+                <td id='career_fair_map'><a class='btn btn-engineering fair-table' target='_blank;' href='/company/208/'>Adap.tv</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id='career_fair_map'><a class='btn btn-other fair-table' target='_blank;' href='/company/275/'>Kabam</a></td>
+              </tr><tr>
+                <td id='career_fair_map'><a class='btn btn-engineering fair-table' target='_blank;' href='/company/268/'>HP</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id='career_fair_map'><a class='btn btn-engineering fair-table' target='_blank;' href='/company/257/'>Factset Research</a></td>
+              </tr><tr>
+                <td id='career_fair_map'><a class='btn btn-engineering fair-table' target='_blank;' href='/company/262/'>General Motors</a></td>
+                <td id="career_fair_map"></td>
+                <td id='career_fair_map'><a class='btn btn-government fair-table' target='_blank;' href='/company/242/'>Sandia National Labs</a></td>
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/211/'>Akamai Technologies</a></td>
+                <td id="career_fair_map"></td>
+                <td id='career_fair_map'><a class='btn btn-engineering fair-table' target='_blank;' href='/company/216/'>ARM</a></td>
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/219/'>AT&T</a></td>
+                <td id="career_fair_map"></td>
+                <td id='career_fair_map'><a class='btn btn-engineering fair-table' target='_blank;' href='/company/246/'>Cisco SF</a></td>
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/281/'>Microsoft</a></td>
+                <td id="career_fair_map"></td>
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/298/'>Rackspace</a></td>
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/265/'>Google</a></td>
+                <td id="career_fair_map"></td>
+                <td id='career_fair_map'><a class='btn btn-health fair-table' target='_blank;' href='/company/249/'>Counsyl</a></td>
+              </tr><tr>
+                <td id='career_fair_map'><a class='btn btn-engineering fair-table' target='_blank;' href='/company/248/'>Comcast / NBC Universal</a></td>
+                <td id="career_fair_map"></td>
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/243/'>Samsung Mobile STA</a></td>
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/302/'>Salesforce.com</a></td>
+                <td id="career_fair_map"></td>
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/236/'>Stottler Henke AI</a></td>
+                <td id='career_fair_map'><a class='btn btn-other fair-table' target='_blank;' href='/company/282/'>Mopub</a></td>
+                <td id="career_fair_map"></td>
+                <td id='career_fair_map'><a class='btn btn-engineering fair-table' target='_blank;' href='/company/247/'>Cisco Systems</a></td>
+                <td id='career_fair_map'><a class='btn btn-other fair-table' target='_blank;' href='/company/261/'>Demeterr</a></td>
+                <td id="career_fair_map"></td>
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/284/'>Mozilla</a></td>
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/266/'>Gree International</a></td>
+                <td id="career_fair_map"></td>
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/213/'>AppDynamics</a></td>
+              </tr><tr>
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/228/'>VMWare</a></td>
+                <td id="career_fair_map"></td>
+                <td id='career_fair_map'><a class='btn btn-engineering fair-table' target='_blank;' href='/company/215/'>Arista Networks</a></td>
+                <td id='career_fair_map'><a class='btn btn-finance fair-table' target='_blank;' href='/company/230/'>Two Sigma Investments</a></td>
+                <td id="career_fair_map"></td>
+                <td id='career_fair_map'><a class='btn btn-finance fair-table' target='_blank;' href='/company/252/'>Deloitte</a></td>
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/218/'>Aspera</a></td>
+                <td id="career_fair_map"></td>
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/238/'>Square</a></td>
+                <td id='career_fair_map'><a class='btn btn-finance fair-table' target='_blank;' href='/company/272/'>Intuit</a></td>
+                <td id="career_fair_map"></td>
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/301/'>Rocket Fuel</a></td>
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/290/'>Pandora</a></td>
+                <td id="career_fair_map"></td>
+                <td id='career_fair_map'><a class='btn btn-health fair-table' target='_blank;' href='/company/220/'>AthenaHealth</a></td>
+              </tr><tr>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id='career_fair_map'><a class='btn btn-engineering fair-table' target='_blank;' href='/company/271/'>Intel</a></td>
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/212/'>Amazon</a></td>
+                <td id="career_fair_map"></td>
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/261/'>General Electric</a></td>
+                <td id='career_fair_map'><a class='btn btn-other fair-table' target='_blank;' href='/company/207/'>Accenture</a></td>
+                <td id="career_fair_map"></td>
+                <td id='career_fair_map'><a class='btn btn-engineering fair-table' target='_blank;' href='/company/274/'>Juniper Networks</a></td>
+                <td id='career_fair_map'><a class='btn btn-finance fair-table' target='_blank;' href='/company/296/'>PWC</a></td>
+                <td id="career_fair_map"></td>
+                <td id='career_fair_map'><a class='btn btn-other fair-table' target='_blank;' href='/company/279/'>Macys.com</a></td>
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/259/'>Fivestars</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+              </tr><tr>
+                <td id='career_fair_map'><a class='btn btn-engineering fair-table' target='_blank;' href='/company/244/'>Broadcom</a></td>
+                <td id="career_fair_map"></td>
+                <td id='career_fair_map'><a class='btn btn-engineering fair-table' target='_blank;' href='/company/239/'>SK Hynix</a></td>
+                <td id='career_fair_map'><a class='btn btn-engineering fair-table' target='_blank;' href='/company/277/'>Lab126</a></td>
+                <td id="career_fair_map"></td>
+                <td id='career_fair_map'><a class='btn btn-engineering fair-table' target='_blank;' href='/company/280/'>Maxim Integrated</a></td>
+                <td id='career_fair_map'><a class='btn btn-other fair-table' target='_blank;' href='/company/245/'>Chevron</a></td>
+                <td id="career_fair_map"></td>
+                <td id='career_fair_map'><a class='btn btn-engineering fair-table' target='_blank;' href='/company/270/'>Indiegogo</a></td>
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/255/'>F5 Networks</a></td>
+                <td id="career_fair_map"></td>
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/253/'>Dropbox</a></td>
+                <td id='career_fair_map'><a class='btn btn-engineering fair-table' target='_blank;' href='/company/237/'>Storm8</a></td>
+                <td id="career_fair_map"></td>
+                <td id='career_fair_map'><a class='btn btn-other fair-table' target='_blank;' href='/company/273/'>IXL Learning</a></td>
+              </tr><tr>
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/214/'>Apple</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id='career_fair_map'><a class='btn btn-technology fair-table' target='_blank;' href='/company/235/'>Switchfly</a></td>
+              </tr>
+            </table>
+          </div>
         </div>
       </div>
     </div>
