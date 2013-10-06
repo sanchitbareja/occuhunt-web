@@ -153,10 +153,10 @@ body.dragging, body.dragging * {
     // Here you'll do whatever you want to happen when they click
     var textareaHtml = $('');
     var doneButton = $('<div id="note-options">'+
-      '<textarea id="note-options" class="form-control" rows="3"></textarea>'+
+      '<textarea id="note-options" class="form-control" rows="3" style="width:226px; margin-top:5px"></textarea>'+
       '<div id="note-buttons"><button id="icon-button" class="btn btn-link"><span class="glyphicon glyphicon-trash"></span></button>'+
       '<button id="icon-button" class="btn btn-link"><span class="glyphicon glyphicon-ok"></span></button>'+
-      '<button type="submit" class="btn btn-done btn-sm pull-right" onclick="addNote($(this).parent().parent());">Done</button></div></div>');
+      '<button type="submit" class="btn btn-done btn-sm pull-right" onclick="addNote($(this).parent().parent());" style="font-family:'Proxima Nova'; font-weight:500px;">DONE</button></div></div>');
     var note = $(e).find('.list-group-item-text').text();
     if($(e).find("textarea").length == 0){
       if(note){
