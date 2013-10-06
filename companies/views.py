@@ -14,6 +14,7 @@ from social_auth import __version__ as version
 from social_auth.utils import setting
 
 from companies.models import Company
+from favorites.models import Favorite
 
 def home(request):
     """Home view"""
@@ -36,7 +37,15 @@ def company(request, companyID):
     """Individual Company view"""
     try:
         company = Company.objects.get(id=companyID)
-        return render_to_response('company.html', {'version': version, 'company': company},
+        if not request.user.is_authenticated():
+            return render_to_response('company.html', {'version': version, 'company': company},
+                                  RequestContext(request))
+        else:
+            favorite = Favorite.objects.filter(company=company, user__id=request.user.id)
+            is_favorited = False
+            if len(favorite) > 0:
+                is_favorited = True
+            return render_to_response('company.html', {'version': version, 'company': company, 'is_favorited':is_favorited},
                                   RequestContext(request))
     except:
         raise Http404('Sorry, no company found :(');

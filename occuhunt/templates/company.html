@@ -102,7 +102,13 @@
 			</div>
 			<div class="col-lg-5 col-lg-offset-1" style="margin-bottom:60px">
 				<div>
-					<a class="btn-link" style="position:absolute; top:55px; right:15px; display:inline;"><i class="icon-plus-sign-alt icon-2x pull-right"></i></a>
+					{% if user.is_authenticated %}
+						{% if is_favorited %}
+						<a class="btn-link" style="position:absolute; top:55px; right:15px; display:inline;" onclick="unfavoriteCompanyWithId({{ company.id }},this)"><span class="glyphicons glyphicon-minus pull-right" style="font-size:18px;">Unfavorite</span></a>
+						{% else %}
+						<a class="btn-link" style="position:absolute; top:55px; right:15px; display:inline;" onclick="favoriteCompanyWithId({{ company.id }},this)"><i class="icon-plus-sign-alt icon-2x pull-right"></i></a>
+						{% endif %}
+					{% endif %}
 					<h4 id="company_info">COMPANY INFO</h4>
 				</div>
 				<p id="company_detailed_info">{{ company.company_description }}</p>
