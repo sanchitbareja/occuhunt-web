@@ -97,7 +97,7 @@
 				<div style="text-align:center">
 					<p>{{ company.location }}</p>
 					<p>Founded {{ company.founded }}</p>
-					<p>{{ company.number_employees }} employees</p>
+					<p>{% if company.number_employees == "" %}{% else %}{{ company.number_employees }} employees</p>
 				</div>
 			</div>
 			<div class="col-lg-5 col-lg-offset-1" style="margin-bottom:60px">
