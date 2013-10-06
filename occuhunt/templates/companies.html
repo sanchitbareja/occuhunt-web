@@ -14,6 +14,7 @@
 
   #company_thumbnail_logo {
     max-height: 200px;
+    max-width: 200px;
   }
 
   .no-margin {
@@ -67,7 +68,7 @@
             if(data['response']['companies'][i]['favorites'].indexOf(parseInt(user_id)) > -1){
               $("#companies_list").append('<div class="col-lg-3 no-margin" id="company_info">'+
                                             '<div class="thumbnail" id="company_thumbnail">'+
-                                              '<img id="company_thumbnail_logo" src="'+data['response']['companies'][i]['logo']+'">'+
+                                              '<a target="_blank;" id="company_thumbnail_logo" href="/company/'+data['response']['companies'][i]['id']+'/"><img id="company_thumbnail_logo" src="'+data['response']['companies'][i]['logo']+'"></a>'+
                                             '</div>'+
                                             '<div id="company_thumbnail_favorite">'+
                                               '<a class="btn-link" onclick="unfavoriteCompanyWithId('+data['response']['companies'][i]['id']+',this)"><span class="glyphicon glyphicon-minus"></span></a>'+
@@ -76,7 +77,7 @@
             } else {
               $("#companies_list").append('<div class="col-lg-3 no-margin" id="company_info">'+
                                             '<div class="thumbnail" id="company_thumbnail">'+
-                                              '<img id="company_thumbnail_logo" src="'+data['response']['companies'][i]['logo']+'">'+
+                                              '<a target="_blank;" id="company_thumbnail_logo" href="/company/'+data['response']['companies'][i]['id']+'/"><img id="company_thumbnail_logo" src="'+data['response']['companies'][i]['logo']+'"></a>'+
                                             '</div>'+
                                             '<div id="company_thumbnail_favorite">'+
                                               '<a class="btn-link" onclick="favoriteCompanyWithId('+data['response']['companies'][i]['id']+',this)"><span class="glyphicon glyphicon-plus"></span></a>'+
@@ -92,7 +93,7 @@
   function searchCompanies(){
     user_id = $("#user_id").val();
     search_query = $("#inputCompanySearch").val();
-    $("#loading_state").html('<div id="spinnerWait" style="text-align:center;"><div class="spinner"><div class="bar1"></div><div class="bar2"></div><div class="bar3"></div><div class="bar4"></div><div class="bar5"></div><div class="bar6"></div><div class="bar7"></div><div class="bar8"></div><div class="bar9"></div><div class="bar10"></div><div class="bar11"></div><div class="bar12"></div></div><p>Sending your feedback...</p></div>');
+    $("#loading_state").html('<div id="spinnerWait" style="text-align:center;"><div class="spinner"><div class="bar1"></div><div class="bar2"></div><div class="bar3"></div><div class="bar4"></div><div class="bar5"></div><div class="bar6"></div><div class="bar7"></div><div class="bar8"></div><div class="bar9"></div><div class="bar10"></div><div class="bar11"></div><div class="bar12"></div></div><p>Fetching</p></div>');
     $.ajax({
       url: '/api/v1/companies/search/',
       data: {
@@ -110,7 +111,7 @@
             if(data['response']['companies'][i]['favorites'].indexOf(parseInt(user_id)) > -1){
               $("#companies_list").append('<div class="col-lg-3 no-margin" id="company_info">'+
                                             '<div class="thumbnail" id="company_thumbnail">'+
-                                              '<img id="company_thumbnail_logo" src="'+data['response']['companies'][i]['logo']+'">'+
+                                              '<a target="_blank;" id="company_thumbnail_logo" href="/company/'+data['response']['companies'][i]['id']+'/"><img id="company_thumbnail_logo" src="'+data['response']['companies'][i]['logo']+'"></a>'+
                                             '</div>'+
                                             '<div id="company_thumbnail_favorite">'+
                                               '<a class="btn-link" onclick="unfavoriteCompanyWithId('+data['response']['companies'][i]['id']+',this)"><span class="glyphicon glyphicon-minus"></span></a>'+
@@ -119,7 +120,7 @@
             } else {
               $("#companies_list").append('<div class="col-lg-3 no-margin" id="company_info">'+
                                             '<div class="thumbnail" id="company_thumbnail">'+
-                                              '<img id="company_thumbnail_logo" src="'+data['response']['companies'][i]['logo']+'">'+
+                                              '<a target="_blank;" id="company_thumbnail_logo" href="/company/'+data['response']['companies'][i]['id']+'/"><img id="company_thumbnail_logo" src="'+data['response']['companies'][i]['logo']+'"></a>'+
                                             '</div>'+
                                             '<div id="company_thumbnail_favorite">'+
                                               '<a class="btn-link" onclick="favoriteCompanyWithId('+data['response']['companies'][i]['id']+',this)"><span class="glyphicon glyphicon-plus"></span></a>'+
