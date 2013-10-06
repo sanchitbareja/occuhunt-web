@@ -87,7 +87,7 @@
             if(data['response']['companies'][i]['favorites'].indexOf(parseInt(user_id)) > -1){
               $("#companies_list").append('<div class="col-lg-3 no-margin" id="company_info">'+
                                             '<div class="thumbnail" id="company_thumbnail">'+
-                                              '<a target="_blank;" id="company_thumbnail_logo" href="/company/'+data['response']['companies'][i]['id']+'/"><img id="company_thumbnail_logo" src="'+data['response']['companies'][i]['logo']+'"></a>'+
+                                              '<a id="company_thumbnail_logo" href="/company/'+data['response']['companies'][i]['id']+'/"><img id="company_thumbnail_logo" src="'+data['response']['companies'][i]['logo']+'"></a>'+
                                             '</div>'+
                                             '<div id="company_thumbnail_favorite">'+
                                               '<a class="btn-link" onclick="unfavoriteCompanyWithId('+data['response']['companies'][i]['id']+',this)"><span class="glyphicon glyphicon-minus"></span></a>'+
@@ -96,7 +96,7 @@
             } else {
               $("#companies_list").append('<div class="col-lg-3 no-margin" id="company_info">'+
                                             '<div class="thumbnail" id="company_thumbnail">'+
-                                              '<a target="_blank;" id="company_thumbnail_logo" href="/company/'+data['response']['companies'][i]['id']+'/"><img id="company_thumbnail_logo" src="'+data['response']['companies'][i]['logo']+'"></a>'+
+                                              '<a id="company_thumbnail_logo" href="/company/'+data['response']['companies'][i]['id']+'/"><img id="company_thumbnail_logo" src="'+data['response']['companies'][i]['logo']+'"></a>'+
                                             '</div>'+
                                             '<div id="company_thumbnail_favorite">'+
                                               '<a class="btn-link" onclick="favoriteCompanyWithId('+data['response']['companies'][i]['id']+',this)"><span class="glyphicon glyphicon-plus"></span></a>'+
@@ -130,7 +130,7 @@
             if(data['response']['companies'][i]['favorites'].indexOf(parseInt(user_id)) > -1){
               $("#companies_list").append('<div class="col-lg-3 no-margin" id="company_info">'+
                                             '<div class="thumbnail" id="company_thumbnail">'+
-                                              '<a target="_blank;" id="company_thumbnail_logo" href="/company/'+data['response']['companies'][i]['id']+'/"><img id="company_thumbnail_logo" src="'+data['response']['companies'][i]['logo']+'"></a>'+
+                                              '<a id="company_thumbnail_logo" href="/company/'+data['response']['companies'][i]['id']+'/"><img id="company_thumbnail_logo" src="'+data['response']['companies'][i]['logo']+'"></a>'+
                                             '</div>'+
                                             '<div id="company_thumbnail_favorite">'+
                                               '<a class="btn-link" onclick="unfavoriteCompanyWithId('+data['response']['companies'][i]['id']+',this)"><span class="glyphicon glyphicon-minus"></span></a>'+
@@ -139,7 +139,7 @@
             } else {
               $("#companies_list").append('<div class="col-lg-3 no-margin" id="company_info">'+
                                             '<div class="thumbnail" id="company_thumbnail">'+
-                                              '<a target="_blank;" id="company_thumbnail_logo" href="/company/'+data['response']['companies'][i]['id']+'/"><img id="company_thumbnail_logo" src="'+data['response']['companies'][i]['logo']+'"></a>'+
+                                              '<a id="company_thumbnail_logo" href="/company/'+data['response']['companies'][i]['id']+'/"><img id="company_thumbnail_logo" src="'+data['response']['companies'][i]['logo']+'"></a>'+
                                             '</div>'+
                                             '<div id="company_thumbnail_favorite">'+
                                               '<a class="btn-link" onclick="favoriteCompanyWithId('+data['response']['companies'][i]['id']+',this)"><span class="glyphicon glyphicon-plus"></span></a>'+
