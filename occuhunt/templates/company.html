@@ -96,8 +96,8 @@
 				<img id="company_logo" src="{{ company.logo }}">
 				<div style="text-align:center">
 					<p>{{ company.location }}</p>
-					<p>Founded {{ company.founded }}</p>
-					<p>{{ company.number_employees }} employees</p>
+					<p>{% if company.founded %}Founded {{ company.founded }}{% endif %}</p>
+					<p>{% if company.number_employees %}{{ company.number_employees }} employees{% endif %}</p>
 				</div>
 			</div>
 			<div class="col-lg-5 col-lg-offset-1" style="margin-bottom:60px">
