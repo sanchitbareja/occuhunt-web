@@ -9,6 +9,8 @@
 // other navbar variations.
 
 .navbar {
+  font-smoothing: antialiased;
+  -webkit-font-smoothing: antialiased;
   position: relative;
   z-index: @zindex-navbar;
   min-height: @navbar-height; // Ensure a navbar always shows (e.g., without a .navbar-brand in collapsed mode)
@@ -25,6 +27,14 @@
   }
 }
 
+.nav > li {
+    float:none;
+    display:inline-block;
+    *display:inline; /* ie7 fix */
+    *zoom:1; /* hasLayout ie7 trigger */
+    vertical-align: top;
+    text-align:center;
+}
 
 // Navbar heading
 //
@@ -38,7 +48,6 @@
     float: left;
   }
 }
-
 
 // Navbar collapse (body)
 //
@@ -109,6 +118,18 @@
   }
 }
 
+.center.navbar,
+.center.navbar > li {
+    float:none;
+    display:inline-block;
+    *display:inline; /* ie7 fix */
+    *zoom:1; /* hasLayout ie7 trigger */
+    vertical-align: top;
+}
+
+.center .navbar-inner {
+    text-align:center;
+}
 
 //
 // Navbar alignment options
