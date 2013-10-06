@@ -45,6 +45,7 @@
 <script type="text/javascript">
   function getCompanies(){
     user_id = $("#user_id").val();
+    $("#loading_state").html('<div id="spinnerWait" style="text-align:center;"><div class="spinner"><div class="bar1"></div><div class="bar2"></div><div class="bar3"></div><div class="bar4"></div><div class="bar5"></div><div class="bar6"></div><div class="bar7"></div><div class="bar8"></div><div class="bar9"></div><div class="bar10"></div><div class="bar11"></div><div class="bar12"></div></div><p>Sending your feedback...</p></div>');
     $.ajax({
       url: '/api/v1/companies/',
       data: {},
@@ -52,6 +53,7 @@
           console.log(data);
           console.log(textStatus);
           console.log(jqXHR);
+          $("#loading_state").empty();
           document.getElementById('inputCompanySearch').onkeypress = function(e) {
             var event = e || window.event;
             var charCode = event.which || event.keyCode;
@@ -90,6 +92,7 @@
   function searchCompanies(){
     user_id = $("#user_id").val();
     search_query = $("#inputCompanySearch").val();
+    $("#loading_state").html('<div id="spinnerWait" style="text-align:center;"><div class="spinner"><div class="bar1"></div><div class="bar2"></div><div class="bar3"></div><div class="bar4"></div><div class="bar5"></div><div class="bar6"></div><div class="bar7"></div><div class="bar8"></div><div class="bar9"></div><div class="bar10"></div><div class="bar11"></div><div class="bar12"></div></div><p>Sending your feedback...</p></div>');
     $.ajax({
       url: '/api/v1/companies/search/',
       data: {
@@ -102,6 +105,7 @@
           console.log("searching done");
           $("#companies_found").text(data['response']['companies'].length+" companies found");
           $("#companies_list").empty();
+          $("#loading_state").empty();
           for(i in data['response']['companies']){
             if(data['response']['companies'][i]['favorites'].indexOf(parseInt(user_id)) > -1){
               $("#companies_list").append('<div class="col-lg-3 no-margin" id="company_info">'+
@@ -142,6 +146,7 @@
     <p style="color:white;" id="companies_found"></p>
     <input type="text" class="form-control input-lg" id="inputCompanySearch" placeholder="Company, Location" >
     <br />
+    <div id="loading_state"></div>
   </div>
 
   <div class="col-lg-9">
