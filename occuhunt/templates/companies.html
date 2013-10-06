@@ -46,6 +46,23 @@
 
 {% block extra_script %}
 <script type="text/javascript">
+  function initialize(){
+    randomizeString();
+    getCompanies();
+  }
+  function randomizeString(){
+    var myStrings = new Array();
+    myStrings[0] = "Try \x22San Francisco\x22";
+    myStrings[1] = "Try \x22San Mateo\x22";
+    myStrings[2] = "Try \x22Apple\x22";
+    myStrings[3] = "Try \x22Google\x22";
+    myStrings[4] = "Try \x22Facebook\x22";
+    myStrings[5] = "Try \x22social network\x22";
+    myStrings[6] = "Try \x22education\x22";
+    var randomnumber=Math.floor(Math.random()*7)
+    $("#inputCompanySearch").attr("placeholder", myStrings[randomnumber]);
+    getCompanies();
+  }
   function getCompanies(){
     user_id = $("#user_id").val();
     $("#loading_state").html('<div id="loadingProgressG"><div id="loadingProgressG_1" class="loadingProgressG"></div></div>');
@@ -136,7 +153,7 @@
   }
 
   // get all companies on launch
-  $(document).ready(getCompanies);
+  $(document).ready(initialize);
 
 </script>
 {% endblock %}
@@ -147,8 +164,7 @@
   <div class="col-lg-3">
     <h1 style="color:white; margin-bottom:20px;">Search</h1>
     <p style="color:white; font-family:'Proxima Nova'; font-weight:100; font-size:26px; padding-bottom:0px;" id="companies_found"></p>
-    <input type="text" class="form-control input-lg" id="inputCompanySearch" placeholder="Company, Location" 
-    style="padding-left: 13px; padding-right: 13px;">
+    <input type="text" class="form-control input-lg" id="inputCompanySearch" placeholder="Try &quot;San Francisco&quot;" style="padding-left: 13px; padding-right: 13px;">
     <br />
     <div id="loading_state"></div>
   </div>
