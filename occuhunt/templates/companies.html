@@ -48,7 +48,7 @@
 <script type="text/javascript">
   function getCompanies(){
     user_id = $("#user_id").val();
-    $("#loading_state").html('<div id="spinnerWait" style="text-align:center;"><div class="spinner"><div class="bar1"></div><div class="bar2"></div><div class="bar3"></div><div class="bar4"></div><div class="bar5"></div><div class="bar6"></div><div class="bar7"></div><div class="bar8"></div><div class="bar9"></div><div class="bar10"></div><div class="bar11"></div><div class="bar12"></div></div><p>Fetching</p></div>');
+    $("#loading_state").html('<div id="loadingProgressG"><div id="loadingProgressG_1" class="loadingProgressG"></div></div>');
     $.ajax({
       url: '/api/v1/companies/',
       data: {},
@@ -95,7 +95,7 @@
   function searchCompanies(){
     user_id = $("#user_id").val();
     search_query = $("#inputCompanySearch").val();
-    $("#loading_state").html('<div id="spinnerWait" style="text-align:center;"><div class="spinner"><div class="bar1"></div><div class="bar2"></div><div class="bar3"></div><div class="bar4"></div><div class="bar5"></div><div class="bar6"></div><div class="bar7"></div><div class="bar8"></div><div class="bar9"></div><div class="bar10"></div><div class="bar11"></div><div class="bar12"></div></div><p>Fetching</p></div>');
+    $("#loading_state").html('<div id="loadingProgressG"><div id="loadingProgressG_1" class="loadingProgressG"></div></div>');
     $.ajax({
       url: '/api/v1/companies/search/',
       data: {
@@ -147,7 +147,8 @@
   <div class="col-lg-3">
     <h1 style="color:white; margin-bottom:20px;">Search</h1>
     <p style="color:white; font-family:'Proxima Nova'; font-weight:100; font-size:26px; padding-bottom:0px;" id="companies_found"></p>
-    <input type="text" class="form-control input-lg" id="inputCompanySearch" placeholder="Company, Location">
+    <input type="text" class="form-control input-lg" id="inputCompanySearch" placeholder="Company, Location" 
+    style="padding-left: 13px; padding-right: 13px;">
     <br />
     <div id="loading_state"></div>
   </div>
