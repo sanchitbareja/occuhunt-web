@@ -52,6 +52,15 @@
           console.log(data);
           console.log(textStatus);
           console.log(jqXHR);
+          document.getElementById('inputCompanySearch').onkeypress = function(e) {
+            var event = e || window.event;
+            var charCode = event.which || event.keyCode;
+
+            if ( charCode == '13' ) {
+              // Enter pressed
+              searchCompanies();
+            }
+          }
           for(i in data['response']['companies']){
             if(data['response']['companies'][i]['favorites'].indexOf(parseInt(user_id)) > -1){
               $("#companies_list").append('<div class="col-lg-3 no-margin" id="company_info">'+
@@ -91,6 +100,7 @@
           console.log(textStatus);
           console.log(jqXHR);
           console.log("searching done");
+          $("#companies_found").text(data['response']['companies'].length+" companies found");
           $("#companies_list").empty();
           for(i in data['response']['companies']){
             if(data['response']['companies'][i]['favorites'].indexOf(parseInt(user_id)) > -1){
@@ -129,18 +139,9 @@
 <div class="row">
   <div class="col-lg-3">
     <h1 style="color:white;">Search</h1>
-    <p style="color:white;">526 companies found</p>
-    <input type="text" class="form-control input-lg" id="inputCompanySearch" placeholder="Company, Location">
+    <p style="color:white;" id="companies_found"></p>
+    <input type="text" class="form-control input-lg" id="inputCompanySearch" placeholder="Company, Location" >
     <br />
-    <select class="form-control input-lg">
-      <option>Accounting</option>
-      <option>Finance</option>
-      <option>Health</option>
-      <option>Government</option>
-      <option>Software</option>
-    </select>
-    <br />
-    <button type="submit" class="btn btn-done btn-lg pull-right" onclick="searchCompanies();">Done</button>
   </div>
 
   <div class="col-lg-9">

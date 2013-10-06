@@ -226,15 +226,8 @@ LINKEDIN_EXTRA_FIELD_SELECTORS = [
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
-# Django-Haystack settings - used for search and indexing
 
-HAYSTACK_CONNECTIONS = {
-    'default': {
-        'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
-        'URL': 'http://127.0.0.1:9200/',
-        'INDEX_NAME': 'haystack',
-    },
-}
+HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
 
 # Parse database configuration from $DATABASE_URL
 import dj_database_url
@@ -242,5 +235,15 @@ DATABASES = {'default': dj_database_url.config()}
 
 try:
     from occuhunt.settings_local import DATABASES
+    from occuhunt.settings_local import HAYSTACK_CONNECTIONS
 except Exception:
+    # Django-Haystack settings - used for search and indexing
+    HAYSTACK_CONNECTIONS = {
+        'default': {
+            'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
+            'URL': os.environ['SEARCHBOX_URL'],
+            'INDEX_NAME': 'documents',
+            },
+        }
+
     pass # there is no local settings file
