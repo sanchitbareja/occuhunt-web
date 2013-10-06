@@ -72,8 +72,9 @@ body.dragging, body.dragging * {
 }
 
 .logo-thumbnail {
-  height:30px;
-  max-width: 30px;
+  height: 30px;
+  max-width: 80%;
+  max-height: 80%;
 }
 
 #category-uncategorized {
@@ -154,9 +155,9 @@ body.dragging, body.dragging * {
     var textareaHtml = $('');
     var doneButton = $('<div id="note-options">'+
       '<textarea id="note-options" class="form-control" rows="3" style="width:226px; margin-top:5px"></textarea>'+
-      '<div id="note-buttons"><button id="icon-button" class="btn btn-link"><span class="glyphicon glyphicon-trash"></span></button>'+
+      '<div id="note-buttons"><button id="icon-button" class="btn btn-link" style="padding-right:0px; padding-left:0px;"><span class="glyphicon glyphicon-trash"></span></button>'+
       '<button id="icon-button" class="btn btn-link"><span class="glyphicon glyphicon-ok"></span></button>'+
-      '<button type="submit" class="btn btn-done btn-sm pull-right" onclick="addNote($(this).parent().parent());">DONE</button></div></div>');
+      '<button type="submit" class="btn btn-done btn-sm pull-right" onclick="addNote($(this).parent().parent());" style="font-family:'Proxima Nova'; font-weight:500">DONE</button></div></div>');
     var note = $(e).find('.list-group-item-text').text();
     if($(e).find("textarea").length == 0){
       if(note){
