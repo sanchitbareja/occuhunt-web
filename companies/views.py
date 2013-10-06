@@ -17,7 +17,7 @@ from companies.models import Company
 
 def home(request):
     """Home view"""
-    return render_to_response('index.html', {'version': version},
+    return render_to_response('index.html', {'version': version, "fairs_link":True},
                                   RequestContext(request))
 
 def splash(request):
@@ -28,7 +28,7 @@ def splash(request):
 
 def companies(request):
     """Companies view"""
-    return render_to_response('companies.html', {'version': version},
+    return render_to_response('companies.html', {'version': version, "companies_link":True},
                                   RequestContext(request))
 
 

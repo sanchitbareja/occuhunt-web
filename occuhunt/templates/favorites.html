@@ -72,7 +72,7 @@ body.dragging, body.dragging * {
 }
 
 .logo-thumbnail {
-  height:30px;
+  max-height:30px;
   max-width: 30px;
 }
 
@@ -154,8 +154,7 @@ body.dragging, body.dragging * {
     var textareaHtml = $('');
     var doneButton = $('<div id="note-options">'+
       '<textarea id="note-options" class="form-control" rows="3" style="width:226px; margin-top:5px; padding-left: 6px;padding-top: 5px;padding-right: 6px;"></textarea>'+
-      '<div id="note-buttons"><button id="icon-button" class="btn btn-link" style="padding-left:0px;padding-right:0px;"><span class="glyphicon glyphicon-trash"></span></button>'+
-      '<button id="icon-button" class="btn btn-link"><span class="glyphicon glyphicon-ok"></span></button>'+
+      '<div id="note-buttons">'+
       '<button type="submit" class="btn btn-done btn-sm pull-right" style="font-family:\'Proxima Nova\'; font-weight:500;" onclick="addNote($(this).parent().parent());">DONE</button></div></div>');
     var note = $(e).find('.list-group-item-text').text();
     if($(e).find("textarea").length == 0){
@@ -231,7 +230,7 @@ document.write(unescape("%3Cscript src='http://twitterforweb.com/twitterbox.js?u
 
 <div class="row" style="margin-bottom:10px; text-align:center;">
   <h1 style="color:white; margin-bottom:15px text-align:center">Favorites</h1>
-  <p style="color:white; font-family:'Proxima Nova'; font-weight:400; font-size:18px; padding-bottom:0px;  margin-bottom:20px; line-height:22px;">Add, rearrange and reorder your favorite companies.</p>
+  <p style="color:white; font-family:'Proxima Nova'; font-weight:400; font-size:18px; padding-bottom:0px;  margin-bottom:20px; line-height:22px;"><a href="/companies/">Add</a>, rearrange and reorder your favorite companies.</p>
 </div>
 <div class="row">
   <div class="col-lg-3">
@@ -245,163 +244,166 @@ document.write(unescape("%3Cscript src='http://twitterforweb.com/twitterbox.js?u
             <div class="list-group-header-stats">0</div>
           </div>
         </div>
-        {% for favorite in favorites %}
-          {% if favorite.category  == "Uncategorized" %}  
-            <div class="list-group-item">
-              <input id="favorite_id" type="hidden" value="{{ favorite.id }}"/>
-              <div class="row">
-                <div class="col-lg-12">
-                  <div class="row">
-                    <div class="col-lg-2">
-                      <a target="_blank" href="/company/{{ favorite.company.id }}/"><img class="logo-thumbnail" src="{{ favorite.company.logo }}"></a>
-                    </div>
-                    <div class="col-lg-8">
-                      <h4 class="list-group-item-heading">{{ favorite.company }}</h4>
-                    </div>
-                    <div class="col-lg-2">
-                      <a class="pull-right" id="write-note" onclick="addInputField($(this).parent().parent().parent());"><span class="glyphicon glyphicon-pencil"></span></a>
-                    </div>
+      </div>
+      {% for favorite in favorites %}
+        {% if favorite.category  == "Uncategorized" %}  
+          <div class="list-group-item">
+            <input id="favorite_id" type="hidden" value="{{ favorite.id }}"/>
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="row">
+                  <div class="col-lg-2">
+                    <a target="_blank" href="/company/{{ favorite.company.id }}/"><img class="logo-thumbnail" src="{{ favorite.company.logo }}"></a>
                   </div>
-                  <div class="row">
-                    <div class="col-lg-10 col-lg-offset-2">
-                      <p class="list-group-item-text">{{ favorite.note }}</p>
-                    </div>
+                  <div class="col-lg-8">
+                    <h4 class="list-group-item-heading">{{ favorite.company }}</h4>
+                  </div>
+                  <div class="col-lg-2">
+                    <a class="pull-right" id="write-note" onclick="addInputField($(this).parent().parent().parent());"><span class="glyphicon glyphicon-pencil"></span></a>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-lg-10 col-lg-offset-2">
+                    <p class="list-group-item-text">{{ favorite.note }}</p>
                   </div>
                 </div>
               </div>
-            </div>
-          {% endif %}
-        {% endfor %}
-      </div>
-    </div>
-    <div class="col-lg-3">
-      <div class="list-group" id="fixed-height-draggable">
-        <div class="list-group-header" id="category-applied">
-          <div class="row">
-            <div class="col-lg-6">
-              <div class="list-group-header-title">Applied</div>
-            </div>
-            <div class="col-lg-6">
-              <div class="list-group-header-stats">0</div>
             </div>
           </div>
-        </div>
-        {% for favorite in favorites %}
-          {% if favorite.category  == "Applied" %}  
-            <div class="list-group-item">
-              <input id="favorite_id" type="hidden" value="{{ favorite.id }}"/>
-              <div class="row">
-                <div class="col-lg-12">
-                  <div class="row">
-                    <div class="col-lg-2">
-                      <a target="_blank" href="/company/{{ favorite.company.id }}/"><img class="logo-thumbnail" src="{{ favorite.company.logo }}"></a>
-                    </div>
-                    <div class="col-lg-8">
-                      <h4 class="list-group-item-heading">{{ favorite.company }}</h4>
-                    </div>
-                    <div class="col-lg-2">
-                      <a class="pull-right" id="write-note" onclick="addInputField($(this).parent().parent().parent());"><span class="glyphicon glyphicon-pencil"></span></a>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-lg-10 col-lg-offset-2">
-                      <p class="list-group-item-text">{{ favorite.note }}</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          {% endif %}
-        {% endfor %}
-      </div>
+        {% endif %}
+      {% endfor %}
     </div>
-    <div class="col-lg-3">
-      <div class="list-group" id="fixed-height-draggable">
-        <div class="list-group-header" id="category-interviewing">
-          <div class="row">
-            <div class="col-lg-6">
-              <div class="list-group-header-title">Interviewing</div>
-            </div>
-            <div class="col-lg-6">
-              <div class="list-group-header-stats">0</div>
-            </div>
+  </div>
+  <div class="col-lg-3">
+    <div class="list-group" id="fixed-height-draggable">
+      <div class="list-group-header" id="category-applied">
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="list-group-header-title">Applied</div>
+          </div>
+          <div class="col-lg-6">
+            <div class="list-group-header-stats">0</div>
           </div>
         </div>
-        {% for favorite in favorites %}
-          {% if favorite.category  == "Interviewing" %}  
-            <div class="list-group-item">
-              <input id="favorite_id" type="hidden" value="{{ favorite.id }}"/>
-              <div class="row">
-                <div class="col-lg-12">
-                  <div class="row">
-                    <div class="col-lg-2">
-                      <a target="_blank" href="/company/{{ favorite.company.id }}/"><img class="logo-thumbnail" src="{{ favorite.company.logo }}"></a>
-                    </div>
-                    <div class="col-lg-8">
-                      <h4 class="list-group-item-heading">{{ favorite.company }}</h4>
-                    </div>
-                    <div class="col-lg-2">
-                      <a class="pull-right" id="write-note" onclick="addInputField($(this).parent().parent().parent());"><span class="glyphicon glyphicon-pencil"></span></a>
-                    </div>
+      </div>
+      {% for favorite in favorites %}
+        {% if favorite.category  == "Applied" %}  
+          <div class="list-group-item">
+            <input id="favorite_id" type="hidden" value="{{ favorite.id }}"/>
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="row">
+                  <div class="col-lg-2">
+                    <a target="_blank" href="/company/{{ favorite.company.id }}/"><img class="logo-thumbnail" src="{{ favorite.company.logo }}"></a>
                   </div>
-                  <div class="row">
-                    <div class="col-lg-10 col-lg-offset-2">
-                      <p class="list-group-item-text">{{ favorite.note }}</p>
-                    </div>
+                  <div class="col-lg-8">
+                    <h4 class="list-group-item-heading">{{ favorite.company }}</h4>
+                  </div>
+                  <div class="col-lg-2">
+                    <a class="pull-right" id="write-note" onclick="addInputField($(this).parent().parent().parent());"><span class="glyphicon glyphicon-pencil"></span></a>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-lg-10 col-lg-offset-2">
+                    <p class="list-group-item-text">{{ favorite.note }}</p>
                   </div>
                 </div>
               </div>
-            </div>
-          {% endif %}
-        {% endfor %}
-      </div>
-    </div>
-    <div class="col-lg-3">
-      <div class="list-group" id="fixed-height-draggable">
-        <div class="list-group-header" id="category-offered">
-          <div class="row">
-            <div class="col-lg-6">
-              <div class="list-group-header-title">Offered</div>
-            </div>
-            <div class="col-lg-6">
-              <div class="list-group-header-stats">0</div>
             </div>
           </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+  <div class="col-lg-3">
+    <div class="list-group" id="fixed-height-draggable">
+      <div class="list-group-header" id="category-interviewing">
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="list-group-header-title">Interviewing</div>
+          </div>
+          <div class="col-lg-6">
+            <div class="list-group-header-stats">0</div>
+          </div>
         </div>
-        {% for favorite in favorites %}
-          {% if favorite.category  == "Offered" %}  
-            <div class="list-group-item">
-              <input id="favorite_id" type="hidden" value="{{ favorite.id }}"/>
-              <div class="row">
-                <div class="col-lg-12">
-                  <div class="row">
-                    <div class="col-lg-2">
-                      <a target="_blank" href="/company/{{ favorite.company.id }}/"><img class="logo-thumbnail" src="{{ favorite.company.logo }}"></a>
-                    </div>
-                    <div class="col-lg-8">
-                      <h4 class="list-group-item-heading">{{ favorite.company }}</h4>
-                    </div>
-                    <div class="col-lg-2">
-                      <a class="pull-right" id="write-note" onclick="addInputField($(this).parent().parent().parent());"><span class="glyphicon glyphicon-pencil"></span></a>
-                    </div>
+      </div>
+      {% for favorite in favorites %}
+        {% if favorite.category  == "Interviewing" %}  
+          <div class="list-group-item">
+            <input id="favorite_id" type="hidden" value="{{ favorite.id }}"/>
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="row">
+                  <div class="col-lg-2">
+                    <a target="_blank" href="/company/{{ favorite.company.id }}/"><img class="logo-thumbnail" src="{{ favorite.company.logo }}"></a>
                   </div>
-                  <div class="row">
-                    <div class="col-lg-10 col-lg-offset-2">
-                      <p class="list-group-item-text">{{ favorite.note }}</p>
-                    </div>
+                  <div class="col-lg-8">
+                    <h4 class="list-group-item-heading">{{ favorite.company }}</h4>
+                  </div>
+                  <div class="col-lg-2">
+                    <a class="pull-right" id="write-note" onclick="addInputField($(this).parent().parent().parent());"><span class="glyphicon glyphicon-pencil"></span></a>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-lg-10 col-lg-offset-2">
+                    <p class="list-group-item-text">{{ favorite.note }}</p>
                   </div>
                 </div>
               </div>
             </div>
-          {% endif %}
-        {% endfor %}
-      </div>
+          </div>
+        {% endif %}
+      {% endfor %}
     </div>
+  </div>
+  <div class="col-lg-3">
+    <div class="list-group" id="fixed-height-draggable">
+      <div class="list-group-header" id="category-offered">
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="list-group-header-title">Offered</div>
+          </div>
+          <div class="col-lg-6">
+            <div class="list-group-header-stats">0</div>
+          </div>
+        </div>
+      </div>
+      {% for favorite in favorites %}
+        {% if favorite.category  == "Offered" %}  
+          <div class="list-group-item">
+            <input id="favorite_id" type="hidden" value="{{ favorite.id }}"/>
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="row">
+                  <div class="col-lg-2">
+                    <a target="_blank" href="/company/{{ favorite.company.id }}/"><img class="logo-thumbnail" src="{{ favorite.company.logo }}"></a>
+                  </div>
+                  <div class="col-lg-8">
+                    <h4 class="list-group-item-heading">{{ favorite.company }}</h4>
+                  </div>
+                  <div class="col-lg-2">
+                    <a class="pull-right" id="write-note" onclick="addInputField($(this).parent().parent().parent());"><span class="glyphicon glyphicon-pencil"></span></a>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-lg-10 col-lg-offset-2">
+                    <p class="list-group-item-text">{{ favorite.note }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
   </div>
 {% else %}
   <div class="row">
     <div class="col-lg-12">
-      
+      <h3 style="text-align:center; color:white;">Login to organize your job applications process<br /><br /><a href="/login/linkedin/"><img src="{% static 'images/login-with-linkedin.png' %}"></a> </h3>
+
+      <img src="{% static 'images/favorites_example_blur.png' %}">      
     </div>
   </div>
 

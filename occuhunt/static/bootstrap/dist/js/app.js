@@ -79,7 +79,7 @@ function favoriteCompanyWithId(company_id,element){
     statusCode : {
       201: function(data, textStatus, jsXHR){
         console.log("Successfully favorited company!");
-        $(element).html('<span class="glyphicon glyphicon-minus"></span>');
+        $(element).html('<span class="glyphicon glyphicon-minus">Remove</span>');
         $(element).attr('onclick', 'unfavoriteCompanyWithId('+company_id+',this);');
       }
     }
@@ -102,7 +102,7 @@ function unfavoriteCompanyWithId(company_id,element){
     statusCode : {
       201: function(data, textStatus, jsXHR){
         console.log("Successfully favorited company!");
-        $(element).html('<span class="glyphicon glyphicon-plus"></span>');
+        $(element).html('<span class="glyphicon glyphicon-plus">Add</span>');
         $(element).attr('onclick', 'favoriteCompanyWithId('+company_id+',this);');
       }
     }

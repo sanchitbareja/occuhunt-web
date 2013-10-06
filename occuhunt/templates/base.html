@@ -71,6 +71,7 @@
         {% include "_top_bar.html" %}
       {% endblock %}
 
+      {% block full_content %}
       <div class="container">
         {% block body_base %}
           {% include "_messages.html" %}
@@ -78,6 +79,7 @@
           {% endblock %}
         {% endblock %}
       </div>
+      {% endblock %}
 
       {% block footer_base %}
         {% include "_footer.html" %}

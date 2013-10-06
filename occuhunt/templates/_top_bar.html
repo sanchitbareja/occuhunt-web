@@ -19,9 +19,21 @@
     </div>
     <div class="collapse navbar-collapse navbar-ex1-collapse">
       <ul class="nav navbar-nav" style="font-weight:700">
+        {% if fairs_link %}
+        <li class="active"><a href="/home/">FAIRS</a></li>
+        {% else %}
         <li><a href="/home/">FAIRS</a></li>
+        {% endif %}
+        {% if companies_link %}
+        <li class="active"><a href="/companies/">COMPANIES</a>
+        {% else %}
         <li><a href="/companies/">COMPANIES</a>
+        {% endif %}
+        {% if favorites_link %}
+        <li class="active"><a href="/favorites/">FAVORITES</a>
+        {% else %}
         <li><a href="/favorites/">FAVORITES</a>
+        {% endif %}
         <li><a data-toggle="modal" href="#feedbackModal">FEEDBACK</a></li>
         <!-- <li><a href="/companies/">Companies</a></li> -->
       </ul>

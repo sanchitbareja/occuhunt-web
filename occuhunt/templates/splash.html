@@ -13,8 +13,26 @@
   background-size: 20px;
 }
 
+#no_decoration {
+
+}
+
+#no_decoration:hover {
+  text-decoration: none;
+}
+
+
 body {
-  background: url('/static/images/Home.jpg');
+  background: url('{% static "images/Home.jpg" %}');
+}
+
+#streamline_application{
+  color: white;
+}
+
+#streamline_application:hover {
+  text-decoration: none;
+  color: #23a1a3;
 }
 
 </style>
@@ -36,7 +54,7 @@ body {
 </script>
 {% endblock %}
 
-{% block content %}
+{% block full_content %}
 
 
 <br />
@@ -46,11 +64,27 @@ body {
 <br />
 <div class="row" style="margin-bottom:5em;">
   <div class="col-lg-12" style="text-align:center;">
-    <h1 style="color:white;font-size:80px;">Organize your job<br /> application process.</h1>
+    <h1 style="color:white;font-size:80px;">Take charge of your<br />job applications.</h1>
     <br />
     <br />
     <br />
     <a href="/home/" class="btn btn-done btn-lg" style="padding-top:20px;padding-bottom:20px;padding-right:40px;padding-left:40px; font-family:'Proxima Nova'; font-weight: 700; -webkit-font-smoothing: antialiased; font-smoothing: antialiased; font-size:30px;">VIEW UPCOMING FAIRS</a>
   </div>
+</div>
+<div style="background: #bed5d5; width:100%; text-align:center;">
+  <br />
+  <br />
+  <br />
+  <img src="{% static 'images/splash_companies.png' %}" style="width:60%;">
+  <a class="btn btn-lg btn-link" href="/companies/" id="no_decoration"><h2>See which companies are recruiting at Berkeley ></h2></a>
+</div>
+
+<div style="background: #444d5b; width:100%; text-align:center;">
+  <br />
+  <br />
+  <img src="{% static 'images/favorites_example.png' %}">
+  <a class="btn btn-lg btn-link" href="/favorites/" id="streamline_application"><h2>Streamline your job application process ></h2></a>
+  <br />
+  <br />
 </div>
 {% endblock %}
