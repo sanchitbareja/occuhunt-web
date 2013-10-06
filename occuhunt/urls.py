@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, include, url
-from companies.views import home, companies, company
+from companies.views import home, splash, companies, company
 from jobs.views import favorites
 from django.conf import settings
 from django.conf.urls.static import static
@@ -20,7 +20,8 @@ v1_api.register(UserResource())
 v1_api.register(HuntingResource())
 
 urlpatterns = patterns('',
-    url(r'^$', home, name='home'),
+    url(r'^home/$', home, name='home'),
+    url(r'^$', splash, name='splash'),
     url(r'^companies/$', companies, name='companies'),
     url(r'^company/(.+)/$', company, name='company'),
     url(r'^favorites/$', favorites, name='favorites'),
