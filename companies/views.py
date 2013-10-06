@@ -20,6 +20,11 @@ def home(request):
     return render_to_response('index.html', {'version': version},
                                   RequestContext(request))
 
+def splash(request):
+    """Splash view"""
+    return render_to_response('splash.html', {'version': version},
+                                  RequestContext(request))
+
 
 def companies(request):
     """Companies view"""
