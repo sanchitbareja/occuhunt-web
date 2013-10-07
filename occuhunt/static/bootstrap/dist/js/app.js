@@ -123,8 +123,8 @@ function getCompanies(){
           for (var i = data['response']['companies'].length - 1; i >= 0; i--) {
             // need to check if need to display favorite or unfavorite icon
             if(data['response']['companies'][i]['favorites'].indexOf(parseInt(user_id)) >= 0){
-              console.log($("button[value=company_"+data['response']['companies'][i]['id']+"]"));
-              $("button[value=company_"+data['response']['companies'][i]['id']+"]").addClass("favorited-company");
+              console.log($("a[value=company_"+data['response']['companies'][i]['id']+"]"));
+              $("a[value=company_"+data['response']['companies'][i]['id']+"]").addClass("favorited-company");
             }
           };
         }
