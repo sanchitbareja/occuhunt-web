@@ -22,3 +22,9 @@ def companies(request):
     """Companies view"""
     return render_to_response('fairs.html', {'version': version},
                                   RequestContext(request))
+
+
+def create_fair_map(request):
+	""" Create a new fair map """
+	return render_to_response('create_fair_map.html', {'version': version},
+                                  RequestContext(request))

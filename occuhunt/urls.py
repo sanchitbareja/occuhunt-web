@@ -1,6 +1,7 @@
 from django.conf.urls import patterns, include, url
 from companies.views import home, splash, companies, company
 from jobs.views import favorites
+from fairs.views import create_fair_map
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -24,6 +25,7 @@ urlpatterns = patterns('',
     url(r'^$', splash, name='splash'),
     url(r'^companies/$', companies, name='companies'),
     url(r'^company/(.+)/$', company, name='company'),
+    url(r'^fair/map/new/$', create_fair_map, name="create-fair-map"),
     url(r'^favorites/$', favorites, name='favorites'),
     url(r'^feedback/$',feedback_form),
     url(r'^logout/$', logout_view, name='logout'),
