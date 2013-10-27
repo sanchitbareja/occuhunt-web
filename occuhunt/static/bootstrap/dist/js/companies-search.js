@@ -15,7 +15,7 @@ function randomizeString(){
     $("#loading_state").html('<div id="loadingProgressG"><div id="loadingProgressG_1" class="loadingProgressG"></div></div>');
     $.ajax({
       url: '/api/v1/companies/',
-      data: {},
+      data: { limit: 4 },
       success: function(data, textStatus, jqXHR) {
           // console.log(data);
           // console.log(textStatus);
@@ -30,7 +30,7 @@ function randomizeString(){
               searchCompanies();
             }
           }
-          for(i in data['response']['companies'].slice(0,4)){
+          for(i in data['response']['companies']){
             if(data['response']['companies'][i]['favorites'].indexOf(parseInt(user_id)) > -1){
               $("#companies_list").append('<div class="col-lg-3 no-margin" id="company_info">'+
                                             '<div class="thumbnail" id="company_thumbnail">'+
