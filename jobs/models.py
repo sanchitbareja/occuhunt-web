@@ -26,6 +26,7 @@ JOB_TYPES_LIST = (
 	('Administration', 'Administration'),
 	('Legal', 'Legal'),
 	('Operations', 'Operations'),
+	('Other','Other'),
 	)
 
 
