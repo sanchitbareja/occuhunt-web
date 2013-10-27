@@ -13,62 +13,6 @@
 		font-smoothing: antialiased;
 		font-smooth: always;
 	}
-	#company_title {
-		text-align: center;
-		color: #343a41;
-		letter-spacing: 0px;
-		margin-top: 30px;
-		margin-bottom: 30px;
-	}
-	.company_description {
-		padding-left: 0px;
-		padding-right: 0px;
-	}
-	#company_banner {
-		width: 100%;
-	}
-	#company_stats {
-		color: white;
-		font-size: 17px;
-		font-family: "Proxima Nova";
-		font-weight: 400;
-		line-height: 0.8em;
-	}
-	#company_logo {
-		padding-top: 50px;
-		width: 100%;
-		margin-bottom: 30px;
-	}
-	#company_info {
-		padding-top: 50px;
-		width: 290px;
-		text-align: left;
-		font-weight: 700;
-		font-family: "Proxima Nova";
-		font-size: 22px;
-		margin-bottom: 22px;
-		color: white;
-		line-height: 0.9em;
-		/*letter-spacing: 1px;*/
-	}
-	#company_detailed_info {
-		font-family: "Proxima Nova";
-		font-weight: 400;
-		font-size: 17px;
-		color: white;
-		line-height: 1.4em;
-		/*letter-spacing: 0.02em;*/
-	}
-	#job_description {
-		font-weight: 500;
-		font-size: 22px;
-		font-family: "Proxima Nova";
-		color: #24afb2;
-		letter-spacing: 0px;
-	}
-	#job_location {
-
-	}
 </style>
 
 {% endblock %}
@@ -85,22 +29,28 @@
 	</div>
 </div>
 <div class="row">
-	<div class="col-lg-8 col-lg-offset-2" style="padding-left:0px; padding-right:0px">
+	<div class="col-lg-8 col-lg-offset-2 no-space">
 		<img id="company_banner" src="{{ company.banner_image }}">
 	</div>
 </div>
 <div class="row">
-	<div class="col-lg-8 col-lg-offset-2" id="company_description" style="background-color: #55606e;">
+	<div class="col-lg-8 col-lg-offset-2" id="company_description_container">
 		<div class="row">
-			<div class="col-lg-4 col-lg-offset-1" id="company_stats" style="margin-bottom:60px">
+			<div class="col-lg-4 col-lg-offset-1" id="company_stats">
 				<img id="company_logo" src="{{ company.logo }}">
-				<div style="text-align:center">
-					<p>{{ company.location }}</p>
-					<p>{% if company.founded %}Founded {{ company.founded }}{% endif %}</p>
-					<p>{% if company.number_employees %}{{ company.number_employees }} employees{% endif %}</p>
+				<div class="text-center">
+					{% if company.location %}
+						<p>{{ company.location }}</p>
+					{% endif %}
+					{% if company.founded %}
+						<p>Founded {{ company.founded }}</p>
+					{% endif %}
+					{% if company.number_employees %}
+						<p>{{ company.number_employees }} employees</p>
+					{% endif %}
 				</div>
 			</div>
-			<div class="col-lg-5 col-lg-offset-1" style="margin-bottom:60px">
+			<div class="col-lg-5 col-lg-offset-1" id="company_description">
 				<div>
 					{% if user.is_authenticated %}
 						{% if is_favorited %}
@@ -109,7 +59,7 @@
 						<a class="btn-link" style="position:absolute; top:55px; right:15px; display:inline;" onclick="favoriteCompanyWithId({{ company.id }},this)"><i class="icon-plus-sign-alt icon-2x pull-right"></i></a>
 						{% endif %}
 					{% endif %}
-					<h4 id="company_info">COMPANY INFO</h4>
+					<h4 id="company_header">COMPANY INFO</h4>
 				</div>
 				<p id="company_detailed_info">{{ company.company_description }}</p>
 			</div>
@@ -117,14 +67,14 @@
 	</div>
 </div>
 <div class="row">
-	<div class="col-lg-8 col-lg-offset-2" id="company_description" style="background-color: #343a41;">
+	<div class="col-lg-8 col-lg-offset-2" id="job_description_container">
 		<div class="row">
-			<div class="col-lg-offset-1 col-lg-10" style="margin-bottom:60px">
+			<div class="col-lg-offset-1 col-lg-10">
 				{% if user.is_authenticated %}
-					<h4 id="company_info">JOBS</h4>
+					<h4 id="company_header">JOBS</h4>
 					{% if jobs %}					
 						{% for job in jobs %}
-						<p id="job_description">{{ job.name }}<span id="job_description" style="font-size:18px; font-weight:100;-webkit-font-smoothing: antialiased;">&nbsp;{{ job.location }}</span></p>
+						<p id="job_description">{{ job.name }}<span id="job_location">&nbsp;{{ job.location }}</span></p>
 						<p id="company_detailed_info">{{ job.description }}</p>
 						{% endfor %}
 					{% else %} <!-- Logged in but has no jobs available -->
@@ -136,13 +86,15 @@
 						</p>
 					{% endif %}
 				{% else %}
-					<h3 style="text-align:center; color:white;">Login to view Jobs<br /><br /><a href="/login/linkedin/?next={{request.path}}"><img src="{% static 'images/login-with-linkedin.png' %}"></a></h3>
+					<h3 class="text-center text-white">Login to view Jobs<br /><br /><a href="/login/linkedin/?next={{request.path}}"><img src="{% static 'images/login-with-linkedin.png' %}"></a></h3>
 				{% endif %}
 				<br />
 				<br />
-				<div style="text-align:center">
-					<a href="{{ company.careers_website }}" class="btn btn-done" style="font-family:'Open Sans'; font-size:14px; padding-left:20px; padding-top:10px; padding-right:20px; padding-bottom:10px; font-weight:700; -webkit-font-smoothing: antialiased;">VISIT CAREERS SITE</a>
+				<div class="text-center">
+					<a href="{{ company.careers_website }}" class="btn btn-done" id="visit_careers_site_btn">VISIT CAREERS SITE</a>
 				</div>
+				<br />
+				<br />
 			</div>
 		</div>
 	</div>

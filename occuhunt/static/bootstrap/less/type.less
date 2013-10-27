@@ -37,6 +37,7 @@ cite    { font-style: normal; }
 .text-danger         { color: @state-danger-text; }
 .text-success        { color: @state-success-text; }
 .text-info           { color: @state-info-text; }
+.text-white          { color: #fff; }
 
 // Alignment
 .text-left           { text-align: left; }
@@ -57,6 +58,10 @@ h1, h2, h3, h4, h5, h6,
     line-height: 1;
     color: @headings-small-color;
   }
+}
+
+h4, .h4 {
+  font-weight: 400;
 }
 
 h1,
@@ -94,7 +99,10 @@ h4 small, .h4 small { font-size: @font-size-base; }
   border-bottom: 1px solid @page-header-border-color;
 }
 
-
+.page-header-section {
+  color: #fff;
+  margin-bottom:10px;
+}
 
 // Lists
 // --------------------------------------------------

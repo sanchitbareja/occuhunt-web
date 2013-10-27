@@ -15,7 +15,103 @@ body {
     font-smooth: always;
 }
 
+#loadingProgressG{
+width:236px;
+height:8px;
+overflow:hidden;
+background-color:#FFFFFF;
+-moz-border-radius:4px;
+-webkit-border-radius:4px;
+-ms-border-radius:4px;
+-o-border-radius:4px;
+border-radius:4px;
+}
+
+.loadingProgressG{
+background-color:#22afb1;
+margin-top:0;
+margin-left:-236px;
+-moz-animation-name:bounce_loadingProgressG;
+-moz-animation-duration:0.7s;
+-moz-animation-iteration-count:infinite;
+-moz-animation-timing-function:linear;
+-webkit-animation-name:bounce_loadingProgressG;
+-webkit-animation-duration:0.7s;
+-webkit-animation-iteration-count:infinite;
+-webkit-animation-timing-function:linear;
+-ms-animation-name:bounce_loadingProgressG;
+-ms-animation-duration:0.7s;
+-ms-animation-iteration-count:infinite;
+-ms-animation-timing-function:linear;
+-o-animation-name:bounce_loadingProgressG;
+-o-animation-duration:0.7s;
+-o-animation-iteration-count:infinite;
+-o-animation-timing-function:linear;
+animation-name:bounce_loadingProgressG;
+animation-duration:0.7s;
+animation-iteration-count:infinite;
+animation-timing-function:linear;
+width:236px;
+height:8px;
+}
+
+@-moz-keyframes bounce_loadingProgressG{
+  0%{
+  margin-left:-236px;
+  }
+
+  100%{
+  margin-left:236px;
+  }
+
+  }
+
+  @-webkit-keyframes bounce_loadingProgressG{
+  0%{
+  margin-left:-236px;
+  }
+
+  100%{
+  margin-left:236px;
+  }
+
+  }
+
+  @-ms-keyframes bounce_loadingProgressG{
+  0%{
+  margin-left:-236px;
+  }
+
+  100%{
+  margin-left:236px;
+  }
+
+  }
+
+  @-o-keyframes bounce_loadingProgressG{
+  0%{
+  margin-left:-236px;
+  }
+
+  100%{
+  margin-left:236px;
+  }
+
+  }
+
+  @keyframes bounce_loadingProgressG{
+  0%{
+  margin-left:-236px;
+  }
+
+  100%{
+  margin-left:236px;
+  }
+
+}
+
 </style>
+
 
 {% endblock %}
 
@@ -204,22 +300,19 @@ body {
 
 {% block content %}
 
-<!-- BEGIN: Twitter website widget (http://twitterforweb.com) -->
-<!-- <div style="width:100%;font-size:10px;text-align:right;"><script type="text/javascript">
-document.write(unescape("%3Cscript src='http://twitterforweb.com/twitterbox.js?username=accenture&settings=1,0,3,300,550,f4f4f4,0,c4c4c4,101010,1,1,336699' type='text/javascript'%3E%3C/script%3E"));</script></div>
- --><!-- END: Twitter website widget (http://twitterforweb.com) -->
 {% if user.is_authenticated %}
 
-<div class="row" style="margin-bottom:10px; text-align:center;">
-  <h1 style="color:white; margin-bottom:15px text-align:center">Favorites</h1>
-  <p style="color:white; font-family:'Proxima Nova'; font-weight:400; font-size:18px; padding-bottom:0px;  margin-bottom:20px; line-height:22px;"><a href="/companies/">Add</a>, rearrange and reorder your favorite companies.</p>
+<div class="row text-center page-header-section">
+  <h1>Favorites</h1>
+  <h4>Search, add and organize your favorite companies.</h4>
 </div>
 
 <div class="row">
   <div class="col-lg-3 right-no-margin">
-    <p style="color:white; font-family:'Proxima Nova'; font-weight:400; font-size:18px; padding-bottom:0px;  margin-bottom:20px; line-height:22px;">Search for companies that have attended Berkeley's career fairs.</p>
-    <p style="color:white; font-family:'Proxima Nova'; font-weight:100; font-size:26px; padding-bottom:0px;" id="companies_found"></p>
-    <input type="text" class="form-control input-lg" id="inputCompanySearch" placeholder="Try &quot;San Francisco&quot;" style="padding-left: 13px; padding-right: 13px; margin-bottom:20px">
+    <h4 class="text-white">Search for companies that have attended Berkeley's career fairs.</h4>
+    <h3 class="text-white" id="companies_found"></h3>
+    <input type="text" class="form-control input-lg" id="inputCompanySearch" placeholder="Try &quot;San Francisco&quot;">
+    <br/>
     <button class="btn btn-done btn-lg" onclick="searchCompanies();">Search</button>
     <br />
     <br />
@@ -297,7 +390,7 @@ document.write(unescape("%3Cscript src='http://twitterforweb.com/twitterbox.js?u
 {% else %}
   <div class="row">
     <div class="col-lg-12">
-      <h3 style="text-align:center; color:white;">Login to organize your job applications process<br /><br /><a href="/login/linkedin/?next={{request.path}}"><img src="{% static 'images/login-with-linkedin.png' %}"></a></h3>
+      <h3 class="text-center text-white">Login to organize your job applications process<br /><br /><a href="/login/linkedin/?next={{request.path}}"><img src="{% static 'images/login-with-linkedin.png' %}"></a></h3>
 
       <img src="{% static 'images/favorites_example_blur.png' %}">      
     </div>

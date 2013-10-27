@@ -2,9 +2,9 @@ function addInputField(e){
   // Here you'll do whatever you want to happen when they click
   var textareaHtml = $('');
   var doneButton = $('<div id="note-options">'+
-    '<textarea id="note-options" class="form-control" rows="3" style="width:226px; margin-top:5px; padding-left: 6px;padding-top: 5px;padding-right: 6px;"></textarea>'+
+    '<textarea id="note-options" class="form-control" rows="3" style="width:100%; margin-top:5px; padding-left: 6px;padding-top: 5px;padding-right: 6px;"></textarea>'+
     '<div id="note-buttons">'+
-    '<button type="submit" class="btn btn-done btn-sm pull-right" style="font-family:\'Proxima Nova\'; font-weight:500;" onclick="addNote($(this).parent().parent());">DONE</button></div></div>');
+    '<button type="submit" class="btn btn-done btn-sm pull-right" onclick="addNote($(this).parent().parent());">DONE</button></div></div>');
   var note = $(e).find('.list-group-item-text').text();
   if($(e).find("textarea").length == 0){
     if(note){

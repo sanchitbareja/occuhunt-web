@@ -1,0 +1,131 @@
+/* -----------------------------------------
+   Company page - individual company pages
+----------------------------------------- */
+
+#company_title {
+    text-align: center;
+    color: #343a41;
+    letter-spacing: 0px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+#company_description {
+  margin-bottom: 60px;
+}
+#company_description_container {
+  padding-left: 0px;
+  padding-right: 0px;
+  background-color: #55606e;
+}
+#company_banner {
+  width: 100%;
+}
+#company_stats {
+  color: white;
+  font-size: 17px;
+  font-family: "Proxima Nova";
+  font-weight: 400;
+  line-height: 0.8em;
+  margin-bottom: 60px;
+}
+#company_logo {
+  padding-top: 50px;
+  width: 100%;
+  margin-bottom: 30px;
+}
+#company_header {
+  padding-top: 50px;
+  width: 290px;
+  text-align: left;
+  font-weight: 700;
+  font-family: "Proxima Nova";
+  font-size: 22px;
+  margin-bottom: 22px;
+  color: white;
+  line-height: 0.9em;
+  /*letter-spacing: 1px;*/
+}
+#company_detailed_info {
+  font-family: "Proxima Nova";
+  font-weight: 400;
+  font-size: 17px;
+  color: white;
+  line-height: 1.4em;
+  /*letter-spacing: 0.02em;*/
+}
+#job_description {
+  font-weight: 500;
+  font-size: 22px;
+  font-family: "Proxima Nova";
+  color: #24afb2;
+  letter-spacing: 0px;
+}
+
+#job_description_container {
+  padding-left: 0px;
+  padding-right: 0px;
+  background-color: #343a41;
+}
+
+#job_location {
+  font-size:18px; 
+  font-weight:100;
+  -webkit-font-smoothing: antialiased;
+}
+
+#visit_careers_site_btn {
+  font-family:'Open Sans'; 
+  font-size:14px; 
+  padding-left:20px; 
+  padding-top:10px; 
+  padding-right:20px; 
+  padding-bottom:10px; 
+  font-weight:700; 
+  -webkit-font-smoothing: antialiased;
+}
+
+/* -----------------------------------------
+   Spinner
+----------------------------------------- */
+    
+#spinnerWait {
+  text-align:center;
+}
+
+div.spinner {
+  position: relative;
+  width: 54px;
+  height: 54px;
+  display: inline-block;
+}
+
+div.spinner div {
+  width: 12%;
+  height: 26%;
+  background: #e0e0e0;
+  position: absolute;
+  left: 44.5%;
+  top: 37%;
+  opacity: 0;
+  -webkit-animation: fade 1s linear infinite;
+  -webkit-border-radius: 50px;
+  -webkit-box-shadow: 0 0 3px rgba(0,0,0,0.2);
+}
+
+div.spinner div.bar1 {-webkit-transform:rotate(0deg) translate(0, -142%); -webkit-animation-delay: 0s;}    
+div.spinner div.bar2 {-webkit-transform:rotate(30deg) translate(0, -142%); -webkit-animation-delay: -0.9167s;}
+div.spinner div.bar3 {-webkit-transform:rotate(60deg) translate(0, -142%); -webkit-animation-delay: -0.833s;}
+div.spinner div.bar4 {-webkit-transform:rotate(90deg) translate(0, -142%); -webkit-animation-delay: -0.75s;}
+div.spinner div.bar5 {-webkit-transform:rotate(120deg) translate(0, -142%); -webkit-animation-delay: -0.667s;}
+div.spinner div.bar6 {-webkit-transform:rotate(150deg) translate(0, -142%); -webkit-animation-delay: -0.5833s;}
+div.spinner div.bar7 {-webkit-transform:rotate(180deg) translate(0, -142%); -webkit-animation-delay: -0.5s;}
+div.spinner div.bar8 {-webkit-transform:rotate(210deg) translate(0, -142%); -webkit-animation-delay: -0.41667s;}
+div.spinner div.bar9 {-webkit-transform:rotate(240deg) translate(0, -142%); -webkit-animation-delay: -0.333s;}
+div.spinner div.bar10 {-webkit-transform:rotate(270deg) translate(0, -142%); -webkit-animation-delay: -0.25s;}
+div.spinner div.bar11 {-webkit-transform:rotate(300deg) translate(0, -142%); -webkit-animation-delay: -0.1667s;}
+div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -webkit-animation-delay: -0.0833s;}
+
+ @-webkit-keyframes fade {
+  from {opacity: 1;}
+  to {opacity: 0.25;}
+}

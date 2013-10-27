@@ -282,7 +282,7 @@ html {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 body {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Proxima Nova";
   font-size: 14px;
   line-height: 1.428571429;
   color: #333333;
@@ -396,6 +396,9 @@ cite {
 .text-info {
   color: #3a87ad;
 }
+.text-white {
+  color: #fff;
+}
 .text-left {
   text-align: left;
 }
@@ -417,7 +420,7 @@ h6,
 .h4,
 .h5,
 .h6 {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Proxima Nova";
   font-weight: 500;
   line-height: 1.1;
 }
@@ -436,6 +439,10 @@ h6 small,
   font-weight: normal;
   line-height: 1;
   color: #999999;
+}
+h4,
+.h4 {
+  font-weight: 400;
 }
 h1,
 h2,
@@ -491,6 +498,10 @@ h4 small,
   padding-bottom: 9px;
   margin: 40px 0 20px;
   border-bottom: 1px solid #eeeeee;
+}
+.page-header-section {
+  color: #fff;
+  margin-bottom: 10px;
 }
 ul,
 ol {
@@ -775,6 +786,10 @@ pre code {
   min-height: 1px;
   padding-left: 15px;
   padding-right: 15px;
+}
+.no-space {
+  padding-left: 0px;
+  padding-right: 0px;
 }
 .col-xs-1,
 .col-xs-2,
@@ -4237,7 +4252,7 @@ textarea.input-group-sm > .input-group-btn > .btn {
   padding: 9px 10px;
   margin-top: 8px;
   margin-bottom: 8px;
-  background-color: transparent;
+  background-color: black;
   border: 1px solid transparent;
   border-radius: 0px;
 }
@@ -4262,6 +4277,7 @@ textarea.input-group-sm > .input-group-btn > .btn {
   padding-top: 10px;
   padding-bottom: 10px;
   line-height: 20px;
+  font-weight: 700;
 }
 @media (max-width: 767px) {
   .navbar-nav .open .dropdown-menu {
@@ -4421,7 +4437,7 @@ textarea.input-group-sm > .input-group-btn > .btn {
   background-color: transparent;
 }
 .navbar-default .navbar-toggle {
-  border-color: #dddddd;
+  border-color: #000000;
 }
 .navbar-default .navbar-toggle:hover,
 .navbar-default .navbar-toggle:focus {

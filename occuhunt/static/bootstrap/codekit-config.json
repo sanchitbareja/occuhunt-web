@@ -20,6 +20,15 @@
       "outputAbbreviatedPath" : "No Output Path",
       "fileType" : 16
     },
+    "\/js\/tests\/index.html" : {
+      "ignoreWasSetByUser" : 0,
+      "ignore" : 0,
+      "hidden" : 0,
+      "outputPathIsSetByUser" : 0,
+      "inputAbbreviatedPath" : "\/js\/tests\/index.html",
+      "outputAbbreviatedPath" : "No Output Path",
+      "fileType" : 2048
+    },
     "\/less\/jumbotron.less" : {
       "ieCompatibility" : 1,
       "inputAbbreviatedPath" : "\/less\/jumbotron.less",
@@ -36,15 +45,6 @@
       "outputStyle" : 0,
       "fileType" : 1,
       "debugStyle" : 0
-    },
-    "\/js\/tests\/index.html" : {
-      "ignoreWasSetByUser" : 0,
-      "ignore" : 0,
-      "hidden" : 0,
-      "outputPathIsSetByUser" : 0,
-      "inputAbbreviatedPath" : "\/js\/tests\/index.html",
-      "outputAbbreviatedPath" : "No Output Path",
-      "fileType" : 2048
     },
     "\/less\/alerts.less" : {
       "ieCompatibility" : 1,
@@ -80,16 +80,22 @@
       "fileType" : 1,
       "debugStyle" : 0
     },
-    "\/assets\/js\/filesaver.js" : {
-      "ignoreWasSetByUser" : 0,
-      "ignore" : 0,
-      "hidden" : 0,
+    "\/less\/type.less" : {
+      "ieCompatibility" : 1,
+      "inputAbbreviatedPath" : "\/less\/type.less",
+      "outputAbbreviatedPath" : "\/dist\/css\/type.css",
       "outputPathIsSetByUser" : 0,
-      "inputAbbreviatedPath" : "\/assets\/js\/filesaver.js",
-      "outputStyle" : 1,
-      "syntaxCheckerStyle" : 1,
-      "outputAbbreviatedPath" : "\/assets\/js\/filesaver-ck.js",
-      "fileType" : 64
+      "strictUnits" : 0,
+      "relativeURLS" : 0,
+      "ignore" : 1,
+      "strictImports" : 0,
+      "ignoreWasSetByUser" : 0,
+      "shouldRunBless" : 0,
+      "hidden" : 0,
+      "strictMath" : 0,
+      "outputStyle" : 0,
+      "fileType" : 1,
+      "debugStyle" : 0
     },
     "\/less\/input-groups.less" : {
       "ieCompatibility" : 1,
@@ -108,22 +114,16 @@
       "fileType" : 1,
       "debugStyle" : 0
     },
-    "\/less\/utilities.less" : {
-      "ieCompatibility" : 1,
-      "inputAbbreviatedPath" : "\/less\/utilities.less",
-      "outputAbbreviatedPath" : "\/dist\/css\/utilities.css",
-      "outputPathIsSetByUser" : 0,
-      "strictUnits" : 0,
-      "relativeURLS" : 0,
-      "ignore" : 1,
-      "strictImports" : 0,
+    "\/assets\/js\/filesaver.js" : {
       "ignoreWasSetByUser" : 0,
-      "shouldRunBless" : 0,
+      "ignore" : 0,
       "hidden" : 0,
-      "strictMath" : 0,
-      "outputStyle" : 0,
-      "fileType" : 1,
-      "debugStyle" : 0
+      "outputPathIsSetByUser" : 0,
+      "inputAbbreviatedPath" : "\/assets\/js\/filesaver.js",
+      "outputStyle" : 1,
+      "syntaxCheckerStyle" : 1,
+      "outputAbbreviatedPath" : "\/assets\/js\/filesaver-ck.js",
+      "fileType" : 64
     },
     "\/js\/tests\/unit\/phantom.js" : {
       "ignoreWasSetByUser" : 0,
@@ -136,10 +136,10 @@
       "outputAbbreviatedPath" : "\/js\/tests\/unit\/phantom-ck.js",
       "fileType" : 64
     },
-    "\/less\/type.less" : {
+    "\/less\/utilities.less" : {
       "ieCompatibility" : 1,
-      "inputAbbreviatedPath" : "\/less\/type.less",
-      "outputAbbreviatedPath" : "\/dist\/css\/type.css",
+      "inputAbbreviatedPath" : "\/less\/utilities.less",
+      "outputAbbreviatedPath" : "\/dist\/css\/utilities.css",
       "outputPathIsSetByUser" : 0,
       "strictUnits" : 0,
       "relativeURLS" : 0,
@@ -273,6 +273,17 @@
       "outputAbbreviatedPath" : "\/js\/tests\/unit\/button-ck.js",
       "fileType" : 64
     },
+    "\/dist\/js\/companies-search.js" : {
+      "ignoreWasSetByUser" : 0,
+      "ignore" : 0,
+      "hidden" : 0,
+      "outputPathIsSetByUser" : 0,
+      "inputAbbreviatedPath" : "\/dist\/js\/companies-search.js",
+      "outputStyle" : 1,
+      "syntaxCheckerStyle" : 1,
+      "outputAbbreviatedPath" : "\/dist\/js\/companies-search-ck.js",
+      "fileType" : 64
+    },
     "\/js\/tests\/unit\/popover.js" : {
       "ignoreWasSetByUser" : 0,
       "ignore" : 0,
@@ -284,15 +295,15 @@
       "outputAbbreviatedPath" : "\/js\/tests\/unit\/popover-ck.js",
       "fileType" : 64
     },
-    "\/js\/tests\/unit\/tab.js" : {
+    "\/js\/tests\/unit\/collapse.js" : {
       "ignoreWasSetByUser" : 0,
       "ignore" : 0,
       "hidden" : 0,
       "outputPathIsSetByUser" : 0,
-      "inputAbbreviatedPath" : "\/js\/tests\/unit\/tab.js",
+      "inputAbbreviatedPath" : "\/js\/tests\/unit\/collapse.js",
       "outputStyle" : 1,
       "syntaxCheckerStyle" : 1,
-      "outputAbbreviatedPath" : "\/js\/tests\/unit\/tab-ck.js",
+      "outputAbbreviatedPath" : "\/js\/tests\/unit\/collapse-ck.js",
       "fileType" : 64
     },
     "\/js\/alert.js" : {
@@ -306,15 +317,15 @@
       "outputAbbreviatedPath" : "\/js\/alert-ck.js",
       "fileType" : 64
     },
-    "\/js\/tests\/unit\/collapse.js" : {
+    "\/js\/tests\/unit\/tab.js" : {
       "ignoreWasSetByUser" : 0,
       "ignore" : 0,
       "hidden" : 0,
       "outputPathIsSetByUser" : 0,
-      "inputAbbreviatedPath" : "\/js\/tests\/unit\/collapse.js",
+      "inputAbbreviatedPath" : "\/js\/tests\/unit\/tab.js",
       "outputStyle" : 1,
       "syntaxCheckerStyle" : 1,
-      "outputAbbreviatedPath" : "\/js\/tests\/unit\/collapse-ck.js",
+      "outputAbbreviatedPath" : "\/js\/tests\/unit\/tab-ck.js",
       "fileType" : 64
     },
     "\/assets\/css\/docs.css" : {
@@ -337,6 +348,17 @@
       "outputAbbreviatedPath" : "\/assets\/js\/html5shiv-ck.js",
       "fileType" : 64
     },
+    "\/js\/scrollspy.js" : {
+      "ignoreWasSetByUser" : 0,
+      "ignore" : 0,
+      "hidden" : 0,
+      "outputPathIsSetByUser" : 0,
+      "inputAbbreviatedPath" : "\/js\/scrollspy.js",
+      "outputStyle" : 1,
+      "syntaxCheckerStyle" : 1,
+      "outputAbbreviatedPath" : "\/js\/scrollspy-ck.js",
+      "fileType" : 64
+    },
     "\/assets\/js\/raw-files.js" : {
       "ignoreWasSetByUser" : 0,
       "ignore" : 0,
@@ -346,6 +368,17 @@
       "outputStyle" : 1,
       "syntaxCheckerStyle" : 1,
       "outputAbbreviatedPath" : "\/assets\/js\/raw-files-ck.js",
+      "fileType" : 64
+    },
+    "\/js\/tests\/unit\/affix.js" : {
+      "ignoreWasSetByUser" : 0,
+      "ignore" : 0,
+      "hidden" : 0,
+      "outputPathIsSetByUser" : 0,
+      "inputAbbreviatedPath" : "\/js\/tests\/unit\/affix.js",
+      "outputStyle" : 1,
+      "syntaxCheckerStyle" : 1,
+      "outputAbbreviatedPath" : "\/js\/tests\/unit\/affix-ck.js",
       "fileType" : 64
     },
     "\/less\/badges.less" : {
@@ -364,28 +397,6 @@
       "outputStyle" : 0,
       "fileType" : 1,
       "debugStyle" : 0
-    },
-    "\/js\/scrollspy.js" : {
-      "ignoreWasSetByUser" : 0,
-      "ignore" : 0,
-      "hidden" : 0,
-      "outputPathIsSetByUser" : 0,
-      "inputAbbreviatedPath" : "\/js\/scrollspy.js",
-      "outputStyle" : 1,
-      "syntaxCheckerStyle" : 1,
-      "outputAbbreviatedPath" : "\/js\/scrollspy-ck.js",
-      "fileType" : 64
-    },
-    "\/js\/tests\/unit\/affix.js" : {
-      "ignoreWasSetByUser" : 0,
-      "ignore" : 0,
-      "hidden" : 0,
-      "outputPathIsSetByUser" : 0,
-      "inputAbbreviatedPath" : "\/js\/tests\/unit\/affix.js",
-      "outputStyle" : 1,
-      "syntaxCheckerStyle" : 1,
-      "outputAbbreviatedPath" : "\/js\/tests\/unit\/affix-ck.js",
-      "fileType" : 64
     },
     "\/dist\/css\/bootstrap.css" : {
       "ignoreWasSetByUser" : 0,
@@ -407,28 +418,6 @@
       "initialSize" : 3614,
       "fileType" : 8192
     },
-    "\/js\/tests\/phantom.js" : {
-      "ignoreWasSetByUser" : 0,
-      "ignore" : 0,
-      "hidden" : 0,
-      "outputPathIsSetByUser" : 0,
-      "inputAbbreviatedPath" : "\/js\/tests\/phantom.js",
-      "outputStyle" : 1,
-      "syntaxCheckerStyle" : 1,
-      "outputAbbreviatedPath" : "\/js\/tests\/phantom-ck.js",
-      "fileType" : 64
-    },
-    "\/dist\/js\/jquery.gridster.js" : {
-      "ignoreWasSetByUser" : 0,
-      "ignore" : 0,
-      "hidden" : 0,
-      "outputPathIsSetByUser" : 0,
-      "inputAbbreviatedPath" : "\/dist\/js\/jquery.gridster.js",
-      "outputStyle" : 1,
-      "syntaxCheckerStyle" : 1,
-      "outputAbbreviatedPath" : "\/dist\/js\/jquery.gridster-ck.js",
-      "fileType" : 64
-    },
     "\/less\/navbar.less" : {
       "ieCompatibility" : 1,
       "inputAbbreviatedPath" : "\/less\/navbar.less",
@@ -446,6 +435,26 @@
       "fileType" : 1,
       "debugStyle" : 0
     },
+    "\/dist\/js\/jquery.gridster.js" : {
+      "ignoreWasSetByUser" : 0,
+      "ignore" : 0,
+      "hidden" : 0,
+      "outputPathIsSetByUser" : 0,
+      "inputAbbreviatedPath" : "\/dist\/js\/jquery.gridster.js",
+      "outputStyle" : 1,
+      "syntaxCheckerStyle" : 1,
+      "outputAbbreviatedPath" : "\/dist\/js\/jquery.gridster-ck.js",
+      "fileType" : 64
+    },
+    "\/dist\/css\/companies-list.css" : {
+      "ignoreWasSetByUser" : 0,
+      "ignore" : 0,
+      "hidden" : 0,
+      "outputPathIsSetByUser" : 0,
+      "inputAbbreviatedPath" : "\/dist\/css\/companies-list.css",
+      "outputAbbreviatedPath" : "No Output Path",
+      "fileType" : 16
+    },
     "\/js\/tests\/unit\/transition.js" : {
       "ignoreWasSetByUser" : 0,
       "ignore" : 0,
@@ -455,6 +464,17 @@
       "outputStyle" : 1,
       "syntaxCheckerStyle" : 1,
       "outputAbbreviatedPath" : "\/js\/tests\/unit\/transition-ck.js",
+      "fileType" : 64
+    },
+    "\/js\/tests\/phantom.js" : {
+      "ignoreWasSetByUser" : 0,
+      "ignore" : 0,
+      "hidden" : 0,
+      "outputPathIsSetByUser" : 0,
+      "inputAbbreviatedPath" : "\/js\/tests\/phantom.js",
+      "outputStyle" : 1,
+      "syntaxCheckerStyle" : 1,
+      "outputAbbreviatedPath" : "\/js\/tests\/phantom-ck.js",
       "fileType" : 64
     },
     "\/dist\/css\/normalize.css" : {
@@ -561,6 +581,17 @@
       "fileType" : 1,
       "debugStyle" : 0
     },
+    "\/dist\/js\/jquery-sortable.js" : {
+      "ignoreWasSetByUser" : 0,
+      "ignore" : 0,
+      "hidden" : 0,
+      "outputPathIsSetByUser" : 0,
+      "inputAbbreviatedPath" : "\/dist\/js\/jquery-sortable.js",
+      "outputStyle" : 1,
+      "syntaxCheckerStyle" : 1,
+      "outputAbbreviatedPath" : "\/dist\/js\/jquery-sortable-ck.js",
+      "fileType" : 64
+    },
     "\/less\/breadcrumbs.less" : {
       "ieCompatibility" : 1,
       "inputAbbreviatedPath" : "\/less\/breadcrumbs.less",
@@ -577,17 +608,6 @@
       "outputStyle" : 0,
       "fileType" : 1,
       "debugStyle" : 0
-    },
-    "\/dist\/js\/jquery-sortable.js" : {
-      "ignoreWasSetByUser" : 0,
-      "ignore" : 0,
-      "hidden" : 0,
-      "outputPathIsSetByUser" : 0,
-      "inputAbbreviatedPath" : "\/dist\/js\/jquery-sortable.js",
-      "outputStyle" : 1,
-      "syntaxCheckerStyle" : 1,
-      "outputAbbreviatedPath" : "\/dist\/js\/jquery-sortable-ck.js",
-      "fileType" : 64
     },
     "\/less\/carousel.less" : {
       "ieCompatibility" : 1,
@@ -610,34 +630,6 @@
       "ieCompatibility" : 1,
       "inputAbbreviatedPath" : "\/less\/popovers.less",
       "outputAbbreviatedPath" : "\/dist\/css\/popovers.css",
-      "outputPathIsSetByUser" : 0,
-      "strictUnits" : 0,
-      "relativeURLS" : 0,
-      "ignore" : 1,
-      "strictImports" : 0,
-      "ignoreWasSetByUser" : 0,
-      "shouldRunBless" : 0,
-      "hidden" : 0,
-      "strictMath" : 0,
-      "outputStyle" : 0,
-      "fileType" : 1,
-      "debugStyle" : 0
-    },
-    "\/assets\/js\/less.js" : {
-      "ignoreWasSetByUser" : 0,
-      "ignore" : 0,
-      "hidden" : 0,
-      "outputPathIsSetByUser" : 0,
-      "inputAbbreviatedPath" : "\/assets\/js\/less.js",
-      "outputStyle" : 1,
-      "syntaxCheckerStyle" : 1,
-      "outputAbbreviatedPath" : "\/assets\/js\/less-ck.js",
-      "fileType" : 64
-    },
-    "\/less\/dropdowns.less" : {
-      "ieCompatibility" : 1,
-      "inputAbbreviatedPath" : "\/less\/dropdowns.less",
-      "outputAbbreviatedPath" : "\/dist\/css\/dropdowns.css",
       "outputPathIsSetByUser" : 0,
       "strictUnits" : 0,
       "relativeURLS" : 0,
@@ -679,6 +671,45 @@
       "outputAbbreviatedPath" : "\/js\/tests\/unit\/carousel-ck.js",
       "fileType" : 64
     },
+    "\/less\/dropdowns.less" : {
+      "ieCompatibility" : 1,
+      "inputAbbreviatedPath" : "\/less\/dropdowns.less",
+      "outputAbbreviatedPath" : "\/dist\/css\/dropdowns.css",
+      "outputPathIsSetByUser" : 0,
+      "strictUnits" : 0,
+      "relativeURLS" : 0,
+      "ignore" : 1,
+      "strictImports" : 0,
+      "ignoreWasSetByUser" : 0,
+      "shouldRunBless" : 0,
+      "hidden" : 0,
+      "strictMath" : 0,
+      "outputStyle" : 0,
+      "fileType" : 1,
+      "debugStyle" : 0
+    },
+    "\/assets\/js\/less.js" : {
+      "ignoreWasSetByUser" : 0,
+      "ignore" : 0,
+      "hidden" : 0,
+      "outputPathIsSetByUser" : 0,
+      "inputAbbreviatedPath" : "\/assets\/js\/less.js",
+      "outputStyle" : 1,
+      "syntaxCheckerStyle" : 1,
+      "outputAbbreviatedPath" : "\/assets\/js\/less-ck.js",
+      "fileType" : 64
+    },
+    "\/dist\/js\/favoriting.js" : {
+      "ignoreWasSetByUser" : 0,
+      "ignore" : 0,
+      "hidden" : 0,
+      "outputPathIsSetByUser" : 0,
+      "inputAbbreviatedPath" : "\/dist\/js\/favoriting.js",
+      "outputStyle" : 1,
+      "syntaxCheckerStyle" : 1,
+      "outputAbbreviatedPath" : "\/dist\/js\/favoriting-ck.js",
+      "fileType" : 64
+    },
     "\/less\/tooltip.less" : {
       "ieCompatibility" : 1,
       "inputAbbreviatedPath" : "\/less\/tooltip.less",
@@ -695,6 +726,15 @@
       "outputStyle" : 0,
       "fileType" : 1,
       "debugStyle" : 0
+    },
+    "\/dist\/css\/app.css" : {
+      "ignoreWasSetByUser" : 0,
+      "ignore" : 0,
+      "hidden" : 0,
+      "outputPathIsSetByUser" : 0,
+      "inputAbbreviatedPath" : "\/dist\/css\/app.css",
+      "outputAbbreviatedPath" : "No Output Path",
+      "fileType" : 16
     },
     "\/assets\/ico\/favicon.png" : {
       "ignoreWasSetByUser" : 0,
@@ -751,6 +791,15 @@
       "outputAbbreviatedPath" : "\/js\/popover-ck.js",
       "fileType" : 64
     },
+    "\/dist\/css\/theme.css" : {
+      "ignoreWasSetByUser" : 0,
+      "ignore" : 1,
+      "hidden" : 0,
+      "outputPathIsSetByUser" : 0,
+      "inputAbbreviatedPath" : "\/dist\/css\/theme.css",
+      "outputAbbreviatedPath" : "No Output Path",
+      "fileType" : 16
+    },
     "\/dist\/css\/mixins.css" : {
       "ignoreWasSetByUser" : 0,
       "ignore" : 1,
@@ -760,16 +809,14 @@
       "outputAbbreviatedPath" : "No Output Path",
       "fileType" : 16
     },
-    "\/assets\/js\/holder.js" : {
+    "\/assets\/css\/pygments-manni.css" : {
       "ignoreWasSetByUser" : 0,
       "ignore" : 0,
       "hidden" : 0,
       "outputPathIsSetByUser" : 0,
-      "inputAbbreviatedPath" : "\/assets\/js\/holder.js",
-      "outputStyle" : 1,
-      "syntaxCheckerStyle" : 1,
-      "outputAbbreviatedPath" : "\/assets\/js\/holder-ck.js",
-      "fileType" : 64
+      "inputAbbreviatedPath" : "\/assets\/css\/pygments-manni.css",
+      "outputAbbreviatedPath" : "No Output Path",
+      "fileType" : 16
     },
     "\/dist\/js\/bootstrap.min.js" : {
       "ignoreWasSetByUser" : 0,
@@ -799,23 +846,16 @@
       "fileType" : 1,
       "debugStyle" : 0
     },
-    "\/dist\/css\/theme.css" : {
-      "ignoreWasSetByUser" : 0,
-      "ignore" : 1,
-      "hidden" : 0,
-      "outputPathIsSetByUser" : 0,
-      "inputAbbreviatedPath" : "\/dist\/css\/theme.css",
-      "outputAbbreviatedPath" : "No Output Path",
-      "fileType" : 16
-    },
-    "\/assets\/css\/pygments-manni.css" : {
+    "\/assets\/js\/holder.js" : {
       "ignoreWasSetByUser" : 0,
       "ignore" : 0,
       "hidden" : 0,
       "outputPathIsSetByUser" : 0,
-      "inputAbbreviatedPath" : "\/assets\/css\/pygments-manni.css",
-      "outputAbbreviatedPath" : "No Output Path",
-      "fileType" : 16
+      "inputAbbreviatedPath" : "\/assets\/js\/holder.js",
+      "outputStyle" : 1,
+      "syntaxCheckerStyle" : 1,
+      "outputAbbreviatedPath" : "\/assets\/js\/holder-ck.js",
+      "fileType" : 64
     },
     "\/dist\/css\/bootstrap-theme.min.css" : {
       "ignoreWasSetByUser" : 0,
@@ -905,6 +945,17 @@
       "fileType" : 1,
       "debugStyle" : 0
     },
+    "\/js\/modal.js" : {
+      "ignoreWasSetByUser" : 0,
+      "ignore" : 0,
+      "hidden" : 0,
+      "outputPathIsSetByUser" : 0,
+      "inputAbbreviatedPath" : "\/js\/modal.js",
+      "outputStyle" : 1,
+      "syntaxCheckerStyle" : 1,
+      "outputAbbreviatedPath" : "\/js\/modal-ck.js",
+      "fileType" : 64
+    },
     "\/less\/wells.less" : {
       "ieCompatibility" : 1,
       "inputAbbreviatedPath" : "\/less\/wells.less",
@@ -938,17 +989,6 @@
       "outputStyle" : 0,
       "fileType" : 1,
       "debugStyle" : 0
-    },
-    "\/js\/modal.js" : {
-      "ignoreWasSetByUser" : 0,
-      "ignore" : 0,
-      "hidden" : 0,
-      "outputPathIsSetByUser" : 0,
-      "inputAbbreviatedPath" : "\/js\/modal.js",
-      "outputStyle" : 1,
-      "syntaxCheckerStyle" : 1,
-      "outputAbbreviatedPath" : "\/js\/modal-ck.js",
-      "fileType" : 64
     },
     "\/less\/panels.less" : {
       "ieCompatibility" : 1,
@@ -1000,6 +1040,15 @@
       "outputStyle" : 0,
       "fileType" : 1,
       "debugStyle" : 0
+    },
+    "\/dist\/css\/companies-favoriting.css" : {
+      "ignoreWasSetByUser" : 0,
+      "ignore" : 0,
+      "hidden" : 0,
+      "outputPathIsSetByUser" : 0,
+      "inputAbbreviatedPath" : "\/dist\/css\/companies-favoriting.css",
+      "outputAbbreviatedPath" : "No Output Path",
+      "fileType" : 16
     },
     "\/less\/tables.less" : {
       "ieCompatibility" : 1,
@@ -1302,10 +1351,10 @@
       "initialSize" : 2939,
       "fileType" : 8192
     },
-    "\/less\/code.less" : {
+    "\/less\/list-group.less" : {
       "ieCompatibility" : 1,
-      "inputAbbreviatedPath" : "\/less\/code.less",
-      "outputAbbreviatedPath" : "\/dist\/css\/code.css",
+      "inputAbbreviatedPath" : "\/less\/list-group.less",
+      "outputAbbreviatedPath" : "\/dist\/css\/list-group.css",
       "outputPathIsSetByUser" : 0,
       "strictUnits" : 0,
       "relativeURLS" : 0,
@@ -1341,10 +1390,10 @@
       "outputAbbreviatedPath" : "\/js\/tests\/server-ck.js",
       "fileType" : 64
     },
-    "\/less\/list-group.less" : {
+    "\/less\/code.less" : {
       "ieCompatibility" : 1,
-      "inputAbbreviatedPath" : "\/less\/list-group.less",
-      "outputAbbreviatedPath" : "\/dist\/css\/list-group.css",
+      "inputAbbreviatedPath" : "\/less\/code.less",
+      "outputAbbreviatedPath" : "\/dist\/css\/code.css",
       "outputPathIsSetByUser" : 0,
       "strictUnits" : 0,
       "relativeURLS" : 0,
