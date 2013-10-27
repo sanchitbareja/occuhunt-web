@@ -49,7 +49,6 @@ def company(request, companyID):
                 is_favorited = True
             if len(request.user.groups.filter(name="UC Berkeley")) > 0:
               filtered_jobs = Job.objects.filter(network__name="UC Berkeley").filter(company=company)
-              print filtered_jobs
             return render_to_response('company.html', {'version': version, 'company': company, 'is_favorited':is_favorited, 'jobs':filtered_jobs},
                                   RequestContext(request))
     except Exception as e:

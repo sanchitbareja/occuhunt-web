@@ -10,6 +10,7 @@ django-social-auth==0.7.26
 django-storages==1.1.8
 django-tastypie==0.10.0
 django-toolbelt==0.0.1
+django-debug-toolbar==0.9.4
 glassdoor==0.0.4
 gunicorn==18.0
 httplib2==0.8

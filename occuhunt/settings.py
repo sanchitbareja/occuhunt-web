@@ -93,6 +93,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
@@ -124,6 +125,7 @@ INSTALLED_APPS = (
     # third-party apps
     'south',
     'django_extensions',
+    'debug_toolbar',
     'tastypie',
     'storages',
     'social_auth',
@@ -169,6 +171,12 @@ LOGGING = {
     }
 }
 
+# DJANGO DEBUG TOOLBAR
+INTERNAL_IPS = ('127.0.0.1',)
+DEBUG_TOOLBAR_CONFIG = {
+    'INTERCEPT_REDIRECTS': False,
+}
+
 # EMAIL SETTINGS
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
@@ -207,6 +215,7 @@ SOCIAL_AUTH_PIPELINE = (
     'social_auth.backends.pipeline.social.associate_user',
     'social_auth.backends.pipeline.social.load_extra_data',
     'social_auth.backends.pipeline.user.update_user_details',
+    # 'social_auth.backends.pipeline.misc.save_status_to_session',
     'api.pipeline.linkedin_test',
 )
 
@@ -216,6 +225,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.i18n',
     'django.core.context_processors.media',
     'django.contrib.messages.context_processors.messages',
+    'django.core.context_processors.request',
     'social_auth.context_processors.social_auth_by_type_backends',
     'social_auth.context_processors.social_auth_login_redirect',
 )
@@ -237,12 +247,9 @@ LINKEDIN_EXTRA_DATA = [('id', 'id'),
                        ('headline', 'headline'),
                        ('industry', 'industry'),
                        ('location', 'location'),
-                       ('summary', 'summary'),
-                       ('specialties', 'specialties'),
                        ('positions', 'positions'),
                        ('educations', 'educations'),
-                       ('skills', 'skills'),
-                       ('summary','summary')]
+                       ('skills', 'skills')]
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')

@@ -59,7 +59,7 @@
           </ul>
         </li>
         {% else %}
-        <li><a href="/login/linkedin/?next={{request.get_full_path}}"><img src="{% static 'images/login-with-linkedin.png' %}"></a></li>
+        <li><a href="/login/linkedin/?next={{request.path}}"><img src="{% static 'images/login-with-linkedin.png' %}"></a></li>
         {% endif %}
       </ul>
     </div><!--/.nav-collapse -->
