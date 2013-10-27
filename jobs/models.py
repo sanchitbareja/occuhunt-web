@@ -1,5 +1,6 @@
 from django.db import models
 from companies.models import Company
+from django.contrib.auth.models import Group
 from fairs.models import Fair
 from users.models import User
 
@@ -30,9 +31,11 @@ JOB_TYPES_LIST = (
 
 class Job(models.Model):
 	name = models.CharField(max_length=512)
+	description = models.TextField(null=True, blank=True)
 	job_type = models.CharField(max_length=512, null=True, blank=True, choices=JOB_TYPES_LIST)
 	location = models.CharField(max_length=512, null=True, blank=True)
 	company = models.ForeignKey(Company)
+	network = models.ForeignKey(Group, null=True, blank=True)
 	fair = models.ForeignKey(Fair, null=True, blank=True)
 
 	def __unicode__(self):

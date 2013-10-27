@@ -120,9 +120,13 @@
 	<div class="col-lg-8 col-lg-offset-2" id="company_description" style="background-color: #343a41;">
 		<div class="row">
 			<div class="col-lg-offset-1 col-lg-10" style="margin-bottom:60px">
-<!-- 				<h4 id="company_info">JOBS</h4>
-				<p id="job_description">Product Manager <span id="job_description" style="font-size:18px; font-weight:100; 		-webkit-font-smoothing: antialiased;">&nbsp;San Francisco, CA</span></p>
-				<p id="company_detailed_info">The Project Manager has the overall responsibility for a project, taking it from concept to completion. Each Project Manager has full profit and performance responsibility for his/her jobs. The Intern will support the Project Manager with estimating, scheduling, design meetings, buyout, permitting, shop drawing and submittal review, billing, and job site visits.</p> -->
+				{% if jobs %}
+					<h4 id="company_info">JOBS</h4>
+					{% for job in jobs %}
+					<p id="job_description">{{ job.name }}<span id="job_description" style="font-size:18px; font-weight:100;-webkit-font-smoothing: antialiased;">&nbsp;{{ job.location }}</span></p>
+					<p id="company_detailed_info">{{ job.description }}</p>
+					{% endfor %}
+				{% endif %}
 				<br />
 				<br />
 				<div style="text-align:center">

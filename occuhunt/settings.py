@@ -187,13 +187,28 @@ AUTHENTICATION_BACKENDS = (
 )
 
 LOGIN_URL = '/login-form/'
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/home/'
 LOGIN_ERROR_URL = '/login-error/'
-
 AUTH_USER_MODEL = 'users.User'
 SOCIAL_AUTH_USER_MODEL = AUTH_USER_MODEL
-
 SOCIAL_AUTH_RAISE_EXCEPTIONS = True
+# LinkedIn specific config
+LINKEDIN_CONSUMER_KEY = 'xu79xm7p77of'
+LINKEDIN_CONSUMER_SECRET = 'UnJhJkwNuUru2m4Y'
+LINKEDIN_SCOPE = ['r_basicprofile', 'r_emailaddress', 'r_fullprofile','r_contactinfo','r_network']
+# LINKEDIN_FORCE_PROFILE_LANGUAGE = True
+# LINKEDIN_FORCE_PROFILE_LANGUAGE = 'en-US'
+
+SOCIAL_AUTH_PIPELINE = (
+    'social_auth.backends.pipeline.social.social_auth_user',
+    #'social_auth.backends.pipeline.associate.associate_by_email',
+    'social_auth.backends.pipeline.user.get_username',
+    'social_auth.backends.pipeline.user.create_user',
+    'social_auth.backends.pipeline.social.associate_user',
+    'social_auth.backends.pipeline.social.load_extra_data',
+    'social_auth.backends.pipeline.user.update_user_details',
+    'api.pipeline.linkedin_test',
+)
 
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.auth.context_processors.auth',
@@ -205,23 +220,29 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'social_auth.context_processors.social_auth_login_redirect',
 )
 
-# LinkedIn specific config
-LINKEDIN_CONSUMER_KEY = 'xu79xm7p77of'
-LINKEDIN_CONSUMER_SECRET = 'UnJhJkwNuUru2m4Y'
-LINKEDIN_SCOPE = ['r_basicprofile', 'r_emailaddress', 'r_fullprofile','r_contactinfo','r_network']
-
 LINKEDIN_EXTRA_FIELD_SELECTORS = [
     'email-address',
     'headline',
     'industry',
     'location',
-    'summary',
-    'specialties',
     'positions',
     'educations',
     'skills',
-    'summary',
 ]
+
+LINKEDIN_EXTRA_DATA = [('id', 'id'),
+                       ('first-name', 'first_name'),
+                       ('last-name', 'last_name'),
+                       ('email-address', 'email_address'),
+                       ('headline', 'headline'),
+                       ('industry', 'industry'),
+                       ('location', 'location'),
+                       ('summary', 'summary'),
+                       ('specialties', 'specialties'),
+                       ('positions', 'positions'),
+                       ('educations', 'educations'),
+                       ('skills', 'skills'),
+                       ('summary','summary')]
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
