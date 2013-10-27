@@ -26,6 +26,7 @@ body {
 <script type="text/javascript">
   function initialize_favoriting() {
     refreshStats();
+    console.log("initialize_favoriting");
     var oldContainer;
     $("div.list-group").sortable({
       containerSelector:"div.list-group-item", 
@@ -58,9 +59,140 @@ body {
     });
   }
 
+  function update_favorites(){
+    user_id = $("#user_id").val();
+    console.log(user_id);
+    $.ajax({ 
+      url:'/api/v1/favorites/', 
+      type:'GET',
+      dataType: 'json',
+      data: {
+        'user_id': user_id
+      }, 
+      contentType: 'application/json',
+      statusCode : {
+        200: function(data, textStatus, jsXHR){
+          console.log("update_favorites");
+          $('.list-group-item').remove();
+          for(i in data['response']['favorites']){
+            if(data['response']['favorites'][i]['category'] == "Uncategorized"){
+              $("#favorite-category-uncategorized").append('<div class="list-group-item">'+
+                '<input id="favorite_id" type="hidden" value="'+data['response']['favorites'][i]['id']+'"/>'+
+                '<div class="row">'+
+                  '<div class="col-lg-12">'+
+                    '<div class="row">'+
+                      '<div class="col-lg-2">'+
+                        '<a target="_blank" href="/company/'+data['response']['favorites'][i]['company']['id']+'/"><img class="logo-thumbnail" src="'+data['response']['favorites'][i]['company']['logo']+'"></a>'+
+                      '</div>'+
+                      '<div class="col-lg-8">'+
+                        '<h4 class="list-group-item-heading">'+data['response']['favorites'][i]['company']['name']+'</h4>'+
+                      '</div>'+
+                      '<div class="col-lg-2">'+
+                        '<a class="pull-right" id="write-note" onclick="addInputField($(this).parent().parent().parent());"><span class="glyphicon glyphicon-pencil"></span></a>'+
+                      '</div>'+
+                    '</div>'+
+                    '<div class="row">'+
+                      '<div class="col-lg-10 col-lg-offset-2">'+
+                        '<p class="list-group-item-text">'+data['response']['favorites'][i]['note']+'</p>'+
+                      '</div>'+
+                    '</div>'+
+                  '</div>'+
+                '</div>'+
+              '</div>');
+            }
+            if(data['response']['favorites'][i]['category'] == "Applied"){
+              $("#favorite-category-applied").append('<div class="list-group-item">'+
+                '<input id="favorite_id" type="hidden" value="'+data['response']['favorites'][i]['id']+'"/>'+
+                '<div class="row">'+
+                  '<div class="col-lg-12">'+
+                    '<div class="row">'+
+                      '<div class="col-lg-2">'+
+                        '<a target="_blank" href="/company/'+data['response']['favorites'][i]['company']['id']+'/"><img class="logo-thumbnail" src="'+data['response']['favorites'][i]['company']['logo']+'"></a>'+
+                      '</div>'+
+                      '<div class="col-lg-8">'+
+                        '<h4 class="list-group-item-heading">'+data['response']['favorites'][i]['company']['name']+'</h4>'+
+                      '</div>'+
+                      '<div class="col-lg-2">'+
+                        '<a class="pull-right" id="write-note" onclick="addInputField($(this).parent().parent().parent());"><span class="glyphicon glyphicon-pencil"></span></a>'+
+                      '</div>'+
+                    '</div>'+
+                    '<div class="row">'+
+                      '<div class="col-lg-10 col-lg-offset-2">'+
+                        '<p class="list-group-item-text">'+data['response']['favorites'][i]['note']+'</p>'+
+                      '</div>'+
+                    '</div>'+
+                  '</div>'+
+                '</div>'+
+              '</div>');
+            }
+            if(data['response']['favorites'][i]['category'] == "Interviewing"){
+              $("#favorite-category-interviewing").append('<div class="list-group-item">'+
+                '<input id="favorite_id" type="hidden" value="'+data['response']['favorites'][i]['id']+'"/>'+
+                '<div class="row">'+
+                  '<div class="col-lg-12">'+
+                    '<div class="row">'+
+                      '<div class="col-lg-2">'+
+                        '<a target="_blank" href="/company/'+data['response']['favorites'][i]['company']['id']+'/"><img class="logo-thumbnail" src="'+data['response']['favorites'][i]['company']['logo']+'"></a>'+
+                      '</div>'+
+                      '<div class="col-lg-8">'+
+                        '<h4 class="list-group-item-heading">'+data['response']['favorites'][i]['company']['name']+'</h4>'+
+                      '</div>'+
+                      '<div class="col-lg-2">'+
+                        '<a class="pull-right" id="write-note" onclick="addInputField($(this).parent().parent().parent());"><span class="glyphicon glyphicon-pencil"></span></a>'+
+                      '</div>'+
+                    '</div>'+
+                    '<div class="row">'+
+                      '<div class="col-lg-10 col-lg-offset-2">'+
+                        '<p class="list-group-item-text">'+data['response']['favorites'][i]['note']+'</p>'+
+                      '</div>'+
+                    '</div>'+
+                  '</div>'+
+                '</div>'+
+              '</div>');
+            }
+            if(data['response']['favorites'][i]['category'] == "Offered"){
+              $("#favorite-category-offered").append('<div class="list-group-item">'+
+                '<input id="favorite_id" type="hidden" value="'+data['response']['favorites'][i]['id']+'"/>'+
+                '<div class="row">'+
+                  '<div class="col-lg-12">'+
+                    '<div class="row">'+
+                      '<div class="col-lg-2">'+
+                        '<a target="_blank" href="/company/'+data['response']['favorites'][i]['company']['id']+'/"><img class="logo-thumbnail" src="'+data['response']['favorites'][i]['company']['logo']+'"></a>'+
+                      '</div>'+
+                      '<div class="col-lg-8">'+
+                        '<h4 class="list-group-item-heading">'+data['response']['favorites'][i]['company']['name']+'</h4>'+
+                      '</div>'+
+                      '<div class="col-lg-2">'+
+                        '<a class="pull-right" id="write-note" onclick="addInputField($(this).parent().parent().parent());"><span class="glyphicon glyphicon-pencil"></span></a>'+
+                      '</div>'+
+                    '</div>'+
+                    '<div class="row">'+
+                      '<div class="col-lg-10 col-lg-offset-2">'+
+                        '<p class="list-group-item-text">'+data['response']['favorites'][i]['note']+'</p>'+
+                      '</div>'+
+                    '</div>'+
+                  '</div>'+
+                '</div>'+
+              '</div>');
+            }
+          }
+          console.log(data);
+          console.log(textStatus);
+          console.log(jsXHR);
+        },
+        500: function(data, textStatus, jsXHR){
+          console.log(data);
+          console.log(textStatus);
+          console.log(jsXHR);
+        }
+      }
+    });
+  }
+
   function initialize(){
     randomizeString();
-    getCompanies();
+    get_companies();
+    update_favorites();
     initialize_favoriting();
   }
 
@@ -106,7 +238,7 @@ document.write(unescape("%3Cscript src='http://twitterforweb.com/twitterbox.js?u
 
 <div class="row">
   <div class="col-lg-3 right-no-margin">
-    <div class="list-group" id="fixed-height-draggable">
+    <div class="list-group fixed-height-draggable" id="favorite-category-uncategorized">
       <div class="list-group-header" id="category-uncategorized">
         <div class="row">
           <div class="col-lg-6">
@@ -117,37 +249,10 @@ document.write(unescape("%3Cscript src='http://twitterforweb.com/twitterbox.js?u
           </div>
         </div>
       </div>
-      {% for favorite in favorites %}
-        {% if favorite.category  == "Uncategorized" %}  
-          <div class="list-group-item">
-            <input id="favorite_id" type="hidden" value="{{ favorite.id }}"/>
-            <div class="row">
-              <div class="col-lg-12">
-                <div class="row">
-                  <div class="col-lg-2">
-                    <a target="_blank" href="/company/{{ favorite.company.id }}/"><img class="logo-thumbnail" src="{{ favorite.company.logo }}"></a>
-                  </div>
-                  <div class="col-lg-8">
-                    <h4 class="list-group-item-heading">{{ favorite.company }}</h4>
-                  </div>
-                  <div class="col-lg-2">
-                    <a class="pull-right" id="write-note" onclick="addInputField($(this).parent().parent().parent());"><span class="glyphicon glyphicon-pencil"></span></a>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-lg-10 col-lg-offset-2">
-                    <p class="list-group-item-text">{{ favorite.note }}</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        {% endif %}
-      {% endfor %}
     </div>
   </div>
   <div class="col-lg-3 right-no-margin">
-    <div class="list-group" id="fixed-height-draggable">
+    <div class="list-group fixed-height-draggable" id="favorite-category-applied">
       <div class="list-group-header" id="category-applied">
         <div class="row">
           <div class="col-lg-6">
@@ -158,37 +263,10 @@ document.write(unescape("%3Cscript src='http://twitterforweb.com/twitterbox.js?u
           </div>
         </div>
       </div>
-      {% for favorite in favorites %}
-        {% if favorite.category  == "Applied" %}  
-          <div class="list-group-item">
-            <input id="favorite_id" type="hidden" value="{{ favorite.id }}"/>
-            <div class="row">
-              <div class="col-lg-12">
-                <div class="row">
-                  <div class="col-lg-2">
-                    <a target="_blank" href="/company/{{ favorite.company.id }}/"><img class="logo-thumbnail" src="{{ favorite.company.logo }}"></a>
-                  </div>
-                  <div class="col-lg-8">
-                    <h4 class="list-group-item-heading">{{ favorite.company }}</h4>
-                  </div>
-                  <div class="col-lg-2">
-                    <a class="pull-right" id="write-note" onclick="addInputField($(this).parent().parent().parent());"><span class="glyphicon glyphicon-pencil"></span></a>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-lg-10 col-lg-offset-2">
-                    <p class="list-group-item-text">{{ favorite.note }}</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        {% endif %}
-      {% endfor %}
     </div>
   </div>
   <div class="col-lg-3 right-no-margin">
-    <div class="list-group" id="fixed-height-draggable">
+    <div class="list-group fixed-height-draggable" id="favorite-category-interviewing">
       <div class="list-group-header" id="category-interviewing">
         <div class="row">
           <div class="col-lg-6">
@@ -199,37 +277,10 @@ document.write(unescape("%3Cscript src='http://twitterforweb.com/twitterbox.js?u
           </div>
         </div>
       </div>
-      {% for favorite in favorites %}
-        {% if favorite.category  == "Interviewing" %}  
-          <div class="list-group-item">
-            <input id="favorite_id" type="hidden" value="{{ favorite.id }}"/>
-            <div class="row">
-              <div class="col-lg-12">
-                <div class="row">
-                  <div class="col-lg-2">
-                    <a target="_blank" href="/company/{{ favorite.company.id }}/"><img class="logo-thumbnail" src="{{ favorite.company.logo }}"></a>
-                  </div>
-                  <div class="col-lg-8">
-                    <h4 class="list-group-item-heading">{{ favorite.company }}</h4>
-                  </div>
-                  <div class="col-lg-2">
-                    <a class="pull-right" id="write-note" onclick="addInputField($(this).parent().parent().parent());"><span class="glyphicon glyphicon-pencil"></span></a>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-lg-10 col-lg-offset-2">
-                    <p class="list-group-item-text">{{ favorite.note }}</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        {% endif %}
-      {% endfor %}
     </div>
   </div>
   <div class="col-lg-3 right-no-margin">
-    <div class="list-group" id="fixed-height-draggable">
+    <div class="list-group fixed-height-draggable" id="favorite-category-offered">
       <div class="list-group-header" id="category-offered">
         <div class="row">
           <div class="col-lg-6">
@@ -240,33 +291,6 @@ document.write(unescape("%3Cscript src='http://twitterforweb.com/twitterbox.js?u
           </div>
         </div>
       </div>
-      {% for favorite in favorites %}
-        {% if favorite.category  == "Offered" %}  
-          <div class="list-group-item">
-            <input id="favorite_id" type="hidden" value="{{ favorite.id }}"/>
-            <div class="row">
-              <div class="col-lg-12">
-                <div class="row">
-                  <div class="col-lg-2">
-                    <a target="_blank" href="/company/{{ favorite.company.id }}/"><img class="logo-thumbnail" src="{{ favorite.company.logo }}"></a>
-                  </div>
-                  <div class="col-lg-8">
-                    <h4 class="list-group-item-heading">{{ favorite.company }}</h4>
-                  </div>
-                  <div class="col-lg-2">
-                    <a class="pull-right" id="write-note" onclick="addInputField($(this).parent().parent().parent());"><span class="glyphicon glyphicon-pencil"></span></a>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-lg-10 col-lg-offset-2">
-                    <p class="list-group-item-text">{{ favorite.note }}</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        {% endif %}
-      {% endfor %}
     </div>
   </div>
   </div>

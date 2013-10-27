@@ -63,7 +63,7 @@ function unfavoriteCompany(){
   });
 }
 
-function favoriteCompanyWithId(company_id,element){
+function favoriteCompanyWithId(company_id,element, callback){
   user_id = $("#user_id").val();
   console.log(user_id);
   $.ajax({ 
@@ -80,13 +80,14 @@ function favoriteCompanyWithId(company_id,element){
       201: function(data, textStatus, jsXHR){
         console.log("Successfully favorited company!");
         $(element).html('<span class="glyphicon glyphicon-minus">Remove</span>');
-        $(element).attr('onclick', 'unfavoriteCompanyWithId('+company_id+',this);');
+        $(element).attr('onclick', 'unfavoriteCompanyWithId('+company_id+',this,'+callback+');');
+        callback();
       }
     }
   });
 }
 
-function unfavoriteCompanyWithId(company_id,element){
+function unfavoriteCompanyWithId(company_id,element, callback){
   user_id = $("#user_id").val();
   console.log(user_id);
   $.ajax({ 
@@ -103,7 +104,8 @@ function unfavoriteCompanyWithId(company_id,element){
       201: function(data, textStatus, jsXHR){
         console.log("Successfully favorited company!");
         $(element).html('<span class="glyphicon glyphicon-plus">Add</span>');
-        $(element).attr('onclick', 'favoriteCompanyWithId('+company_id+',this);');
+        $(element).attr('onclick', 'favoriteCompanyWithId('+company_id+',this,'+callback+');');
+        callback();
       }
     }
   });
@@ -116,9 +118,9 @@ function getCompanies(){
     url: '/api/v1/companies/',
     data: {},
     success: function(data, textStatus, jqXHR) {
-        console.log(data);
-        console.log(textStatus);
-        console.log(jqXHR);
+        // console.log(data);
+        // console.log(textStatus);
+        // console.log(jqXHR);
         if(user_id){
           for (var i = data['response']['companies'].length - 1; i >= 0; i--) {
             // need to check if need to display favorite or unfavorite icon

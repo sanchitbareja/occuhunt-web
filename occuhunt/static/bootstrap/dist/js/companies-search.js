@@ -10,16 +10,16 @@ function randomizeString(){
     var randomnumber=Math.floor(Math.random()*7)
     $("#inputCompanySearch").attr("placeholder", myStrings[randomnumber]);
   }
-  function getCompanies(){
+  function get_companies(){
     user_id = $("#user_id").val();
     $("#loading_state").html('<div id="loadingProgressG"><div id="loadingProgressG_1" class="loadingProgressG"></div></div>');
     $.ajax({
       url: '/api/v1/companies/',
       data: {},
       success: function(data, textStatus, jqXHR) {
-          console.log(data);
-          console.log(textStatus);
-          console.log(jqXHR);
+          // console.log(data);
+          // console.log(textStatus);
+          // console.log(jqXHR);
           $("#loading_state").empty();
           document.getElementById('inputCompanySearch').onkeypress = function(e) {
             var event = e || window.event;
@@ -37,7 +37,7 @@ function randomizeString(){
                                               '<a id="company_thumbnail_logo" href="/company/'+data['response']['companies'][i]['id']+'/"><img id="company_thumbnail_logo" src="'+data['response']['companies'][i]['logo']+'"></a>'+
                                             '</div>'+
                                             '<div id="company_thumbnail_favorite">'+
-                                              '<a class="btn-link" onclick="unfavoriteCompanyWithId('+data['response']['companies'][i]['id']+',this)"><span class="glyphicon glyphicon-minus"></span> Remove from Favorites</a>'+
+                                              '<a class="btn-link" onclick="unfavoriteCompanyWithId('+data['response']['companies'][i]['id']+',this, update_favorites);"><span class="glyphicon glyphicon-minus"></span> Remove from Favorites</a>'+
                                             '</div>'+
                                           '</div>');
             } else {
@@ -46,7 +46,7 @@ function randomizeString(){
                                               '<a id="company_thumbnail_logo" href="/company/'+data['response']['companies'][i]['id']+'/"><img id="company_thumbnail_logo" src="'+data['response']['companies'][i]['logo']+'"></a>'+
                                             '</div>'+
                                             '<div id="company_thumbnail_favorite">'+
-                                              '<a class="btn-link" onclick="favoriteCompanyWithId('+data['response']['companies'][i]['id']+',this)"><span class="glyphicon glyphicon-plus"></span> Add to Favorites</a>'+
+                                              '<a class="btn-link" onclick="favoriteCompanyWithId('+data['response']['companies'][i]['id']+',this, update_favorites); "><span class="glyphicon glyphicon-plus"></span> Add to Favorites</a>'+
                                             '</div>'+
                                           '</div>');
             }
@@ -66,9 +66,9 @@ function randomizeString(){
         'q': search_query
       }, 
       success: function(data, textStatus, jqXHR) {
-          console.log(data);
-          console.log(textStatus);
-          console.log(jqXHR);
+          // console.log(data);
+          // console.log(textStatus);
+          // console.log(jqXHR);
           console.log("searching done");
           $("#companies_found").text(data['response']['companies'].length+" companies found");
           $("#companies_list").empty();
@@ -80,7 +80,7 @@ function randomizeString(){
                                               '<a id="company_thumbnail_logo" href="/company/'+data['response']['companies'][i]['id']+'/"><img id="company_thumbnail_logo" src="'+data['response']['companies'][i]['logo']+'"></a>'+
                                             '</div>'+
                                             '<div id="company_thumbnail_favorite">'+
-                                              '<a class="btn-link" onclick="unfavoriteCompanyWithId('+data['response']['companies'][i]['id']+',this)"><span class="glyphicon glyphicon-minus"></span>Remove</a>'+
+                                              '<a class="btn-link" onclick="unfavoriteCompanyWithId('+data['response']['companies'][i]['id']+',this, update_favorites);"><span class="glyphicon glyphicon-minus"></span>Remove</a>'+
                                             '</div>'+
                                           '</div>');
             } else {
@@ -89,7 +89,7 @@ function randomizeString(){
                                               '<a id="company_thumbnail_logo" href="/company/'+data['response']['companies'][i]['id']+'/"><img id="company_thumbnail_logo" src="'+data['response']['companies'][i]['logo']+'"></a>'+
                                             '</div>'+
                                             '<div id="company_thumbnail_favorite">'+
-                                              '<a class="btn-link" onclick="favoriteCompanyWithId('+data['response']['companies'][i]['id']+',this)"><span class="glyphicon glyphicon-plus"></span>Add to favorites</a>'+
+                                              '<a class="btn-link" onclick="favoriteCompanyWithId('+data['response']['companies'][i]['id']+',this, update_favorites);"><span class="glyphicon glyphicon-plus"></span>Add to favorites</a>'+
                                             '</div>'+
                                           '</div>');
             }

@@ -77,7 +77,7 @@ body.dragging, body.dragging * {
   background: #e0fae2;
 }
 
-#fixed-height-draggable {
+.fixed-height-draggable {
   height: 500px;
   border: 1px solid grey;
   overflow-y: scroll;
