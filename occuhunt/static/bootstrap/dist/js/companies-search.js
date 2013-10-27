@@ -1,60 +1,4 @@
-{% extends "base.html" %}
-{% load static from staticfiles %}
-{% load i18n %}
-{% load url from future %}
-
-{% block extra_style %}
-
-<style type="text/css">
-
-  #company_thumbnail {
-    height:200px;
-    vertical-align: center;
-    text-align: center;
-  }
-
-  #company_thumbnail_logo {
-    max-height: 80%;
-    max-width: 80%;
-    line-height: 190px;
-  }
-
-  .no-margin {
-    margin-left: 0px;
-    margin-right: 0px;
-    padding-left: 0px;
-    padding-right: 0px;
-  }
-
-  #company_thumbnail_favorite {
-    display: none;
-    position: absolute;
-    top: 3px;
-    right: 6px;
-  }
-
-  #company_info:hover > #company_thumbnail_favorite {
-    display: block;
-  }
-
-  #company_info:hover > #company_thumbnail_favorite > a:hover {
-    text-decoration: none;
-  }
-
-  .glyphicon-plus {
-    font-size: 20px;
-  }
-
-</style>
-{% endblock %}
-
-{% block extra_script %}
-<script type="text/javascript">
-  function initialize(){
-    randomizeString();
-    getCompanies();
-  }
-  function randomizeString(){
+function randomizeString(){
     var myStrings = new Array();
     myStrings[0] = "Try \x22San Francisco\x22";
     myStrings[1] = "Try \x22San Mateo\x22";
@@ -65,18 +9,17 @@
     myStrings[6] = "Try \x22education\x22";
     var randomnumber=Math.floor(Math.random()*7)
     $("#inputCompanySearch").attr("placeholder", myStrings[randomnumber]);
-    getCompanies();
   }
-  function getCompanies(){
+  function get_companies(){
     user_id = $("#user_id").val();
     $("#loading_state").html('<div id="loadingProgressG"><div id="loadingProgressG_1" class="loadingProgressG"></div></div>');
     $.ajax({
       url: '/api/v1/companies/',
-      data: {},
+      data: { limit: 4 },
       success: function(data, textStatus, jqXHR) {
-          console.log(data);
-          console.log(textStatus);
-          console.log(jqXHR);
+          // console.log(data);
+          // console.log(textStatus);
+          // console.log(jqXHR);
           $("#loading_state").empty();
           document.getElementById('inputCompanySearch').onkeypress = function(e) {
             var event = e || window.event;
@@ -94,7 +37,7 @@
                                               '<a id="company_thumbnail_logo" href="/company/'+data['response']['companies'][i]['id']+'/"><img id="company_thumbnail_logo" src="'+data['response']['companies'][i]['logo']+'"></a>'+
                                             '</div>'+
                                             '<div id="company_thumbnail_favorite">'+
-                                              '<a class="btn-link" onclick="unfavoriteCompanyWithId('+data['response']['companies'][i]['id']+',this)"><span class="glyphicon glyphicon-minus"></span> Remove from Favorites</a>'+
+                                              '<a class="btn-link" onclick="unfavoriteCompanyWithId('+data['response']['companies'][i]['id']+',this, update_favorites);"><span class="glyphicon glyphicon-minus"></span> Remove from Favorites</a>'+
                                             '</div>'+
                                           '</div>');
             } else {
@@ -103,7 +46,7 @@
                                               '<a id="company_thumbnail_logo" href="/company/'+data['response']['companies'][i]['id']+'/"><img id="company_thumbnail_logo" src="'+data['response']['companies'][i]['logo']+'"></a>'+
                                             '</div>'+
                                             '<div id="company_thumbnail_favorite">'+
-                                              '<a class="btn-link" onclick="favoriteCompanyWithId('+data['response']['companies'][i]['id']+',this)"><span class="glyphicon glyphicon-plus"></span> Add to Favorites</a>'+
+                                              '<a class="btn-link" onclick="favoriteCompanyWithId('+data['response']['companies'][i]['id']+',this, update_favorites); "><span class="glyphicon glyphicon-plus"></span> Add to Favorites</a>'+
                                             '</div>'+
                                           '</div>');
             }
@@ -123,9 +66,9 @@
         'q': search_query
       }, 
       success: function(data, textStatus, jqXHR) {
-          console.log(data);
-          console.log(textStatus);
-          console.log(jqXHR);
+          // console.log(data);
+          // console.log(textStatus);
+          // console.log(jqXHR);
           console.log("searching done");
           $("#companies_found").text(data['response']['companies'].length+" companies found");
           $("#companies_list").empty();
@@ -137,7 +80,7 @@
                                               '<a id="company_thumbnail_logo" href="/company/'+data['response']['companies'][i]['id']+'/"><img id="company_thumbnail_logo" src="'+data['response']['companies'][i]['logo']+'"></a>'+
                                             '</div>'+
                                             '<div id="company_thumbnail_favorite">'+
-                                              '<a class="btn-link" onclick="unfavoriteCompanyWithId('+data['response']['companies'][i]['id']+',this)"><span class="glyphicon glyphicon-minus"></span>Remove</a>'+
+                                              '<a class="btn-link" onclick="unfavoriteCompanyWithId('+data['response']['companies'][i]['id']+',this, update_favorites);"><span class="glyphicon glyphicon-minus"></span>Remove</a>'+
                                             '</div>'+
                                           '</div>');
             } else {
@@ -146,7 +89,7 @@
                                               '<a id="company_thumbnail_logo" href="/company/'+data['response']['companies'][i]['id']+'/"><img id="company_thumbnail_logo" src="'+data['response']['companies'][i]['logo']+'"></a>'+
                                             '</div>'+
                                             '<div id="company_thumbnail_favorite">'+
-                                              '<a class="btn-link" onclick="favoriteCompanyWithId('+data['response']['companies'][i]['id']+',this)"><span class="glyphicon glyphicon-plus"></span>Add to favorites</a>'+
+                                              '<a class="btn-link" onclick="favoriteCompanyWithId('+data['response']['companies'][i]['id']+',this, update_favorites);"><span class="glyphicon glyphicon-plus"></span>Add to favorites</a>'+
                                             '</div>'+
                                           '</div>');
             }
@@ -155,32 +98,3 @@
       dataType: 'json',
     });
   }
-
-  // get all companies on launch
-  $(document).ready(initialize);
-
-</script>
-{% endblock %}
-
-{% block content %}
-
-<div class="row">
-  <div class="col-lg-3">
-    <h1 style="color:white; margin-bottom:15px">Companies</h1>
-    <p style="color:white; font-family:'Proxima Nova'; font-weight:400; font-size:18px; padding-bottom:0px;  margin-bottom:20px; line-height:22px;">Search for companies that have attended Berkeley's career fairs.</p>
-    <p style="color:white; font-family:'Proxima Nova'; font-weight:100; font-size:26px; padding-bottom:0px;" id="companies_found"></p>
-    <input type="text" class="form-control input-lg" id="inputCompanySearch" placeholder="Try &quot;San Francisco&quot;" style="padding-left: 13px; padding-right: 13px; margin-bottom:20px">
-    <button class="btn btn-done btn-lg" onclick="searchCompanies();">Search</button>
-    <br />
-    <br />
-    <div id="loading_state"></div>
-  </div>
-
-  <div class="col-lg-9">
-    <div class="row" id="companies_list">
-
-    </div>    
-  </div>
-</div>
-
-{% endblock %}

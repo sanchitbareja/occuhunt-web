@@ -9,7 +9,7 @@
   <img src="{% static "images/beta.png" %}" style="clear:none;position:absolute:top:0px;left:0px;height:50px;float:left;" />
   <div class="container">    
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse" style="background-color:black;border-color:black;">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
         <span class="sr-only">Toggle navigation</span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -18,200 +18,39 @@
       <a class="navbar-brand" href="/"><img src="{% static "images/logo/Occuhunt-Logo-4.png" %}" style="height:18px;"></a>
     </div>
     <div class="collapse navbar-collapse navbar-ex1-collapse">
-      <ul class="nav navbar-nav" style="font-weight:700">
+      <ul class="nav navbar-nav">
         {% if fairs_link %}
         <li class="active"><a href="/home/">FAIRS</a></li>
         {% else %}
         <li><a href="/home/">FAIRS</a></li>
         {% endif %}
-        {% if companies_link %}
+        {% if companies_and_favorites_link %}
         <li class="active"><a href="/companies/">COMPANIES</a>
         {% else %}
         <li><a href="/companies/">COMPANIES</a>
         {% endif %}
-        {% if favorites_link %}
-        <li class="active"><a href="/favorites/">FAVORITES</a>
-        {% else %}
-        <li><a href="/favorites/">FAVORITES</a>
-        {% endif %}
         <li><a data-toggle="modal" href="#feedbackModal">FEEDBACK</a></li>
-        <li><a data-toggle="modal" href="http://occuhunt.tumblr.com/">BLOG</a></li>
-        <!-- <li><a href="/companies/">Companies</a></li> -->
       </ul>
-<!--       <form class="navbar-form navbar-left" role="search">
-        <div class="form-group">
-          <input type="text" class="form-control" placeholder="Search">
-        </div>
-        <button type="submit" class="btn btn-default">Submit</button>
-      </form>
- -->      <ul class="nav navbar-nav navbar-right">
+      <ul class="nav navbar-nav navbar-right">
         {% if user.is_authenticated %}
-<!--         <li><a class='btn btn-primary' style="color:white;height:50px;"><span class="glyphicon glyphicon-send"></span>&nbsp;&nbsp;Upload Resume</a></li> -->
-        <li class="dropdown" style="font-weight:500">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="text-transform:uppercase;">{{user.first_name}}
-<!--             <img src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-ash3/c46.46.579.579/s160x160/1001605_10151715057849110_1659770280_n.jpg" style="height:30px;padding-left:10px"> -->
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{user.first_name | upper}}
             <b class="caret"></b></a>
           <ul class="dropdown-menu">
-            <!-- <li><a href="#">Settings</a></li> -->
-            <!-- <li><a href="#">Favorite Jobs</a></li> -->
+            <li><a href="/companies/">Favorite Companies</a></li>
             <li><a href="/logout/">Logout</a></li>
             <input type="hidden" name="user_id" value="{{user.id}}" id="user_id">
           </ul>
         </li>
         {% else %}
-        <li><a href="/login/linkedin/"><img src="{% static 'images/login-with-linkedin.png' %}"></a></li>
+        <li><a href="/login/linkedin/?next={{request.path}}"><img src="{% static 'images/login-with-linkedin.png' %}"></a></li>
         {% endif %}
       </ul>
     </div><!--/.nav-collapse -->
   </div>
 </div>
 
-<style type="text/css">
-
-/* -----------------------------------------
-   Spinner
------------------------------------------ */
-    
-div.spinner {
-  position: relative;
-  width: 54px;
-  height: 54px;
-  display: inline-block;
-}
-
-div.spinner div {
-  width: 12%;
-  height: 26%;
-  background: #e0e0e0;
-  position: absolute;
-  left: 44.5%;
-  top: 37%;
-  opacity: 0;
-  -webkit-animation: fade 1s linear infinite;
-  -webkit-border-radius: 50px;
-  -webkit-box-shadow: 0 0 3px rgba(0,0,0,0.2);
-}
-
-div.spinner div.bar1 {-webkit-transform:rotate(0deg) translate(0, -142%); -webkit-animation-delay: 0s;}    
-div.spinner div.bar2 {-webkit-transform:rotate(30deg) translate(0, -142%); -webkit-animation-delay: -0.9167s;}
-div.spinner div.bar3 {-webkit-transform:rotate(60deg) translate(0, -142%); -webkit-animation-delay: -0.833s;}
-div.spinner div.bar4 {-webkit-transform:rotate(90deg) translate(0, -142%); -webkit-animation-delay: -0.75s;}
-div.spinner div.bar5 {-webkit-transform:rotate(120deg) translate(0, -142%); -webkit-animation-delay: -0.667s;}
-div.spinner div.bar6 {-webkit-transform:rotate(150deg) translate(0, -142%); -webkit-animation-delay: -0.5833s;}
-div.spinner div.bar7 {-webkit-transform:rotate(180deg) translate(0, -142%); -webkit-animation-delay: -0.5s;}
-div.spinner div.bar8 {-webkit-transform:rotate(210deg) translate(0, -142%); -webkit-animation-delay: -0.41667s;}
-div.spinner div.bar9 {-webkit-transform:rotate(240deg) translate(0, -142%); -webkit-animation-delay: -0.333s;}
-div.spinner div.bar10 {-webkit-transform:rotate(270deg) translate(0, -142%); -webkit-animation-delay: -0.25s;}
-div.spinner div.bar11 {-webkit-transform:rotate(300deg) translate(0, -142%); -webkit-animation-delay: -0.1667s;}
-div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -webkit-animation-delay: -0.0833s;}
-
- @-webkit-keyframes fade {
-  from {opacity: 1;}
-  to {opacity: 0.25;}
-}
-
-
-</style>
-
-<style type="text/css">
-#loadingProgressG{
-width:236px;
-height:8px;
-overflow:hidden;
-background-color:#FFFFFF;
--moz-border-radius:4px;
--webkit-border-radius:4px;
--ms-border-radius:4px;
--o-border-radius:4px;
-border-radius:4px;
-}
-
-.loadingProgressG{
-background-color:#22afb1;
-margin-top:0;
-margin-left:-236px;
--moz-animation-name:bounce_loadingProgressG;
--moz-animation-duration:0.7s;
--moz-animation-iteration-count:infinite;
--moz-animation-timing-function:linear;
--webkit-animation-name:bounce_loadingProgressG;
--webkit-animation-duration:0.7s;
--webkit-animation-iteration-count:infinite;
--webkit-animation-timing-function:linear;
--ms-animation-name:bounce_loadingProgressG;
--ms-animation-duration:0.7s;
--ms-animation-iteration-count:infinite;
--ms-animation-timing-function:linear;
--o-animation-name:bounce_loadingProgressG;
--o-animation-duration:0.7s;
--o-animation-iteration-count:infinite;
--o-animation-timing-function:linear;
-animation-name:bounce_loadingProgressG;
-animation-duration:0.7s;
-animation-iteration-count:infinite;
-animation-timing-function:linear;
-width:236px;
-height:8px;
-}
-
-@-moz-keyframes bounce_loadingProgressG{
-0%{
-margin-left:-236px;
-}
-
-100%{
-margin-left:236px;
-}
-
-}
-
-@-webkit-keyframes bounce_loadingProgressG{
-0%{
-margin-left:-236px;
-}
-
-100%{
-margin-left:236px;
-}
-
-}
-
-@-ms-keyframes bounce_loadingProgressG{
-0%{
-margin-left:-236px;
-}
-
-100%{
-margin-left:236px;
-}
-
-}
-
-@-o-keyframes bounce_loadingProgressG{
-0%{
-margin-left:-236px;
-}
-
-100%{
-margin-left:236px;
-}
-
-}
-
-@keyframes bounce_loadingProgressG{
-0%{
-margin-left:-236px;
-}
-
-100%{
-margin-left:236px;
-}
-
-}
-
-</style>
-
-<!-- Modal -->
+<!-- Feedback Modal -->
 <div class="modal fade" id="feedbackModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -223,7 +62,7 @@ margin-left:236px;
         <div id="feedbackForm">
           <div class="row">
             <div class="col-lg-12">
-              <textarea class="form-control" rows="5" id="feedbackFormText">What do you think of Occuhunt? We'd love to hear from you!</textarea>
+              <textarea class="form-control" rows="5" id="feedbackFormText" style="width:100%;">What do you think of Occuhunt? We'd love to hear from you!</textarea>
             </div>
           </div>
           <br />
@@ -231,7 +70,7 @@ margin-left:236px;
             <div class="form-group">
               <label for="feedbackReplyTo" class="col-lg-2 control-label">Email</label>
               <div class="col-lg-10">
-                <input type="email" class="form-control" id="feedbackReplyTo" placeholder="Optional">
+                <input type="email" class="form-control" id="feedbackReplyTo" placeholder="Optional" style="width:100%;">
               </div>
             </div>
           </div>
@@ -248,7 +87,7 @@ margin-left:236px;
 
 <script type="text/javascript">
   $("#feedbackFormSubmit").click(function(){
-    $("#feedbackForm").before('<div id="spinnerWait" style="text-align:center;"><div class="spinner"><div class="bar1"></div><div class="bar2"></div><div class="bar3"></div><div class="bar4"></div><div class="bar5"></div><div class="bar6"></div><div class="bar7"></div><div class="bar8"></div><div class="bar9"></div><div class="bar10"></div><div class="bar11"></div><div class="bar12"></div></div><p>Sending your feedback...</p></div>');
+    $("#feedbackForm").before('<div id="spinnerWait"><div class="spinner"><div class="bar1"></div><div class="bar2"></div><div class="bar3"></div><div class="bar4"></div><div class="bar5"></div><div class="bar6"></div><div class="bar7"></div><div class="bar8"></div><div class="bar9"></div><div class="bar10"></div><div class="bar11"></div><div class="bar12"></div></div><p>Sending your feedback...</p></div>');
     $.ajax({
       type: "POST",
       url: "/feedback/",

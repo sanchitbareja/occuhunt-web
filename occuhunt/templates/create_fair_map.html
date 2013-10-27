@@ -1,0 +1,356 @@
+{% extends "base.html" %}
+{% load static from staticfiles %}
+{% load i18n %}
+{% load url from future %}
+
+{% block extra_style %}
+
+<style type="text/css">
+
+
+body.dragging, body.dragging * {
+  cursor: move !important;
+}
+
+.dragged {
+  position: absolute;
+  opacity: 0.5;
+  z-index: 2000;
+}
+
+.ui-draggable {
+  z-index: 2000;
+  font-size: 12px;
+  word-break break-all;
+  word-wrap: break-word;
+}
+
+.ui-draggable-dragging {
+  border: 2px solid black;
+}
+
+.activate {
+  border: 2px solid blue !important;
+}
+
+.fair-table {
+  height:50px;
+  width: 43px;
+  text-align: left;
+  padding-left: 2px; 
+  word-break: break-all;
+  word-wrap: break-word;
+  overflow: scroll;
+}
+
+td#career_fair_map{
+  min-width: 43px;
+  min-height: 50px;
+  width: 43px;
+  height: 50px;
+  border: 1px solid grey;
+}
+
+.jumbotron {
+  padding-top: 12px;
+}
+
+</style>
+
+{% endblock %}
+
+
+{% block extra_script %}
+<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+<script type="text/javascript">
+
+$(function() {
+   
+   obj = $('.companies_list td');
+   dragObj = $('.companies_list:eq(1) td');
+   $(obj).draggable({
+       cursor:'pointer',
+       snap:$('td span'),
+       revert: 'invalid'      
+   })
+
+   $(dragObj).droppable({
+       accept : obj,
+       cursor: "move",
+       cursorAt: {left:0, top:0},
+       drop: function(event,ui){
+           var target = $(event.target), //dragged cell
+           drag = $(ui.draggable),       //old cell
+           targetText = "",
+           dragText ="",
+           duration =0;
+
+           if(target.html()){
+               targetText = target.html();
+               dragText = drag.html();
+               target.html(dragText);
+               if(drag.closest('table').is('table:eq(1)'))
+                   drag.html('&nbsp;');  
+           }
+           else{
+               duration = 300;
+           }
+           ui.draggable.draggable('option', 'revertDuration', duration);
+           ui.draggable.draggable('option','revert', true);
+       }
+   })
+});
+
+</script>
+{% endblock %}
+
+{% block content %}
+
+  <!-- Filters -->
+  <div class="row" style="margin-bottom:10px; text-align:center;">
+  <h1 style="color:white; margin-bottom:15px text-align:center">Early Bird Internship Fair</h1>
+    <p class="hidden-print" style="color:white; font-family:'Proxima Nova'; font-weight:400; font-size:18px; padding-bottom:0px;  margin-bottom:20px; line-height:22px;">Drag and drop companies to create the fair map.</p>
+  </div>
+
+  <div class="row" style="margin-bottom:10px; text-align:center;">
+   <div class="row">
+    <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 hidden-print">
+      <table style="width:100%;" class="companies_list">
+        <tr>
+          <td><a class="btn btn-engineering fair-table" href="/company/357/" value="company_357" data-toggle="tooltip" data-placement="right" title="" data-original-title="Dell">Dell</a></td>
+        </tr><tr>
+          <td><a class="btn btn-technology fair-table" href="/company/222/" value="company_222" data-toggle="tooltip" data-placement="right" title="" data-original-title="Box">Box</a></td>
+        </tr><tr>
+          <td><a class="btn btn-finance fair-table" href="/company/296/" value="company_296" data-toggle="tooltip" data-placement="right" title="" data-original-title="PWC">PWC</a></td>
+        </tr><tr>
+          <td><a class="btn btn-technology fair-table" href="/company/225/" value="company_225" data-toggle="tooltip" data-placement="right" title="" data-original-title="Yelp">Yelp</a></td>
+        </tr><tr>
+          <td><a class="btn btn-engineering fair-table" href="/company/268/" value="company_268" data-toggle="tooltip" data-placement="right" title="" data-original-title="HP">HP</a></td>
+        </tr><tr>
+          <td><a class="btn btn-technology fair-table" href="/company/219/" value="company_219" data-toggle="tooltip" data-placement="right" title="" data-original-title="AT&amp;T">AT&amp;T</a></td>
+        </tr><tr>
+          <td><a class="btn btn-technology fair-table" href="/company/214/" value="company_214" data-toggle="tooltip" data-placement="right" title="" data-original-title="Apple">Apple</a></td>
+        </tr><tr>
+          <td><a class="btn btn-engineering fair-table" href="/company/247/" value="company_247" data-toggle="tooltip" data-placement="right" title="" data-original-title="Cisco Systems">Cisco Systems</a></td>
+        </tr><tr>
+          <td><a class="btn btn-finance fair-table" href="/company/272/" value="company_272" data-toggle="tooltip" data-placement="right" title="" data-original-title="Intuit">Intuit</a></td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11">
+      <div class="jumbotron">
+        <table class="companies_list">
+          <tr>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+          </tr><tr>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+          </tr><tr>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+          </tr><tr>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+          </tr><tr>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+          </tr><tr>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+          </tr><tr>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+          </tr><tr>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+          </tr><tr>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+            <td id="career_fair_map">&nbsp;</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+  </div>
+    
+<script type="text/javascript">
+  $(document).ready(function(){
+    $(".fair-table").tooltip();
+    console.log("hello");
+  });
+</script>
+
+{% endblock %}

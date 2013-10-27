@@ -1,0 +1,42 @@
+#company_thumbnail {
+  height:200px;
+  vertical-align: center;
+  text-align: center;
+}
+
+#company_thumbnail_logo {
+  max-height: 80%;
+  max-width: 80%;
+  line-height: 190px;
+}
+
+.no-margin {
+  margin-left: 0px;
+  margin-right: 0px;
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+.right-no-margin {
+  margin-right: 0px;
+  padding-right: 0px;
+}
+
+#company_thumbnail_favorite {
+  display: none;
+  position: absolute;
+  top: 3px;
+  right: 6px;
+}
+
+#company_info:hover > #company_thumbnail_favorite {
+  display: block;
+}
+
+#company_info:hover > #company_thumbnail_favorite > a:hover {
+  text-decoration: none;
+}
+
+.glyphicon-plus {
+  font-size: 20px;
+}

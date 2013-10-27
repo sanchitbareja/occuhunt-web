@@ -15,6 +15,7 @@ from social_auth.utils import setting
 
 from companies.models import Company
 from favorites.models import Favorite
+from jobs.models import Job
 
 def home(request):
     """Home view"""
@@ -42,10 +43,14 @@ def company(request, companyID):
                                   RequestContext(request))
         else:
             favorite = Favorite.objects.filter(company=company, user__id=request.user.id)
+            filtered_jobs = None
             is_favorited = False
             if len(favorite) > 0:
                 is_favorited = True
-            return render_to_response('company.html', {'version': version, 'company': company, 'is_favorited':is_favorited},
+            if len(request.user.groups.filter(name="UC Berkeley")) > 0:
+              filtered_jobs = Job.objects.filter(network__name="UC Berkeley").filter(company=company)
+            return render_to_response('company.html', {'version': version, 'company': company, 'is_favorited':is_favorited, 'jobs':filtered_jobs},
                                   RequestContext(request))
-    except:
-        raise Http404('Sorry, no company found :(');
+    except Exception as e:
+      print e
+      raise Http404('Sorry, no company found :(');

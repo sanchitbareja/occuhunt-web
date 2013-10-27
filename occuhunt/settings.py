@@ -93,6 +93,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
@@ -124,6 +125,7 @@ INSTALLED_APPS = (
     # third-party apps
     'south',
     'django_extensions',
+    'debug_toolbar',
     'tastypie',
     'storages',
     'social_auth',
@@ -169,6 +171,12 @@ LOGGING = {
     }
 }
 
+# DJANGO DEBUG TOOLBAR
+INTERNAL_IPS = ('127.0.0.1',)
+DEBUG_TOOLBAR_CONFIG = {
+    'INTERCEPT_REDIRECTS': False,
+}
+
 # EMAIL SETTINGS
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
@@ -187,13 +195,29 @@ AUTHENTICATION_BACKENDS = (
 )
 
 LOGIN_URL = '/login-form/'
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/home/'
 LOGIN_ERROR_URL = '/login-error/'
-
 AUTH_USER_MODEL = 'users.User'
 SOCIAL_AUTH_USER_MODEL = AUTH_USER_MODEL
-
 SOCIAL_AUTH_RAISE_EXCEPTIONS = True
+# LinkedIn specific config
+LINKEDIN_CONSUMER_KEY = 'xu79xm7p77of'
+LINKEDIN_CONSUMER_SECRET = 'UnJhJkwNuUru2m4Y'
+LINKEDIN_SCOPE = ['r_basicprofile', 'r_emailaddress', 'r_fullprofile','r_contactinfo','r_network']
+# LINKEDIN_FORCE_PROFILE_LANGUAGE = True
+# LINKEDIN_FORCE_PROFILE_LANGUAGE = 'en-US'
+
+SOCIAL_AUTH_PIPELINE = (
+    'social_auth.backends.pipeline.social.social_auth_user',
+    #'social_auth.backends.pipeline.associate.associate_by_email',
+    'social_auth.backends.pipeline.user.get_username',
+    'social_auth.backends.pipeline.user.create_user',
+    'social_auth.backends.pipeline.social.associate_user',
+    'social_auth.backends.pipeline.social.load_extra_data',
+    'social_auth.backends.pipeline.user.update_user_details',
+    'social_auth.backends.pipeline.misc.save_status_to_session',
+    'api.pipeline.linkedin_test',
+)
 
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.auth.context_processors.auth',
@@ -201,27 +225,31 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.i18n',
     'django.core.context_processors.media',
     'django.contrib.messages.context_processors.messages',
+    'django.core.context_processors.request',
     'social_auth.context_processors.social_auth_by_type_backends',
     'social_auth.context_processors.social_auth_login_redirect',
 )
-
-# LinkedIn specific config
-LINKEDIN_CONSUMER_KEY = 'xu79xm7p77of'
-LINKEDIN_CONSUMER_SECRET = 'UnJhJkwNuUru2m4Y'
-LINKEDIN_SCOPE = ['r_basicprofile', 'r_emailaddress', 'r_fullprofile','r_contactinfo','r_network']
 
 LINKEDIN_EXTRA_FIELD_SELECTORS = [
     'email-address',
     'headline',
     'industry',
     'location',
-    'summary',
-    'specialties',
     'positions',
     'educations',
     'skills',
-    'summary',
 ]
+
+LINKEDIN_EXTRA_DATA = [('id', 'id'),
+                       ('first-name', 'first_name'),
+                       ('last-name', 'last_name'),
+                       ('email-address', 'email_address'),
+                       ('headline', 'headline'),
+                       ('industry', 'industry'),
+                       ('location', 'location'),
+                       ('positions', 'positions'),
+                       ('educations', 'educations'),
+                       ('skills', 'skills')]
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
