@@ -120,8 +120,8 @@
 	<div class="col-lg-8 col-lg-offset-2" id="company_description" style="background-color: #343a41;">
 		<div class="row">
 			<div class="col-lg-offset-1 col-lg-10" style="margin-bottom:60px">
-				<h4 id="company_info">JOBS</h4>
 				{% if user.is_authenticated %}
+					<h4 id="company_info">JOBS</h4>
 					{% if jobs %}					
 						{% for job in jobs %}
 						<p id="job_description">{{ job.name }}<span id="job_description" style="font-size:18px; font-weight:100;-webkit-font-smoothing: antialiased;">&nbsp;{{ job.location }}</span></p>
@@ -130,14 +130,13 @@
 					{% else %} <!-- Logged in but has no jobs available -->
 						<p id="company_detailed_info">You are not able to view jobs for one of the following reasons:
 							<ul>
-								<li>we have not received information about the jobs this company offers</li>
-								<li>not a current UC Berkeley student</li>
+								<li id="company_detailed_info">we have not received information about the jobs this company offers</li>
+								<li id="company_detailed_info">not a current UC Berkeley student</li>
 							</ul>
 						</p>
 					{% endif %}
 				{% else %}
-					Login to view Jobs
-					<a href="/login/linkedin/"><img src="{% static 'images/login-with-linkedin.png' %}"></a>
+					<h3 style="text-align:center; color:white;">Login to view Jobs<br /><br /><a href="/login/linkedin/"><img src="{% static 'images/login-with-linkedin.png' %}"></a> </h3>
 				{% endif %}
 				<br />
 				<br />
