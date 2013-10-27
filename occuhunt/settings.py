@@ -215,7 +215,7 @@ SOCIAL_AUTH_PIPELINE = (
     'social_auth.backends.pipeline.social.associate_user',
     'social_auth.backends.pipeline.social.load_extra_data',
     'social_auth.backends.pipeline.user.update_user_details',
-    # 'social_auth.backends.pipeline.misc.save_status_to_session',
+    'social_auth.backends.pipeline.misc.save_status_to_session',
     'api.pipeline.linkedin_test',
 )
 
