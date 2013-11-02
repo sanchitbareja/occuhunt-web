@@ -7,6 +7,10 @@
 
 <style type="text/css">
 
+body {
+  background-color: white;
+}
+
 .favorited-company {
   background-image: url('/static/images/target.png');
   background-repeat: no-repeat;
@@ -14,24 +18,36 @@
 }
 
 .fair-table {
-  height:50px;
-  width: 43px;
+  height:60px;
+  width: 60px;
   text-align: left;
   padding-left: 2px; 
-  word-break: break-all;
   word-wrap: break-word;
   overflow: hidden;
 }
 
 td#career_fair_map{
-  min-width: 43px;
-  min-height: 50px;
-  width: 43px;
-  height: 50px;
+  min-width: 60px;
+  min-height: 60px;
+  width: 60px;
+  height: 60px;
 }
 
 .jumbotron {
   padding-top: 12px;
+}
+
+#fair_map {
+  overflow: scroll;
+}
+
+.btn{
+  width:80px;
+  height:80px;
+  word-wrap: break-word;
+  white-space: normal;
+  padding: 5px;
+  text-align: center;
 }
 
 </style>
@@ -54,557 +70,10 @@ td#career_fair_map{
 {% endblock %}
 
 {% block content %}
+  <div class="row" id="fair_map">
 
-  <!-- Filters -->
-  <div class="row page-header-section text-center">
-    <h1>Fairs</h1>
-    <h4>Check out upcoming career fairs at Cal.</h4>
-  </div>
-
-  <div class="alert alert-warning fade in">
-    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-    The actual map will only be updated on the day of the event itself. Career Center career fairs are open only to currently registered Cal students or alumni who are registered with the Career Center <a href="https://career.berkeley.edu/Alumni/AlumniAdv.stm">Alumni Advantage</a> program.
-  </div>
-  <div class="row">
-    <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
-      <div class="btn-group-vertical" id="filter_bar" data-toggle="buttons">
-        {% if user.is_authenticated %}
-        <button type="button" class="btn btn-categorydisabled btn-sm" onclick="toggleTable('.favorited-company');"><img src="/static/images/target.png" style="height:18px; float:left; position:relative; margin-left:-10px;">&nbsp;Favs</button>
-        {% endif %}
-        <button type="button" class="btn btn-engineering btn-sm" onclick="toggleTable('.btn-engineering');">Engineering</button>
-        <button type="button" class="btn btn-finance btn-sm" onclick="toggleTable('.btn-finance');">Finance</button>
-        <button type="button" class="btn btn-government btn-sm" onclick="toggleTable('.btn-government');">Government</button>
-        <button type="button" class="btn btn-health btn-sm" onclick="toggleTable('.btn-health');">Health</button>
-        <button type="button" class="btn btn-technology btn-sm" onclick="toggleTable('.btn-technology');">Technology</button>
-        <button type="button" class="btn btn-other btn-sm" onclick="toggleTable('.btn-other');">Other</button>
-      </div>
-    </div>
-    <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11">
-      <div class="row">
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-          <div class="jumbotron">
-            <!-- Information about the Civil and Environmental Engineering fair -->
-            <div class="row visible-lg">
-              <div class="col-lg-3 col-lg-offset-2">
-                <h4 align="left">Civil and Environmental Engineering Fair</h4>
-              </div>
-              <div class="col-lg-3">
-                <h4>October 30, 4-7pm</h4>
-              </div>
-              <div class="col-lg-2">
-                <h4 class="text-right">International House</h4>
-              </div>
-            </div>
-            <div class="row hidden-lg">
-                <h4 align="left">Civil and Environmental Engineering Fair, Oct 30, 4-7pm, International House</h4>
-            </div>
-            <div class="row">
-              <div class="col-lg-offset-2 col-lg-8">
-                <p>Chevron Auditorium</p>
-                <table>
-                  <tr>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"><a class="btn btn-engineering fair-table" href="/company/406" value="company_406" data-toggle="tooltip" data-placement="right" title="" data-original-title="Fehr & Peers (2 positions)">Fehr & Peers</a></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"><a class="btn btn-other fair-table" href="/company/411" value="company_411" data-toggle="tooltip" data-placement="right" title="" data-original-title="Hathaway Dinwiddie Construction (2 positions)">Hathaway Dinwiddie Construction</a></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"><a class="btn btn-engineering fair-table" href="/company/398" value="company_398" data-toggle="tooltip" data-placement="right" title="" data-original-title="CDM Smith (5 positions)">CDM Smith</a></td>
-                  </tr><tr>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                  </tr><tr>
-                    <td id="career_fair_map"><a class="btn btn-engineering fair-table" href="/company/403" value="company_403" data-toggle="tooltip" data-placement="right" title="" data-original-title="Engeo (3 positions)">Engeo</a></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"><a class="btn btn-other fair-table" href="/company/409" value="company_409" data-toggle="tooltip" data-placement="right" title="" data-original-title="Granite Construction Incorporated (1 positions)">Granite Construction Incorporated</a></td>
-                    <td id="career_fair_map"><a class="btn btn-other fair-table" href="/company/412" value="company_412" data-toggle="tooltip" data-placement="right" title="" data-original-title="Hilti North America (1 positions)">Hilti North America</a></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"><a class="btn btn-engineering fair-table" href="/company/408" value="company_408" data-toggle="tooltip" data-placement="right" title="" data-original-title="GHD (2 positions)">GHD</a></td>
-                  </tr><tr>
-                    <td id="career_fair_map"><a class="btn btn-engineering fair-table" href="/company/399" value="company_399" data-toggle="tooltip" data-placement="right" title="" data-original-title="Coughlin Porter Lundeen (1 positions)">Coughlin Porter Lundeen</a></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"><a class="btn btn-engineering fair-table" href="/company/407" value="company_407" data-toggle="tooltip" data-placement="right" title="" data-original-title="Geosyntec (1 positions)">Geosyntec</a></td>
-                    <td id="career_fair_map"><a class="btn btn-other fair-table" href="/company/424" value="company_424" data-toggle="tooltip" data-placement="right" title="" data-original-title="The Boldt Company (2 positions)">The Boldt Company</a></td>
-                  </tr><tr>
-                    <td id="career_fair_map"><a class="btn btn-engineering fair-table" href="/company/401" value="company_401" data-toggle="tooltip" data-placement="right" title="" data-original-title="dk Consulting (8 positions)">dk Consulting</a></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"><a class="btn btn-other fair-table" href="/company/402" value="company_402" data-toggle="tooltip" data-placement="right" title="" data-original-title="DPR Construction (3 positions)">DPR Construction</a></td>
-                    <td id="career_fair_map"><a class="btn btn-engineering fair-table" href="/company/410" value="company_410" data-toggle="tooltip" data-placement="right" title="" data-original-title="Harder Mechanical (2 positions)">Harder Mechanical</a></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"><a class="btn btn-other fair-table" href="/company/419" value="company_419" data-toggle="tooltip" data-placement="right" title="" data-original-title="San Jose Water Company (1 positions)">San Jose Water Company</a></td>
-                  </tr><tr>
-                    <td id="career_fair_map"><a class="btn btn-engineering fair-table" href="/company/396" value="company_396" data-toggle="tooltip" data-placement="right" title="" data-original-title="Buro Happold (2 positions)">Buro Happold</a></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"><a class="btn btn-engineering fair-table" href="/company/414" value="company_414" data-toggle="tooltip" data-placement="right" title="" data-original-title="Jacobs Associates (1 positions)">Jacobs Associates</a></td>
-                    <td id="career_fair_map"><a class="btn btn-other fair-table" href="/company/391" value="company_391" data-toggle="tooltip" data-placement="right" title="" data-original-title="ARCO Murray National Construction Company (2 positions)">ARCO Murray National Construction Company</a></td>
-                  </tr><tr>
-                    <td id="career_fair_map"><a class="btn btn-engineering fair-table" href="/company/395" value="company_395" data-toggle="tooltip" data-placement="right" title="" data-original-title="Brown and Caldwell (4 positions)">Brown and Caldwell</a></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"><a class="btn btn-engineering fair-table" href="/company/397" value="company_397" data-toggle="tooltip" data-placement="right" title="" data-original-title="Cahill Contractors (2 positions)">Cahill Contractors</a></td>
-                    <td id="career_fair_map"><a class="btn btn-engineering fair-table" href="/company/393" value="company_393" data-toggle="tooltip" data-placement="right" title="" data-original-title="BKF Engineers (2 positions)">BKF Engineers</a></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"><a class="btn btn-other fair-table" href="/company/432" value="company_432" data-toggle="tooltip" data-placement="right" title="" data-original-title="XL Construction (4 positions)">XL Construction</a></td>
-                  </tr><tr>
-                    <td id="career_fair_map"><a class="btn btn-other fair-table" href="/company/394" value="company_394" data-toggle="tooltip" data-placement="right" title="" data-original-title="Blach Construction Company (3 positions)">Blach Construction Company</a></td>
-                  </tr><tr>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"><a class="btn btn-engineering fair-table" href="/company/417" value="company_417" data-toggle="tooltip" data-placement="right" title="" data-original-title="Magnusson Klemencic Associates (1 positions)">Magnusson Klemencic Associates</a></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"><a class="btn btn-government fair-table" href="/company/400" value="company_400" data-toggle="tooltip" data-placement="right" title="" data-original-title="County of Los Angeles Department of Public Works (1 positions)">County of Los Angeles Department of Public Works</a></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"><a class="btn btn-other fair-table" href="/company/423" value="company_423" data-toggle="tooltip" data-placement="right" title="" data-original-title="Skidmore, Owings & Merrill LLP (2 positions)">Skidmore, Owings & Merrill LLP</a></td>
-                  </tr>
-                </table>
-                <p>Home Room</p>
-                <table>
-                  <tr>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"><a class="btn btn-other fair-table" href="/company/405" value="company_405" data-toggle="tooltip" data-placement="right" title="" data-original-title="Exponent">Exponent</a></td>
-                    <td id="career_fair_map"><a class="btn btn-engineering fair-table" href="/company/420" value="company_420" data-toggle="tooltip" data-placement="right" title="" data-original-title="Shimmick Construction (2 positions)">Shimmick Construction</a></td>
-                  </tr><tr>
-                    <td id="career_fair_map"><a class="btn btn-engineering fair-table" href="/company/415" value="company_415" data-toggle="tooltip" data-placement="right" title="" data-original-title="Kiewit Infrastructure West Co. (2 positions)">Kiewit Infrastructure West Co.</a></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                  </tr><tr>
-                    <td id="career_fair_map"><a class="btn btn-other fair-table" href="/company/392" value="company_392" data-toggle="tooltip" data-placement="right" title="" data-original-title="Arup (1 positions)">Arup</a></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"><a class="btn btn-engineering fair-table" href="/company/421" value="company_421" data-toggle="tooltip" data-placement="right" title="" data-original-title="Simpson Gumpertz & Heger (2 positions)">Simpson Gumpertz & Heger</a></td>
-                  </tr><tr>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"><a class="btn btn-government fair-table" href="/company/427" value="company_427" data-toggle="tooltip" data-placement="right" title="" data-original-title="U.S. Navy (1 positions)">U.S. Navy</a></td>
-                    <td id="career_fair_map"><a class="btn btn-other fair-table" href="/company/413" value="company_413" data-toggle="tooltip" data-placement="right" title="" data-original-title="HNTB Corporation (2 positions)">HNTB Corporation</a></td>
-                  </tr>
-                </table>
-                <p>Sproul Room</p>
-                <table>
-                  <tr>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"><a class="btn btn-other fair-table" href="/company/422" value="company_422" data-toggle="tooltip" data-placement="right" title="" data-original-title="Skanska (2 positions)">Skanska</a></td>
-                    <td id="career_fair_map"><a class="btn btn-other fair-table" href="/company/425" value="company_425" data-toggle="tooltip" data-placement="right" title="" data-original-title="The Walsh Group (2 positions)">The Walsh Group</a></td>
-                    <td id="career_fair_map"><a class="btn btn-other fair-table" href="/company/430" value="company_430" data-toggle="tooltip" data-placement="right" title="" data-original-title="Webcor Builders (1 positions)">Webcor Builders</a></td>
-                  </tr><tr>
-                    <td id="career_fair_map"></td>
-                  </tr><tr>
-                    <td id="career_fair_map"><a class="btn btn-other fair-table" href="/company/428" value="company_428" data-toggle="tooltip" data-placement="right" title="" data-original-title="W.E. O'Neil Construction Co. of California (1 positions)">W.E. O'Neil Construction Co. of California</a></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"><a class="btn btn-other fair-table" href="/company/426" value="company_426" data-toggle="tooltip" data-placement="right" title="" data-original-title="Turner Construction (2 positions)">Turner Construction</a></td>
-                    <td id="career_fair_map"></td>
-                  </tr><tr>
-                    <td id="career_fair_map"><a class="btn btn-engineering fair-table" href="/company/416" value="company_416" data-toggle="tooltip" data-placement="right" title="" data-original-title="Liftech Consultants (2 positions)">Liftech Consultants</a></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"><a class="btn btn-other fair-table" href="/company/404" value="company_404" data-toggle="tooltip" data-placement="right" title="" data-original-title="Environ (2 positions)">Environ</a></td>
-                  </tr><tr>
-                    <td id="career_fair_map"><a class="btn btn-other fair-table" href="/company/431" value="company_431" data-toggle="tooltip" data-placement="right" title="" data-original-title="Wiss, Janney, Elstner Associates, Inc. (6 positions)">Wiss, Janney, Elstner Associates, Inc.</a></td>
-                  </tr><tr>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"><a class="btn btn-other fair-table" href="/company/418" value="company_418" data-toggle="tooltip" data-placement="right" title="" data-original-title="Parsons Brinckerhoff (1 positions)">Parsons Brinckerhoff</a></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"><a class="btn btn-engineering fair-table" href="/company/429" value="company_429" data-toggle="tooltip" data-placement="right" title="" data-original-title="Walters & Wolf (1 positions)">Walters & Wolf</a></td>
-                  </tr>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-          <div class="jumbotron">
-            <!-- Information about the early bird internship career fair -->
-            <div class="row visible-lg">
-              <div class="col-lg-3 col-lg-offset-2">
-                <h4 align="left">Early Bird Internship Fair</h4>
-              </div>
-              <div class="col-lg-3">
-                <h4>October 17, 11am-3pm</h4>
-              </div>
-              <div class="col-lg-2">
-                <h4 class="text-right">RSF - Field House Gym</h4>
-              </div>
-            </div>
-            <div class="row hidden-lg">
-                <h4 align="left">Early Bird Internship Fair, Oct 17, 11am-3pm, RSF - Field House Gym</h4>
-            </div>
-            <div class="row">
-              <div class="col-lg-offset-2 col-lg-8">
-                <p>RSF - Field House Gym</p>
-                <table>
-                  <tr>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"><a class="btn btn-engineering fair-table" href="/company/357/" value="company_357" data-toggle="tooltip" data-placement="right" title="" data-original-title="Dell">Dell</a></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"><a class="btn btn-government fair-table" href="/company/386/" value="company_386" data-toggle="tooltip" data-placement="right" title="" data-original-title="USDA-NRCS">USDA-NRCS</a></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"><a class="btn btn-other fair-table" href="/company/352/" value="company_352" data-toggle="tooltip" data-placement="right" title="" data-original-title="Berkeley Study Abroad">Berkeley Study Abroad</a></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"><a class="btn btn-government fair-table" href="/company/383/" value="company_383" data-toggle="tooltip" data-placement="right" title="" data-original-title="U.S. Department of State">U.S. Department of State</a></td>
-                    <td id="career_fair_map"></td>
-                  </tr><tr>
-                    <td id="career_fair_map"><a class="btn btn-technology fair-table" href="/company/353/" value="company_353" data-toggle="tooltip" data-placement="right" title="" data-original-title="BMC Software">BMC Software</a></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                  </tr><tr>
-                    <td id="career_fair_map"><a class="btn btn-technology fair-table" href="/company/373/" value="company_373" data-toggle="tooltip" data-placement="right" title="" data-original-title="Ooyala">Ooyala</a></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"><a class="btn btn-government fair-table" href="/company/384/" value="company_384" data-toggle="tooltip" data-placement="right" title="" data-original-title="United States Marine Corps">United States Marine Corps</a></td>
-                    <td id="career_fair_map"><a class="btn btn-government fair-table" href="/company/364/" value="company_364" data-toggle="tooltip" data-placement="right" title="" data-original-title="JusticeCorps">JusticeCorps</a></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"><a class="btn btn-government fair-table" href="/company/374/" value="company_374" data-toggle="tooltip" data-placement="right" title="" data-original-title="Robert T. Matsui Center for Politics and Public Service">Robert T. Matsui Center for Politics and Public Service</a></td>
-                    <td id="career_fair_map"><a class="btn btn-other fair-table" data-toggle="tooltip" data-placement="right" title="" data-original-title="UCB Washintgon">UCB Washington</a></td>
-                  </tr><tr>
-                    <td id="career_fair_map"><a class="btn btn-other fair-table" data-toggle="tooltip" data-placement="right" title="" data-original-title="Logitech">Logitech</a></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"><a class="btn btn-finance fair-table" href="/company/381/" value="company_381" data-toggle="tooltip" data-placement="right" title="" data-original-title="The Climate Corporation">The Climate Corporation</a></td>
-                    <td id="career_fair_map"><a class="btn btn-other fair-table" data-toggle="tooltip" data-placement="right" title="" data-original-title="Peace Corps">Peace Corps</a></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"><a class="btn btn-government fair-table" href="/company/356/" value="company_356" data-toggle="tooltip" data-placement="right" title="" data-original-title="Consumer Financial Protection Bureau">Consumer Financial Protection Bureau</a></td>
-                    <td id="career_fair_map"><a class="btn btn-government fair-table" href="/company/385/" value="company_385" data-toggle="tooltip" data-placement="right" title="" data-original-title="University of California Center Sacramento">University of California Center Sacramento</a></td>
-                  </tr><tr>
-                    <td id="career_fair_map"><a class="btn btn-other fair-table" data-toggle="tooltip" data-placement="right" title="" data-original-title="Nook">Nook</a></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"><a class="btn btn-technology fair-table" href="/company/363/" value="company_363" data-toggle="tooltip" data-placement="right" title="" data-original-title="imo.im">imo.im</a></td>
-                    <td id="career_fair_map"><a class="btn btn-other fair-table" href="/company/366/" value="company_366" data-toggle="tooltip" data-placement="right" title="" data-original-title="KQED Inc.">KQED Inc.</a></td>
-                  </tr><tr>
-                    <td id="career_fair_map"><a class="btn btn-technology fair-table" href="/company/263/" value="company_263" data-toggle="tooltip" data-placement="right" title="" data-original-title="GoDaddy.com">GoDaddy.com</a></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"><a class="btn btn-other fair-table" href="/company/350/" value="company_350" data-toggle="tooltip" data-placement="right" title="" data-original-title="Acumen, LLC">Acumen, LLC</a></td>
-                    <td id="career_fair_map"><a class="btn btn-health fair-table" href="/company/365/" value="company_365" data-toggle="tooltip" data-placement="right" title="" data-original-title="Kaiser Permanente">Kaiser Permanente</a></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"><a class="btn btn-finance fair-table" href="/company/390/" value="company_390" data-toggle="tooltip" data-placement="right" title="" data-original-title="ZS Associates">ZS Associates</td>
-                    <td id="career_fair_map"><a class="btn btn-finance fair-table" href="/company/372/" value="company_372" data-toggle="tooltip" data-placement="right" title="" data-original-title="Northwestern Mutual">Northwestern Mutual</a></td>
-                  </tr><tr>
-                    <td id="career_fair_map"><a class="btn btn-technology fair-table" href="/company/302/" value="company_302" data-toggle="tooltip" data-placement="right" title="" data-original-title="Salesforce.com">Salesforce.com</a></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"><a class="btn btn-health fair-table" href="/company/367/" value="company_367" data-toggle="tooltip" data-placement="right" title="" data-original-title="Life Technologies">Life Technologies</a></td>
-                    <td id="career_fair_map"><a class="btn btn-health fair-table" href="/company/368/" value="company_368" data-toggle="tooltip" data-placement="right" title="" data-original-title="Maximus">Maximus</a></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"><a class="btn btn-health fair-table" href="/company/380/" value="company_380" data-toggle="tooltip" data-placement="right" title="" data-original-title="Stryker">Stryker</a></td>
-                    <td id="career_fair_map"><a class="btn btn-other fair-table" data-toggle="tooltip" data-placement="right" title="" data-original-title="Target">Target</a></td>
-                  </tr><tr>
-                    <td id="career_fair_map"><a class="btn btn-engineering fair-table" href="/company/377/" value="company_377" data-toggle="tooltip" data-placement="right" title="" data-original-title="Smith & Associates">Smith & Associates</a></td>
-                  </tr><tr>
-                    <td id="career_fair_map"><a class="btn btn-finance fair-table" href="/company/371/" value="company_371" data-toggle="tooltip" data-placement="right" title="" data-original-title="Nielsen">Nielsen</a></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"><a class="btn btn-technology fair-table" href="/company/376/" value="company_376" data-toggle="tooltip" data-placement="right" title="" data-original-title="SAP Americas">SAP Americas</a></td>
-                    <td id="career_fair_map"><a class="btn btn-health fair-table" href="/company/369/" value="company_369" data-toggle="tooltip" data-placement="right" title="" data-original-title="McKesson ">McKesson </a></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"><a class="btn btn-other fair-table" href="/company/375/" value="company_375" data-toggle="tooltip" data-placement="right" title="" data-original-title="Ross Stores, Inc">Ross Stores, Inc</a></td>
-                    <td id="career_fair_map"><a class="btn btn-other fair-table" data-toggle="tooltip" data-placement="right" title="" data-original-title="Safeway">Safeway</a></td>
-                  </tr><tr>
-                    <td id="career_fair_map"><a class="btn btn-finance fair-table" href="/company/359/" value="company_359" data-toggle="tooltip" data-placement="right" title="" data-original-title="EDF Trading North America, LLC">EDF Trading North America, LLC</a></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"><a class="btn btn-technology fair-table" href="/company/342/" value="company_342" data-toggle="tooltip" data-placement="right" title="" data-original-title="LiveRamp">LiveRamp</a></td>
-                    <td id="career_fair_map"><a class="btn btn-technology fair-table" href="/company/389/" value="company_389" data-toggle="tooltip" data-placement="right" title="" data-original-title="Zendesk">Zendesk</a></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"><a class="btn btn-finance fair-table" href="/company/388/" value="company_388" data-toggle="tooltip" data-placement="right" title="" data-original-title="WTAS LLC">WTAS LLC</a></td>
-                    <td id="career_fair_map"><a class="btn btn-other fair-table" href="/company/361/" value="company_361" data-toggle="tooltip" data-placement="right" title="" data-original-title="Fine Arts Museums of SF">Fine Arts Museums of SF</a></td>
-                  </tr><tr>
-                    <td id="career_fair_map"><a class="btn btn-technology fair-table" href="/company/289/" value="company_289" data-toggle="tooltip" data-placement="right" title="" data-original-title="Palantir Technologies">Palantir Technologie</a></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"><a class="btn btn-technology fair-table" href="/company/222/" value="company_222" data-toggle="tooltip" data-placement="right" title="" data-original-title="Box">Box</a></td>
-                    <td id="career_fair_map"><a class="btn btn-technology fair-table" href="/company/382/" value="company_382" data-toggle="tooltip" data-placement="right" title="" data-original-title="Turn Inc">Turn Inc</a></td>
-                    <td id="career_fair_map"></td>                    
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"><a class="btn btn-finance fair-table" href="/company/379/" value="company_379" data-toggle="tooltip" data-placement="right" title="" data-original-title="Stifel Financial Corporation">Stifel Financial Corporation</a></td>
-                    <td id="career_fair_map"><a class="btn btn-health fair-table" href="/company/387/" value="company_387" data-toggle="tooltip" data-placement="right" title="" data-original-title="Walgreens">Walgreens</a></td>
-                  </tr><tr>
-                    <td id="career_fair_map"></td>                    
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td> 
-                    <td id="career_fair_map"><a class="btn btn-technology fair-table" href="/company/279/" value="company_279" data-toggle="tooltip" data-placement="right" title="" data-original-title="Macys.com">Macys.com</a></td>
-                    <td id="career_fair_map"><a class="btn btn-finance fair-table" href="/company/378/" value="company_378" data-toggle="tooltip" data-placement="right" title="" data-original-title="State Street Corporation">State Street Corporation</a></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>                    
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"><a class="btn btn-other fair-table" href="/company/370/" value="company_370" data-toggle="tooltip" data-placement="right" title="" data-original-title="NBCUniversal">NBCUniversal</a></td>
-                    <td id="career_fair_map"><a class="btn btn-technology fair-table" href="/company/358/" value="company_358" data-toggle="tooltip" data-placement="right" title="" data-original-title="DigitasLBi">DigitasLBi</a></td>
-                  </tr><tr>
-                    <td id="career_fair_map"><a class="btn btn-technology fair-table" href="/company/318/" value="company_318" data-toggle="tooltip" data-placement="right" title="" data-original-title="IXL Learning">IXL Learning</a></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"><a class="btn btn-other fair-table" href="/company/279/" value="company_279" data-toggle="tooltip" data-placement="right" title="" data-original-title="Macy's Inc.">Macy's Inc.</a></td>
-                    <td id="career_fair_map"><a class="btn btn-technology fair-table" href="/company/281/" value="company_281" data-toggle="tooltip" data-placement="right" title="" data-original-title="Microsoft">Microsoft</a></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"><a class="btn btn-finance fair-table" href="/company/245/" value="company_245" data-toggle="tooltip" data-placement="right" title="" data-original-title="Chevron Corporation (Finance)">Chevron Corporation (Finance)</a></td>
-                    <td id="career_fair_map"><a class="btn btn-other fair-table" href="/company/360/" value="company_360" data-toggle="tooltip" data-placement="right" title="" data-original-title="Enterprise Holdings">Enterprise Holdings</a></td>
-                  </tr><tr>
-                    <td id="career_fair_map"><a class="btn btn-other fair-table" href="/company/351/" value="company_351" data-toggle="tooltip" data-placement="right" title="" data-original-title="Altria Group">Altria Group</a></td>
-                  </tr>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- Main content - STARTUP CAREER FAIR -->
-      <div class="row">
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-          <div class="jumbotron">
-            <!-- Information about the career fair -->
-            <div class="row visible-lg">
-              <div class="col-lg-3 col-lg-offset-2">
-                <h4 align="left">Startup Fair</h4>
-              </div>
-              <div class="col-lg-3">
-                <h4>October 9, 12-4pm</h4>
-              </div>
-              <div class="col-lg-2">
-                <h4 class="text-right">International House</h4>
-              </div>
-            </div>
-            <div class="row hidden-lg">
-                <h4 align="left">Startup Fair, Oct 9, 12-4pm, International House</h4>
-            </div>
-            <div class="row">
-              <div class="col-lg-offset-2 col-lg-8">
-                <p>Chevron Auditorium</p>
-                <table>
-                  <tr>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id='career_fair_map'><a class='btn btn-technology fair-table' href='/company/336/' value="company_336" data-toggle="tooltip" data-placement="right" title="" data-original-title="Room 77">Room 77</a></td>
-                    <td id="career_fair_map"></td>
-                    <td id='career_fair_map'><a class='btn btn-technology fair-table' href='/company/344/' value="company_344" data-toggle="tooltip" data-placement="right" title="" data-original-title="Twilio">Twilio</a></td>
-                    <td id="career_fair_map"></td>
-                    <td id='career_fair_map'><a class='btn btn-technology fair-table' href='/company/315/' value="company_315" data-toggle="tooltip" data-placement="right" title="" data-original-title="Magoosh">Magoosh</a></td>
-                    <td id="career_fair_map"></td>
-                    <td id='career_fair_map'><a class='btn btn-technology fair-table' href='/company/345/' value="company_345" data-toggle="tooltip" data-placement="right" title="" data-original-title="Okta">Okta</a></td>
-                    <td id="career_fair_map"></td>
-                    <td id='career_fair_map'><a class='btn btn-technology fair-table' href='/company/312/' value="company_312" data-toggle="tooltip" data-placement="right" title="" data-original-title="Readyforce">Readyforce</a></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                  </tr><tr>
-                    <td id='career_fair_map'><a class='btn btn-technology fair-table' href='/company/334/' value="company_334" data-toggle="tooltip" data-placement="right" title="" data-original-title="Kloudless">Kloudless</a></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id='career_fair_map'><a class='btn btn-technology fair-table' href='/company/314/' value="company_314" data-toggle="tooltip" data-placement="right" title="" data-original-title="Poshmark">Poshmark</a></td>
-                  </tr><tr>
-                    <td id='career_fair_map'><a class='btn btn-technology fair-table' href='/company/309/' value="company_309" data-toggle="tooltip" data-placement="right" title="" data-original-title="Sequoia">Sequoia</a></td>
-                    <td id="career_fair_map"></td>
-                    <td id='career_fair_map'><a class='btn btn-technology fair-table' href='/company/322/' value="company_322" data-toggle="tooltip" data-placement="right" title="" data-original-title="Brightedge">Brightedge</a></td>
-                    <td id="career_fair_map"></td>
-                    <td id='career_fair_map'><a class='btn btn-technology fair-table' href='/company/328/' value="company_328" data-toggle="tooltip" data-placement="right" title="" data-original-title="AutoGrid Systems">AutoGrid Systems</a></td>
-                    <td id="career_fair_map"></td>
-                    <td id='career_fair_map'><a class='btn btn-technology fair-table' href='/company/304/' value="company_304" data-toggle="tooltip" data-placement="right" title="" data-original-title="Tubemogul">Tubemogul</a></td>
-                    <td id="career_fair_map"></td>
-                    <td id='career_fair_map'><a class='btn btn-technology fair-table' href='/company/317/' value="company_317" data-toggle="tooltip" data-placement="right" title="" data-original-title="Lumosity">Lumosity</a></td>
-                    <td id="career_fair_map"></td>
-                    <td id='career_fair_map'><a class='btn btn-technology fair-table' href='/company/337/' value="company_337" data-toggle="tooltip" data-placement="right" title="" data-original-title="Liveramp">Liveramp</a></td>
-                    <td id="career_fair_map"></td>
-                    <td id='career_fair_map'><a class='btn btn-technology fair-table' href='/company/346/' value="company_346" data-toggle="tooltip" data-placement="right" title="" data-original-title="Nest Labs">Nest Labs</a></td>
-                  </tr><tr>
-                    <td id='career_fair_map'><a class='btn btn-technology fair-table' href='/company/326/' value="company_326" data-toggle="tooltip" data-placement="right" title="" data-original-title="Andreessen Horowitz">Andreessen Horowitz</a></td>
-                    <td id="career_fair_map"></td>
-                    <td id='career_fair_map'><a class='btn btn-technology fair-table' href='/company/307/' value="company_307" data-toggle="tooltip" data-placement="right" title="" data-original-title="Stripe">Stripe</a></td>
-                    <td id="career_fair_map"></td>
-                    <td id='career_fair_map'><a class='btn btn-technology fair-table' href='/company/335/' value="company_335" data-toggle="tooltip" data-placement="right" title="" data-original-title="Reflektion">Reflektion</a></td>
-                    <td id="career_fair_map"></td>
-                    <td id='career_fair_map'><a class='btn btn-technology fair-table' href='/company/332/' value="company_332" data-toggle="tooltip" data-placement="right" title="" data-original-title="Humin">Humin</a></td>
-                    <td id="career_fair_map"></td>
-                    <td id='career_fair_map'><a class='btn btn-technology fair-table' href='/company/306/' value="company_306" data-toggle="tooltip" data-placement="right" title="" data-original-title="Suitable Technologies">Suitable Technologies</a></td>
-                    <td id="career_fair_map"></td>
-                    <td id='career_fair_map'><a class='btn btn-technology fair-table' href='/company/316/' value="company_316" data-toggle="tooltip" data-placement="right" title="" data-original-title="Lyft">Lyft</a></td>
-                    <td id="career_fair_map"></td>
-                    <td id='career_fair_map'><a class='btn btn-technology fair-table' href='/company/341/' value="company_341" data-toggle="tooltip" data-placement="right" title="" data-original-title="Storm8">Storm8</a></td>
-                  </tr><tr>
-                    <td id='career_fair_map'><a class='btn btn-technology fair-table' href='/company/326/' value="company_326" data-toggle="tooltip" data-placement="right" title="" data-original-title="Andreessen Horowitz">Andreessen Horowitz</a></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id='career_fair_map'><a class='btn btn-technology fair-table' href='/company/324/' value="company_324" data-toggle="tooltip" data-placement="right" title="" data-original-title="Apartment List">Apartment List</a></td>
-                  </tr><tr>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id='career_fair_map'><a class='btn btn-technology fair-table' href='/company/327/' value="company_327" data-toggle="tooltip" data-placement="right" title="" data-original-title="AdRoll">AdRoll</a></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id='career_fair_map'><a class='btn btn-technology fair-table' href='/company/321/' value="company_321" data-toggle="tooltip" data-placement="right" title="" data-original-title="Aerospike">Aerospike</a></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id='career_fair_map'><a class='btn btn-technology fair-table' href='/company/331/' value="company_331" data-toggle="tooltip" data-placement="right" title="" data-original-title="Evernote">Evernote</a></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                  </tr><tr>
-                </table>
-                <p>Home Room</p>
-                <table>
-                  <tr>
-                    <td id="career_fair_map"></td>
-                    <td id='career_fair_map'><a class='btn btn-technology fair-table' href='/company/347/' value="company_347" data-toggle="tooltip" data-placement="right" title="" data-original-title="Cloudera">Cloudera</a></td>
-                    <td id="career_fair_map"></td>
-                    <td id='career_fair_map'><a class='btn btn-technology fair-table' href='/company/318/' value="company_318" data-toggle="tooltip" data-placement="right" title="" data-original-title="IXL Learning">IXL Learning</a></td>
-                    <td id="career_fair_map"></td>
-                  </tr><tr>
-                    <td id='career_fair_map'><a class='btn btn-technology fair-table' href='/company/313/' value="company_313" data-toggle="tooltip" data-placement="right" title="" data-original-title="Pure Storage">Pure Storage</a></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id='career_fair_map'><a class='btn btn-technology fair-table' href='/company/308/' value="company_308" data-toggle="tooltip" data-placement="right" title="" data-original-title="Sift Science">Sift Science</a></td>
-                  </tr><tr>
-                    <td id='career_fair_map'><a class='btn btn-technology fair-table' href='/company/348/' value="company_348" data-toggle="tooltip" data-placement="right" title="" data-original-title="Pernix Data">Pernix Data</a></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id='career_fair_map'><a class='btn btn-technology fair-table' href='/company/343/' value="company_343" data-toggle="tooltip" data-placement="right" title="" data-original-title="Berkeley Skydeck">Berkeley Skydeck</a></td>
-                  </tr><tr>
-                    <td id="career_fair_map"></td>
-                    <td id='career_fair_map'><a class='btn btn-technology fair-table' href='/company/305/' value="company_305" data-toggle="tooltip" data-placement="right" title="" data-original-title="TellApart">TellApart</a></td>
-                    <td id="career_fair_map"></td>
-                    <td id='career_fair_map'><a class='btn btn-technology fair-table' href='/company/349/' value="company_349" data-toggle="tooltip" data-placement="right" title="" data-original-title="Flipboard">Flipboard</a></td>
-                    <td id="career_fair_map"></td>
-                  </tr><tr>
-                </table>
-                <p>Robert Sproul Room</p>
-                <table>
-                  <tr>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id='career_fair_map'><a class='btn btn-technology fair-table' href='/company/338/' value="company_338" data-toggle="tooltip" data-placement="right" title="" data-original-title="Zuora">Zuora</a></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                  </tr><tr>
-                    <td id='career_fair_map'><a class='btn btn-technology fair-table' href='/company/320/' value="company_320" data-toggle="tooltip" data-placement="right" title="" data-original-title="C3 Energy">C3 Energy</a></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id='career_fair_map'><a class='btn btn-technology fair-table' href='/company/310/' value="company_310" data-toggle="tooltip" data-placement="right" title="" data-original-title="Saleae">Saleae</a></td>
-                  </tr><tr>
-                    <td id='career_fair_map'><a class='btn btn-technology fair-table' href='/company/311/' value="company_311" data-toggle="tooltip" data-placement="right" title="" data-original-title="Redfin">Redfin</a></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id='career_fair_map'><a class='btn btn-technology fair-table' href='/company/323/' value="company_323" data-toggle="tooltip" data-placement="right" title="" data-original-title="Arista Networks">Arista Networks</a></td>
-                    <td id='career_fair_map'><a class='btn btn-technology fair-table' href='/company/339/' value="company_339" data-toggle="tooltip" data-placement="right" title="" data-original-title="MongoDB">MongoDB</a></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id='career_fair_map'><a class='btn btn-technology fair-table' href='/company/340/' value="company_340" data-toggle="tooltip" data-placement="right" title="" data-original-title="AeroFS">AeroFS</a></td>
-                  </tr><tr>
-                    <td id='career_fair_map'><a class='btn btn-technology fair-table' href='/company/333/' value="company_333" data-toggle="tooltip" data-placement="right" title="" data-original-title="Inflection">Inflection</a></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id='career_fair_map'><a class='btn btn-technology fair-table' href='/company/330/' value="company_330" data-toggle="tooltip" data-placement="right" title="" data-original-title="Doximity">Doximity</a></td>
-                    <td id="career_fair_map"></td>
-                    <td id="career_fair_map"></td>
-                    <td id='career_fair_map'><a class='btn btn-technology fair-table' href='/company/319/' value="company_319" data-toggle="tooltip" data-placement="right" title="" data-original-title="EasyESI">EasyESI</a></td>
-                    <td id="career_fair_map"></td>
-                    <td id='career_fair_map'><a class='btn btn-technology fair-table' href='/company/329/' value="company_329" data-toggle="tooltip" data-placement="right" title="" data-original-title="Brandcast">Brandcast</a></td>
-                    
-                  </tr>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Main content - EECS CAREER FAIR -->
-      <div class="row">
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-          <div class="jumbotron">
-            <!-- Information about the career fair -->
-            <div class="row visible-lg">
-              <div class="col-lg-offset-2 col-lg-3">
-                <h4 align="left">EECS Career Fair</h4>
-              </div>
-              <div class="col-lg-3">
-                <h4>September 25, 11am-3pm</h4>
-              </div>
-              <div class="col-lg-2">
-                <h4 class="text-right">RSF - Field House Gym</h4>
-              </div>
-            </div>
-            <div class="row hidden-lg">
-                <h4 align="left">EECS Career Fair, September 25 11am-3pm, RSF - Field House Gym</h4>
-            </div>
-            <!-- EECS Career -->
-            <div class="row">
-              <div class="col-lg-offset-2 col-lg-8">
-                <table>
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+      <table>
                   <tr>
                     <td id='career_fair_map'><a class='btn btn-technology fair-table' href='/company/231/' value="company_231" data-toggle="tooltip" data-placement="right" title="" data-original-title="Twitter">Twitter</a></td>
                     <td id="career_fair_map"></td>
@@ -815,12 +284,8 @@ td#career_fair_map{
                     <td id='career_fair_map'><a class='btn btn-technology fair-table' href='/company/235/' value="company_235" data-toggle="tooltip" data-placement="right" title="" data-original-title="Switchfly">Switchfly</a></td>
                   </tr>
                 </table>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
+
   </div>
     
 
