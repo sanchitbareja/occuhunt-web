@@ -22,7 +22,6 @@
       <ul class="nav navbar-nav navbar-right">
         <li><a href="/home/">FAIRS</a></li>
         <li><a href="/companies/">COMPANIES</a>
-        <li><a data-toggle="modal" href="#feedbackModal">FEEDBACK</a></li>
         {% if user.is_authenticated %}
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{user.first_name | upper}}
@@ -40,58 +39,3 @@
     </div><!--/.nav-collapse -->
   </div>
 </div>
-
-<!-- Feedback Modal -->
-<div class="modal fade" id="feedbackModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title">Feedback</h4>
-      </div>
-      <div class="modal-body">
-        <div id="feedbackForm">
-          <div class="row">
-            <div class="col-lg-12">
-              <textarea class="form-control" rows="5" id="feedbackFormText" style="width:100%;">What do you think of Occuhunt? We'd love to hear from you!</textarea>
-            </div>
-          </div>
-          <br />
-          <div class="row">
-            <div class="form-group">
-              <label for="feedbackReplyTo" class="col-lg-2 control-label">Email</label>
-              <div class="col-lg-10">
-                <input type="email" class="form-control" id="feedbackReplyTo" placeholder="Optional" style="width:100%;">
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" id="feedbackFormSubmit">Send feedback!</button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-
-
-<script type="text/javascript">
-  $("#feedbackFormSubmit").click(function(){
-    $("#feedbackForm").before('<div id="spinnerWait"><div class="spinner"><div class="bar1"></div><div class="bar2"></div><div class="bar3"></div><div class="bar4"></div><div class="bar5"></div><div class="bar6"></div><div class="bar7"></div><div class="bar8"></div><div class="bar9"></div><div class="bar10"></div><div class="bar11"></div><div class="bar12"></div></div><p>Sending your feedback...</p></div>');
-    $.ajax({
-      type: "POST",
-      url: "/feedback/",
-      data: { feedback: $("#feedbackFormText").val(), replyToEmail:$("#feedbackReplyTo").val(), csrfmiddlewaretoken: $('input[name="csrfmiddlewaretoken"]').val() }
-    }).done(function( returnData ) {
-      if(returnData['success']){
-        $("#feedbackForm").empty();
-        $("#feedbackFormSubmit").remove()
-        $("#spinnerWait").replaceWith("<p>Thanks for your feedback! Your feedback has reached us :)</p>");
-      } else {
-        $("#spinnerWait").remove();
-        $("#feedbackForm").replaceWith("<p>Oops! Something broke. Please try again in a while :( </p>");
-      }
-    });
-  });
-</script>
