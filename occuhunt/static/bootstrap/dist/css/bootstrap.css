@@ -286,7 +286,7 @@ body {
   font-size: 14px;
   line-height: 1.428571429;
   color: #333333;
-  background-color: #333a40;
+  background-color: #ffffff;
 }
 input,
 button,
@@ -1355,7 +1355,7 @@ th {
   border-top: 2px solid #dddddd;
 }
 .table .table {
-  background-color: #333a40;
+  background-color: #ffffff;
 }
 .table-condensed thead > tr > th,
 .table-condensed tbody > tr > th,
@@ -2661,6 +2661,12 @@ fieldset[disabled] .btn-link:focus {
   color: #999999;
   text-decoration: none;
 }
+.btn-xlg {
+  padding: 20px 30px;
+  font-size: 28px;
+  line-height: 1.33;
+  border-radius: 0px;
+}
 .btn-lg {
   padding: 10px 16px;
   font-size: 18px;
@@ -3912,7 +3918,7 @@ textarea.input-group-sm > .input-group-btn > .btn {
 .nav-tabs > li.active > a:hover,
 .nav-tabs > li.active > a:focus {
   color: #555555;
-  background-color: #333a40;
+  background-color: #ffffff;
   border: 1px solid #dddddd;
   border-bottom-color: transparent;
   cursor: default;
@@ -3938,7 +3944,7 @@ textarea.input-group-sm > .input-group-btn > .btn {
   margin-right: 0;
 }
 .nav-tabs.nav-justified > .active > a {
-  border-bottom-color: #333a40;
+  border-bottom-color: #ffffff;
 }
 .nav-pills > li {
   float: left;
@@ -3985,7 +3991,7 @@ textarea.input-group-sm > .input-group-btn > .btn {
   margin-right: 0;
 }
 .nav-tabs-justified > .active > a {
-  border-bottom-color: #333a40;
+  border-bottom-color: #ffffff;
 }
 .tabbable:before,
 .tabbable:after {

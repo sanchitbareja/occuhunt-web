@@ -5,182 +5,84 @@
 
 {% block extra_style %}
 
-<style type="text/css">
-
-.favorited-company {
-  background-image: url('/static/images/target.png');
-  background-repeat: no-repeat;
-  background-size: 20px;
-}
-
-#no_decoration {
-
-}
-
-#no_decoration:hover {
-  text-decoration: none;
-}
-
-
-body {
-  background: url('{% static "images/Home.jpg" %}');
-}
-
-#streamline_application{
-  color: white;
-}
-
-#streamline_application:hover {
-  text-decoration: none;
-  color: #23a1a3;
-}
-
-</style>
+<link href="{% static "occuhunt/css/splash.css" %}" rel="stylesheet">
 
 {% endblock %}
 
 {% block extra_script %}
-<script type="text/javascript">
-  
-  $(document).ready(function(){
-    updateHunts();
-    getCompanies();
-  });
 
-  $(window).bind('scroll resize', function() {
-      $('#filter_bar').css('top', $(this).scrollTop());
-  });
+<script src="{% static "occuhunt/js/splash.js" %}"></script>
 
-</script>
 {% endblock %}
 
 {% block full_content %}
 
-
-<br />
-<br />
-<br />
-<br />
-<br />
-<div class="row" style="margin-bottom:1em;">
-  <div class="col-lg-12" style="text-align:center;">
-    <h1 style="color:white;font-size:80px;">Take charge of your<br />job applications.</h1>
-    <br />
-    <br />
-    <br />
-    <a href="/home/" class="btn btn-done btn-lg" style="padding-top:20px;padding-bottom:20px;padding-right:40px;padding-left:40px; font-family:'Proxima Nova'; font-weight: 700; -webkit-font-smoothing: antialiased; font-smoothing: antialiased; font-size:30px;">VIEW UPCOMING FAIRS</a>
-    <br />
-    <br />
-    <img src="{% static 'images/footsteps_white.png' %}" style="height:200px;">
-  </div>
-
-</div>
-<div style="background: rgb(238,238,238); text-align:left;">
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-6">
-        <img src="{% static 'images/career-fair-example.png' %}" style="height:500px; margin-top:40px; margin-bottom:40px;">
-      </div>
-      <div class="col-lg-6">
-        <a class="btn-link" href="/home/" id="no_decoration"><h1 style="margin-top:190px;font-size:50px;text-align:center;">Find out which<br />companies are attending<br />the career fair.</h1></a>
-      </div>
-    </div>
+<div class="row">
+  <div class="col-lg-12 text-center">
+    <p id="vision-statement">Supercharge your<br />job applications</p>
   </div>
 </div>
 
-<div style="background: rgb(51,58,64); width:100%; text-align:center;">
-  <div class="container">
-    <div class="row">
-    <a class="btn btn-lg btn-link" href="/companies/" id="streamline_application"><h2 style="font-size:50px;">Search companies</h2></a>
+<div class="row">
+  <div class="col-lg-12 text-center">
+    <button class="btn btn-xlg btn-done">View Upcoming Fairs</button>
   </div>
-    <div class="row">
-      <div class="col-lg-12">
-        <a href="/companies/">
-          <img src="{% static 'images/search_example.png' %}" style="width:100%;">
-        </a>
-      </div>
-    </div>
-  </div>
-  <br />
-  <br />
 </div>
 
-<div style="background: rgb(68, 77, 91); width:100%; text-align:left;">
-  <div class="container">
-    <div class="row" style="text-align:center;">
-      <div class="col-lg-7">
-        <a class="btn btn-lg btn-link" href="/company/396/" id="streamline_application" style="margin-top:40px;font-size:50px;text-align:center;"><h2 style="font-size:50px;">Learn more<br />about the companies<br />and the jobs they offer.</h2></a>
-        <ul class="list-unstyled" style="color:white;">
-          <li><a class="btn btn-lg btn-link" href="/company/406/" id="streamline_application" style="font-size:20px;text-align:center;">Fehr & Peers</a></li>
-          <li><a class="btn btn-lg btn-link" href="/company/408/" id="streamline_application" style="font-size:20px;text-align:center;">GHD</a></li>
-          <li><a class="btn btn-lg btn-link" href="/company/394/" id="streamline_application" style="font-size:20px;text-align:center;">Blach Construction Company</a></li>
-          <li><a class="btn btn-lg btn-link" href="/company/403/" id="streamline_application" style="font-size:20px;text-align:center;">Engeo</a></li>
-          <li><a class="btn btn-lg btn-link" href="/company/395/" id="streamline_application" style="font-size:20px;text-align:center;">Brown and Caldwell</a></li>
-          <li><a class="btn btn-lg btn-link" href="/company/401/" id="streamline_application" style="font-size:20px;text-align:center;">dk Consulting</a></li>
-          <li><a class="btn btn-lg btn-link" href="/company/432/" id="streamline_application" style="font-size:20px;text-align:center;">XL Construction</a></li>
-          <li><a class="btn btn-lg btn-link" href="/company/410/" id="streamline_application" style="font-size:20px;text-align:center;">Harder Mechanical</a></li>
-          <li><a class="btn btn-lg btn-link" href="/company/424/" id="streamline_application" style="font-size:20px;text-align:center;">The Boldt Company</a></li>
-          <li><a class="btn btn-lg btn-link" href="/company/399/" id="streamline_application" style="font-size:20px;text-align:center;">Coughlin Porter Lundeen</a></li>
-          <li><a class="btn btn-lg btn-link" href="/companies/" id="streamline_application" style="font-size:20px;text-align:center;">and many more!</a></li>
-        </ul>
-      </div>
-      <div class="col-lg-4">
-        <br />
-        <br />
-        <a href="/company/396/"><img src="{% static 'images/company_example.png' %}" style="height:700px;"></a>
-      </div>
-      <div class="col-lg-1">
-        <br />
-      </div>
+<div id="ss-container" class="ss-container">
+    <div class="ss-row ss-medium">
+        <div class="ss-left">
+            <a href="#" class="ss-circle ss-circle-1">Some title</a>
+        </div>
+        <div class="ss-right">
+            <h3>
+                <span>November 28, 2011</span>
+                <a href="#">Some Title</a>
+            </h3>
+        </div>
     </div>
-  </div>
-  <br />
-  <br />
+    <!-- more rows... -->
+    <div class="ss-row">
+        <div class="ss-left">
+            <h2 id="november">November</h2>
+        </div>
+        <div class="ss-right">
+            <h2>2011</h2>
+        </div>
+    </div>
+    <div class="ss-row">
+        <div class="ss-left">
+            <h2 id="november">November</h2>
+        </div>
+        <div class="ss-right">
+            <h2>2011</h2>
+        </div>
+    </div>
+    <div class="ss-row">
+        <div class="ss-left">
+            <h2 id="november">November</h2>
+        </div>
+        <div class="ss-right">
+            <h2>2011</h2>
+        </div>
+    </div>
+    <div class="ss-row">
+        <div class="ss-left">
+            <h2 id="november">November</h2>
+        </div>
+        <div class="ss-right">
+            <h2>2011</h2>
+        </div>
+    </div>
+    <div class="ss-row">
+        <div class="ss-left">
+            <h2 id="november">November</h2>
+        </div>
+        <div class="ss-right">
+            <h2>2011</h2>
+        </div>
+    </div>
+
 </div>
 
-<div style="background: #fff; width:100%; text-align:center;">
-  <br>
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-12">
-        <h2 style="font-size:50px;">Backed by</h2>
-        <br>
-        <br>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-lg-4">
-        <a href="http://cet.berkeley.edu/"><img src="{% static 'images/berkeley.gif' %}" style="height:100px;"></a>
-      </div>
-      <div class="col-lg-4">
-        <a href="http://cet.berkeley.edu/"><img src="{% static 'images/CET_logo.png' %}" style="height:100px;"></a>
-      </div>
-      <div class="col-lg-4">
-        <a href="https://career.berkeley.edu/"><img src="{% static 'images/career-center-logo-gold.png' %}" style="height:100px;"></a>
-      </div>
-    </div>
-  </div>
-  <br>
-  <br>
-  <br>
-</div>
-
-<div style="background: rgb(190,213,213); width:100%; text-align:center;">
-  <br>
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-12">
-        <h2 style="font-size:50px;">Make your internship or job search less painful.</h2>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-lg-12">
-        <a href="/login/linkedin/?next={{request.path}}"><img src="{% static 'images/login-with-linkedin.png' %}"></a>
-      </div>
-    </div>
-    <br />
-    <br />
-    <br />
-  </div>
-</div>
 {% endblock %}
