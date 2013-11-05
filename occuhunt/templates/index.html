@@ -18,19 +18,24 @@ body {
 }
 
 .fair-table {
-  height:60px;
-  width: 60px;
-  text-align: left;
-  padding-left: 2px; 
+  max-height:80px;
+  max-width: 80px;
   word-wrap: break-word;
   overflow: hidden;
+  font-weight: 500; 
+  display: table-cell;
+  vertical-align: middle;
+  height: 80px;
+  width: 80px;
+}
+
+.vcenter{
 }
 
 td#career_fair_map{
   min-width: 60px;
   min-height: 60px;
-  width: 60px;
-  height: 60px;
+  max-height: 80px;
 }
 
 .jumbotron {
@@ -42,11 +47,11 @@ td#career_fair_map{
 }
 
 .btn{
-  width:80px;
-  height:80px;
   word-wrap: break-word;
   white-space: normal;
-  padding: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 0px;
   text-align: center;
 }
 
@@ -75,13 +80,13 @@ td#career_fair_map{
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
       <table>
                   <tr>
-                    <td id='career_fair_map'><a class='btn btn-technology fair-table' href='/company/231/' value="company_231" data-toggle="tooltip" data-placement="right" title="" data-original-title="Twitter">Twitter</a></td>
+                    <td id='career_fair_map'><a class='btn btn-technology fair-table vcenter' href='/company/231/' value="company_231" data-toggle="tooltip" data-placement="right" title="" data-original-title="Twitter">Twitter</a></td>
                     <td id="career_fair_map"></td>
                     <td id='career_fair_map'><a class='btn btn-government fair-table' href='/company/303/' value="company_303" data-toggle="tooltip" data-placement="right" title="" data-original-title="CIA">CIA</a></td>
                     <td id='career_fair_map'><a class='btn btn-technology fair-table' href='/company/287/' value="company_287" data-toggle="tooltip" data-placement="right" title="" data-original-title="Nvidia">Nvidia</a></td>
                     <td id="career_fair_map"></td>
                     <td id='career_fair_map'><a class='btn btn-engineering fair-table' href='/company/233/' value="company_233" data-toggle="tooltip" data-placement="right" title="" data-original-title="Aerospace Corp">Aerospace Corp</a></td>
-                    <td id='career_fair_map'><a class='btn btn-technology fair-table' href='/company/278/' value="company_278" data-toggle="tooltip" data-placement="right" title="" data-original-title="LinkedIn / Slideshare">LinkedIn / Slideshare</a></td>
+                    <td id='career_fair_map'><a class='btn btn-technology fair-table vcenter' href='/company/278/' value="company_278" data-toggle="tooltip" data-placement="right" title="" data-original-title="LinkedIn / Slideshare">LinkedIn / Slideshare</a></td>
                     <td id="career_fair_map"></td>
                     <td id='career_fair_map'><a class='btn btn-technology fair-table' href='/company/292/' value="company_292" data-toggle="tooltip" data-placement="right" title="" data-original-title="Pinterest">Pinterest</a></td>
                     <td id='career_fair_map'><a class='btn btn-technology fair-table' href='/company/256/' value="company_256" data-toggle="tooltip" data-placement="right" title="" data-original-title="Facebook">Facebook</a></td>
@@ -222,7 +227,7 @@ td#career_fair_map{
                     <td id='career_fair_map'><a class='btn btn-technology fair-table' href='/company/228/' value="company_228" data-toggle="tooltip" data-placement="right" title="" data-original-title="VMWare">VMWare</a></td>
                     <td id="career_fair_map"></td>
                     <td id='career_fair_map'><a class='btn btn-engineering fair-table' href='/company/215/' value="company_215" data-toggle="tooltip" data-placement="right" title="" data-original-title="Arista Networks">Arista Networks</a></td>
-                    <td id='career_fair_map'><a class='btn btn-finance fair-table' href='/company/230/' value="company_230" data-toggle="tooltip" data-placement="right" title="" data-original-title="Two Sigma Investments">Two Sigma Investments</a></td>
+                    <td id='career_fair_map'><a class='btn btn-finance fair-table' href='/company/230/' value="company_230" data-toggle="tooltip" data-placement="right" title="" data-original-title="Two Sigma Investments">Two Sigma</a></td>
                     <td id="career_fair_map"></td>
                     <td id='career_fair_map'><a class='btn btn-finance fair-table' href='/company/252/' value="company_252" data-toggle="tooltip" data-placement="right" title="" data-original-title="Deloitte">Deloitte</a></td>
                     <td id='career_fair_map'><a class='btn btn-technology fair-table' href='/company/218/' value="company_218" data-toggle="tooltip" data-placement="right" title="" data-original-title="Aspera">Aspera</a></td>
