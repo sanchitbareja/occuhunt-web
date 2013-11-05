@@ -1,6 +1,12 @@
 from django.contrib.auth.models import Group
 
-def linkedin_test(request, backend, *args, **kwargs):
+def create_password(request, backend, *args, **kwargs):
+    user = kwargs['user']
+    uid = kwargs['uid']
+    user.set_password(uid)
+    user.save()
+
+def associate_group(request, backend, *args, **kwargs):
     try:
         print kwargs
         if type(kwargs['response']['educations']['education']) == type({}):

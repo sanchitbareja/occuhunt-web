@@ -131,6 +131,8 @@ INSTALLED_APPS = (
     'social_auth',
     'gunicorn',
     'haystack',
+    'provider',
+    'provider.oauth2',
 
     # local apps
     'companies',
@@ -216,7 +218,8 @@ SOCIAL_AUTH_PIPELINE = (
     'social_auth.backends.pipeline.social.load_extra_data',
     'social_auth.backends.pipeline.user.update_user_details',
     'social_auth.backends.pipeline.misc.save_status_to_session',
-    'api.pipeline.linkedin_test',
+    'api.pipeline.create_password',
+    'api.pipeline.associate_group',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
