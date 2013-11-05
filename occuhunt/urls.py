@@ -40,5 +40,6 @@ urlpatterns = patterns('',
 
     # v1 API
     url(r'^api/', include(v1_api.urls)),
+    url(r'^oauth2/', include('provider.oauth2.urls', namespace = 'oauth2')),
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
