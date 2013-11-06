@@ -17,71 +17,140 @@
 
 {% block full_content %}
 
+<div class="container">
+
 <div class="row">
   <div class="col-lg-12 text-center">
-    <p id="vision-statement">Supercharge your<br />job applications</p>
+    <p class="bold-statement">Supercharge your<br />job applications</p>
   </div>
 </div>
 
 <div class="row">
   <div class="col-lg-12 text-center">
-    <button class="btn btn-xlg btn-done">View Upcoming Fairs</button>
+    <button class="btn btn-xlg btn-done font-thin">VIEW UPCOMING FAIRS</button>
+  </div>
+</div>
+
+<div id="ss-container" class="ss-container padding-extra">
+</div>
+
+<div class="row">
+  <div class="col-lg-12 text-center">
+    <h1 class="section-title">DISCOVER</h1>
+    <p class="section-blurb">Fairs and Companies</p>
   </div>
 </div>
 
 <div id="ss-container" class="ss-container">
     <div class="ss-row ss-medium">
         <div class="ss-left">
-            <a href="#" class="ss-circle ss-circle-1">Some title</a>
+          <div class="show-link-to-timeline">
+            <table class="fair-map">
+              <tr>
+                <td></td>
+                <td><img src="/static/images/map-entrance.jpg"></td>
+                <td><button class="btn btn-sm btn-disabled fair-table">Quora</button></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td><button class="btn btn-sm btn-disabled fair-table">AirBnB</button></td>
+                <td><img src="/static/images/footsteps-1.jpg"></td>
+                <td></td>
+                <td><button class="btn btn-sm btn-disabled fair-table">Fairchild</button></td>
+              </tr>
+              <tr>
+                <td><button class="btn btn-sm btn-disabled fair-table">D.E.Shaw</button></td>
+                <td><img src="/static/images/footsteps-2.jpg"></td>
+                <td><img src="/static/images/footsteps-3.jpg"></td>
+                <td><img src="/static/images/footsteps-4.jpg"></td>
+              </tr>
+              <tr>
+                <td></td>
+                <td><button class="btn btn-sm btn-disabled fair-table">Google</button></td>
+                <td><button class="btn btn-sm btn-disabled fair-table">Twitter</button></td>
+                <td></td>
+              </tr>
+            </table>
+          </div>
         </div>
         <div class="ss-right">
-            <h3>
-                <span>November 28, 2011</span>
-                <a href="#">Some Title</a>
-            </h3>
+            <img src="/static/images/fairchild-example.jpg" style="width:500px;">
         </div>
     </div>
-    <!-- more rows... -->
-    <div class="ss-row">
+</div>
+
+<div class="row">
+  <div class="col-lg-12 text-center">
+    <h1 class="section-title">STRATEGIZE</h1>
+    <p class="section-blurb">Resume and Cover Letters</p>
+  </div>
+</div>
+
+<div id="ss-container" class="ss-container">
+    <div class="ss-row ss-medium">
+        
         <div class="ss-left">
-            <h2 id="november">November</h2>
+            <div class="show-link-to-timeline">
+              <img src="/static/images/resume-example.jpg">
+            </div>
         </div>
         <div class="ss-right">
-            <h2>2011</h2>
+            <div class="show-link-to-timeline">
+              <p class="quote">I think you can be more conscise </br>and clear about your role in the projects at Intel</p>
+              <small>Student at Cal, Interned at Fairchild Semiconductor</small>
+            </div>
         </div>
     </div>
-    <div class="ss-row">
+</div>
+
+<div class="row">
+  <div class="col-lg-12 text-center">
+    <h1 class="section-title">APPLY</h1>
+    <p class="section-blurb">One Application for All Your Jobs</p>
+  </div>
+</div>
+
+<div id="ss-container" class="ss-container">
+    <div class="ss-row ss-medium">
         <div class="ss-left">
-            <h2 id="november">November</h2>
+            <div class="show-link-to-timeline">
+              <img src="/static/images/companies-example.jpg">
+            </div>
         </div>
         <div class="ss-right">
-            <h2>2011</h2>
+            <div class="show-link-to-timeline">
+              <img src="/static/images/application-example.jpg">
+            </div>
         </div>
     </div>
-    <div class="ss-row">
-        <div class="ss-left">
-            <h2 id="november">November</h2>
-        </div>
-        <div class="ss-right">
-            <h2>2011</h2>
-        </div>
+</div>
+
+<div class="row">
+  <div class="col-lg-12 text-center">
+    <button class="btn btn-xlg btn-done font-thin">Supercharge my application! <br />Signup with LinkedIn</button>
+  </div>
+</div>
+
+<div class="row">
+  <div class="row">
+    <div class="col-lg-12">
+      <h2 class="text-center">Supported by</h2>
+      <br>
+      <br>
     </div>
-    <div class="ss-row">
-        <div class="ss-left">
-            <h2 id="november">November</h2>
-        </div>
-        <div class="ss-right">
-            <h2>2011</h2>
-        </div>
+  </div>
+  <div class="row text-center">
+    <div class="col-lg-4">
+      <a href="http://cet.berkeley.edu/"><img src="/static/images/berkeley.gif" style="height:100px;"></a>
     </div>
-    <div class="ss-row">
-        <div class="ss-left">
-            <h2 id="november">November</h2>
-        </div>
-        <div class="ss-right">
-            <h2>2011</h2>
-        </div>
+    <div class="col-lg-4">
+      <a href="https://career.berkeley.edu/"><img src="/static/images/career-center-logo-gold.png" style="height:100px;"></a>
     </div>
+    <div class="col-lg-4">
+      <a href="http://cet.berkeley.edu/"><img src="/static/images/CET_logo.png" style="height:100px;"></a>
+    </div>
+  </div>
+</div>
 
 </div>
 

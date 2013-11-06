@@ -16,7 +16,7 @@
     text-align: left;
     float: left;
     overflow: hidden;
-    padding-bottom: 500px;
+    padding-bottom: 100px;
 }
 
 .ss-container:before{
@@ -57,7 +57,7 @@
 .ss-container h2{
     font-size: 40px;
     text-transform: uppercase;
-    color: rgba(78,84,123,0.2);
+    color: black;
     text-shadow: 0px 1px 1px #fff;
     padding: 20px 0px;
 }
@@ -65,7 +65,7 @@
 .ss-container h3{
     margin-top: 34px;
     padding: 10px 15px;
-    background: rgba(26, 27, 33, 0.6);
+    background: black;
     text-shadow: 1px 1px 1px rgba(26, 27, 33, 0.8)
 }
 
@@ -110,7 +110,7 @@
 }
 
 .ss-circle-deco:before{
-    width: 29%;
+    width: 16%;
     height: 0px;
     border-bottom: 5px dotted #ddd;
     border-bottom: 5px dotted rgba(17, 17, 22, 0.3);
@@ -197,8 +197,68 @@
 
 /* 2. Splash specific implementation */
 
-#vision-statement {
+.padding-extra {
+	padding-bottom: 100px !important;
+}
+
+.bold-statement {
 	font-size: 100px;
 	padding-top: 20px;
 	padding-bottom: 50px;
+	font-weight: 500;
+	color: #035d67;
+}
+
+.font-thin {
+	font-weight: 100;
+}
+
+.section-title {
+	padding-top: 2px;
+	padding-bottom: 2px;
+	margin: 0px;
+	line-height: 1;
+	font-size: 36px;
+	font-weight: normal;
+	color: #035d67;
+}
+
+.section-blurb {
+	padding-top: 2px;
+	padding-bottom: 2px;
+	margin: 0px;
+	font-size: 18px;
+	line-height: 1;
+	color: #035d67;
+}
+
+.ss-left > .show-link-to-timeline {
+	padding-right: 15%;
+}
+
+.ss-right > .show-link-to-timeline {
+	padding-left: 15%;
+}
+
+table.fair-map {
+	display: block;
+	float: right;
+	border: 0px solid grey;
+}
+
+button.fair-table {
+	height: 80px;
+	width: 80px;
+	border-radius: 0px;
+	background-color: #a5c2c7;
+}
+
+button.fair-table:hover {
+	background-color: blue;
+}
+
+.quote {
+	font-size: 20px;
+	font-weight: 500;
+	color: #035d67;
 }

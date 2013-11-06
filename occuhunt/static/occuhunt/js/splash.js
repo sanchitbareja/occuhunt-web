@@ -41,7 +41,7 @@ $(function() {
 						});
 					}
 					// show the pointers for the inviewport rows
-					$rowsViewport.find('a.ss-circle').addClass('ss-circle-deco');
+					$rowsViewport.find('.show-link-to-timeline').addClass('ss-circle-deco');
 					// set positions for each row
 					placeRows();
 					
@@ -102,7 +102,7 @@ $(function() {
 							// redefine which rows are initially visible (:inviewport)
 							setViewportRows();
 							// remove pointers for every row
-							$rows.find('a.ss-circle').removeClass('ss-circle-deco');
+							$rows.find('.show-link-to-timeline').removeClass('ss-circle-deco');
 							// show inviewport rows and respective pointers
 							$rowsViewport.each( function() {
 							
@@ -112,7 +112,7 @@ $(function() {
 									   .find('div.ss-right')
 									   .css({ right  : '0%' })
 									   .end()
-									   .find('a.ss-circle')
+									   .find('.show-link-to-timeline')
 									   .addClass('ss-circle-deco');
 							
 							});
@@ -198,7 +198,7 @@ $(function() {
 								if( !$row.data('pointer') ) {
 								
 									$row.data( 'pointer', true );
-									$row.find('.ss-circle').addClass('ss-circle-deco');
+									$row.find('.show-link-to-timeline').addClass('ss-circle-deco');
 								
 								}
 							
@@ -209,7 +209,7 @@ $(function() {
 								if( $row.data('pointer') ) {
 									
 									$row.data( 'pointer', false );
-									$row.find('.ss-circle').removeClass('ss-circle-deco');
+									$row.find('.show-link-to-timeline').removeClass('ss-circle-deco');
 								
 								}
 								
