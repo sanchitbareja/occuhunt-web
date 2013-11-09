@@ -243,7 +243,8 @@
 table.fair-map {
 	display: block;
 	float: right;
-	border: 0px solid grey;
+	border: 2px solid grey;
+    padding: 10px;
 }
 
 button.fair-table {

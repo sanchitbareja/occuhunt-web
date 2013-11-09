@@ -20,11 +20,11 @@ v1_api.register(UserResource())
 v1_api.register(HuntingResource())
 
 urlpatterns = patterns('',
-    # url(r'^home/$', home, name='home'),
+    url(r'^home/$', home, name='home'),
     url(r'^$', splash, name='splash'),
-    # url(r'^company/(.+)/$', company, name='company'),
-    # url(r'^companies/$', favorites, name='favorites'),
-    # url(r'^feedback/$',feedback_form),
+    url(r'^company/(.+)/$', company, name='company'),
+    url(r'^companies/$', favorites, name='favorites'),
+    url(r'^feedback/$',feedback_form),
     url(r'^logout/$', logout_view, name='logout'),
     url(r'^login-error/$', login_error, name='login-error'),
 
