@@ -1,5 +1,6 @@
 from django.conf.urls import patterns, include, url
 from companies.views import home, splash, companies, company
+from resumes.views import resume_feed
 from jobs.views import favorites
 from django.conf import settings
 from django.conf.urls.static import static
@@ -23,6 +24,8 @@ urlpatterns = patterns('',
     url(r'^home/$', home, name='home'),
     url(r'^$', splash, name='splash'),
     url(r'^company/(.+)/$', company, name='company'),
+    url(r'^plan/resume-feed/$', resume_feed, name="resume-feed"),
+    # url(r'^plan/organize/$', organize_companies, name="organize"),
     url(r'^companies/$', favorites, name='favorites'),
     url(r'^feedback/$',feedback_form),
     url(r'^logout/$', logout_view, name='logout'),
