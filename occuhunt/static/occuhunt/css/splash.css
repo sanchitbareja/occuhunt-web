@@ -204,9 +204,10 @@
 .bold-statement {
 	font-size: 100px;
 	padding-top: 20px;
-	padding-bottom: 50px;
+	padding-bottom: 70px;
 	font-weight: 500;
 	color: #035d67;
+    line-height:1.12;
 }
 
 .font-thin {
