@@ -9,10 +9,50 @@
 
 {% block extra_script %}
 
+<script type="text/javascript" src="/static/occuhunt/js/lodash.min.js"></script>
+<script type="text/javascript" src="/static/occuhunt/js/s3upload.js"></script>
+
+
+
 {% endblock %}
 
 {% block content %}
 
-<h1> Hello! </h1>
+<div class="row">
+  <div class="col-lg-12">
+    <input type="file" id="file_upload" onchange="s3_upload();"/>
+    <p id="status"></p>
+    <p id="progress">Please select a file</p>
+    <div id="preview"><img src="/static/images/resume-example.jpg"  /></div>
+
+    <form method="POST" action="/plan/resume-feed/new-resume/submit_resume/">
+        <input type="hidden" id="resume_url" name="resume_url" value="/static/images/resume-example.jpg" />
+    </form>
+  </div>
+</div>
+
+<script type="text/javascript">
+  function s3_upload(){
+    console.log("hello");
+    var s3upload = new S3Upload({
+        file_dom_selector: 'file_upload',
+        s3_sign_put_url: '/plan/resume-feed/new-resume/sign_s3_upload/',
+
+        onProgress: function(percent, message) {
+            $('#status').html('Upload progress: ' + percent + '%' + message);
+        },
+        onFinishS3Put: function(public_url) {
+            $('#status').html('Upload completed. Uploaded to: '+ public_url);
+            $("#resume_url").val(public_url);
+            // $("#preview").html('<img src="'+public_url+'" style="width:300px;" />');
+            
+        },
+        onError: function(status) {
+            $('#status').html('Upload error: ' + status);
+            console.log(status);
+        }
+    });
+  }
+</script>
 
 {% endblock %}
