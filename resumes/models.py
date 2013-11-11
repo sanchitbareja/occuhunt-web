@@ -7,7 +7,7 @@ import datetime
 class Resume(models.Model):
 	user = models.ForeignKey(User)
 	url = models.URLField(max_length=1000)
-	timestamp = models.DateTimeField(auto_add_now = True)
+	timestamp = models.DateTimeField(auto_now_add = True)
 	anonymous = models.BooleanField()
 
 	def __unicode__(self):
@@ -18,7 +18,7 @@ class Comment(models.Model):
 	x = models.FloatField(null = True, blank = True)
 	y = models.FloatField(null = True, blank = True)
 	resume = models.ForeignKey(Resume)
-	user = models.ForeignKey(user)
-	
+	user = models.ForeignKey(User)
+
 	def __unicode__(self):
 		return self.comment

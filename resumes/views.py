@@ -6,7 +6,7 @@ from django import forms
 from django.http import HttpResponseRedirect
 from django.core.mail import send_mail
 from django.contrib.auth.decorators import login_required
-import os, time, simplejson, base64, urllib, hmac, sha
+import os, time, simplejson, base64, urllib, hmac, sha, random, string
 from string import strip
 from django.http import Http404
 
@@ -22,7 +22,8 @@ def sign_s3_upload(request):
     AWS_SECRET_KEY = 'BwhrrDs7srYGyk9ZHfvn/V1/1dLLx30yg4mFu+Af'
     S3_BUCKET = 'resumefeed'
 
-    object_name = request.GET['s3_object_name']
+    lst = [random.choice(string.ascii_letters + string.digits) for n in xrange(30)]
+    object_name = request.GET['s3_object_name'] + "".join(lst) # creates a unique name 
     mime_type = request.GET['s3_object_type']
 
     expires = int(time.time()+10)
@@ -45,6 +46,4 @@ def sign_s3_upload(request):
 
 def submit_resume(request):
     resume_url = request.POST["resume_url"]
-    return simplejson.dumps({
-        'success': True
-        })
+    return simplejson.dumps({'success': True})
