@@ -9,6 +9,7 @@ class Resume(models.Model):
 	url = models.URLField(max_length=1000)
 	timestamp = models.DateTimeField(auto_now_add = True)
 	anonymous = models.BooleanField()
+	original = models.BooleanField()
 
 	def __unicode__(self):
 		return self.name
