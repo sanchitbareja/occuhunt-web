@@ -5,54 +5,79 @@
 
 {% block extra_style %}
 
+<link href="/static/occuhunt/css/resume_feed.css" rel="stylesheet">
+
 {% endblock %}
 
 {% block extra_script %}
 
 <script type="text/javascript" src="/static/occuhunt/js/lodash.min.js"></script>
 <script type="text/javascript" src="/static/occuhunt/js/s3upload.js"></script>
+<script type="text/javascript" src="/static/occuhunt/js/progress-meter.js"></script>
+<!-- In production, only one script (pdf.js) is necessary -->
+<!-- In production, change the content of PDFJS.workerSrc below -->
+<script type="text/javascript" src="/static/pdfjs/src/shared/util.js"></script>
+<script type="text/javascript" src="/static/pdfjs/src/shared/colorspace.js"></script>
+<script type="text/javascript" src="/static/pdfjs/src/shared/pattern.js"></script>
+<script type="text/javascript" src="/static/pdfjs/src/shared/function.js"></script>
+<script type="text/javascript" src="/static/pdfjs/src/shared/annotation.js"></script>
+<script type="text/javascript" src="/static/pdfjs/src/display/api.js"></script>
+<script type="text/javascript" src="/static/pdfjs/src/display/metadata.js"></script>
+<script type="text/javascript" src="/static/pdfjs/src/display/canvas.js"></script>
+<script type="text/javascript" src="/static/pdfjs/src/display/font_loader.js"></script>
 
-
+<script type="text/javascript">
+  // Specify the main script used to create a new PDF.JS web worker.
+  // In production, change this to point to the combined `pdf.js` file.
+  PDFJS.workerSrc = '/static/pdfjs/src/worker_loader.js';
+</script>
+<script type="text/javascript" src="/static/occuhunt/js/resume_feed.js"></script>
 
 {% endblock %}
 
 {% block content %}
 
 <div class="row">
-  <div class="col-lg-12">
-    <input type="file" id="file_upload" onchange="s3_upload();"/>
-    <p id="status"></p>
-    <p id="progress">Please select a file</p>
-    <div id="preview"><img src="/static/images/resume-example.jpg"  /></div>
+  <div class="col-lg-8">
 
+    <!-- PDF upload process begins -->
+    <div class="row" id="file_select_div">
+      <a class='btn btn-lg btn-block btn-default' id="file_select_button" href='javascript:;'>
+        Upload your resume to get feedback. Choose File...
+        <input class="btn btn-lg btn-block" type="file" id="file_upload" name="file_source" onchange='render_pdf();'>
+      </a>
+      &nbsp;
+    </div>
+
+    <!-- Final upload button -->
+    <div class="row" id="upload_button_div">
+      <button class="btn btn-lg btn-block btn-success progress-button" id="upload_button" onclick="s3_upload();">Hide sensitive information and upload!</button>
+    </div>
+
+    <!-- Form that will be submitted -->
     <form method="POST" action="/plan/resume-feed/new-resume/submit_resume/">
         <input type="hidden" id="resume_url" name="resume_url" value="/static/images/resume-example.jpg" />
     </form>
+
+    <!-- This is where the pdf renders -->
+    <div class="row" id="canvas_div">
+      <canvas id="the-canvas"/>
+    </div>
+  </div>
+
+  <div class="col-lg-4">
+    <h3>Comments</h3>
   </div>
 </div>
 
-<script type="text/javascript">
-  function s3_upload(){
-    console.log("hello");
-    var s3upload = new S3Upload({
-        file_dom_selector: 'file_upload',
-        s3_sign_put_url: '/plan/resume-feed/new-resume/sign_s3_upload/',
+<div class="row">
+  <div class="col-lg-8">
+    <img src="http://www.justresume.org/resume/Architect-Resume-15.jpg" />
+  </div>
+  <div class="col-lg-4">
+    
+  </div>
+</div>
 
-        onProgress: function(percent, message) {
-            $('#status').html('Upload progress: ' + percent + '%' + message);
-        },
-        onFinishS3Put: function(public_url) {
-            $('#status').html('Upload completed. Uploaded to: '+ public_url);
-            $("#resume_url").val(public_url);
-            // $("#preview").html('<img src="'+public_url+'" style="width:300px;" />');
-            
-        },
-        onError: function(status) {
-            $('#status').html('Upload error: ' + status);
-            console.log(status);
-        }
-    });
-  }
-</script>
 
 {% endblock %}

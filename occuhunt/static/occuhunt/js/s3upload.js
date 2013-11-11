@@ -8,6 +8,8 @@
 
     S3Upload.prototype.file_dom_selector = 'file_upload';
 
+    S3Upload.prototype.file_data = null;
+
     S3Upload.prototype.onFinishS3Put = function(public_url) {
       return console.log('base.onFinishS3Put()', public_url);
     };
@@ -25,8 +27,21 @@
       for (option in options) {
         this[option] = options[option];
       }
-      this.handleFileSelect(document.getElementById(this.file_dom_selector));
+      if(this.file_data){
+        this.handleDataUpload(this.file_data);
+      } else {
+        this.handleFileSelect(document.getElementById(this.file_dom_selector));        
+      }
     }
+
+    S3Upload.prototype.handleDataUpload = function(file_data) {
+      var _results;
+      this.onProgress(0, 'Upload started.');
+      _results = [];
+      _results.push(this.uploadFile(file_data));
+      return _results;
+    };
+
 
     S3Upload.prototype.handleFileSelect = function(file_element) {
       var f, files, output, _i, _len, _results;
