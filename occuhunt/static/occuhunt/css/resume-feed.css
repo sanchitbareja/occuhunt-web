@@ -1,0 +1,11 @@
+/* -----------------------------------------
+   Resume feed page - List of all resumes
+----------------------------------------- */
+
+article, aside, figure, footer, header, hgroup, 
+  menu, nav, section { display: block; }
+  #imageholder div{ display:none;background-color:black;position:absolute; }
+  #imageholder{;position:relative;display:inline-block;overflow:hidden; }
+  #horizontal{width:100%;height:1px;}
+  #vertical{width:1px;height:100%;}
+  .popover {margin-left: 15px; margin-top: -50px;}

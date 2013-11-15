@@ -19,3 +19,6 @@ def favorites(request):
     favorites_data = Favorite.objects.filter(user__id=request.user.id)
     return render_to_response('favorites.html', {'version': version,'favorites':favorites_data, 'companies_and_favorites_link':True},
                                   RequestContext(request))
+def apply_jobs(request):
+    """Application form for companies"""
+    return render_to_response('apply.html', {'version': version, "apply_link":True}, RequestContext(request))

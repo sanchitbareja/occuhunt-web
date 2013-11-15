@@ -54,3 +54,4 @@ def company(request, companyID):
     except Exception as e:
       print e
       raise Http404('Sorry, no company found :(');
+
