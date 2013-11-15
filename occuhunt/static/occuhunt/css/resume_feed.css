@@ -59,7 +59,7 @@
 /* The colorful bar that grows depending on the progress */
 
 .progress-button .tz-bar{
-    background-color:red;
+    background-color:#fc0041;
     height:3px;
     bottom:0;
     left:0;

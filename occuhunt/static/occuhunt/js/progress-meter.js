@@ -23,8 +23,8 @@
 
             var options = $.extend({
                 type:'background-horizontal',
-                loading: 'Loading..',
-                finished: 'Done!'
+                loading: 'UPLOADING...',
+                finished: 'DONE!'
             }, button.data());
 
             // Add the data attributes if they are missing from the element.
