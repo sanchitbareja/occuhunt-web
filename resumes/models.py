@@ -12,7 +12,7 @@ class Resume(models.Model):
 	original = models.BooleanField()
 
 	def __unicode__(self):
-		return self.name
+		return str(self.user)+":"+self.url
 
 class Comment(models.Model):
 	comment = models.TextField(null = True, blank = True)

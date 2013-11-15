@@ -11,7 +11,7 @@ admin.autodiscover()
 
 # API
 from tastypie.api import Api
-from api.api import CompanyResource, FavoriteResource, HuntingResource ,UserResource
+from api.api import CompanyResource, FavoriteResource, HuntingResource, UserResource, ResumeResource, CommentResource
 from api.views import logout_view, login_error, feedback_form
 
 v1_api = Api(api_name='v1')
@@ -19,6 +19,8 @@ v1_api.register(CompanyResource())
 v1_api.register(FavoriteResource())
 v1_api.register(UserResource())
 v1_api.register(HuntingResource())
+v1_api.register(ResumeResource())
+v1_api.register(CommentResource())
 
 urlpatterns = patterns('',
     url(r'^home/$', home, name='home'),
@@ -28,7 +30,7 @@ urlpatterns = patterns('',
     url(r'^plan/resume-feed/new-resume/sign_s3_upload/$', sign_s3_upload, name="sign_s3_upload"),
     url(r'^plan/resume-feed/new-resume/submit_resume/$', submit_resume, name="submit_resume"),
     # url(r'^plan/organize/$', organize_companies, name="organize"),
-    url(r'^companies/$', favorites, name='favorites'),
+    url(r'^plan/companies/$', favorites, name='favorites'),
     url(r'^feedback/$',feedback_form),
     url(r'^logout/$', logout_view, name='logout'),
     url(r'^login-error/$', login_error, name='login-error'),

@@ -1,0 +1,94 @@
+body.dragging, body.dragging * {
+  cursor: move !important;
+}
+
+.favorited-company {
+  background-image: url('/static/images/target.png');
+  background-repeat: no-repeat;
+  background-size: 20px;
+}
+
+.dragged {
+  position: absolute;
+  opacity: 0.5;
+  z-index: 2000;
+}
+
+.activate {
+  border: 2px solid blue !important;
+}
+
+#write-note {
+  cursor: default;
+  display: none;
+}
+
+.list-group-item:hover {
+  cursor: move;
+}
+
+.list-group-item:hover > .row > .col-lg-12 > .row > .col-lg-2 > #write-note {
+  cursor: pointer;
+  display: block;
+}
+
+.list-group-header {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 15px;
+  padding-right: 10px;
+  background: grey;
+  line-height: 30px;
+}
+
+.list-group-header-title {
+  text-align: left;
+  text-transform: uppercase;
+  font-size: 15px;
+  font-weight: 500;
+  font-family: "Proxima Nova";
+  font-weight: 500;
+}
+
+.list-group-header-stats {
+  text-align: right;
+  font-family: "Proxima Nova";
+  font-weight: 100;
+}
+
+.logo-thumbnail {
+  max-height:30px;
+  max-width: 30px;
+}
+
+#category-uncategorized {
+  background: #f8eff8;
+}
+
+#category-applied {
+  background: #fcf2d1;
+}
+
+#category-interviewing {
+  background: #dff6fb;
+}
+
+#category-offered {
+  background: #e0fae2;
+}
+
+.fixed-height-draggable {
+  height: 500px;
+  border: 1px solid grey;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  background: white;
+}
+
+#note-options {
+  padding-top: 0px;
+}
+
+#note-buttons {
+  padding-top: 10px;
+}

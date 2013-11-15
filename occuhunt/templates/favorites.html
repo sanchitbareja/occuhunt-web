@@ -4,8 +4,8 @@
 {% load url from future %}
 
 {% block extra_style %}
-<link href="{% static "bootstrap/dist/css/companies-list.css" %}" rel="stylesheet">
-<link href="{% static "bootstrap/dist/css/companies-favoriting.css" %}" rel="stylesheet">
+<link href="{% static "occuhunt/css/companies-list.css" %}" rel="stylesheet">
+<link href="{% static "occuhunt/css/companies-favoriting.css" %}" rel="stylesheet">
 
 <style type="text/css">
 
@@ -116,9 +116,9 @@ height:8px;
 {% endblock %}
 
 {% block extra_script %}
-<script src="{% static "bootstrap/dist/js/jquery-sortable.js" %}"></script>
-<script src="{% static "bootstrap/dist/js/companies-search.js" %}"></script>
-<script src="{% static "bootstrap/dist/js/favoriting.js" %}"></script>
+<script src="{% static "occuhunt/js/jquery-sortable.js" %}"></script>
+<script src="{% static "occuhunt/js/companies-search.js" %}"></script>
+<script src="{% static "occuhunt/js/favoriting.js" %}"></script>
 <script type="text/javascript">
   function initialize_favoriting() {
     refreshStats();
@@ -303,14 +303,14 @@ height:8px;
 {% if user.is_authenticated %}
 
 <div class="row text-center page-header-section">
-  <h1>Companies</h1>
-  <h4>Search, add and organize your favorite companies.</h4>
+  <h1 style="color:black;">Companies</h1>
+  <h4 style="color:black;">Search, add and organize your favorite companies.</h4>
 </div>
 
 <div class="row">
   <div class="col-lg-3 right-no-margin">
-    <h4 class="text-white">Search for companies that have attended Berkeley's career fairs.</h4>
-    <h3 class="text-white" id="companies_found"></h3>
+    <h4>Search for companies that have attended Berkeley's career fairs.</h4>
+    <h3 id="companies_found"></h3>
     <input type="text" class="form-control input-lg" id="inputCompanySearch" placeholder="Try &quot;San Francisco&quot;">
     <br/>
     <button class="btn btn-done btn-lg" onclick="searchCompanies();">Search</button>

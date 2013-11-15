@@ -23,6 +23,7 @@ from favorites.models import Favorite
 from fairs.models import Fair
 from users.models import User
 from hunting.models import Hunting
+from resumes.models import Resume, Comment
 import datetime
 
 
@@ -248,6 +249,86 @@ class HuntingResource(ModelResource):
         # rename "objects" to "response"
         data['response'] = {"favorites":data['objects']}
         del(data['objects'])
+        return data
+
+    def determine_format(self, request):
+        return 'application/json'
+
+class CommentResource(ModelResource):
+    user = fields.OneToOneField(UserResource, 'user', full=True)
+    class Meta:
+        queryset = Comment.objects.all()
+        resource_name = 'comments'
+        # Add it here.
+        # authentication = BasicAuthentication()
+        authorization = DjangoAuthorization()
+        limit = 0
+        allowed_methods = ['post']
+
+    def dehydrate(self, bundle):
+        """
+        Return a list of comments for a given resume
+        """
+        return bundle
+
+    def obj_create(self, bundle, **kwargs):
+        """
+        Creates a new comment
+        """
+        user = User.objects.get(id=bundle.data["user"])
+        resume = Resume.objects.get(id=bundle.data['resume'])
+        new_comment = Comment(user=user, resume=resume, x=bundle.data['x'], y=bundle.data['y'], comment=bundle.data['comment'])
+        new_comment.save()
+        bundle.obj = new_comment
+        return bundle
+
+    def alter_list_data_to_serialize(self, request, data):
+        # rename "objects" to "comments"
+        data['response'] = {"comments":data["objects"]}
+        del(data["objects"])
+        return data
+
+    def determine_format(self, request):
+        return 'application/json'
+
+class ResumeResource(ModelResource):
+    user = fields.OneToOneField(UserResource, 'user', full=True)
+    comments = fields.ManyToManyField('api.api.CommentResource', 'comment_set', full=True)
+    class Meta:
+        queryset = Resume.objects.filter(original=False).order_by('-timestamp')
+        resource_name = 'resumes'
+        # Add it here.
+        # authentication = BasicAuthentication()
+        authorization = DjangoAuthorization()
+        limit = 20
+        always_return_data = True
+        allowed_methods = ['get','post']
+
+    def dehydrate(self, bundle):
+        """
+        Return a list of resumes formatted according to what the developer expects
+        """
+
+        return bundle
+
+    def obj_create(self, bundle, **kwargs):
+        """
+        Creates a new resume
+        """
+        try:
+            user = User.objects.get(id=bundle.data["user"])
+            # need to check if url, anonymous, original supplied
+            new_resume = Resume(user=user, url=bundle.data['url'], anonymous=bundle.data['anonymous'], original=bundle.data['original'])
+            new_resume.save()
+            bundle.obj = new_resume
+        except Exception, e:
+            print e
+        return bundle
+
+    def alter_list_data_to_serialize(self, request, data):
+        # rename "objects" to "resumes"
+        data['response'] = {"resumes":data["objects"]}
+        del(data["objects"])
         return data
 
     def determine_format(self, request):

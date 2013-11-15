@@ -201,7 +201,7 @@ function s3_upload(){
             $(".progress-button").progressFinish();
             $("#upload_button_div").hide();
             console.log(public_url);
-
+            new_resume(public_url, true, false, true);
         },
         onError: function(status) {
             $('#status').html('Upload error: ' + status);
@@ -224,6 +224,7 @@ function s3_upload_original(){
         onFinishS3Put: function(public_url) {
             console.log(public_url);
             // create an entry in resume of the original pdf
+            new_resume(public_url, true, true, false);
         },
         onError: function(status) {
             console.log(status);
@@ -263,3 +264,176 @@ function get_file_name_from_path(fullPath) {
     }
     return "";
 }
+
+// 
+// 
+// Commenting and adding resumes
+// 
+// 
+
+
+function add_new_comment(e) {
+    if(e.which == 13) {
+        console.log(e);
+        console.log($(e.currentTarget).parent());
+        // make ajax request to post comment on the resume
+        var resume_id = $(e.data).find("#resume_id").val();
+        var comment_x = $(e.currentTarget).parent().find("#comment_x").val();
+        var comment_y = $(e.currentTarget).parent().find("#comment_y").val();
+        var comment_text = $(e.currentTarget).val();
+        var user_id = $("#user_id").val();
+        $.ajax({
+            url: '/api/v1/comments/',
+            type: 'POST',
+            data: JSON.stringify({
+              'user': user_id,
+              'resume': resume_id,
+              'comment': comment_text,
+              'x': comment_x,
+              'y': comment_y
+            }), 
+            dataType: 'json',
+            contentType: 'application/json',
+            statusCode : {
+                201: function(data, textStatus, jsXHR){
+                    console.log(data);
+                    console.log(textStatus);
+                    console.log(jsXHR);
+                    $(e.currentTarget).parent().replaceWith('<div class="comment-box" style="position:absolute; top:'+comment_y+'px; "><p>'+comment_text+'</p></div>');
+                },
+                500: function(data, textStatus, jsXHR){
+                    console.log(data);
+                    console.log(textStatus);
+                    console.log(jsXHR);
+                }
+            }
+        });
+    }
+}
+
+function get_resumes(){
+    $.ajax({
+        url: '/api/v1/resumes/',
+        data: {},
+        dataType: 'json',
+        success: function(data, textStatus, jqXHR){
+            for (var i = data['response']['resumes'].length - 1; i >= 0; i--) {
+                add_new_resume_html(data['response']['resumes'][i]['id'],data['response']['resumes'][i]['url'],data['response']['resumes'][i]['comments']);
+            };
+        },
+    });
+}
+
+function new_resume(url,anonymous,original,should_add_new_resume){
+    var user_id = $("#user_id").val();
+    // do error checking if everything exists
+    $.ajax({
+        url: '/api/v1/resumes/',
+        type: 'POST',
+        data: JSON.stringify({
+          'user': user_id,
+          'url': url,
+          'anonymous': anonymous,
+          'original': original,
+        }), 
+        dataType: 'json',
+        contentType: 'application/json',
+        statusCode : {
+            201: function(data, textStatus, jsXHR){
+                console.log(data);
+                if(should_add_new_resume){
+                    // remove canvas_div
+                    $("#canvas_div").remove();
+                    add_new_resume_html(data['id'],data['url']);
+                }
+            },
+            500: function(data, textStatus, jsXHR){
+                console.log(data);
+                console.log(textStatus);
+                console.log(jsXHR);
+            }
+        }
+
+    });
+}
+
+function add_new_resume_html(resume_id,url,comments){
+    // add image element
+    var comment_boxes = '';
+    var comment_circles = '';
+    if (comments) {
+        for (var i = comments.length - 1; i >= 0; i--) {
+            console.log(comments[i]['y']);
+            // id = comment-{comment-id}
+            var comment_box = '<div class="comment-box" id="comment-'+comments[i]['id']+'" style="position:absolute; top:'+comments[i]['y']+'px; "><p>'+comments[i]['comment']+'</p></div>';
+            comment_boxes = comment_boxes + comment_box;
+            comment_circles = comment_circles + "<a onclick='toggle_comment(event, "+comments[i]['id']+");' id='comment-circle-"+comments[i]['id']+"' class='circle' style='position: absolute;z-index: 10; top:"+comments[i]['y']+"px; left:"+comments[i]['x']+"px;'></a>";
+        };
+    };
+    $("#resume-feed").prepend('<div class="row">'+
+      '<div class="col-lg-8">'+
+        '<div class="row resume-container">'+
+          '<img class="resume-image" src="'+url+'" />'+
+          '<input type="hidden" id="resume_id" value="'+resume_id+'" >'+
+          comment_circles + 
+        '</div>'+
+      '</div>'+
+      '<div class="col-lg-4">'+
+        '<div class="row comments-container">'+
+                comment_boxes+
+            '</div>'+
+        '</div>'+
+      '</div>'+
+    '</div>');
+    bind_events();
+}
+
+function bind_events(){
+    $(".resume-container").on("click", function(e) {
+        // calculate where to add circle
+        var offset_t = $(this).offset().top - $(window).scrollTop();
+        var offset_l = $(this).offset().left - $(window).scrollLeft();
+        var left = e.clientX - offset_l - 10;
+        var top = e.clientY - offset_t - 10;
+
+        // create comment box
+        var comments_div = $(this).parent().parent().find(".comments-container");
+        var comment_input = $.parseHTML('<input type="text" class="form-control comment-input" placeholder="Comment">');
+        var comment_x = $.parseHTML('<input type="hidden" id="comment_x" value="'+left+'">');
+        var comment_y = $.parseHTML('<input type="hidden" id="comment_y" value="'+top+'">');
+        var comment_box = $.parseHTML('<div class="comment-box" style="position:absolute; top:'+top+'px;"></div>');
+
+        $(comment_input).keypress(this, add_new_comment);
+        
+        $(comment_box).append(comment_input);
+        $(comment_box).append(comment_x);
+        $(comment_box).append(comment_y);
+        $(comments_div).append(comment_box);
+        
+        $(comment_input).focus();
+
+        // add circle
+        $(this).append($("<a class='circle' style='position: absolute;z-index: 10; top:"+top+"px; left:"+left+"px;'></a>"));
+    });
+}
+
+function toggle_all_comments(){
+    $("#toggle-comments").on("click", function(e){
+        $(".comments-container").toggle();
+        $(".circle").toggle();
+        $("#toggle-comments").toggleClass("toggleCommentsButton");
+    })
+}
+
+function toggle_comment(event, comment_id){
+    console.log("toggle_comment fired");
+    console.log(event);
+    event.cancelBubble = true;
+    $("#comment-"+comment_id).toggle();
+    $("#comment-circle-"+comment_id).toggleClass("toggleCircle");
+}
+
+$(document).ready(function() {
+    get_resumes();
+    toggle_all_comments();
+});

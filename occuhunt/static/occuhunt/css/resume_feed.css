@@ -75,6 +75,10 @@
 
 /* The bar can be either horizontal, or vertical */
 
+a {
+	cursor: pointer;
+}
+
 .progress-button .tz-bar.background-horizontal{
 	top:0;
     height:5px;
@@ -86,4 +90,55 @@
     top:0;
     width:100%;
     border-radius:2px;
+}
+
+/* Feed css */
+.resume-image {
+	border: 1px solid black;
+	width: 778px;
+	border-radius: 2px;
+}
+
+.circle {
+	height:20px;
+	width:20px;
+	border-radius: 10px;
+	background-color: rgba(102,159,164,0.9);
+	text-align: center;
+	z-index: 20;
+}
+
+.toggleCircle {
+	background-color: rgba(102,159,164,0.3);
+}
+
+.comment-box {
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	border: 1px solid #B6B6B6;
+	border-radius: 5px;
+	width: 100%;
+}
+
+.comment-input {
+	width:100% !important;
+}
+
+.comments-container{
+	border-left: 10px solid #B6B6B6;
+	height: 100%;
+}
+
+#file_select_button {
+	font-weight: 500;
+}
+
+#toggle-comments {
+	background-color: rgb(255,255,255);
+}
+
+.toggleCommentsButton {
+	background-color: rgb(200,200,200) !important;
 }
