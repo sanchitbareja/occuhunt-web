@@ -199,7 +199,8 @@ function s3_upload(){
         onFinishS3Put: function(public_url) {
             $("#resume_url").val(public_url);
             $(".progress-button").progressFinish();
-            $("#upload_button_div").hide();
+            $("#"+uploadBtnId).text("YOU'RE ALL SET!");
+            $("#"+uploadBtnId).attr("disabled","disabled");
             console.log(public_url);
             new_resume(public_url, true, false, true);
         },
@@ -362,6 +363,7 @@ function add_new_resume_html(resume_id,url,comments){
     var comment_boxes = '';
     var comment_circles = '';
     if (comments) {
+
         for (var i = comments.length - 1; i >= 0; i--) {
             console.log(comments[i]['y']);
             // id = comment-{comment-id}
@@ -371,14 +373,15 @@ function add_new_resume_html(resume_id,url,comments){
         };
     };
     $("#resume-feed").prepend('<div class="row">'+
-      '<div class="col-lg-8">'+
+      '<div class="col-lg-8 col-sm-8">'+
         '<div class="row resume-container">'+
           '<img class="resume-image" src="'+url+'" />'+
           '<input type="hidden" id="resume_id" value="'+resume_id+'" >'+
           comment_circles + 
         '</div>'+
+        '<hr />'+
       '</div>'+
-      '<div class="col-lg-4">'+
+      '<div class="col-lg-4 col-sm-4">'+
         '<div class="row comments-container">'+
                 comment_boxes+
             '</div>'+
@@ -422,6 +425,10 @@ function toggle_all_comments(){
         $(".comments-container").toggle();
         $(".circle").toggle();
         $("#toggle-comments").toggleClass("toggleCommentsButton");
+
+        // the next 2 lines will toggle the Hide Comments button.
+        $("#toggle-comments").text("Hide Comments");
+        $(".toggleCommentsButton").text("Show Comments");
     })
 }
 

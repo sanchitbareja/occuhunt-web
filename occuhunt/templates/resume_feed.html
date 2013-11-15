@@ -46,21 +46,22 @@
     <!-- PDF upload process begins -->
     <div class="row" id="file_select_div">
       <a class='btn btn-lg btn-block btn-done' id="file_select_button" href='javascript:;'>
-        Upload your resume to get feedback. Choose File...
-        <input class="btn btn-lg btn-block" type="file" id="file_upload" name="file_source" onchange='render_pdf();'>
+        UPLOAD RESUME
+        <input class="btn btn-lg btn-block" type="file" id="file_upload" name="file_source" accept="application/pdf" onchange='render_pdf();'>
       </a>
       &nbsp;
     </div>
 
     <!-- Final upload button -->
     <div class="row" id="upload_button_div">
-      <button class="btn btn-lg btn-block btn-success progress-button" id="upload_button" onclick="s3_upload();">Hide sensitive information and upload!</button>
+      <button class="btn btn-lg btn-block btn-success progress-button" id="upload_button" onclick="s3_upload();">DONE EDITTING</button>
     </div>
 
     <!-- Form that will be submitted -->
     <form method="POST" action="/plan/resume-feed/new-resume/submit_resume/">
         <input type="hidden" id="resume_url" name="resume_url" value="/static/images/resume-example.jpg" />
     </form>
+
   </div>
 
   <div class="col-lg-4">
