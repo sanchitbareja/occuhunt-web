@@ -5,10 +5,11 @@
 
 {% block extra_style %}
 <!-- Add css here -->
+<link href="/static/occuhunt/css/apply.css" rel="stylesheet">
+<script src="/static/occuhunt/js/custom-form-elements.js"></script>
 <style type="text/css">
 	body {
 		background-color: white;
-		background:url("http://f.cl.ly/items/051H1F0S2S3p2B2l192i/BlurKing.jpg");
 		-webkit-font-smoothing: antialiased;
 		font-smoothing: antialiased;
 		font-smooth: always;
@@ -24,82 +25,87 @@
 {% block content %}
 
 <div class="row">
-	<div class="col-lg-8 col-lg-offset-2">
-	  	<h1 id="company_title">{{ company.name }}</h1>
-	</div>
-</div>
-<div class="row">
-	<div class="col-lg-8 col-lg-offset-2 no-space">
-		<img id="company_banner" src="{{ company.banner_image }}">
-	</div>
-</div>
-<div class="row">
-	<div class="col-lg-8 col-lg-offset-2" id="company_description_container">
+	<div class="col-lg-3 category_box">
 		<div class="row">
-			<div class="col-lg-4 col-lg-offset-1" id="company_stats">
-				<img id="company_logo" src="{{ company.logo }}">
-				<div class="text-center">
-					{% if company.location %}
-						<p style="line-height:1.3em;">{{ company.location }}</p>
-					{% endif %}
-					{% if company.founded %}
-						<p>Founded {{ company.founded }}</p>
-					{% endif %}
-					{% if company.number_employees %}
-						<p>{{ company.number_employees }} employees</p>
-					{% endif %}
-				</div>
+		  	<h4 id="category_header">CHOOSE JOB</h4>
+		  	<h5 id="category_subheader">Select the job you wish to apply for.</h5>
+		  	<hr>
+		  	<div class="row" id="job_main">
+			  	<div class="col-lg-3" id="job_logo">
+				  	<img src="/static/images/samplelogos/accenture_logo.jpg" width="60px">
+			  	</div>			  				  		
+			  	<div class="col-lg-9">					
+		            <input type="checkbox" id="c1" />
+				  	<label for="c1">
+				  		<span><div id="circle"></div></span>
+					  	<h5 id="job_company">Accenture</h5>
+					  	<div id="job_title">Software Engineer</div>
+	  				  	
+  				  	</label>
+			  	</div>
 			</div>
-			<div class="col-lg-5 col-lg-offset-1" id="company_description">
-				<div>
-					{% if user.is_authenticated %}
-						{% if is_favorited %}
-						<a class="btn-link" style="position:absolute; top:55px; right:15px; display:inline;" onclick="unfavoriteCompanyWithId({{ company.id }},this)"><span class="glyphicons glyphicon-minus pull-right" style="font-size:18px;">Unfavorite</span></a>
-						{% else %}
-						<a class="btn-link" style="position:absolute; top:55px; right:15px; display:inline;" onclick="favoriteCompanyWithId({{ company.id }},this)"><i class="icon-plus-sign-alt icon-2x pull-right"></i></a>
-						{% endif %}
-					{% endif %}
-					<h4 id="company_header">COMPANY INFO</h4>
-				</div>
-				<p id="company_detailed_info">{{ company.company_description }}</p>
+			<div class="row" id="job_main">
+			  	<div class="col-lg-3" id="job_logo">
+				  	<img src="/static/images/samplelogos/bloomberg_logo.jpg" width="60px">
+			  	</div>			  				  		
+			  	<div class="col-lg-9">					
+		            <input type="checkbox" id="c2" />
+				  	<label for="c2">
+				  		<span><div id="circle"></div></span>
+					  	<h5 id="job_company">Bloomberg</h5>
+					  	<div id="job_title">Data Miner</div>
+	  				  	
+  				  	</label>
+			  	</div>
 			</div>
-		</div>
+			<div class="row" id="job_main">
+			  	<div class="col-lg-3" id="job_logo">
+				  	<img src="/static/images/samplelogos/palantir_technologies_logo.jpg" width="60px">
+			  	</div>			  				  		
+			  	<div class="col-lg-9">					
+		            <input type="checkbox" id="c3" />
+				  	<label for="c3">
+				  		<span><div id="circle"></div></span>
+					  	<h5 id="job_company">Palantir</h5>
+					  	<div id="job_title">NSA Spy</div>
+	  				  	
+  				  	</label>
+			  	</div>
+			</div>
+			<div class="row" id="job_main">
+			  	<div class="col-lg-3" id="job_logo">
+				  	<img src="/static/images/samplelogos/rackspace_logo.jpg" width="60px">
+			  	</div>			  				  		
+			  	<div class="col-lg-9">					
+		            <input type="checkbox" id="c4" />
+				  	<label for="c4">
+				  		<span><div id="circle"></div></span>
+					  	<h5 id="job_company">Rackspace</h5>
+					  	<div id="job_title">Robert Scoble</div>
+	  				  	
+  				  	</label>
+			  	</div>
+			</div>
+			<div class="row" id="job_main">
+			  	<div class="col-lg-3" id="job_logo">
+				  	<img src="/static/images/samplelogos/spacex-logo.jpg" width="60px">
+			  	</div>			  				  		
+			  	<div class="col-lg-9">					
+		            <input type="checkbox" id="c5" />
+				  	<label for="c5">
+				  		<span><div id="circle"></div></span>
+					  	<h5 id="job_company">SpaceX</h5>
+					  	<div id="job_title">Astronaut</div>
+	  				  	
+  				  	</label>
+			  	</div>
+			</div>
+	  	</div>
+	</div>
+	<div class="col-lg-9">
+	  	<h4 id="company_title">YOUR APPLICATION</h4>
 	</div>
 </div>
-<div class="row">
-	<div class="col-lg-8 col-lg-offset-2" id="job_description_container">
-		<div class="row">
-			<div class="col-lg-offset-1 col-lg-10">
-				{% if user.is_authenticated %}
-					<h4 id="company_header">JOBS</h4>
-					{% if jobs %}					
-						{% for job in jobs %}
-						<p id="job_description">{{ job.name }}<span id="job_location">&nbsp;{{ job.location }}</span></p>
-						<p id="company_detailed_info">{{ job.description }}</p>
-						{% endfor %}
-					{% else %} <!-- Logged in but has no jobs available -->
-						<p id="company_detailed_info">You are not able to view jobs for one of the following reasons:
-							<ul>
-								<li id="company_detailed_info">we have not received information about the jobs this company offers</li>
-								<li id="company_detailed_info">not a current UC Berkeley student (add UC Berkeley to your education on LinkedIn if you believe we got it wrong!)</li>
-							</ul>
-						</p>
-					{% endif %}
-				{% else %}
-					<h3 class="text-center text-white">Login to view Jobs<br /><br /><a href="/login/linkedin/?next={{request.path}}"><img src="{% static 'images/login-with-linkedin.png' %}"></a></h3>
-				{% endif %}
-				<br />
-				<br />
-				<div class="text-center">
-					<a href="{{ company.careers_website }}" class="btn btn-done" id="visit_careers_site_btn">VISIT CAREERS SITE</a>
-				</div>
-				<br />
-				<br />
-			</div>
-		</div>
-	</div>
-</div>
-
 
 <!-- hard code everything for design -->
 {% endblock %}
