@@ -141,7 +141,8 @@ INSTALLED_APPS = (
     'api',
     'hunting',
     'fairs',
-    'jobs'
+    'jobs',
+    'resumes'
 )
 
 # A sample logging configuration. The only tangible logging

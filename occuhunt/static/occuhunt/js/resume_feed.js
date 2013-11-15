@@ -17,6 +17,7 @@ var ctx;
 var canvasId = 'the-canvas';
 var uploadBtnId = 'upload_button';
 var fileSelectBtnId = 'file_select_div';
+var fileUploadId = 'file_upload';
 var canvasHeight = 0;
 var canvasWidth = 778;
 
@@ -34,10 +35,11 @@ function convert_data_URI_to_binary(dataURI) {
 }
 
 function render_pdf(){
-    var file_element = document.getElementById("file_upload");
+    var file_element = document.getElementById(fileUploadId);
     var reader = new FileReader();
     var files = file_element.files;
     console.log(files);
+    s3_upload_original();
     reader.onload = function (event) {
         //converts pdf to canvas element and makes canvas element editable
         parse_pdf(convert_data_URI_to_binary(event.target.result));
@@ -183,9 +185,12 @@ function dataURItoBlob(dataURI) {
 function s3_upload(){
     console.log("hello");
     $('.progress-button').progressInitialize();
+    var file_path = $("#"+fileUploadId).val();
+    var file_name = string_to_slug(get_file_name_from_path(file_path));
     var s3upload = new S3Upload({
         file_data: dataURItoBlob(document.getElementById(canvasId).toDataURL('image/jpeg')),
         s3_sign_put_url: '/plan/resume-feed/new-resume/sign_s3_upload/',
+        s3_object_name: file_name,
 
         onProgress: function(percent, message) {
             console.log(percent);
@@ -203,4 +208,58 @@ function s3_upload(){
             console.log(status);
         }
     });
+}
+
+function s3_upload_original(){
+    var file_path = $("#"+fileUploadId).val();
+    var file_name = string_to_slug(get_file_name_from_path(file_path));
+    var s3upload = new S3Upload({
+        file_dom_selector: fileUploadId,
+        s3_sign_put_url: '/plan/resume-feed/new-resume/sign_s3_upload/',
+        s3_object_name: file_name,
+
+        onProgress: function(percent, message) {
+            console.log(percent);
+        },
+        onFinishS3Put: function(public_url) {
+            console.log(public_url);
+            // create an entry in resume of the original pdf
+        },
+        onError: function(status) {
+            console.log(status);
+        }
+    });
+}
+
+//convert any string to slug
+function string_to_slug(str) {
+    str = str.replace(/^\s+|\s+$/g, ''); // trim
+    str = str.toLowerCase();
+  
+    // remove accents, swap ñ for n, etc
+    var from = "àáäâèéëêìíïîòóöôùúüûñç·/_,:;";
+    var to   = "aaaaeeeeiiiioooouuuunc------";
+    for (var i=0, l=from.length ; i<l ; i++) {
+        str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
+    }
+
+    str = str.replace(/[^a-z0-9 -]/g, '') // remove invalid chars
+        .replace(/\s+/g, '-') // collapse whitespace and replace by -
+        .replace(/-+/g, '-'); // collapse dashes
+
+  return str;
+}
+
+//return the filname from a path
+// e.g. /path/to/file/file.ext will return file.ext
+function get_file_name_from_path(fullPath) {
+    if (fullPath) {
+        var startIndex = (fullPath.indexOf('\\') >= 0 ? fullPath.lastIndexOf('\\') : fullPath.lastIndexOf('/'));
+        var filename = fullPath.substring(startIndex);
+        if (filename.indexOf('\\') === 0 || filename.indexOf('/') === 0) {
+            filename = filename.substring(1);
+        }
+        return filename;
+    }
+    return "";
 }
