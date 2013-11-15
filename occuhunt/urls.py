@@ -1,7 +1,7 @@
 from django.conf.urls import patterns, include, url
 from companies.views import home, splash, companies, company
 from resumes.views import resume_feed, sign_s3_upload, submit_resume
-from jobs.views import favorites
+from jobs.views import favorites, apply_jobs
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -31,6 +31,7 @@ urlpatterns = patterns('',
     url(r'^plan/resume-feed/new-resume/submit_resume/$', submit_resume, name="submit_resume"),
     # url(r'^plan/organize/$', organize_companies, name="organize"),
     url(r'^plan/companies/$', favorites, name='favorites'),
+    url(r'^apply/$', apply_jobs, name='apply'),
     url(r'^feedback/$',feedback_form),
     url(r'^logout/$', logout_view, name='logout'),
     url(r'^login-error/$', login_error, name='login-error'),
