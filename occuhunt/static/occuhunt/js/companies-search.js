@@ -10,12 +10,12 @@ function randomizeString(){
     var randomnumber=Math.floor(Math.random()*7)
     $("#inputCompanySearch").attr("placeholder", myStrings[randomnumber]);
   }
-  function get_companies(){
+  function get_companies(count){
     user_id = $("#user_id").val();
     $("#loading_state").html('<div id="loadingProgressG"><div id="loadingProgressG_1" class="loadingProgressG"></div></div>');
     $.ajax({
       url: '/api/v1/companies/',
-      data: { limit: 4 },
+      data: { limit: count },
       success: function(data, textStatus, jqXHR) {
           // console.log(data);
           // console.log(textStatus);

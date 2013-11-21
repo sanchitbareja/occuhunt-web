@@ -34,6 +34,12 @@ def companies(request):
                                   RequestContext(request))
 
 
+def search(request):
+    """Search companies view"""
+    return render_to_response('search.html', {'version': version, "search_link":True},
+                                  RequestContext(request))
+
+
 def company(request, companyID):
     """Individual Company view"""
     try:

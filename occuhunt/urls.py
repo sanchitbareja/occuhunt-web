@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, include, url
-from companies.views import home, splash, companies, company
+from companies.views import home, splash, companies, company, search
 from resumes.views import resume_feed, resume_feed_featured, sign_s3_upload, submit_resume
 from jobs.views import favorites, apply_jobs
 from django.conf import settings
@@ -26,6 +26,7 @@ urlpatterns = patterns('',
     url(r'^home/$', home, name='home'),
     url(r'^$', splash, name='splash'),
     url(r'^company/(.+)/$', company, name='company'),
+    url(r'^search/$', search, name='search'),
     url(r'^plan/resume-feed/$', resume_feed, name="resume-feed"),
     url(r'^plan/resume-feed/featured$', resume_feed_featured, name="resume_feed_featured"),
     url(r'^plan/resume-feed/new-resume/sign_s3_upload/$', sign_s3_upload, name="sign_s3_upload"),
