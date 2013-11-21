@@ -306,7 +306,7 @@ function add_new_comment(e) {
                     console.log(jsXHR);
                     console.log(data["user"]);
                     console.log(data["user"]["resume_points"]);
-
+                    get_bounty();
                     $(e.currentTarget).parent().replaceWith('<div class="comment-box" style="position:absolute; top:'+comment_y+'px; "><p>'+comment_text+'</p></div>');
                 },
                 500: function(data, textStatus, jsXHR){
