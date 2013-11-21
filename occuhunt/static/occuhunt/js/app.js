@@ -252,7 +252,7 @@ function toggleTable(cssID){
         recolorTables(cssID,'#ffb8e7');
       }
       if(cssID == '.btn-government'){
-        recolorTables(cssID,'');
+        recolorTables(cssID,'grey');
       }
       if(cssID == '.btn-health'){
         recolorTables(cssID,'#fe9f9f');
