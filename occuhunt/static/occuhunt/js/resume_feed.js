@@ -403,19 +403,25 @@ function bind_events(){
         var offset_l = $(this).offset().left - $(window).scrollLeft();
         var left = e.clientX - offset_l - 10;
         var top = e.clientY - offset_t - 10;
+        var box_position = top - 12;
 
         // create comment box
         var comments_div = $(this).parent().parent().find(".comments-container");
         var comment_input = $.parseHTML('<input type="text" class="form-control comment-input" placeholder="Add a comment..">');
         var comment_x = $.parseHTML('<input type="hidden" id="comment_x" value="'+left+'">');
         var comment_y = $.parseHTML('<input type="hidden" id="comment_y" value="'+top+'">');
-        var comment_box = $.parseHTML('<div class="comment-box" style="position:absolute; top:'+top+'px;"></div>');
+        var comment_box = $.parseHTML('<div class="comment-box" style="position:absolute; top:'+box_position+'px;"></div>');
         
         // add circle
         var circle = $.parseHTML("<a class='circle' style='position: absolute;z-index: 10; top:"+top+"px; left:"+left+"px;'></a>");
         $(this).append(circle);
   
         $(comment_input).keypress(this, add_new_comment);
+        $(comment_input).keyup(function(e) {
+            if (e.keyCode == 27) { 
+                $(comment_input).focusout();
+            }
+        });
         
         $(comment_box).append(comment_input);
         $(comment_box).append(comment_x);
@@ -427,6 +433,9 @@ function bind_events(){
             if ($(this).val() == '') {
                 $(comment_box).remove();
                 $(circle).remove();
+            }
+            else {
+                $(this).blur();
             }
         });
 
