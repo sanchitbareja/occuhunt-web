@@ -33,7 +33,7 @@ textarea, input { outline: none; }
 #resume-menu {
 	position: absolute;
 	text-align: right;
-	left: 24px;
+	right:20px;
 }
 
 #resume-menu-selected {

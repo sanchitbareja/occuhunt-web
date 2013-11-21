@@ -380,7 +380,8 @@ function add_new_resume_html(resume_id,url,comments){
         };
     };
     $("#resume-feed").prepend(
-        '<div class="row">'+
+    '<div class="row">'+
+      '<div class="col-lg-1 col-sm-1"></div>'+
       '<div class="col-lg-8 col-sm-8">'+
         '<div class="row resume-container">'+
           '<img class="resume-image" src="'+url+'" />'+
@@ -389,7 +390,7 @@ function add_new_resume_html(resume_id,url,comments){
         '</div>'+
         '<hr />'+
       '</div>'+
-      '<div class="col-lg-4 col-sm-4">'+
+      '<div class="col-lg-3 col-sm-3">'+
         '<div class="row comments-container">'+
                 comment_boxes+
             '</div>'+
