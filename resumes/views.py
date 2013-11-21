@@ -17,6 +17,10 @@ def resume_feed(request):
     """Resume feed view"""
     return render_to_response('resume_feed.html', {'version': version}, RequestContext(request))
 
+def resume_feed_featured(request):
+    """Resume feed view"""
+    return render_to_response('resume_feed_featured.html', {'version': version}, RequestContext(request))
+
 def sign_s3_upload(request):
     AWS_ACCESS_KEY = 'AKIAJMUV3JF5IGAOPF3A'
     AWS_SECRET_KEY = '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'

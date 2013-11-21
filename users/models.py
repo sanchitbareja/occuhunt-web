@@ -45,6 +45,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     last_name = models.CharField(max_length=200)
     thumbnail_profile_pic = models.TextField(null=True, blank=True)
     profile_pic = models.TextField(null=True, blank=True)
+    resume_points = models.IntegerField(default='0')
 
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)

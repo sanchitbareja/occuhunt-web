@@ -263,6 +263,7 @@ class CommentResource(ModelResource):
         # authentication = BasicAuthentication()
         authorization = DjangoAuthorization()
         limit = 0
+        always_return_data = True
         allowed_methods = ['post']
 
     def dehydrate(self, bundle):
@@ -276,6 +277,8 @@ class CommentResource(ModelResource):
         Creates a new comment
         """
         user = User.objects.get(id=bundle.data["user"])
+        user.resume_points += 2
+        user.save()
         resume = Resume.objects.get(id=bundle.data['resume'])
         new_comment = Comment(user=user, resume=resume, x=bundle.data['x'], y=bundle.data['y'], comment=bundle.data['comment'])
         new_comment.save()

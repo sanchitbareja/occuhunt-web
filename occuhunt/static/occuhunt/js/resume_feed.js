@@ -182,8 +182,9 @@ function dataURItoBlob(dataURI) {
     return new Blob([new Uint8Array(array)], {type: 'image/jpeg'});
 }
 
-function s3_upload(){
-    console.log("hello");
+function s3_upload(featured){
+    featured = featured || "none"
+    console.log("s3 upload");
     $('.progress-button').progressInitialize();
     var file_path = $("#"+fileUploadId).val();
     var file_name = string_to_slug(get_file_name_from_path(file_path));
@@ -300,6 +301,9 @@ function add_new_comment(e) {
                     console.log(data);
                     console.log(textStatus);
                     console.log(jsXHR);
+                    console.log(data["user"]);
+                    console.log(data["user"]["resume_points"]);
+
                     $(e.currentTarget).parent().replaceWith('<div class="comment-box" style="position:absolute; top:'+comment_y+'px; "><p>'+comment_text+'</p></div>');
                 },
                 500: function(data, textStatus, jsXHR){
@@ -372,7 +376,8 @@ function add_new_resume_html(resume_id,url,comments){
             comment_circles = comment_circles + "<a onclick='toggle_comment(event, "+comments[i]['id']+");' id='comment-circle-"+comments[i]['id']+"' class='circle' style='position: absolute;z-index: 10; top:"+comments[i]['y']+"px; left:"+comments[i]['x']+"px;'></a>";
         };
     };
-    $("#resume-feed").prepend('<div class="row">'+
+    $("#resume-feed").prepend(
+        '<div class="row">'+
       '<div class="col-lg-8 col-sm-8">'+
         '<div class="row resume-container">'+
           '<img class="resume-image" src="'+url+'" />'+
@@ -401,11 +406,15 @@ function bind_events(){
 
         // create comment box
         var comments_div = $(this).parent().parent().find(".comments-container");
-        var comment_input = $.parseHTML('<input type="text" class="form-control comment-input" placeholder="Comment">');
+        var comment_input = $.parseHTML('<input type="text" class="form-control comment-input" placeholder="Add a comment..">');
         var comment_x = $.parseHTML('<input type="hidden" id="comment_x" value="'+left+'">');
         var comment_y = $.parseHTML('<input type="hidden" id="comment_y" value="'+top+'">');
         var comment_box = $.parseHTML('<div class="comment-box" style="position:absolute; top:'+top+'px;"></div>');
-
+        
+        // add circle
+        var circle = $.parseHTML("<a class='circle' style='position: absolute;z-index: 10; top:"+top+"px; left:"+left+"px;'></a>");
+        $(this).append(circle);
+  
         $(comment_input).keypress(this, add_new_comment);
         
         $(comment_box).append(comment_input);
@@ -414,10 +423,15 @@ function bind_events(){
         $(comments_div).append(comment_box);
         
         $(comment_input).focus();
+        $(comment_input).focusout(function() {
+            if ($(this).val() == '') {
+                $(comment_box).remove();
+                $(circle).remove();
+            }
+        });
 
-        // add circle
-        $(this).append($("<a class='circle' style='position: absolute;z-index: 10; top:"+top+"px; left:"+left+"px;'></a>"));
-    });
+   });
+
 }
 
 function toggle_all_comments(){

@@ -25,6 +25,11 @@
 	overflow-x: scroll;
 }
 
+#resume-action-header {
+	text-align: center;
+
+}
+
 /* Progress button */
 .progress-button.in-progress,
 .progress-button.finished{
