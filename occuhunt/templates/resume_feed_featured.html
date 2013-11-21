@@ -41,14 +41,16 @@
 {% block content %}
 
 <div class="row">
-  <div id="resume-menu">
-    <h4 id="resume-menu-deselected"><a href="/plan/resume-feed">Latest</a></h4>
-    <h4 id="resume-menu-selected"><a href="/plan/resume-feed/featured">Featured</a></h4>
-    <hr>
-    <h4 id="resume-menu-bounty"> </h4>
+  <div class="col-lg-1">
+    <div id="resume-menu">
+      <h4 id="resume-menu-deselected"><a href="/plan/resume-feed">Latest</a></h4>
+      <h4 id="resume-menu-selected"><a href="/plan/resume-feed/featured">Featured</a></h4>
+      <hr>
+      <h4 id="resume-menu-bounty"> </h4>
+    </div>
   </div>
   <div class="col-lg-8">
-  <div class="row" id="file_select_div">
+    <div class="row" id="file_select_div">
       <a class='btn btn-lg btn-block btn-done' id="file_select_button" href='javascript:;'>
         FEATURE YOUR RESUME (20 POINTS)
         <input class="btn btn-lg btn-block" type="file" id="file_upload" name="file_source" accept="application/pdf" onchange='render_pdf();'>
@@ -57,7 +59,7 @@
     </div>
   </div>
 
-  <div class="col-lg-4">
+  <div class="col-lg-3">
     <a class="btn btn-lg btn-block btn-default" id="toggle-comments">Hide Comments</a>
   </div>
 </div>
