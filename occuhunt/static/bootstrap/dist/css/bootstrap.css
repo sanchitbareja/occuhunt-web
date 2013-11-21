@@ -303,13 +303,13 @@ textarea {
   background-image: none;
 }
 a {
-  color: #eef7f7;
+  color: #348891;
   text-decoration: none;
 }
 a:hover,
 a:focus {
   color: #badfdf;
-  text-decoration: underline;
+  text-decoration: none;
 }
 a:focus {
   outline: thin dotted #333;

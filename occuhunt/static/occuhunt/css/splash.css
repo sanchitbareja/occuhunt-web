@@ -218,7 +218,7 @@
 
 .section-title {
 	padding-top: 2px;
-	padding-bottom: 2px;
+	padding-bottom: 4px;
 	margin: 0px;
 	line-height: 1;
 	font-size: 36px;
@@ -266,3 +266,8 @@ button.fair-table:hover {
 	font-weight: 500;
 	color: #035d67;
 }
+
+.featured-partners {
+    height: 80px;
+    margin-top: 20px;
+}2

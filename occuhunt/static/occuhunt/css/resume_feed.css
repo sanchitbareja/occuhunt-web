@@ -1,4 +1,4 @@
-
+textarea, input { outline: none; }
 #the-canvas {
 	cursor: url(/static/images/EraseCursor.png), default !important;
 	border:1px solid black;
@@ -28,6 +28,27 @@
 #resume-action-header {
 	text-align: center;
 
+}
+
+#resume-menu {
+	position: absolute;
+	text-align: right;
+	left: 24px;
+}
+
+#resume-menu-selected {
+	color: #13646e;
+	font-weight: 500;
+}
+
+#resume-menu-deselected {
+	color: #348891;
+	font-weight: 400;
+}
+
+#resume-menu-bounty {
+	color: #88b9be;
+	font-weight: 400;
 }
 
 /* Progress button */
@@ -128,18 +149,24 @@ a {
 	padding-bottom: 5px;
 	border: 1px solid #B6B6B6;
 	border-radius: 5px;
-	width: 100%;
+	width: 93%;
 	background-color: white;
-	
+	outline-style: none;
+	outline-color: transparent;
 }
 
 .comment-input {
 	width:100% !important;
+	outline: none;
+}
+.comment-input:focus {
+	outline: none;
 }
 
 .comments-container{
 	border-left: 10px solid #B6B6B6;
 	height: 100%;
+	outline: none;
 }
 
 #file_select_button {
@@ -147,9 +174,9 @@ a {
 }
 
 #toggle-comments {
-	background-color: rgb(255,255,255);
+	/*background-color: rgb(255,255,255);*/
 }
 
 .toggleCommentsButton {
-	background-color: rgb(200,200,200) !important;
+	/*background-color: rgb(200,200,200) !important;*/
 }

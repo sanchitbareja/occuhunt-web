@@ -466,7 +466,28 @@ function toggle_comment(event, comment_id){
     $("#comment-circle-"+comment_id).toggleClass("toggleCircle");
 }
 
+// 
+// Update statistics
+// 
+
+function get_bounty(){
+    console.log("getting boutny");  
+    
+    $.ajax({
+        url: '/api/v1/users/'+$("#user_id").val()+'/',
+        data: {},
+        dataType: 'json',
+        success: function(data, textStatus, jqXHR){
+            console.log(data);
+
+            $("#resume-menu-bounty").contents()[0].nodeValue = 'Bounty: ' + data["resume_points"];
+        },
+    });
+};  
+
+
 $(document).ready(function() {
     get_resumes();
     toggle_all_comments();
+    get_bounty();
 });
