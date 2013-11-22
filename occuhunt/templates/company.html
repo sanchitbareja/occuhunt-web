@@ -53,7 +53,7 @@
 				<div>
 					{% if user.is_authenticated %}
 						{% if is_favorited %}
-						<a class="btn-link" style="position:absolute; top:55px; right:15px; display:inline;" onclick="unfavoriteCompanyWithId({{ company.id }},this)"><span class="glyphicons glyphicon-minus pull-right" style="font-size:18px;">Unfavorite</span></a>
+						<a class="btn-link" style="position:absolute; top:55px; right:15px; display:inline;" onclick="unfavoriteCompanyWithId({{ company.id }},this)"><span class="icon-minus-sign-alt icon-2x pull-right"></span></a>
 						{% else %}
 						<a class="btn-link" style="position:absolute; top:55px; right:15px; display:inline;" onclick="favoriteCompanyWithId({{ company.id }},this)"><i class="icon-plus-sign-alt icon-2x pull-right"></i></a>
 						{% endif %}
@@ -77,10 +77,7 @@
 						<p id="company_detailed_info">{{ job.description }}</p>
 						{% endfor %}
 					{% else %} <!-- Logged in but has no jobs available -->
-						<p id="company_detailed_info">You are not able to view jobs for one of the following reasons:
-							<ul>
-								<li id="company_detailed_info">we have not received information about the jobs this company offers</li>
-								<li id="company_detailed_info">not a current UC Berkeley student (add UC Berkeley to your education on LinkedIn if you believe we got it wrong!)</li>
+						<p id="company_detailed_info">There are no jobs available at this time.
 							</ul>
 						</p>
 					{% endif %}
