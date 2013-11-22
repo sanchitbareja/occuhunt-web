@@ -213,6 +213,8 @@ function s3_upload(featured){
         onError: function(status) {
             $('#status').html('Upload error: ' + status);
             console.log(status);
+            alert("There was an error :( Please try again!");
+            window.location.reload();
         }
     });
 }
@@ -235,6 +237,8 @@ function s3_upload_original(){
         },
         onError: function(status) {
             console.log(status);
+            // alert("There was an error :( Please try again!");
+            // window.location.reload();
         }
     });
 }
@@ -544,10 +548,20 @@ function get_bounty(){
 // 
 
 function init_UI(){
+    // side bar should be static
     $(window).bind('scroll resize', function() {
         $('#resume-menu').css('top', $(this).scrollTop());
     });
+
+    // tooltip activate
     $("#resume-menu-bounty").tooltip();
+
+    // infinite scroll
+    $('#resume-feed').waypoint(function(){
+        console.log("Hit bottom of resume feed");
+        // get_resumes();
+    }, {offset:'bottom-in-view'});
+
 }
 
 function get_resumes_all_click() {
