@@ -2519,8 +2519,8 @@ fieldset[disabled] .btn-finance.active {
 }
 .btn-government {
   color: #222222;
-  background-color: #347aef;
-  border-color: #1c6bed;
+  background-color: #edf36d;
+  border-color: #d5dc42;
 }
 .btn-government:hover,
 .btn-government:focus,
