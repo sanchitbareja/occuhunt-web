@@ -36,14 +36,14 @@ textarea, input { outline: none; }
 	right:20px;
 }
 
-#resume-menu-selected {
-	color: #13646e;
-	font-weight: 500;
-}
-
-#resume-menu-deselected {
+.resume-menu-button {
 	color: #348891;
 	font-weight: 400;
+}
+
+.active {
+	color: #13646e;
+	font-weight: 500;
 }
 
 #resume-menu-bounty {
@@ -179,4 +179,8 @@ a {
 
 .toggleCommentsButton {
 	/*background-color: rgb(200,200,200) !important;*/
+}
+
+.tooltip {
+	width:600px;
 }

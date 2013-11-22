@@ -9,6 +9,9 @@ from django.contrib.auth.decorators import login_required
 import os, time, simplejson, base64, urllib, hmac, sha, random, string
 from string import strip
 from django.http import Http404
+from django.core import serializers
+
+from resumes.models import Resume, Comment
 
 from social_auth import __version__ as version
 from social_auth.utils import setting
@@ -17,9 +20,29 @@ def resume_feed(request):
     """Resume feed view"""
     return render_to_response('resume_feed.html', {'version': version}, RequestContext(request))
 
-def resume_feed_featured(request):
-    """Resume feed view"""
-    return render_to_response('resume_feed_featured.html', {'version': version}, RequestContext(request))
+def individual_resume(request, hashstr):
+    """Get individual resumes for sharing
+    if resume exists: it should return page with just that resume
+    else: it should give an error message saying that it does not exist.
+
+    """
+    print hashstr
+    try:
+        resume_url = "https://resumefeed.s3.amazonaws.com/"+str(hashstr)+""
+        print resume_url
+        unique_resume = Resume.objects.filter(url=resume_url)[0]
+        print unique_resume
+        print dir(unique_resume)
+        unique_resume_comments = unique_resume.comment_set.all()
+        serialized_comments = []
+        for comment in unique_resume_comments:
+            serialized_comments.append({'comment':comment.comment, 'id':comment.id, 'x':comment.x, 'y':comment.y})
+        print serialized_comments
+        print simplejson.dumps(serialized_comments)
+        return render_to_response('individual_resume.html', {'version':version, 'resume':unique_resume, 'resume_comments':simplejson.dumps(serialized_comments), 'resume_exists':True}, RequestContext(request))
+    except Exception as e:
+        print e
+        return render_to_response('individual_resume.html', {'version':version, 'resume_exists':False}, RequestContext(request))
 
 def sign_s3_upload(request):
     AWS_ACCESS_KEY = 'AKIAJMUV3JF5IGAOPF3A'

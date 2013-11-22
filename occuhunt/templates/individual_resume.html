@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load static from staticfiles %}
+{% load i18n %}
+{% load url from future %}
+
+{% block extra_style %}
+
+<link href="/static/occuhunt/css/resume_feed.css" rel="stylesheet">
+
+{% endblock %}
+
+{% block extra_script %}
+
+<script type="text/javascript" src="/static/occuhunt/js/individual_resume.js"></script>
+<script type="text/javascript">
+  $(document).ready(function() {
+    add_new_resume_html("{{ resume.id }}", "{{ resume.url }}", {{ resume_comments|safe }});
+    toggle_all_comments();
+    get_bounty();
+  });
+
+</script>
+
+{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-lg-1">
+    <div id="resume-menu">
+      <h4><a id="all_resumes_button" class="resume-menu-button active" href="/plan/resume-feed/">Resumes</a></h4>
+      <hr>
+      <h4 id="resume-menu-bounty" data-toggle="tooltip" data-placement="right" title="You get 2 bounty points for every constructive comment made. You could spend 20 bounty points by uploading in the featured section - this is where alumni or peer critiqueres authorized by the Career Center will provide you with feedback"> </h4>
+    </div>
+  </div>
+
+  {% if resume_exists %}
+  <div class="col-lg-8">
+  </div>
+  <div class="col-lg-3">
+    <a class="btn btn-lg btn-block btn-default" id="toggle-comments">Hide Comments</a>
+  </div>
+  {% else %}
+  <div class="col-lg-11">
+    <h4>Resume does not exist. Are you sure you got the correct link?</h4>
+  </div>
+  {% endif %}
+</div>
+
+{% if resume_exists %}
+<div id="resume-feed">
+  <!-- Resumes will be shown here -->
+</div>
+{% endif %}
+
+
+{% endblock %}

@@ -6,14 +6,12 @@
 {% block extra_style %}
 
 <link href="/static/occuhunt/css/resume_feed.css" rel="stylesheet">
-<link type="text/css" rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/qtip2/2.1.0/jquery.qtip.min.css" />
 
 {% endblock %}
 
 {% block extra_script %}
 
 <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.2/underscore-min.js" type="text/javascript"></script>
-<script src="/static/backbone/js/backbone-min.js"></script>
 <script type="text/javascript" src="/static/occuhunt/js/lodash.min.js"></script>
 <script type="text/javascript" src="/static/occuhunt/js/s3upload.js"></script>
 <script type="text/javascript" src="/static/occuhunt/js/progress-meter.js"></script>
@@ -42,10 +40,11 @@
 <div class="row">
   <div class="col-lg-1">
     <div id="resume-menu">
-      <h4 id="resume-menu-selected"><a href="/plan/resume-feed">Latest</a></h4>
-      <h4 id="resume-menu-deselected"><a href="/plan/resume-feed/featured">Featured</a></h4>
+      <h4><a id="all_resumes_button" class="resume-menu-button active" onclick="get_resumes_all_click();">Latest</a></h4>
+      <h4><a id="featured_resumes_button" class="resume-menu-button" onclick="get_resumes_featured_click();">Featured</a></h4>
+      <h4><a id="my_resumes_button" class="resume-menu-button" onclick="get_resumes_mine_click();">Mine</a></h4>
       <hr>
-      <h4 id="resume-menu-bounty"> </h4>
+      <h4 id="resume-menu-bounty" data-toggle="tooltip" data-placement="right" title="You get 2 bounty points for every constructive comment made. You could spend 20 bounty points by uploading in the featured section - this is where alumni or peer critiqueres authorized by the Career Center will provide you with feedback"> </h4>
     </div>
   </div>
   <div class="col-lg-8">
@@ -78,7 +77,7 @@
 
 <!-- This is where the pdf renders -->
 <div class="row" id="canvas_div">
-  <div class="col-lg-8">
+  <div class="col-lg-8 col-lg-offset-1">
     <div class="row">
       <canvas id="the-canvas"/>
     </div>

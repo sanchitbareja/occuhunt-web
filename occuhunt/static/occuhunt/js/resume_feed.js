@@ -20,6 +20,8 @@ var fileSelectBtnId = 'file_select_div';
 var fileUploadId = 'file_upload';
 var canvasHeight = 0;
 var canvasWidth = 778;
+var feature_resume = false;
+var bounty_points = 0;
 
 function convert_data_URI_to_binary(dataURI) {
     var base64Index = dataURI.indexOf(BASE64_MARKER) + BASE64_MARKER.length;
@@ -322,7 +324,7 @@ function add_new_comment(e) {
 function get_resumes(){
     $.ajax({
         url: '/api/v1/resumes/',
-        data: {},
+        data: {'limit':10},
         dataType: 'json',
         success: function(data, textStatus, jqXHR){
             for (var i = data['response']['resumes'].length - 1; i >= 0; i--) {
@@ -332,47 +334,85 @@ function get_resumes(){
     });
 }
 
+function get_featured_resumes(){
+    $.ajax({
+        url: '/api/v1/resumes/',
+        data: {'featured':true},
+        dataType: 'json',
+        success: function(data, textStatus, jqXHR){
+            console.log(data);
+            for (var i = data['response']['resumes'].length - 1; i >= 0; i--) {
+                add_new_resume_html(data['response']['resumes'][i]['id'],data['response']['resumes'][i]['url'],data['response']['resumes'][i]['comments']);
+            };
+        },
+    });
+}
+
+function get_my_resumes(){
+    var user_id = $("#user_id").val();
+    $.ajax({
+        url: '/api/v1/resumes/',
+        data: {'user':user_id},
+        dataType: 'json',
+        success: function(data, textStatus, jqXHR){
+            console.log(data);
+            for (var i = data['response']['resumes'].length - 1; i >= 0; i--) {
+                add_new_resume_html(data['response']['resumes'][i]['id'],data['response']['resumes'][i]['url'],data['response']['resumes'][i]['comments']);
+            };
+        },
+    });
+}
+
+function clear_resume_feed(){
+    $("#resume-feed").empty();
+}
+
 function new_resume(url,anonymous,original,should_add_new_resume){
     var user_id = $("#user_id").val();
     // do error checking if everything exists
-    $.ajax({
-        url: '/api/v1/resumes/',
-        type: 'POST',
-        data: JSON.stringify({
-          'user': user_id,
-          'url': url,
-          'anonymous': anonymous,
-          'original': original,
-        }), 
-        dataType: 'json',
-        contentType: 'application/json',
-        statusCode : {
-            201: function(data, textStatus, jsXHR){
-                console.log(data);
-                if(should_add_new_resume){
-                    // remove canvas_div
-                    $("#canvas_div").remove();
-                    add_new_resume_html(data['id'],data['url']);
+    if(feature_resume && bounty_points < 20){
+        alert("You need at least 20 bounty points to feature your resume!");
+    } else {
+        $.ajax({
+            url: '/api/v1/resumes/',
+            type: 'POST',
+            data: JSON.stringify({
+              'user': user_id,
+              'url': url,
+              'anonymous': anonymous,
+              'original': original,
+              'featured': feature_resume
+            }), 
+            dataType: 'json',
+            contentType: 'application/json',
+            statusCode : {
+                201: function(data, textStatus, jsXHR){
+                    console.log(data);
+                    if(should_add_new_resume){
+                        // remove canvas_div
+                        $("#canvas_div").remove();
+                        add_new_resume_html(data['id'],data['url']);
+                        get_bounty();
+                    }
+                },
+                500: function(data, textStatus, jsXHR){
+                    console.log(data);
+                    console.log(textStatus);
+                    console.log(jsXHR);
                 }
-            },
-            500: function(data, textStatus, jsXHR){
-                console.log(data);
-                console.log(textStatus);
-                console.log(jsXHR);
             }
-        }
-
-    });
+        });
+    }
 }
 
 function add_new_resume_html(resume_id,url,comments){
     // add image element
     var comment_boxes = '';
     var comment_circles = '';
+    var resume_direct_url = window.location.origin+"/plan/resume-feed/"+url.slice(36);
     if (comments) {
 
         for (var i = comments.length - 1; i >= 0; i--) {
-            console.log(comments[i]['y']);
             // id = comment-{comment-id}
             var comment_box = '<div class="comment-box" id="comment-'+comments[i]['id']+'" style="position:absolute; top:'+comments[i]['y']+'px; "><p>'+comments[i]['comment']+'</p></div>';
             comment_boxes = comment_boxes + comment_box;
@@ -387,6 +427,16 @@ function add_new_resume_html(resume_id,url,comments){
           '<img class="resume-image" src="'+url+'" />'+
           '<input type="hidden" id="resume_id" value="'+resume_id+'" >'+
           comment_circles + 
+        '</div>'+
+        '<div class="row resume-direct-url">'+
+            '<div class="form-horizontal">'+
+                '<div class="form-group">'+
+                    '<label for="share_resume" class="col-sm-2 control-label">Share</label>'+
+                    '<div class="col-sm-10">'+
+                        '<input type="text" class="form-control" id="share_resume" value="'+resume_direct_url+'">'+
+                    '</div>'+
+                '</div>'+
+            '</div>'+
         '</div>'+
         '<hr />'+
       '</div>'+
@@ -482,13 +532,57 @@ function get_bounty(){
             console.log(data);
 
             $("#resume-menu-bounty").contents()[0].nodeValue = 'Bounty: ' + data["resume_points"];
+            bounty_points = data['resume_points'];
         },
     });
 };  
 
+// 
+// 
+// UI 
+// 
+// 
+
+function init_UI(){
+    $(window).bind('scroll resize', function() {
+        $('#resume-menu').css('top', $(this).scrollTop());
+    });
+    $("#resume-menu-bounty").tooltip();
+}
+
+function get_resumes_all_click() {
+    $("#featured_resumes_button").removeClass("active");
+    $("#my_resumes_button").removeClass("active");
+    $("#all_resumes_button").addClass("active");
+    clear_resume_feed();
+    get_resumes();
+    $("#file_select_button").html('UPLOAD RESUME <input class="btn btn-lg btn-block" type="file" id="file_upload" name="file_source" accept="application/pdf" onchange="render_pdf();">');
+    feature_resume = false;
+}
+
+function get_resumes_featured_click() {
+    $("#featured_resumes_button").addClass("active");
+    $("#my_resumes_button").removeClass("active");
+    $("#all_resumes_button").removeClass("active");
+    clear_resume_feed();
+    get_featured_resumes();
+    $("#file_select_button").html('FEATURE YOUR RESUME (20 POINTS) <input class="btn btn-lg btn-block" type="file" id="file_upload" name="file_source" accept="application/pdf" onchange="render_pdf();">');
+    feature_resume = true;
+}
+
+function get_resumes_mine_click() {
+    $("#featured_resumes_button").removeClass("active");
+    $("#my_resumes_button").addClass("active");
+    $("#all_resumes_button").removeClass("active");
+    clear_resume_feed();
+    get_my_resumes();
+    $("#file_select_button").html('UPLOAD RESUME <input class="btn btn-lg btn-block" type="file" id="file_upload" name="file_source" accept="application/pdf" onchange="render_pdf();">');
+    feature_resume = false;
+}
 
 $(document).ready(function() {
     get_resumes();
     toggle_all_comments();
     get_bounty();
+    init_UI();
 });

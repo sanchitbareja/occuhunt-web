@@ -22,3 +22,7 @@ def favorites(request):
 def apply_jobs(request):
     """Application form for companies"""
     return render_to_response('apply.html', {'version': version, "apply_link":True}, RequestContext(request))
+
+def match_jobs(request):
+    """Match people with companies"""
+    return render_to_response('match.html', {'version': version, "match_link":True}, RequestContext(request))

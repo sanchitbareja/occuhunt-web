@@ -17,7 +17,15 @@
       <a href="/"><img src="{% static "images/logo/OccuhuntLogo.png" %}" style="height:30px; margin-top:10px; margin-bottom:4px"></a>
     </div>
     <div class="collapse navbar-collapse navbar-ex1-collapse">
-      <ul class="nav navbar-nav">
+      <ul class="nav navbar-nav nav">
+      </ul>
+      <ul class="nav navbar-nav navbar-left">
+        {% if fairs_link or search_link %}
+          <div class="btn-group" style="padding-left:50px;">
+            <a class="btn btn-done btn-md" href="/home/" style="top:7px;"><img src="/static/images/maps_icon.png" style="height:20px;"></a>
+            <a class="btn btn-search btn-md" href="/search/" style="top:7px;"><img src="/static/images/search.png" style="height:20px;"></a>
+          </div>
+        {% endif %}
       </ul>
       <ul class="nav navbar-nav navbar-right">
         {% if user.is_authenticated %}
@@ -29,7 +37,7 @@
             <li><a href="/plan/companies/">Organize Applications</a></li>
           </ul>
         </li>
-        <li><a href="/apply/">MATCH</a></li>
+        <li><a href="/match/">MATCH</a></li>
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{user.first_name | upper}}
             <b class="caret"></b></a>

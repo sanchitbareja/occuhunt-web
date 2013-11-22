@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% load static from staticfiles %}
+{% load i18n %}
+{% load url from future %}
+
+{% block extra_style %}
+
+<link href="/static/occuhunt/css/match.css" rel="stylesheet">
+
+<style type="text/css">
+  body {
+    background: black;
+  }
+</style>
+
+{% endblock %}
+
+{% block extra_script %}
+
+<script type="text/javascript" src="/static/occuhunt/js/modernizr.custom.js"></script>
+<script type="text/javascript" src="/static/occuhunt/js/jquery.lettering.js"></script>
+<script type="text/javascript">
+
+  $(document).ready(function() {
+    $("#os-phrases > h2").lettering('words').children("span").lettering().children("span").lettering();
+  });
+
+</script>
+
+{% endblock %}
+
+{% block content %}
+
+<div class="os-phrases" id="os-phrases">
+  <h2>Choose a job you love,</h2>
+  <h2>and you will never</h2>
+  <h2>have to work a day</h2>
+  <h2>in your life.</h2>
+  <h2>Occuhunt</h2>
+  <h2>Coming Spring</h2>
+  <h2>Get matched to a job you love.</h2>
+  <h2>Refresh to replay</h2>
+</div>
+
+
+{% endblock %}

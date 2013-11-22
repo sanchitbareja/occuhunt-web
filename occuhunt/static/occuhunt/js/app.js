@@ -243,7 +243,7 @@ function toggleTable(cssID){
   } else {
     if($(cssID).css('background-color') == "rgb(255, 255, 255)") {
       if(cssID == '.btn-categorydisabled'){
-        recolorTables(cssID,'grey');
+        recolorTables(cssID,'#999');
       }
       if(cssID == '.btn-engineering'){
         recolorTables(cssID,'#baf198');
@@ -252,7 +252,7 @@ function toggleTable(cssID){
         recolorTables(cssID,'#ffb8e7');
       }
       if(cssID == '.btn-government'){
-        recolorTables(cssID,'grey');
+        recolorTables(cssID,'#347aef');
       }
       if(cssID == '.btn-health'){
         recolorTables(cssID,'#fe9f9f');

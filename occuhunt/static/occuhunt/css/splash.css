@@ -268,6 +268,7 @@ button.fair-table:hover {
 }
 
 .featured-partners {
-    height: 80px;
-    margin-top: 20px;
-}2
+    height: 120px;
+    vertical-align: middle;
+    padding: 20px;
+}

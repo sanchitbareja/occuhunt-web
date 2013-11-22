@@ -10,6 +10,7 @@ class Resume(models.Model):
 	timestamp = models.DateTimeField(auto_now_add = True)
 	anonymous = models.BooleanField()
 	original = models.BooleanField()
+	featured = models.BooleanField(default=False)
 
 	def __unicode__(self):
 		return str(self.user)+":"+self.url
