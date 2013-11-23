@@ -564,7 +564,6 @@ function init_UI(){
     // infinite scroll
     $(window).scroll(function() {
        if($(window).scrollTop() + $(window).height() == $(document).height()) {
-            // alert("Hit bottom of resume feed");
             if ($("#featured_resumes_button").hasClass("active")) {
                 get_featured_resumes();
             };
@@ -576,19 +575,6 @@ function init_UI(){
             };
        }
     });
-    // $('#resume-feed').waypoint(function(){
-    //     alert("Hit bottom of resume feed");
-    //     if ($("#featured_resumes_button").hasClass("active")) {
-    //         get_featured_resumes();
-    //     };
-    //     if ($("#my_resumes_button").hasClass("active")) {
-    //         get_my_resumes();
-    //     };
-    //     if ($("#all_resumes_button").hasClass("active")) {
-    //         get_resumes();
-    //     };
-    // }, {offset:'bottom-in-view'});
-
 }
 
 function get_resumes_all_click() {
