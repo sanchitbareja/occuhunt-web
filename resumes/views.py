@@ -53,7 +53,7 @@ def sign_s3_upload(request):
     object_name = request.GET['s3_object_name'] + "".join(lst) # creates a unique name 
     mime_type = request.GET['s3_object_type']
 
-    expires = int(time.time()+400)
+    expires = int(time.time()+3600)
     amz_headers = "x-amz-acl:public-read"
 
     put_request = "PUT\n\n%s\n%d\n%s\n/%s/%s" % (mime_type, expires, amz_headers, S3_BUCKET, object_name)
