@@ -25,7 +25,7 @@
 
 <div class="row">
   <div class="col-lg-12 text-center">
-    <a href="/home/" class="btn btn-xlg btn-done">VIEW JOB FAIRS ON YOUR CAMPUS</a>
+    <a href="/home/" class="btn btn-xlg btn-done" onclick="mixpanel.track('Viewed fair from Splash'); return true;">VIEW JOB FAIRS ON YOUR CAMPUS</a>
   </div>
 </div>
 
@@ -107,7 +107,7 @@
 
 <div class="row">
   <div class="col-lg-12 text-center">
-    <a href="/login/linkedin/?next={{request.path}}" class="btn btn-xlg btn-done" style="margin-top:-15px;">SIGN UP WITH LINKEDIN</a>
+    <a href="/login/linkedin/?next={{request.path}}" onclick="mixpanel.track('Signed up from Splash'); return true;" class="btn btn-xlg btn-done" style="margin-top:-15px;">SIGN UP WITH LINKEDIN</a>
   </div>
 </div>
 
@@ -120,9 +120,9 @@
     </div>
   </div>
   <div class="row text-center">
-      <a href="https://career.berkeley.edu/"><img src="/static/images/career-center-logo-gold.png" class="featured-partners"></a>
-      <a href="http://cet.berkeley.edu/"><img src="/static/images/CET_logo.png" class="featured-partners"></a>
-      <a href="http://berkeley.edu/index.html"><img src="/static/images/berkeley.gif" class="featured-partners"></a>
+      <a href="https://career.berkeley.edu/"><img src="/static/images/career-center-logo-gold_gs.png" class="featured-partners"></a>
+      <a href="http://cet.berkeley.edu/"><img src="/static/images/CET_logo_gs.png" class="featured-partners"></a>
+      <a href="http://berkeley.edu/index.html"><img src="/static/images/berkeley_gs.png" class="featured-partners"></a>
     <!-- </div> -->
   </div>
 </div>

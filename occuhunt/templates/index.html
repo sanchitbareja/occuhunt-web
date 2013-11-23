@@ -128,6 +128,7 @@ td#career_fair_map{
   $(document).ready(function(){
     getCompanies();
     $('*[data-poload]').on("click", function() {
+      mixpanel.track('Viewed company popup from Fair Page');
       var e = $(this);
       $.ajax({
           url: '/api/v1/companies/'+e.data('poload')+'/',

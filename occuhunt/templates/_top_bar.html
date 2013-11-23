@@ -22,8 +22,8 @@
       <ul class="nav navbar-nav navbar-left">
         {% if fairs_link or search_link %}
           <div class="btn-group" style="padding-left:50px;">
-            <a class="btn btn-done btn-md" href="/home/" style="width:40px;top:7px;"><img src="/static/images/maps_icon.png" style="height:20px;"></a>
-            <a class="btn btn-done btn-md" href="/search/" style="width:40px;top:7px;"><img src="/static/images/search.png" style="height:20px;"></a>
+            <a class="btn btn-done btn-md" href="/home/" onclick="mixpanel.track('Viewed fair from top_bar'); return true;" style="width:40px;top:7px;"><img src="/static/images/maps_icon.png" style="height:20px;"></a>
+            <a class="btn btn-done btn-md" href="/search/" onclick="mixpanel.track('Viewed search from top_bar'); return true;" style="width:40px;top:7px;"><img src="/static/images/search.png" style="height:20px;"></a>
           </div>
         {% endif %}
       </ul>
@@ -33,8 +33,8 @@
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">PLAN<b class="caret"></b></a>
           <ul class="dropdown-menu">
-            <li><a href="/plan/resume-feed/">Resume Feed</a></li>
-            <li><a href="/plan/companies/">Organize Applications</a></li>
+            <li><a href="/plan/resume-feed/" onclick="mixpanel.track('Viewed resume-feed from top_bar'); return true;">Resume Feed</a></li>
+            <li><a href="/plan/companies/" onclick="mixpanel.track('Viewed organize-feature from top_bar'); return true;">Organize Applications</a></li>
           </ul>
         </li>
         <li><a href="/match/">MATCH</a></li>
@@ -42,12 +42,12 @@
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{user.first_name | upper}}
             <b class="caret"></b></a>
           <ul class="dropdown-menu">
-            <li><a href="/logout/">Logout</a></li>
+            <li><a href="/logout/" onclick="mixpanel.track('Logged Out'); return true;">Logout</a></li>
             <input type="hidden" name="user_id" value="{{user.id}}" id="user_id">
           </ul>
         </li>
         {% else %}
-        <li><a href="/login/linkedin/?next={{request.path}}"><img src="{% static 'images/login-with-linkedin.png' %}" style="height:19px;"></a></li>
+        <li><a href="/login/linkedin/?next={{request.path}}" onclick="mixpanel.track('Logged In from top_bar'); return true;"><img src="{% static 'images/login-with-linkedin.png' %}" style="height:19px;"></a></li>
         {% endif %}
       </ul>
     </div><!--/.nav-collapse -->
