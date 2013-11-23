@@ -236,14 +236,16 @@ function toggleTable(cssID){
   if(cssID == '.favorited-company'){
     console.log($(cssID).css('background-image'));
     if($(cssID).css('background-image') == "none"){
-      $(cssID).css('background-image', "url('/static/images/target.png')");
+      $(cssID).css('background-image', "url('/static/images/other/fold.png')");
+      recolorTables('.btn-categorydisabled','#dcdcdc');
     } else {
       $(cssID).css('background-image','none');
+      decolorTables('.btn-categorydisabled');
     }
   } else {
     if($(cssID).css('background-color') == "rgb(255, 255, 255)") {
       if(cssID == '.btn-categorydisabled'){
-        recolorTables(cssID,'#999');
+        recolorTables(cssID,'#dcdcdc');
       }
       if(cssID == '.btn-engineering'){
         recolorTables(cssID,'#baf198');
@@ -252,7 +254,7 @@ function toggleTable(cssID){
         recolorTables(cssID,'#ffb8e7');
       }
       if(cssID == '.btn-government'){
-        recolorTables(cssID,'#347aef');
+        recolorTables(cssID,'#edf36d');
       }
       if(cssID == '.btn-health'){
         recolorTables(cssID,'#fe9f9f');
@@ -264,7 +266,7 @@ function toggleTable(cssID){
         recolorTables(cssID,'#ffcfaf');
       }
     } else {
-      decolorTables(cssID)
+      decolorTables(cssID);
     }
   }
 }

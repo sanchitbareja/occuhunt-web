@@ -2169,8 +2169,8 @@ fieldset[disabled] .btn-search.active {
 }
 .btn-categorydisabled {
   color: #222222;
-  background-color: #dcdcdc;
-  border-color: #cfcfcf;
+  background-color: #999999;
+  border-color: #8c8c8c;
 }
 .btn-categorydisabled:hover,
 .btn-categorydisabled:focus,
@@ -2178,8 +2178,8 @@ fieldset[disabled] .btn-search.active {
 .btn-categorydisabled.active,
 .open .dropdown-toggle.btn-categorydisabled {
   color: #222222;
-  background-color: #c8c8c8;
-  border-color: #b1b1b1;
+  background-color: #858585;
+  border-color: #6e6e6e;
 }
 .btn-categorydisabled:active,
 .btn-categorydisabled.active,
@@ -2201,8 +2201,8 @@ fieldset[disabled] .btn-categorydisabled:active,
 .btn-categorydisabled.disabled.active,
 .btn-categorydisabled[disabled].active,
 fieldset[disabled] .btn-categorydisabled.active {
-  background-color: #dcdcdc;
-  border-color: #cfcfcf;
+  background-color: #999999;
+  border-color: #8c8c8c;
 }
 .btn-engineering-dark {
   color: #222222;

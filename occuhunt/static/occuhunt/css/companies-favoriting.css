@@ -3,7 +3,7 @@ body.dragging, body.dragging * {
 }
 
 .favorited-company {
-  background-image: url('/static/images/target.png');
+  background-image: url('/static/images/other/fold.png');
   background-repeat: no-repeat;
   background-size: 20px;
 }
