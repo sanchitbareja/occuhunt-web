@@ -129,3 +129,16 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
   from {opacity: 1;}
   to {opacity: 0.25;}
 }
+
+
+/* -----------------------------------------
+   Icons
+----------------------------------------- */
+
+span[class*='icon'] {
+  color:#348891;
+}
+
+span[class*='icon']:hover {
+  color:#3c6a71;
+}

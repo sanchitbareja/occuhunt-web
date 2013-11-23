@@ -81,7 +81,9 @@ function favoriteCompanyWithId(company_id,element, callback){
         console.log("Successfully favorited company!");
         $(element).html('<span class="icon-minus-sign-alt icon-2x"></span>');
         $(element).attr('onclick', 'unfavoriteCompanyWithId('+company_id+',this,'+callback+');');
-        callback();
+        if(typeof callback !== "undefined"){
+          callback();
+        }
       }
     }
   });
@@ -103,9 +105,11 @@ function unfavoriteCompanyWithId(company_id,element, callback){
     statusCode : {
       201: function(data, textStatus, jsXHR){
         console.log("Successfully favorited company!");
-        $(element).html('<span class="icon-minus-sign-alt icon-2x"></span>');
+        $(element).html('<span class="icon-plus-sign-alt icon-2x"></span>');
         $(element).attr('onclick', 'favoriteCompanyWithId('+company_id+',this,'+callback+');');
-        callback();
+        if(typeof callback !== "undefined"){
+          callback();
+        }
       }
     }
   });
