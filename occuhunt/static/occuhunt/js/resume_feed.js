@@ -22,6 +22,8 @@ var canvasHeight = 0;
 var canvasWidth = 778;
 var feature_resume = false;
 var bounty_points = 0;
+var page_limit = 10;
+var current_offset = 0;
 
 function convert_data_URI_to_binary(dataURI) {
     var base64Index = dataURI.indexOf(BASE64_MARKER) + BASE64_MARKER.length;
@@ -328,12 +330,13 @@ function add_new_comment(e) {
 function get_resumes(){
     $.ajax({
         url: '/api/v1/resumes/',
-        data: {'limit':10},
+        data: {'limit':page_limit, 'offset':current_offset},
         dataType: 'json',
         success: function(data, textStatus, jqXHR){
             for (var i = data['response']['resumes'].length - 1; i >= 0; i--) {
                 add_new_resume_html(data['response']['resumes'][i]['id'],data['response']['resumes'][i]['url'],data['response']['resumes'][i]['comments']);
             };
+            current_offset += page_limit;
         },
     });
 }
@@ -341,13 +344,14 @@ function get_resumes(){
 function get_featured_resumes(){
     $.ajax({
         url: '/api/v1/resumes/',
-        data: {'featured':true},
+        data: {'featured':true, 'limit':page_limit, 'offset':current_offset},
         dataType: 'json',
         success: function(data, textStatus, jqXHR){
             console.log(data);
             for (var i = data['response']['resumes'].length - 1; i >= 0; i--) {
                 add_new_resume_html(data['response']['resumes'][i]['id'],data['response']['resumes'][i]['url'],data['response']['resumes'][i]['comments']);
             };
+            current_offset += page_limit;
         },
     });
 }
@@ -356,13 +360,14 @@ function get_my_resumes(){
     var user_id = $("#user_id").val();
     $.ajax({
         url: '/api/v1/resumes/',
-        data: {'user':user_id},
+        data: {'user':user_id, 'limit':page_limit, 'offset':current_offset},
         dataType: 'json',
         success: function(data, textStatus, jqXHR){
             console.log(data);
             for (var i = data['response']['resumes'].length - 1; i >= 0; i--) {
                 add_new_resume_html(data['response']['resumes'][i]['id'],data['response']['resumes'][i]['url'],data['response']['resumes'][i]['comments']);
             };
+            current_offset += page_limit;
         },
     });
 }
@@ -557,11 +562,19 @@ function init_UI(){
     $("#resume-menu-bounty").tooltip();
 
     // infinite scroll
-    $('#resume-feed').waypoint(function(){
-        console.log("Hit bottom of resume feed");
-        // get_resumes();
-    }, {offset:'bottom-in-view'});
-
+    $(window).scroll(function() {
+       if($(window).scrollTop() + $(window).height() == $(document).height()) {
+            if ($("#featured_resumes_button").hasClass("active")) {
+                get_featured_resumes();
+            };
+            if ($("#my_resumes_button").hasClass("active")) {
+                get_my_resumes();
+            };
+            if ($("#all_resumes_button").hasClass("active")) {
+                get_resumes();
+            };
+       }
+    });
 }
 
 function get_resumes_all_click() {
@@ -570,6 +583,7 @@ function get_resumes_all_click() {
     $("#all_resumes_button").addClass("active");
     clear_resume_feed();
     get_resumes();
+    current_offset = 0;
     $("#file_select_button").html('UPLOAD RESUME <input class="btn btn-lg btn-block" type="file" id="file_upload" name="file_source" accept="application/pdf" onchange="render_pdf();">');
     feature_resume = false;
 }
@@ -580,6 +594,7 @@ function get_resumes_featured_click() {
     $("#all_resumes_button").removeClass("active");
     clear_resume_feed();
     get_featured_resumes();
+    current_offset = 0;
     $("#file_select_button").html('FEATURE YOUR RESUME (20 POINTS) <input class="btn btn-lg btn-block" type="file" id="file_upload" name="file_source" accept="application/pdf" onchange="render_pdf();">');
     feature_resume = true;
 }
@@ -590,6 +605,7 @@ function get_resumes_mine_click() {
     $("#all_resumes_button").removeClass("active");
     clear_resume_feed();
     get_my_resumes();
+    current_offset = 0;
     $("#file_select_button").html('UPLOAD RESUME <input class="btn btn-lg btn-block" type="file" id="file_upload" name="file_source" accept="application/pdf" onchange="render_pdf();">');
     feature_resume = false;
 }
