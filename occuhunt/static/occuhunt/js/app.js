@@ -45,7 +45,7 @@ function unfavoriteCompany(){
     statusCode : {
       201: function(data, textStatus, jsXHR){
         console.log("Successfully favorited company!");
-        $("#favorite_company_btn").html('<span class="glyphicon glyphicon-plus"></span>&nbsp;Favorite');
+        $("#favorite_company_btn").html('<span class="glyphicon glyphicon-plus"></span>');
         $("#favorite_company_btn").attr('onclick', 'favoriteCompany();');
         $("button[value=company_"+company_id+"]").removeClass("favorited-company");
       }, 
@@ -79,7 +79,13 @@ function favoriteCompanyWithId(company_id,element, callback){
     statusCode : {
       201: function(data, textStatus, jsXHR){
         console.log("Successfully favorited company!");
-        $(element).html('<span class="icon-minus-sign-alt icon-2x"></span>');
+        if ($(element).attr('id') == 'modal-plus') {
+          $(element).html('<span class="glyphicon glyphicon-minus"></span>');
+        }
+        else {
+          $(element).html('<span class="icon-minus icon-2x"></span>');
+        }
+        console.log(element);
         $(element).attr('onclick', 'unfavoriteCompanyWithId('+company_id+',this,'+callback+');');
         if(typeof callback !== "undefined"){
           callback();
@@ -105,7 +111,12 @@ function unfavoriteCompanyWithId(company_id,element, callback){
     statusCode : {
       201: function(data, textStatus, jsXHR){
         console.log("Successfully favorited company!");
-        $(element).html('<span class="icon-plus-sign-alt icon-2x"></span>');
+        if ($(element).attr('id') == 'modal-plus') {
+          $(element).html('<span class="glyphicon glyphicon-plus"></span>');
+        }
+        else {
+          $(element).html('<span class="icon-plus icon-2x"></span>');
+        }
         $(element).attr('onclick', 'favoriteCompanyWithId('+company_id+',this,'+callback+');');
         if(typeof callback !== "undefined"){
           callback();
@@ -159,10 +170,10 @@ function getCompany(id){
         $("#company_id").val(id);
         // need to check if need to display favorite or unfavorite icon
         if(data['favorites'].indexOf(parseInt(user_id)) >= 0){
-          $("#favorite_company_btn").html('<span class="glyphicon glyphicon-minus"></span>&nbsp;Unfav');
+          $("#favorite_company_btn").html('<span class="glyphicon glyphicon-minus"></span>');
           $("#favorite_company_btn").attr('onclick', 'unfavoriteCompany();');
         } else {
-          $("#favorite_company_btn").html('<span class="glyphicon glyphicon-plus"></span>&nbsp;Favorite');
+          $("#favorite_company_btn").html('<span class="glyphicon glyphicon-plus"></span>');
           $("#favorite_company_btn").attr('onclick', 'favoriteCompany();');
         }
       },

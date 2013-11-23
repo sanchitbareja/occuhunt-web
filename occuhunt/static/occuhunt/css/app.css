@@ -2,6 +2,8 @@
    Company page - individual company pages
 ----------------------------------------- */
 
+#modal-plus {text-decoration:none;}
+
 #company_title {
     text-align: center;
     color: #343a41;
@@ -140,5 +142,13 @@ span[class*='icon'] {
 }
 
 span[class*='icon']:hover {
+  color:#3c6a71;
+}
+
+span[class*='icon-2x'] {
+  color:#70aab0;
+}
+
+span[class*='icon-2x']:hover {
   color:#3c6a71;
 }

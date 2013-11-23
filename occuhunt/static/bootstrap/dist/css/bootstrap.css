@@ -2093,6 +2093,43 @@ fieldset[disabled] .btn-done.active {
   background-color: #348891;
   border-color: #348891;
 }
+.btn-fav-dark {
+  color: #ffffff;
+  background-color: #ff486f;
+  border-color: #ff486f;
+}
+.btn-fav-dark:hover,
+.btn-fav-dark:focus,
+.btn-fav-dark:active,
+.btn-fav-dark.active,
+.open .dropdown-toggle.btn-fav-dark {
+  color: #ffffff;
+  background-color: #ff1f4f;
+  border-color: #ff0b3f;
+}
+.btn-fav-dark:active,
+.btn-fav-dark.active,
+.open .dropdown-toggle.btn-fav-dark {
+  background-image: none;
+}
+.btn-fav-dark.disabled,
+.btn-fav-dark[disabled],
+fieldset[disabled] .btn-fav-dark,
+.btn-fav-dark.disabled:hover,
+.btn-fav-dark[disabled]:hover,
+fieldset[disabled] .btn-fav-dark:hover,
+.btn-fav-dark.disabled:focus,
+.btn-fav-dark[disabled]:focus,
+fieldset[disabled] .btn-fav-dark:focus,
+.btn-fav-dark.disabled:active,
+.btn-fav-dark[disabled]:active,
+fieldset[disabled] .btn-fav-dark:active,
+.btn-fav-dark.disabled.active,
+.btn-fav-dark[disabled].active,
+fieldset[disabled] .btn-fav-dark.active {
+  background-color: #ff486f;
+  border-color: #ff486f;
+}
 .btn-info {
   color: #ffffff;
   background-color: #5bc0de;
