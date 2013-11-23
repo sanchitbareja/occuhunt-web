@@ -1,3 +1,6 @@
+
+mixpanel.track_links("#nav", "Click nav link", {'referrer': document.referrer });
+
 function favoriteCompany(){
   company_id = $("#company_id").val();
   user_id = $("#user_id").val();

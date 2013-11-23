@@ -4,9 +4,9 @@
 <nav class="navbar navbar-default" role="navigation" style="margin-bottom:0px;padding-bottom:0px;">
   <div class="container">
     <ul class="nav navbar-nav navbar-left">
-      <li><a data-toggle="modal" href="#feedbackModal">FEEDBACK</a></li>
-      <li><a href="http://www.linkedin.com/in/sanchitbareja"><strong>ABOUT SANCHIT</strong></a></li>
-      <li><a href="http://www.sidwyn.com"><strong>ABOUT SIDWYN</strong></a></li>
+      <li><a data-toggle="modal" href="#feedbackModal" onclick="mixpanel.track('Clicked on Feedback'); return true;">FEEDBACK</a></li>
+      <li><a id="mp-sanchit" href="http://www.linkedin.com/in/sanchitbareja"><strong>ABOUT SANCHIT</strong></a></li>
+      <li><a id="mp-sidwyn" href="http://www.sidwyn.com" onclick="mixpanel.track('Clicked on Sidwyn'); return true;"><strong>ABOUT SIDWYN</strong></a></li>
     </ul>
     <ul class="nav navbar-nav navbar-right">
       <li><div class="fb-like" data-href="https://www.facebook.com/occuhunt" data-layout="button_count" data-action="like" data-show-faces="false" data-share="true" style="top:13px;"></div></li>
@@ -41,8 +41,8 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">CLOSE</button>
-        <button type="button" class="btn btn-done" id="feedbackFormSubmit">SEND</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="mixpanel.track('Closed feedback modal'); return true;">CLOSE</button>
+        <button type="button" class="btn btn-done" id="feedbackFormSubmit" onclick="mixpanel.track('Sent feedback'); return true;">SEND</button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
@@ -50,6 +50,9 @@
 
 
 <script type="text/javascript">
+  mixpanel.track_links("#mp-sanchit", "Click sanchit link", {'referrer': document.referrer });
+  mixpanel.track_links("#mp-sidwyn", "Click sidwyn link", {'referrer': document.referrer });
+
   $("#feedbackFormSubmit").click(function(){
     mixpanel.track('Clicked Feedback from footer');
     $("#feedbackForm").before('<div id="spinnerWait"><div class="spinner"><div class="bar1"></div><div class="bar2"></div><div class="bar3"></div><div class="bar4"></div><div class="bar5"></div><div class="bar6"></div><div class="bar7"></div><div class="bar8"></div><div class="bar9"></div><div class="bar10"></div><div class="bar11"></div><div class="bar12"></div></div><p>Sending your feedback...</p></div>');
