@@ -59,7 +59,7 @@ def sign_s3_upload(request):
     put_request = "PUT\n\n%s\n%d\n%s\n/%s/%s" % (mime_type, expires, amz_headers, S3_BUCKET, object_name)
 
     signature = base64.encodestring(hmac.new(AWS_SECRET_KEY,put_request, sha).digest())
-    signature = urllib.quote_plus(signature.strip(),'/')
+    signature = urllib.quote_plus(signature.strip())
 
     url = 'https://%s.s3.amazonaws.com/%s' % (S3_BUCKET, object_name)
     signed_request = '%s?AWSAccessKeyId=%s&Expires=%d&Signature=%s' % (url, AWS_ACCESS_KEY, expires, signature)
