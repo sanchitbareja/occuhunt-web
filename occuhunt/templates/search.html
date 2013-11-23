@@ -120,9 +120,6 @@ height:8px;
 {% block extra_script %}
 <script src="{% static "occuhunt/js/companies-search.js" %}"></script>
 <script type="text/javascript">
-  
-mixpanel.track_links("#mp-clickedsearch", "Clicked search from Search page", {'referrer': document.referrer });
-
   function initialize(){
     randomizeString();
     get_companies(500);
@@ -149,7 +146,7 @@ mixpanel.track_links("#mp-clickedsearch", "Clicked search from Search page", {'r
     <h3 id="companies_found"></h3>
     <input type="text" class="form-control input-lg" id="inputCompanySearch" placeholder="Try &quot;San Francisco&quot;">
     <br/>
-    <button class="btn btn-done btn-lg" onclick="searchCompanies();" id="mp-clickedsearch">SEARCH</button>
+    <button class="btn btn-done btn-lg" onclick="searchCompanies(); mixpanel.track('Clicked search from Search page'); return true;">SEARCH</button>
     <br />
     <br />
     <div id="loading_state"></div>
