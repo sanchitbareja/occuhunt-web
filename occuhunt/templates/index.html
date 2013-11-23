@@ -10,6 +10,22 @@
 
 <style type="text/css">
 
+.simplebox{
+  outline: none;
+  box-shadow:none !important;
+}
+
+.room-top {
+   font-weight: 500;
+}
+
+.room-custom {
+  font-weight: 500;
+  display: block;
+  margin-top: 26px;
+  margin-bottom: 10px;
+}
+
 body {
   background-color: white;
 }
@@ -17,7 +33,7 @@ body {
 .favorited-company {
   background-image: url('/static/images/other/fold.png');
   background-repeat: no-repeat;
-  background-size: 20px;
+  background-size: 14px;
 }
 
 .fair-table {
@@ -161,14 +177,13 @@ td#career_fair_map{
 {% block content %}
   <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1" style="left:20px;padding-top:42px;position:absolute;">
     <div class="btn-group-vertical" id="filter_bar" data-toggle="buttons" style="top: 0px;">
-      <button type="button" class="btn btn-categorydisabled favorited-company btn-sm" onclick="toggleTable('.favorited-company');" style="background-image:url('/static/images/other/fold.png');">Favorites</button>
-      
-      <button type="button" class="btn btn-engineering btn-sm" onclick="toggleTable('.btn-engineering');">Engineering</button>
-      <button type="button" class="btn btn-finance btn-sm" onclick="toggleTable('.btn-finance');">Finance</button>
-      <button type="button" class="btn btn-government btn-sm" onclick="toggleTable('.btn-government');">Government</button>
-      <button type="button" class="btn btn-health btn-sm" onclick="toggleTable('.btn-health');">Health</button>
-      <button type="button" class="btn btn-technology btn-sm" onclick="toggleTable('.btn-technology');">Technology</button>
-      <button type="button" class="btn btn-other btn-sm" onclick="toggleTable('.btn-other');">Other</button>
+      <button type="button" class="btn btn-categorydisabled favorited-company btn-sm simplebox" onclick="toggleTable('.favorited-company');" style="background-image:url('/static/images/other/fold.png');">Favorites</button>
+      <button type="button" class="btn btn-engineering btn-sm simplebox" onclick="toggleTable('.btn-engineering');">Engineering</button>
+      <button type="button" class="btn btn-finance btn-sm simplebox" onclick="toggleTable('.btn-finance');">Finance</button>
+      <button type="button" class="btn btn-government btn-sm simplebox" onclick="toggleTable('.btn-government');">Government</button>
+      <button type="button" class="btn btn-health btn-sm simplebox" onclick="toggleTable('.btn-health');">Health</button>
+      <button type="button" class="btn btn-technology btn-sm simplebox" onclick="toggleTable('.btn-technology');">Technology</button>
+      <button type="button" class="btn btn-other btn-sm simplebox" onclick="toggleTable('.btn-other');">Other</button>
     </div>
   </div>
   <div class="row">
@@ -192,7 +207,7 @@ td#career_fair_map{
           </div>
           <div class="row">
             <div class="col-lg-12">
-              <p class="text-center">Chevron Auditorium</p>
+              <p class="text-center room-top">Chevron Auditorium</p>
               <table>
                 <tbody><tr>
                   <td id="career_fair_map"></td>
@@ -214,7 +229,7 @@ td#career_fair_map{
                   <td id="career_fair_map"><a class="btn btn-engineering fair-table vcenter" data-poload="403" value="company_403">Engeo</a></td>
                   <td id="career_fair_map"></td>
                   <td id="career_fair_map"></td>
-                  <td id="career_fair_map"><a class="btn btn-other fair-table vcenter" data-poload="409" value="company_409">Granite Construction Incorporated</a></td>
+                  <td id="career_fair_map"><a class="btn btn-other fair-table vcenter" data-poload="409" value="company_409">Granite Construction Inc.</a></td>
                   <td id="career_fair_map"><a class="btn btn-other fair-table vcenter" data-poload="412" value="company_412">Hilti North America</a></td>
                   <td id="career_fair_map"></td>
                   <td id="career_fair_map"></td>
@@ -251,7 +266,7 @@ td#career_fair_map{
                   <td id="career_fair_map"></td>
                   <td id="career_fair_map"></td>
                   <td id="career_fair_map"><a class="btn btn-engineering fair-table vcenter" data-poload="414" value="company_414">Jacobs Associates</a></td>
-                  <td id="career_fair_map"><a class="btn btn-other fair-table vcenter" data-poload="391" value="company_391">ARCO Murray National Construction Company</a></td>
+                  <td id="career_fair_map"><a class="btn btn-other fair-table vcenter" data-poload="391" value="company_391">ARCO Murray National</a></td>
                 </tr><tr>
                   <td id="career_fair_map"></td>
                   <td id="career_fair_map"></td>
@@ -280,12 +295,12 @@ td#career_fair_map{
                   <td id="career_fair_map"></td>
                   <td id="career_fair_map"><a class="btn btn-engineering fair-table vcenter" data-poload="417" value="company_417">Magnusson Klemencic Associates</a></td>
                   <td id="career_fair_map"></td>
-                  <td id="career_fair_map"><a class="btn btn-government fair-table vcenter" data-poload="400" value="company_400">County of Los Angeles Department of Public Works</a></td>
+                  <td id="career_fair_map"><a class="btn btn-government fair-table vcenter" data-poload="400" value="company_400">County of L.A. Dept of Public Works</a></td>
                   <td id="career_fair_map"></td>
                   <td id="career_fair_map"><a class="btn btn-other fair-table vcenter" data-poload="423" value="company_423">Skidmore, Owings &amp; Merrill LLP</a></td>
                 </tr>
               </tbody></table>
-              <p class="text-center">Home Room</p>
+              <p class="text-center room-custom">Home Room</p>
               <table>
                 <tbody><tr>
                   <td id="career_fair_map"></td>
@@ -335,7 +350,7 @@ td#career_fair_map{
                   <td id="career_fair_map"><a class="btn btn-other fair-table vcenter" data-poload="413" value="company_413">HNTB Corporation</a></td>
                 </tr>
               </tbody></table>
-              <p class="text-center">Sproul Room</p>
+              <p class="text-center room-custom">Sproul Room</p>
               <table>
                 <tbody><tr>
                   <td id="career_fair_map"></td>
@@ -420,7 +435,7 @@ td#career_fair_map{
           </div>
           <div class="row">
             <div class="col-lg-12">
-              <p class="text-center">RSF - Field House Gym</p>
+              <p class="text-center room-top">RSF - Field House Gym</p>
               <table>
                 <tbody><tr>
                   <td id="career_fair_map"></td>
@@ -461,7 +476,7 @@ td#career_fair_map{
                   <td id="career_fair_map"></td>
                   <td id="career_fair_map"></td>
                   <td id="career_fair_map"></td>
-                  <td id="career_fair_map"><a class="btn btn-government fair-table vcenter" data-poload="374" value="company_374">Robert T. Matsui Center for Politics and Public Service</a></td>
+                  <td id="career_fair_map"><a class="btn btn-government fair-table vcenter" data-poload="374" value="company_374">Matsui Ctr for Politics & Public Service</a></td>
                   <td id="career_fair_map"><a class="btn btn-other fair-table vcenter">UCB Washington</a></td>
                 </tr><tr>
                   <td id="career_fair_map"></td>
@@ -476,7 +491,7 @@ td#career_fair_map{
                   <td id="career_fair_map"></td>
                   <td id="career_fair_map"></td>
                   <td id="career_fair_map"><a class="btn btn-government fair-table vcenter" data-poload="356" value="company_356">Consumer Financial Protection Bureau</a></td>
-                  <td id="career_fair_map"><a class="btn btn-government fair-table vcenter" data-poload="385" value="company_385">University of California Center Sacramento</a></td>
+                  <td id="career_fair_map"><a class="btn btn-government fair-table vcenter" data-poload="385" value="company_385">U.C. Center Sacramento</a></td>
                 </tr><tr>
                   <td id="career_fair_map"></td>
                   <td id="career_fair_map"></td>
@@ -622,7 +637,7 @@ td#career_fair_map{
           </div>
           <div class="row">
             <div class="col-lg-12">
-              <p class="text-center">Chevron Auditorium</p>
+              <p class="text-center room-top">Chevron Auditorium</p>
               <table>
                 <tbody><tr>
                   <td id="career_fair_map"></td>
@@ -722,7 +737,7 @@ td#career_fair_map{
                   <td id="career_fair_map"></td>
                 </tr><tr>
               </tr></tbody></table>
-              <p class="text-center">Home Room</p>
+              <p class="text-center room-custom">Home Room</p>
               <table>
                 <tbody><tr>
                   <td id="career_fair_map"></td>
@@ -774,7 +789,7 @@ td#career_fair_map{
                   <td id="career_fair_map"></td>
                 </tr><tr>
               </tr></tbody></table>
-              <p class="text-center">Robert Sproul Room</p>
+              <p class="text-center room-custom">Robert Sproul Room</p>
               <table>
                 <tbody><tr>
                   <td id="career_fair_map"></td>
@@ -859,6 +874,8 @@ td#career_fair_map{
                 <h4 align="left">EECS Career Fair, September 25 11am - 3pm, RSF - Field House Gym</h4>
             </div>
             <!-- EECS Career -->
+
+            <p class="text-center room-top">RSF - Field House Gym</p>
             <div class="row">
               <div class="col-lg-8">
                 <table>

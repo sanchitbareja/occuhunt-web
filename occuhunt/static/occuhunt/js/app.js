@@ -263,22 +263,22 @@ function toggleTable(cssID){
         recolorTables(cssID,'#dcdcdc');
       }
       if(cssID == '.btn-engineering'){
-        recolorTables(cssID,'#baf198');
+        recolorTables(cssID,'#96b6d6');
       }
       if(cssID == '.btn-finance'){
-        recolorTables(cssID,'#ffb8e7');
-      }
-      if(cssID == '.btn-government'){
         recolorTables(cssID,'#edf36d');
       }
+      if(cssID == '.btn-government'){
+        recolorTables(cssID,'#f98fda');
+      }
       if(cssID == '.btn-health'){
-        recolorTables(cssID,'#fe9f9f');
+        recolorTables(cssID,'#ffafc2');
       }
       if(cssID == '.btn-technology'){
-        recolorTables(cssID,'#c4dff9');
+        recolorTables(cssID,'#ffa753');
       }
       if(cssID == '.btn-other'){
-        recolorTables(cssID,'#ffcfaf');
+        recolorTables(cssID,'#88b9be');
       }
     } else {
       decolorTables(cssID);
