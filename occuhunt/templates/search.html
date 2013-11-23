@@ -144,7 +144,7 @@ height:8px;
     <h3 id="companies_found"></h3>
     <input type="text" class="form-control input-lg" id="inputCompanySearch" placeholder="Try &quot;San Francisco&quot;">
     <br/>
-    <button class="btn btn-done btn-lg" onclick="searchCompanies();">SEARCH</button>
+    <button class="btn btn-done btn-lg" onclick="searchCompanies(); mixpanel.track('Searched from search page'); return true;">SEARCH</button>
     <br />
     <br />
     <div id="loading_state"></div>
