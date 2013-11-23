@@ -48,18 +48,17 @@
 						<p>{{ company.number_employees }} employees</p>
 					{% endif %}
 					<br>
-					<a href="{{ company.careers_website }}" class="btn btn-fav-dark" id="visit_careers_site_btn">+ FAVORITE COMPANY</a>
+					{% if user.is_authenticated %}
+						{% if is_favorited %}
+						<a class="btn btn-fav-dark" id="visit_careers_site_btn" onclick='unfavoriteCompanyWithId({{ company.id }},this)'>- UNFAVORITE</a>
+						{% else %}
+						<a class="btn btn-fav-dark" id="visit_careers_site_btn" onclick='favoriteCompanyWithId({{ company.id }},this)'>+ FAVORITE</a>
+						{% endif %}
+					{% endif %}
 				</div>
 			</div>
 			<div class="col-lg-5 col-lg-offset-1" id="company_description">
 				<div>
-					{% if user.is_authenticated %}
-						{% if is_favorited %}
-						<a class="btn-link" style="position:absolute; top:55px; right:15px; display:inline;" onclick="unfavoriteCompanyWithId({{ company.id }},this)"><span class="icon-minus icon-2x pull-right"></span></a>
-						{% else %}
-						<a class="btn-link" style="position:absolute; top:55px; right:15px; display:inline;" onclick="favoriteCompanyWithId({{ company.id }},this)"><span class="icon-plus icon-2x pull-right"></span></a>
-						{% endif %}
-					{% endif %}
 					<h4 id="company_header">COMPANY INFO</h4>
 				</div>
 				<p id="company_detailed_info">{{ company.company_description }}</p>

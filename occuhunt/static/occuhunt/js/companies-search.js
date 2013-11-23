@@ -37,7 +37,7 @@ function randomizeString(){
                                               '<a id="company_thumbnail_logo" href="/company/'+data['response']['companies'][i]['id']+'/"><img id="company_thumbnail_logo" src="'+data['response']['companies'][i]['logo']+'"></a>'+
                                             '</div>'+
                                             '<div id="company_thumbnail_favorite">'+
-                                              '<a class="btn-link" onclick="unfavoriteCompanyWithId('+data['response']['companies'][i]['id']+',this, update_favorites);"><span class="glyphicon glyphicon-plus"></span></a>'+
+                                              '<a class="btn-link" onclick="unfavoriteCompanyWithId('+data['response']['companies'][i]['id']+',this,update_favorites);"><span class="glyphicon glyphicon-plus"></span></a>'+
                                             '</div>'+
                                           '</div>');
             } else {
@@ -46,7 +46,7 @@ function randomizeString(){
                                               '<a id="company_thumbnail_logo" href="/company/'+data['response']['companies'][i]['id']+'/"><img id="company_thumbnail_logo" src="'+data['response']['companies'][i]['logo']+'"></a>'+
                                             '</div>'+
                                             '<div id="company_thumbnail_favorite">'+
-                                              '<a class="btn-link" onclick="favoriteCompanyWithId('+data['response']['companies'][i]['id']+',this, update_favorites); "><span class="glyphicon glyphicon-plus"></span></a>'+
+                                              '<a class="btn-link" onclick="favoriteCompanyWithId('+data['response']['companies'][i]['id']+',this,update_favorites); "><span class="glyphicon glyphicon-plus"></span></a>'+
                                             '</div>'+
                                           '</div>');
             }
