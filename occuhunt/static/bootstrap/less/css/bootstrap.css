@@ -2093,43 +2093,6 @@ fieldset[disabled] .btn-done.active {
   background-color: #348891;
   border-color: #348891;
 }
-.btn-fav-dark {
-  color: #ffffff;
-  background-color: #ff486f;
-  border-color: #ff486f;
-}
-.btn-fav-dark:hover,
-.btn-fav-dark:focus,
-.btn-fav-dark:active,
-.btn-fav-dark.active,
-.open .dropdown-toggle.btn-fav-dark {
-  color: #ffffff;
-  background-color: #ff1f4f;
-  border-color: #ff0b3f;
-}
-.btn-fav-dark:active,
-.btn-fav-dark.active,
-.open .dropdown-toggle.btn-fav-dark {
-  background-image: none;
-}
-.btn-fav-dark.disabled,
-.btn-fav-dark[disabled],
-fieldset[disabled] .btn-fav-dark,
-.btn-fav-dark.disabled:hover,
-.btn-fav-dark[disabled]:hover,
-fieldset[disabled] .btn-fav-dark:hover,
-.btn-fav-dark.disabled:focus,
-.btn-fav-dark[disabled]:focus,
-fieldset[disabled] .btn-fav-dark:focus,
-.btn-fav-dark.disabled:active,
-.btn-fav-dark[disabled]:active,
-fieldset[disabled] .btn-fav-dark:active,
-.btn-fav-dark.disabled.active,
-.btn-fav-dark[disabled].active,
-fieldset[disabled] .btn-fav-dark.active {
-  background-color: #ff486f;
-  border-color: #ff486f;
-}
 .btn-info {
   color: #ffffff;
   background-color: #5bc0de;
@@ -2206,8 +2169,8 @@ fieldset[disabled] .btn-search.active {
 }
 .btn-categorydisabled {
   color: #222222;
-  background-color: #dcdcdc;
-  border-color: #cfcfcf;
+  background-color: #999999;
+  border-color: #8c8c8c;
 }
 .btn-categorydisabled:hover,
 .btn-categorydisabled:focus,
@@ -2215,8 +2178,8 @@ fieldset[disabled] .btn-search.active {
 .btn-categorydisabled.active,
 .open .dropdown-toggle.btn-categorydisabled {
   color: #222222;
-  background-color: #c8c8c8;
-  border-color: #b1b1b1;
+  background-color: #858585;
+  border-color: #6e6e6e;
 }
 .btn-categorydisabled:active,
 .btn-categorydisabled.active,
@@ -2238,8 +2201,8 @@ fieldset[disabled] .btn-categorydisabled:active,
 .btn-categorydisabled.disabled.active,
 .btn-categorydisabled[disabled].active,
 fieldset[disabled] .btn-categorydisabled.active {
-  background-color: #dcdcdc;
-  border-color: #cfcfcf;
+  background-color: #999999;
+  border-color: #8c8c8c;
 }
 .btn-engineering-dark {
   color: #222222;
@@ -2354,8 +2317,8 @@ fieldset[disabled] .btn-government-dark.active {
 }
 .btn-health-dark {
   color: #222222;
-  background-color: #ffafc2;
-  border-color: #ff96af;
+  background-color: #fe9f9f;
+  border-color: #fe8686;
 }
 .btn-health-dark:hover,
 .btn-health-dark:focus,
@@ -2363,8 +2326,8 @@ fieldset[disabled] .btn-government-dark.active {
 .btn-health-dark.active,
 .open .dropdown-toggle.btn-health-dark {
   color: #222222;
-  background-color: #ff86a3;
-  border-color: #ff5880;
+  background-color: #fe7777;
+  border-color: #fd4949;
 }
 .btn-health-dark:active,
 .btn-health-dark.active,
@@ -2386,8 +2349,8 @@ fieldset[disabled] .btn-health-dark:active,
 .btn-health-dark.disabled.active,
 .btn-health-dark[disabled].active,
 fieldset[disabled] .btn-health-dark.active {
-  background-color: #ffafc2;
-  border-color: #ff96af;
+  background-color: #fe9f9f;
+  border-color: #fe8686;
 }
 .btn-technology-dark {
   color: #222222;
@@ -2428,8 +2391,8 @@ fieldset[disabled] .btn-technology-dark.active {
 }
 .btn-other-dark {
   color: #222222;
-  background-color: #88b9be;
-  border-color: #78afb5;
+  background-color: #ffcfaf;
+  border-color: #ffc096;
 }
 .btn-other-dark:hover,
 .btn-other-dark:focus,
@@ -2437,8 +2400,8 @@ fieldset[disabled] .btn-technology-dark.active {
 .btn-other-dark.active,
 .open .dropdown-toggle.btn-other-dark {
   color: #222222;
-  background-color: #6ea9b0;
-  border-color: #55949b;
+  background-color: #ffb786;
+  border-color: #ff9b58;
 }
 .btn-other-dark:active,
 .btn-other-dark.active,
@@ -2460,13 +2423,13 @@ fieldset[disabled] .btn-other-dark:active,
 .btn-other-dark.disabled.active,
 .btn-other-dark[disabled].active,
 fieldset[disabled] .btn-other-dark.active {
-  background-color: #88b9be;
-  border-color: #78afb5;
+  background-color: #ffcfaf;
+  border-color: #ffc096;
 }
 .btn-engineering {
   color: #222222;
-  background-color: #96b6d6;
-  border-color: #84a9cf;
+  background-color: #baf198;
+  border-color: #abee82;
 }
 .btn-engineering:hover,
 .btn-engineering:focus,
@@ -2474,8 +2437,8 @@ fieldset[disabled] .btn-other-dark.active {
 .btn-engineering.active,
 .open .dropdown-toggle.btn-engineering {
   color: #222222;
-  background-color: #79a2cb;
-  border-color: #588bbe;
+  background-color: #a2ec74;
+  border-color: #87e74c;
 }
 .btn-engineering:active,
 .btn-engineering.active,
@@ -2497,13 +2460,13 @@ fieldset[disabled] .btn-engineering:active,
 .btn-engineering.disabled.active,
 .btn-engineering[disabled].active,
 fieldset[disabled] .btn-engineering.active {
-  background-color: #96b6d6;
-  border-color: #84a9cf;
+  background-color: #baf198;
+  border-color: #abee82;
 }
 .btn-finance {
   color: #222222;
-  background-color: #edf36d;
-  border-color: #eaf155;
+  background-color: #ffb8e7;
+  border-color: #ff9fde;
 }
 .btn-finance:hover,
 .btn-finance:focus,
@@ -2511,8 +2474,8 @@ fieldset[disabled] .btn-engineering.active {
 .btn-finance.active,
 .open .dropdown-toggle.btn-finance {
   color: #222222;
-  background-color: #e8f047;
-  border-color: #e3ec1d;
+  background-color: #ff8fd9;
+  border-color: #ff61ca;
 }
 .btn-finance:active,
 .btn-finance.active,
@@ -2534,13 +2497,13 @@ fieldset[disabled] .btn-finance:active,
 .btn-finance.disabled.active,
 .btn-finance[disabled].active,
 fieldset[disabled] .btn-finance.active {
-  background-color: #edf36d;
-  border-color: #eaf155;
+  background-color: #ffb8e7;
+  border-color: #ff9fde;
 }
 .btn-government {
   color: #222222;
-  background-color: #f98fda;
-  border-color: #f877d2;
+  background-color: #edf36d;
+  border-color: #eaf155;
 }
 .btn-government:hover,
 .btn-government:focus,
@@ -2548,8 +2511,8 @@ fieldset[disabled] .btn-finance.active {
 .btn-government.active,
 .open .dropdown-toggle.btn-government {
   color: #222222;
-  background-color: #f768cd;
-  border-color: #f53dbf;
+  background-color: #e8f047;
+  border-color: #e3ec1d;
 }
 .btn-government:active,
 .btn-government.active,
@@ -2571,13 +2534,13 @@ fieldset[disabled] .btn-government:active,
 .btn-government.disabled.active,
 .btn-government[disabled].active,
 fieldset[disabled] .btn-government.active {
-  background-color: #f98fda;
-  border-color: #f877d2;
+  background-color: #edf36d;
+  border-color: #eaf155;
 }
 .btn-health {
   color: #222222;
-  background-color: #ffafc2;
-  border-color: #ff96af;
+  background-color: #fe9f9f;
+  border-color: #fe8686;
 }
 .btn-health:hover,
 .btn-health:focus,
@@ -2585,8 +2548,8 @@ fieldset[disabled] .btn-government.active {
 .btn-health.active,
 .open .dropdown-toggle.btn-health {
   color: #222222;
-  background-color: #ff86a3;
-  border-color: #ff5880;
+  background-color: #fe7777;
+  border-color: #fd4949;
 }
 .btn-health:active,
 .btn-health.active,
@@ -2608,13 +2571,13 @@ fieldset[disabled] .btn-health:active,
 .btn-health.disabled.active,
 .btn-health[disabled].active,
 fieldset[disabled] .btn-health.active {
-  background-color: #ffafc2;
-  border-color: #ff96af;
+  background-color: #fe9f9f;
+  border-color: #fe8686;
 }
 .btn-technology {
   color: #222222;
-  background-color: #ffa753;
-  border-color: #ff9a39;
+  background-color: #c4dff9;
+  border-color: #add2f7;
 }
 .btn-technology:hover,
 .btn-technology:focus,
@@ -2622,8 +2585,8 @@ fieldset[disabled] .btn-health.active {
 .btn-technology.active,
 .open .dropdown-toggle.btn-technology {
   color: #222222;
-  background-color: #ff922a;
-  border-color: #fb7b00;
+  background-color: #9fcbf5;
+  border-color: #75b4f1;
 }
 .btn-technology:active,
 .btn-technology.active,
@@ -2645,13 +2608,13 @@ fieldset[disabled] .btn-technology:active,
 .btn-technology.disabled.active,
 .btn-technology[disabled].active,
 fieldset[disabled] .btn-technology.active {
-  background-color: #ffa753;
-  border-color: #ff9a39;
+  background-color: #c4dff9;
+  border-color: #add2f7;
 }
 .btn-other {
   color: #222222;
-  background-color: #88b9be;
-  border-color: #78afb5;
+  background-color: #ffcfaf;
+  border-color: #ffc096;
 }
 .btn-other:hover,
 .btn-other:focus,
@@ -2659,8 +2622,8 @@ fieldset[disabled] .btn-technology.active {
 .btn-other.active,
 .open .dropdown-toggle.btn-other {
   color: #222222;
-  background-color: #6ea9b0;
-  border-color: #55949b;
+  background-color: #ffb786;
+  border-color: #ff9b58;
 }
 .btn-other:active,
 .btn-other.active,
@@ -2682,8 +2645,8 @@ fieldset[disabled] .btn-other:active,
 .btn-other.disabled.active,
 .btn-other[disabled].active,
 fieldset[disabled] .btn-other.active {
-  background-color: #88b9be;
-  border-color: #78afb5;
+  background-color: #ffcfaf;
+  border-color: #ffc096;
 }
 .btn-link {
   color: #343a41;

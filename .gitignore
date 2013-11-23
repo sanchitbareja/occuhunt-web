@@ -5,3 +5,4 @@ settings_local.py
 distribute_setup.py
 distribute-0.6.49.tar.gz
 .DS_Store
+codekit-config.json

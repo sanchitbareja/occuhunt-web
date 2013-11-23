@@ -45,7 +45,7 @@ function unfavoriteCompany(){
     statusCode : {
       201: function(data, textStatus, jsXHR){
         console.log("Successfully favorited company!");
-        $("#favorite_company_btn").html('<span class="glyphicon glyphicon-plus"></span>&nbsp;Favorite');
+        $("#favorite_company_btn").html('<span class="glyphicon glyphicon-plus"></span>');
         $("#favorite_company_btn").attr('onclick', 'favoriteCompany();');
         $("button[value=company_"+company_id+"]").removeClass("favorited-company");
       }, 
@@ -79,9 +79,17 @@ function favoriteCompanyWithId(company_id,element, callback){
     statusCode : {
       201: function(data, textStatus, jsXHR){
         console.log("Successfully favorited company!");
-        $(element).html('<span class="icon-minus-sign-alt icon-2x"></span>');
+        if ($(element).attr('id') == 'modal-plus') {
+          $(element).html('<span class="glyphicon glyphicon-minus"></span>');
+        }
+        else {
+          $(element).html('<span class="icon-minus icon-2x"></span>');
+        }
+        console.log(element);
         $(element).attr('onclick', 'unfavoriteCompanyWithId('+company_id+',this,'+callback+');');
-        callback();
+        if(typeof callback !== "undefined"){
+          callback();
+        }
       }
     }
   });
@@ -103,9 +111,16 @@ function unfavoriteCompanyWithId(company_id,element, callback){
     statusCode : {
       201: function(data, textStatus, jsXHR){
         console.log("Successfully favorited company!");
-        $(element).html('<span class="icon-minus-sign-alt icon-2x"></span>');
+        if ($(element).attr('id') == 'modal-plus') {
+          $(element).html('<span class="glyphicon glyphicon-plus"></span>');
+        }
+        else {
+          $(element).html('<span class="icon-plus icon-2x"></span>');
+        }
         $(element).attr('onclick', 'favoriteCompanyWithId('+company_id+',this,'+callback+');');
-        callback();
+        if(typeof callback !== "undefined"){
+          callback();
+        }
       }
     }
   });
@@ -155,10 +170,10 @@ function getCompany(id){
         $("#company_id").val(id);
         // need to check if need to display favorite or unfavorite icon
         if(data['favorites'].indexOf(parseInt(user_id)) >= 0){
-          $("#favorite_company_btn").html('<span class="glyphicon glyphicon-minus"></span>&nbsp;Unfav');
+          $("#favorite_company_btn").html('<span class="glyphicon glyphicon-minus"></span>');
           $("#favorite_company_btn").attr('onclick', 'unfavoriteCompany();');
         } else {
-          $("#favorite_company_btn").html('<span class="glyphicon glyphicon-plus"></span>&nbsp;Favorite');
+          $("#favorite_company_btn").html('<span class="glyphicon glyphicon-plus"></span>');
           $("#favorite_company_btn").attr('onclick', 'favoriteCompany();');
         }
       },
@@ -236,35 +251,37 @@ function toggleTable(cssID){
   if(cssID == '.favorited-company'){
     console.log($(cssID).css('background-image'));
     if($(cssID).css('background-image') == "none"){
-      $(cssID).css('background-image', "url('/static/images/target.png')");
+      $(cssID).css('background-image', "url('/static/images/other/fold.png')");
+      recolorTables('.btn-categorydisabled','#dcdcdc');
     } else {
       $(cssID).css('background-image','none');
+      decolorTables('.btn-categorydisabled');
     }
   } else {
     if($(cssID).css('background-color') == "rgb(255, 255, 255)") {
       if(cssID == '.btn-categorydisabled'){
-        recolorTables(cssID,'#999');
+        recolorTables(cssID,'#dcdcdc');
       }
       if(cssID == '.btn-engineering'){
-        recolorTables(cssID,'#baf198');
+        recolorTables(cssID,'#96b6d6');
       }
       if(cssID == '.btn-finance'){
-        recolorTables(cssID,'#ffb8e7');
+        recolorTables(cssID,'#edf36d');
       }
       if(cssID == '.btn-government'){
-        recolorTables(cssID,'#347aef');
+        recolorTables(cssID,'#f98fda');
       }
       if(cssID == '.btn-health'){
-        recolorTables(cssID,'#fe9f9f');
+        recolorTables(cssID,'#ffafc2');
       }
       if(cssID == '.btn-technology'){
-        recolorTables(cssID,'#c4dff9');
+        recolorTables(cssID,'#ffa753');
       }
       if(cssID == '.btn-other'){
-        recolorTables(cssID,'#ffcfaf');
+        recolorTables(cssID,'#88b9be');
       }
     } else {
-      decolorTables(cssID)
+      decolorTables(cssID);
     }
   }
 }

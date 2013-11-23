@@ -1,7 +1,8 @@
 {
   "CodeKitInfo" : "This is a CodeKit project configuration file. It is designed to sync project settings across multiple machines. Modifying the contents of this file can be a poor life decision if you don't know what you're doing. This file is not useful unless accompanied by the project that created it in CodeKit. For more information, see: http:\/\/incident57.com\/codekit",
-  "creatorBuild" : "8376",
+  "creatorBuild" : "8403",
   "files" : {
+<<<<<<< HEAD
     "\/dist\/css\/bootstrap-theme.css" : {
       "ignoreWasSetByUser" : 0,
       "ignore" : 0,
@@ -1325,6 +1326,9 @@
       "outputAbbreviatedPath" : "\/js\/tests\/unit\/scrollspy-ck.js",
       "fileType" : 64
     }
+=======
+
+>>>>>>> 8d3917502aa603902d1ee1d41be92d74d3129e6e
   },
   "manualImportLinks" : [
 
@@ -1402,7 +1406,7 @@
       "trailing" : 1,
       "nonew" : 1,
       "es3" : 0,
-      "freeze" : true,
+      "freeze" : 1,
       "yui" : 0,
       "mootools" : 0,
       "proto" : 0,
@@ -1438,7 +1442,7 @@
       "unused" : 1,
       "debug" : 0,
       "bitwise" : 1,
-      "notypeof" : true,
+      "notypeof" : 1,
       "white" : 0,
       "browser" : 1,
       "worker" : 0,
@@ -1505,7 +1509,7 @@
   "projectAttributes" : {
     "bourbonEnabled" : 0,
     "displayValue" : "bootstrap",
-    "displayValueWasSetByUser" : 1,
+    "displayValueWasSetByUser" : 0,
     "compassEnabled" : 0
   }
 }
