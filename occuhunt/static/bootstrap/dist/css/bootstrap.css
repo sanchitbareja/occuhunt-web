@@ -2130,6 +2130,43 @@ fieldset[disabled] .btn-fav-dark.active {
   background-color: #ff486f;
   border-color: #ff486f;
 }
+.btn-login {
+  color: #ffffff;
+  background-color: #db5852;
+  border-color: #db5852;
+}
+.btn-login:hover,
+.btn-login:focus,
+.btn-login:active,
+.btn-login.active,
+.open .dropdown-toggle.btn-login {
+  color: #ffffff;
+  background-color: #d43730;
+  border-color: #c63029;
+}
+.btn-login:active,
+.btn-login.active,
+.open .dropdown-toggle.btn-login {
+  background-image: none;
+}
+.btn-login.disabled,
+.btn-login[disabled],
+fieldset[disabled] .btn-login,
+.btn-login.disabled:hover,
+.btn-login[disabled]:hover,
+fieldset[disabled] .btn-login:hover,
+.btn-login.disabled:focus,
+.btn-login[disabled]:focus,
+fieldset[disabled] .btn-login:focus,
+.btn-login.disabled:active,
+.btn-login[disabled]:active,
+fieldset[disabled] .btn-login:active,
+.btn-login.disabled.active,
+.btn-login[disabled].active,
+fieldset[disabled] .btn-login.active {
+  background-color: #db5852;
+  border-color: #db5852;
+}
 .btn-info {
   color: #ffffff;
   background-color: #5bc0de;

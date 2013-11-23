@@ -47,7 +47,7 @@
           </ul>
         </li>
         {% else %}
-        <li><a href="/login/linkedin/?next={{request.path}}" onclick="mixpanel.track('Logged In from top_bar'); return true;"><img src="{% static 'images/login-with-linkedin.png' %}" style="height:19px;"></a></li>
+        <li><div style="height:24px;margin-top:8px;"><a href="/login/linkedin/?next={{request.path}}" onclick="mixpanel.track('Logged in from top_bar'); return true;" class="btn btn-login" style="font-weight:500;">LOG IN / SIGN UP</a></div></li>
         {% endif %}
       </ul>
     </div><!--/.nav-collapse -->
