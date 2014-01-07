@@ -2,6 +2,7 @@ from django.conf.urls import patterns, include, url
 from companies.views import home, splash, companies, company, search
 from resumes.views import resume_feed, sign_s3_upload, submit_resume, individual_resume
 from jobs.views import favorites, apply_jobs, match_jobs
+from fairs.views import create_fair
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -48,6 +49,8 @@ urlpatterns = patterns('',
 
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
+
+    url(r'^fair/create-fair/$', create_fair, name="create_fair"),
 
     # v1 API
     url(r'^api/', include(v1_api.urls)),

@@ -126,20 +126,3 @@ input[type="radio"]:checked + label span {
     background-size:40px;
     
 }
-
-.input-text {
-	width:100%; 
-	border:none; 
-	border-bottom:1px dashed #acacac; 
-	display: block; 
-	height: 34px; 
-	padding: 6px 12px;
-	font-size: 14px;
-	line-height: 1.428571429;
-	color: #555555;
-	vertical-align: middle;
-	background-color: #ffffff;
-	border-radius: 5px;
-	font-family: 'Proxima Nova';
-	font-weight: 400;
-}

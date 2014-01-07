@@ -1,0 +1,131 @@
+.simplebox{
+  outline: none;
+  box-shadow:none !important;
+}
+
+.venue-center {
+  font-weight: 500;
+}
+
+.room-top {
+   font-weight: 400;
+}
+
+.room-custom {
+  font-weight: 400;
+  display: block;
+  margin-top: 26px;
+  margin-bottom: 10px;
+}
+
+body {
+  background-color: white;
+}
+
+.favorited-company {
+  background-image: url('/static/images/other/fold.png');
+  background-repeat: no-repeat;
+  background-size: 14px;
+}
+
+.fair-table {
+  max-height:80px;
+  max-width: 80px;
+  word-wrap: break-word;
+  overflow: hidden;
+  font-weight: 500; 
+  display: table-cell;
+  vertical-align: middle;
+  height: 80px;
+  width: 80px;
+  white-space: normal;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 0px;
+  text-align: center;
+  line-height: 18px;
+}
+
+.vcenter{
+}
+
+td#career_fair_map{
+  min-width: 60px;
+  min-height: 60px;
+  max-height: 80px;
+}
+
+.jumbotron {
+  padding-top: 12px;
+}
+
+#fair_map {
+  overflow: scroll;
+}
+
+.popover {
+  width: 300px;
+}
+
+.popover-content {
+  padding: 0px;
+}
+
+.popover-title {
+
+}
+
+.popover-company-info {
+  text-align: center;
+}
+
+.popover-company-info > img#background_banner {
+  width: 100%;
+  max-height: 200px;
+  -webkit-filter: blur(5px); 
+  -moz-filter: blur(5px); 
+  -o-filter: blur(5px); 
+  -ms-filter: blur(5px); 
+  filter: blur(5px);
+}
+
+.popover-company-info > img#foreground_banner {
+  position: absolute;
+  display: block;
+  max-width: 100px;
+  max-height: 100px;
+  top: 30%;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  clear: both;
+}
+
+.popover-company-info > p {
+  padding-top: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.popover-company-info > a {
+  padding-left: 40px;
+  padding-right: 40px;
+  margin-bottom: 20px;
+}
+
+.popover-title {
+  text-align: center;
+}
+
+.popover-title > h3 {
+  text-align: center;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  display: inline;
+}
+
+.popover-title > a {
+  float: right;
+  display: inline;
+}

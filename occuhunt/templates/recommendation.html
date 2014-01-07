@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load static from staticfiles %}
+{% load i18n %}
+{% load url from future %}
+
+{% block extra_style %}
+
+{% endblock %}
+
+
+{% block extra_script %}
+
+<script src="{% static 'ember/js/libs/handlebars-1.0.0.js' %}"></script>
+<script src="{% static 'ember/js/libs/ember-1.1.2.js' %}"></script>
+<!-- Date formatting library -->
+<script src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.1.0/moment.min.js"></script>
+<script src="{% static 'js/recommendation-app.js' %}"></script>
+
+{% endblock %}
+
+
+{% block content %}
+
+
+
+{% endblock %}

@@ -12,13 +12,8 @@ from datetime import datetime, timedelta, time
 from social_auth import __version__ as version
 from social_auth.utils import setting
 
-def home(request):
-    """Home view"""
-    return render_to_response('index.html', {'version': version},
+def create_fair(request):
+    """View to automatically create fairs"""
+    return render_to_response('create_fair_map.html', {'version': version},
                                   RequestContext(request))
 
-
-def companies(request):
-    """Companies view"""
-    return render_to_response('fairs.html', {'version': version},
-                                  RequestContext(request))
