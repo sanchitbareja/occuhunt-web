@@ -10,17 +10,162 @@
 
 {% block extra_script %}
 
-<script src="{% static 'ember/js/libs/handlebars-1.0.0.js' %}"></script>
-<script src="{% static 'ember/js/libs/ember-1.1.2.js' %}"></script>
-<!-- Date formatting library -->
-<script src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.1.0/moment.min.js"></script>
-<script src="{% static 'js/recommendation-app.js' %}"></script>
+<link href="{% static "occuhunt/css/recommendation.css" %}" rel="stylesheet">
 
 {% endblock %}
 
 
 {% block content %}
 
+<!-- This is where the ember app will reside -->
+<div id="main-body"></div>
 
+{% verbatim %}
+
+<script type="text/x-handlebars" data-template-name='application'>
+	<div class="row">
+	  	{{partial 'left-sidebar'}}
+	  	{{partial 'main-content'}}
+	  	{{partial 'right-sidebar'}}
+	</div>
+	{{outlet}}
+</script>
+
+<script type="text/x-handlebars" data-template-name='left-sidebar'>
+	<div class="col-lg-2">
+  		<div class="list-group">
+		  	<div class="list-group-item">
+		    	{% endverbatim %}<img src="{% static 'images/Sanchit-rec-example.png' %}" style="width:100%;">{% verbatim %}
+			</div>
+			<a href="#" class="list-group-item btn btn-default" style="background-color:#005f69;color:white;">
+				Get more recs
+			</a>
+		</div>
+		<div class="text-right">
+			<a href="#" class="btn btn-link active-right">My Recs</a>
+			<a href="#" class="btn btn-link">Send Recs</a>
+		</div>
+  	</div>
+</script>
+
+
+
+<script type="text/x-handlebars" data-template-name='main-content'>
+	<div class="col-lg-7">
+  		<div class="category_box" id="about_me">
+		  	<h4 id="category_header">About Me</h4>
+		  	<h5 id="category_subheader">These are recommendations people have written for you</h5>
+		  	<hr>
+		  	<div id="category_body">
+				<h4>What you are good at?</h4>
+				<p>Math, Physics, Socializing, Drinking Wine, Solving bugs</p>
+				<h4>What you can improve on?</h4>
+				<p>Team work, problem solving, creativity</p>
+			</div>
+		</div>
+		<br />
+  		<div class="category_box" id="about_me">
+		  	<h4 id="category_header">My Recs</h4>
+		  	<h5 id="category_subheader">These are private(How?) and confidential recommendations you have written for others</h5>
+		  	<hr>
+			<div id="category_body">
+				<div class="list-group">
+				  	<div class="list-group-item">
+				    	<img src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-frc3/c0.44.180.180/s160x160/24500_339205542615_5021059_a.jpg?lvh=1" style="height:40px;">
+				    	<span>Dalai Lama</span>
+					</div>
+					<div class="list-group-item">
+				    	<img src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-prn1/c0.0.180.180/s160x160/1504083_637521086310601_95883197_a.jpg" style="height:40px;">
+				    	<span>Lee Hsien Loong</span>
+					</div>
+					<div class="list-group-item background-active">
+				    	<img src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-frc3/c0.0.151.151/181592_10150105700371961_7986881_a.jpg" style="height:40px;">
+				    	<span>Bill Gates</span>
+				    	<br />
+				    	<br />
+				    	<div class="row">
+				    		<div class="col-lg-6">
+				    			<p><strong>Relationship: </strong>Partner in Crime</p>
+				    		</div>
+				    		<div class="col-lg-6">
+				    			<p><strong>At: </strong>World AIDS Organization</p>
+				    		</div>
+				    	</div>
+				    	<div class="row">
+				    		<div class="col-lg-6">
+				    			<p><strong>What is Bill good at?</strong></p>
+				    		</div>
+				    		<div class="col-lg-6">
+				    			<strong>What could Bill improve on?</strong>
+				    		</div>
+				    	</div>
+				    	<div class="row">
+				    		<div class="col-lg-6">
+				    			<p>Maths, Computer Architechture and programming, Problem-Solving skills</p>
+				    		</div>
+				    		<div class="col-lg-6">
+				    			<p>Design skills</p>
+				    		</div>
+				    	</div>
+				    	<div class="row">
+				    		<div class="col-lg-12">
+				    			<p><strong>Describe Bill</strong></p>
+				    		</div>
+				    	</div>
+				    	<div class="row">
+				    		<div class="col-lg-12">
+				    			<p>Bill is an extremely dynamic person. His experience at Microsoft has really helped him hone his critical and analytical thinking skills which allow him to come up with highly creative and practical solutions. It is always a joy to have a conversation with him. He challenges me to think more broadly and on a larger scale that I would noramlly think of. 
+
+				    				Bill is also highly connected in the business circles. His influences allows him to speak with anyone at anytime without ever facing rejection. It has been extremely efficient in having him as a team member.</p>
+				    		</div>
+				    	</div>
+					</div>
+					<div class="list-group-item">
+				    	<img src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-frc3/t1/c0.34.180.180/s160x160/315409_10151057645386282_863370886_a.jpg" style="height:40px;">
+				    	<span>Steve Wozniak</span>
+					</div>
+				</div>
+			</div>
+		</div>
+  	</div>
+</script>
+
+
+<script type="text/x-handlebars" data-template-name='right-sidebar'>
+	<div class="col-lg-3">
+		<div class="list-group">
+			<div class="list-group-item">
+		    	<h4 id="category_header">Recommend your friends</h4>
+			</div>
+			<div class="list-group-item">
+		    	<img src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-frc3/s160x160/527048_10150659821294843_1245284552_a.jpg" style="height:40px;">
+		    	<span>Albert Einstein</span>
+		    	<a href="#" class="btn-sm btn btn-success pull-right">Rec</a>
+			</div>
+			<div class="list-group-item">
+		    	<img src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-prn2/s160x160/1458443_1376737985908465_1761671809_a.jpg" style="height:40px;">
+		    	<span>Henry Ford</span>
+		    	<a href="#" class="btn-sm btn btn-success pull-right">Rec</a>
+			</div>
+			<div class="list-group-item">
+		    	<img src="https://fbexternal-a.akamaihd.net/safe_image.php?d=AQA8uPjvNCDQIab8&w=720&h=901&url=http%3A%2F%2Fupload.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2F0%2F09%2FAndrew_Carnegie%252C_three-quarter_length_portrait%252C_seated%252C_facing_slightly_left%252C_1913-crop.jpg%2F720px-Andrew_Carnegie%252C_three-quarter_length_portrait%252C_seated%252C_facing_slightly_left%252C_1913-crop.jpg" style="height:40px;">
+		    	<span>Andrew Carnegie</span>
+		    	<a href="#" class="btn-sm btn btn-success pull-right">Rec</a>
+	    	</div>
+		</div>
+	</div>
+</script>
+
+{% endverbatim %}
+
+{% endblock %}
+
+{% block extra_script_end %}
+
+<script src="{% static 'ember/js/libs/handlebars-1.0.0.js' %}"></script>
+<script src="{% static 'ember/js/libs/ember-1.1.2.js' %}"></script>
+<!-- Date formatting library -->
+<script src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.1.0/moment.min.js"></script>
+<script src="{% static 'occuhunt/js/recommendations-app.js' %}"></script>
 
 {% endblock %}

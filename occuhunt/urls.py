@@ -2,6 +2,7 @@ from django.conf.urls import patterns, include, url
 from companies.views import home, splash, companies, company, search
 from resumes.views import resume_feed, sign_s3_upload, submit_resume, individual_resume
 from jobs.views import favorites, apply_jobs, match_jobs
+from recommendations.views import recommend_main
 from fairs.views import create_fair
 from django.conf import settings
 from django.conf.urls.static import static
@@ -34,6 +35,7 @@ urlpatterns = patterns('',
     url(r'^plan/resume-feed/new-resume/submit_resume/$', submit_resume, name="submit_resume"),
     # url(r'^plan/organize/$', organize_companies, name="organize"),
     url(r'^plan/companies/$', favorites, name='favorites'),
+    url(r'^recommend/$', recommend_main, name='recommend'),
     url(r'^match/$', match_jobs, name='match'),
     url(r'^apply/$', apply_jobs, name='apply'),
     url(r'^feedback/$',feedback_form),
