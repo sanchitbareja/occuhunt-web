@@ -1,7 +1,16 @@
 
-.active-right {
+.active{
 	border-right: 2px solid #005f69;
 	font-weight: bold;
+	-webkit-box-shadow: inset 0 0px 0px rgba(0, 0, 0, 0.125) !important;
+	box-shadow: inset 0 0px 0px rgba(0, 0, 0, 0.125) !important;
+}
+
+.active:hover {
+	border-right: 2px solid #005f69;
+	font-weight: bold;
+	-webkit-box-shadow: inset 0 0px 0px rgba(0, 0, 0, 0.125) !important;
+	box-shadow: inset 0 0px 0px rgba(0, 0, 0, 0.125) !important;
 }
 
 .background-active {
