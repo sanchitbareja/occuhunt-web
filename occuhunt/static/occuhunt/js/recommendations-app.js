@@ -105,6 +105,7 @@ App.Router.reopen({
 App.Router.map(function() {
 	this.route("index", { path: "/" });
   	this.route("sendrecs");
+  	this.route("requestrecs");
 });
 
 // Routes

@@ -47,3 +47,16 @@
 #category_body h4{
 	font-weight: bold;
 }
+
+.input-text-bordered {
+	border: 2px solid #70aab0;
+	padding: 5px;
+	line-height: 1.5em;
+	width: 100%;
+}
+
+.input-textarea-bordered {
+	border: 2px solid #70aab0;
+	padding: 5px;
+	width: 100%;
+}

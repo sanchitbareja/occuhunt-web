@@ -44,6 +44,23 @@
 	{{outlet}}
 </script>
 
+<script type="text/x-handlebars" data-template-name='requestrecs'>
+	<div class="row">
+	  	{{partial 'left-sidebar'}}
+	  	{{partial 'main-content-request-recs'}}
+	  	{{partial 'right-sidebar-rec-form-tip'}}
+	</div>
+	{{outlet}}
+</script>
+
+<script type="text/x-handlebars" data-template-name='recform'>
+	<div class="row">
+	  	{{partial 'left-sidebar'}}
+	  	{{partial 'main-content-rec-form'}}
+	  	{{partial 'right-sidebar-rec-form-tip'}}
+	</div>
+	{{outlet}}
+</script>
 
 <script type="text/x-handlebars" data-template-name='left-sidebar'>
 	<div class="col-lg-2">
@@ -51,9 +68,7 @@
 		  	<div class="list-group-item">
 		    	{% endverbatim %}<img src="{% static 'images/Sanchit-rec-example.png' %}" style="width:100%;">{% verbatim %}
 			</div>
-			<a href="#" class="list-group-item btn btn-default" style="background-color:#005f69;color:white;">
-				Get more recs
-			</a>
+			{{#link-to 'requestrecs' class="list-group-item btn btn-default" style="background-color:#005f69;color:white;"}}Get more recs{{/link-to}}
 		</div>
 		<div class="text-right">
 			{{#link-to 'index' class="btn btn-link"}}My Recs{{/link-to}}
@@ -178,6 +193,49 @@
 	</div>
 </script>
 
+<script type="text/x-handlebars" data-template-name='main-content-request-recs'>
+	<div class="col-lg-7">
+		<div class="category_box" id="about_me">
+		  	<h4 id="category_header">Request Recommendation</h4>
+		  	<h5 id="category_subheader">Your peers value your feedback. Help them improve!</h5>
+		  	<hr>
+		  	<div id="category_body">
+		  		<div class="row">
+					<div class="col-lg-9">
+						<div class="row">
+							<div class="col-lg-12">
+								<input class="input-text-bordered" type="text" placeholder="To" value="Andy">
+							</div>
+						</div>
+						<br />
+						<div class="row">
+							<div class="col-lg-6">
+								<input type="text" class="input-text-bordered" placeholder="Relationship" value="Co-worker">
+							</div>
+							<div class="col-lg-6">
+								<input type="text" class="input-text-bordered" placeholder="At" value="Microsoft">
+							</div>
+						</div>						
+					</div>
+					<div class="col-lg-3">
+						<img src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-prn1/c0.0.180.180/s160x160/1504083_637521086310601_95883197_a.jpg" style="height:90px;"/>
+					</div>
+				</div>
+				<br />
+				<div class="row">
+					<div class="col-lg-12">
+						<textarea class="input-textarea-bordered" rows="3">Hey Andy, I havve a deadline on the 14th of Dec for my speech class. It would be wonderful if you could give me a recommendation.</textarea>
+						<br />
+						<span class="pull-right">140 words left</span>
+					</div>
+				</div>
+				<br />
+			</div>
+		</div>
+		<br />
+	</div>
+</script>
+
 <script type="text/x-handlebars" data-template-name='right-sidebar'>
 	<div class="col-lg-3">
 		<div class="list-group">
@@ -205,6 +263,21 @@
 				<p>Your feedback is valuable</p>
 				<p>Your feedback helps your friends (friends, peers or coworkers? be consistent) grow</p>
 				<p>Occhunt is the trustworthy site</p>
+			</div>
+		</div>
+	</div>
+</script>
+
+<script type="text/x-handlebars" data-template-name='right-sidebar-rec-form-tip'>
+	<div class="col-lg-3">
+		<div class="list-group">
+			<div class="list-group-item">
+		    	<h4 id="category_header">Tips</h4>
+			</div>
+			<div class="list-group-item" style="color:grey;">
+				<p>Be honest and straightforward</p>
+				<p>Your feedback will be confidential and anonymized</p>
+				<p>Your recommendation will propel your friend further in life</p>
 			</div>
 		</div>
 	</div>
