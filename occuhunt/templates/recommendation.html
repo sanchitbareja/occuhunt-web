@@ -68,7 +68,7 @@
 		  	<div class="list-group-item">
 		    	{% endverbatim %}<img src="{% static 'images/Sanchit-rec-example.png' %}" style="width:100%;">{% verbatim %}
 			</div>
-			{{#link-to 'requestrecs' class="list-group-item btn btn-default" style="background-color:#005f69;color:white;"}}Get more recs{{/link-to}}
+			{{#link-to 'requestrecs' class="list-group-item btn btn-default" id="get_more_recs"}}Get more recs{{/link-to}}
 		</div>
 		<div class="text-right">
 			{{#link-to 'index' class="btn btn-link"}}My Recs{{/link-to}}
@@ -174,21 +174,29 @@
 		</div>
 		<br />
 		<div class="category_box" id="about_me">
-		  	<h4 id="category_header">Recommend your friends</h4>
-		  	<h5 id="category_subheader">Give honest feedback to your peers. Help them grow!</h5>
-		  	<hr>
+		  	<h4 id="category_header">Recommend your coworkers</h4>
+		  	<h5 id="category_subheader">Recommend your project mates, coworkers, associates and people you have worked with!</h5>
+		  	<input type="text" class="input-text-light-bordered"/>
+		  	<br />
+		  	<br />
 		  	<div id="category_body">
-		  		{{#each recommendation_request for recommendation_requests}}
-		  			<a class="list-group-item">
-		  				<img {{bindAttr src="recommendation_request.from.img"}} style="height:40px;">
-				    	<span>{{recommendation_request.from.name}}</span>
-				    	<br />
-				    	<br />
-				    	<p>{{recommendation_request.message}}</p>
-				    	<p><strong>Deadline: </strong>{{format-date recommendation_request.deadline}}</p>
-		  			</a>
+		  		{{#each person_to_recommend for people_to_recommend}}
+			      	{{#link-to 'recform'}}<img {{bindAttr src="person_to_recommend.img"}} class="friend_thumbnail" style="height:100px;">{{/link-to}}
+	  			{{/each}}
+	  			{{#each person_to_recommend for people_to_recommend}}
+			      	{{#link-to 'recform'}}<img {{bindAttr src="person_to_recommend.img"}} class="friend_thumbnail" style="height:100px;">{{/link-to}}
+	  			{{/each}}
+	  			{{#each person_to_recommend for people_to_recommend}}
+			      	{{#link-to 'recform'}}<img {{bindAttr src="person_to_recommend.img"}} class="friend_thumbnail" style="height:100px;">{{/link-to}}
+	  			{{/each}}
+	  			{{#each person_to_recommend for people_to_recommend}}
+			      	{{#link-to 'recform'}}<img {{bindAttr src="person_to_recommend.img"}} class="friend_thumbnail" style="height:100px;">{{/link-to}}
+	  			{{/each}}
+	  			{{#each person_to_recommend for people_to_recommend}}
+			      	{{#link-to 'recform'}}<img {{bindAttr src="person_to_recommend.img"}} class="friend_thumbnail" style="height:100px;">{{/link-to}}
 	  			{{/each}}
 			</div>
+			<br />
 		</div>
 	</div>
 </script>
@@ -230,6 +238,78 @@
 					</div>
 				</div>
 				<br />
+				<div class="row">
+					<div class="col-lg-12">
+						<button class="btn btn-default" style="width:100%;">Request</button>
+					</div>
+				</div>
+				<br />
+			</div>
+		</div>
+		<br />
+	</div>
+</script>
+
+<script type="text/x-handlebars" data-template-name='main-content-rec-form'>
+	<div class="col-lg-7">
+		<div class="category_box" id="about_me">
+		  	<h4 id="category_header">Give a Recommendation (Private and Confidential)</h4>
+		  	<h5 id="category_subheader">Your peers value your feedback. Help them improve!</h5>
+		  	<hr>
+		  	<div id="category_body">
+		  		<div class="row">
+					<div class="col-lg-9">
+						<div class="row">
+							<div class="col-lg-6">
+								<span><strong>For: </strong>Bernard Ricardo</span>
+							</div>
+							<div class="col-lg-6">
+								<label>
+							      	<input type="checkbox"> Allow recruiters to contact me
+							    </label>
+							</div>
+						</div>
+						<br />
+						<div class="row">
+							<div class="col-lg-6">
+								<input type="text" class="input-text-bordered" placeholder="Relationship" value="Physics Olympiad Trainer">
+							</div>
+							<div class="col-lg-6">
+								<input type="text" class="input-text-bordered" placeholder="At" value="NUS High School of Maths and Science">
+							</div>
+						</div>						
+					</div>
+					<div class="col-lg-3">
+						<img src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-prn1/c120.0.720.720/s160x160/1486742_10202761723350024_2107171884_n.jpg" style="height:90px;"/>
+					</div>
+				</div>
+				<hr />
+				<div class="row">
+					<div class="col-lg-12">
+						<input type="text" class="input-text-bordered" placeholder="What is Bernard Ricardo good at?" value="Humor, Physics educations">
+					</div>
+				</div>
+				<br />
+				<div class="row">
+					<div class="col-lg-12">
+						<input type="text" class="input-text-bordered" placeholder="How could Bernard improve?" value="">
+					</div>
+				</div>
+				<br />
+				<div class="row">
+					<div class="col-lg-12">
+						<textarea class="input-textarea-bordered" rows="3">Mr Bernard is a wonderful physics trainer. I'd say he's the Feynman of high school physics education. His lessons are fun and enjoyable. Funny thing is, he's a church pastor as well. It's interesting to see how he doesn't swear in class at all but yet alludes to curses at times. He's the one who incited a passion for physics in me! </textarea>
+						<br />
+						<span class="pull-right">140 words left</span>
+					</div>
+				</div>
+				<br />
+				<div class="row">
+					<div class="col-lg-12">
+						<button class="btn btn-default" style="width:100%;">Recommend</button>
+					</div>
+				</div>
+				<br />
 			</div>
 		</div>
 		<br />
@@ -262,7 +342,7 @@
 			<div class="list-group-item" style="color:grey;">
 				<p>Your feedback is valuable</p>
 				<p>Your feedback helps your friends (friends, peers or coworkers? be consistent) grow</p>
-				<p>Occhunt is the trustworthy site</p>
+				<p>Occuhunt is the trustworthy site</p>
 			</div>
 		</div>
 	</div>
@@ -278,6 +358,7 @@
 				<p>Be honest and straightforward</p>
 				<p>Your feedback will be confidential and anonymized</p>
 				<p>Your recommendation will propel your friend further in life</p>
+				<p>Think about what makes the person unique when giving feedback. E.g. Sense of humor, charisma, sociability and etc</p>
 			</div>
 		</div>
 	</div>

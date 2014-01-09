@@ -48,6 +48,21 @@
 	font-weight: bold;
 }
 
+#get_more_recs {
+	background-color:#005f69;
+	color:white;
+}
+
+#get_more_recs:hover {
+	background-color:white;
+	color:#005f69;
+}
+
+#get_more_recs.active {
+	background-color:white;
+	color:#005f69;
+}
+
 .input-text-bordered {
 	border: 2px solid #70aab0;
 	padding: 5px;
@@ -55,8 +70,29 @@
 	width: 100%;
 }
 
+.input-text-light-bordered {
+	border: 1px solid #eee;
+	padding: 5px;
+	line-height: 1.5em;
+	width: 100%;
+	padding-left:20px;
+	background-image:url('http://i47.tinypic.com/r02vbq.png');
+	background-repeat:no-repeat;
+	background-position:left center;outline:0;
+}
+
 .input-textarea-bordered {
 	border: 2px solid #70aab0;
 	padding: 5px;
 	width: 100%;
+}
+
+.friend_thumbnail {
+	padding: 3px;
+	border: 1px solid #eee;
+}
+
+.friend_thumbnail:hover {
+	padding: 3px;
+	border: 1px solid #70aab0;
 }

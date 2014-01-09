@@ -106,6 +106,7 @@ App.Router.map(function() {
 	this.route("index", { path: "/" });
   	this.route("sendrecs");
   	this.route("requestrecs");
+  	this.route("recform");
 });
 
 // Routes
