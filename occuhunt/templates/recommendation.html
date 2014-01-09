@@ -106,48 +106,52 @@
 	  	<hr>
 		<div id="category_body">
 			<div class="list-group">
+				{{#view App.OtherrecsView}}
 				{{#each other_rec for other_recs}}
 					<a class="list-group-item background-active">
 				    	<img {{bindAttr src="other_rec.to.img"}} style="height:40px;">
 				    	<span>{{other_rec.to.name}}</span>
 				    	<br />
-				    	<br />
-				    	<div class="row">
-				    		<div class="col-lg-6">
-				    			<p><strong>Relationship: </strong>{{other_rec.relationship}}</p>
-				    		</div>
-				    		<div class="col-lg-6">
-				    			<p><strong>At: </strong>{{other_rec.at}}</p>
-				    		</div>
-				    	</div>
-				    	<div class="row">
-				    		<div class="col-lg-6">
-				    			<p><strong>What is {{other_rec.to.name}} good at?</strong></p>
-				    		</div>
-				    		<div class="col-lg-6">
-				    			<strong>What could {{other_rec.to.name}} improve on?</strong>
-				    		</div>
-				    	</div>
-				    	<div class="row">
-				    		<div class="col-lg-6">
-				    			<p>{{other_rec.answer1}}</p>
-				    		</div>
-				    		<div class="col-lg-6">
-				    			<p>{{other_rec.answer2}}</p>
-				    		</div>
-				    	</div>
-				    	<div class="row">
-				    		<div class="col-lg-12">
-				    			<p><strong>Describe {{other_rec.to.name}}</strong></p>
-				    		</div>
-				    	</div>
-				    	<div class="row">
-				    		<div class="col-lg-12">
-				    			<p>{{other_rec.answer3}}</p>
-				    		</div>
-				    	</div>
+				    	<div id="category_details" style="display:none;">
+				    		<br />
+					    	<div class="row">
+					    		<div class="col-lg-6">
+					    			<p><strong>Relationship: </strong>{{other_rec.relationship}}</p>
+					    		</div>
+					    		<div class="col-lg-6">
+					    			<p><strong>At: </strong>{{other_rec.at}}</p>
+					    		</div>
+					    	</div>
+					    	<div class="row">
+					    		<div class="col-lg-6">
+					    			<p><strong>What is {{other_rec.to.name}} good at?</strong></p>
+					    		</div>
+					    		<div class="col-lg-6">
+					    			<strong>What could {{other_rec.to.name}} improve on?</strong>
+					    		</div>
+					    	</div>
+					    	<div class="row">
+					    		<div class="col-lg-6">
+					    			<p>{{other_rec.answer1}}</p>
+					    		</div>
+					    		<div class="col-lg-6">
+					    			<p>{{other_rec.answer2}}</p>
+					    		</div>
+					    	</div>
+					    	<div class="row">
+					    		<div class="col-lg-12">
+					    			<p><strong>Describe {{other_rec.to.name}}</strong></p>
+					    		</div>
+					    	</div>
+					    	<div class="row">
+					    		<div class="col-lg-12">
+					    			<p>{{other_rec.answer3}}</p>
+					    		</div>
+					    	</div>
+					    </div>
 					</a>
 				{{/each}}
+				{{/view}}
 			</div>
 		</div>
 	</div>

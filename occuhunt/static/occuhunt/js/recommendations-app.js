@@ -111,6 +111,15 @@ App.Router.map(function() {
 
 // Routes
 
+// Views
+
+App.OtherrecsView = Ember.View.extend({
+	templateName: 'other-recs',
+	click: function(event){
+		$($(event.target).find("#category_details")[0]).slideToggle();
+	},
+});
+
 // Controllers
 App.ApplicationController = Ember.Controller.extend({
 	
@@ -119,7 +128,7 @@ App.ApplicationController = Ember.Controller.extend({
 App.IndexController = Ember.Controller.extend({
 	people_to_recommend: people_to_recommend,
 	personal_recs: personal_recs,
-	other_recs: other_recs
+	other_recs: other_recs,
 });
 
 App.SendrecsController = Ember.Controller.extend({
