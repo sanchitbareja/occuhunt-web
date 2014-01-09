@@ -165,14 +165,14 @@
 		  	<hr>
 		  	<div id="category_body">
 		  		{{#each recommendation_request for recommendation_requests}}
-		  			<a class="list-group-item">
+		  			{{#link-to 'recform' class="list-group-item"}}
 		  				<img {{bindAttr src="recommendation_request.from.img"}} style="height:40px;">
 				    	<span>{{recommendation_request.from.name}}</span>
 				    	<br />
 				    	<br />
 				    	<p>{{recommendation_request.message}}</p>
 				    	<p><strong>Deadline: </strong>{{format-date recommendation_request.deadline}}</p>
-		  			</a>
+				    {{/link-to}}
 	  			{{/each}}
 			</div>
 		</div>
