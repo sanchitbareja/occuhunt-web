@@ -143,7 +143,7 @@ INSTALLED_APPS = (
     'fairs',
     'jobs',
     'resumes',
-    'recommendations'
+    'recommendations',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -207,7 +207,7 @@ SOCIAL_AUTH_RAISE_EXCEPTIONS = True
 # LinkedIn specific config
 LINKEDIN_CONSUMER_KEY = 'xu79xm7p77of'
 LINKEDIN_CONSUMER_SECRET = 'UnJhJkwNuUru2m4Y'
-LINKEDIN_SCOPE = ['r_basicprofile', 'r_emailaddress', 'r_fullprofile','r_contactinfo','r_network']
+LINKEDIN_SCOPE = ['r_basicprofile', 'r_emailaddress', 'r_fullprofile','r_contactinfo','r_network','w_messages']
 # LINKEDIN_FORCE_PROFILE_LANGUAGE = True
 # LINKEDIN_FORCE_PROFILE_LANGUAGE = 'en-US'
 

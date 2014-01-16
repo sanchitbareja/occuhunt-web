@@ -44,6 +44,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(max_length=200)
     last_name = models.CharField(max_length=200)
     thumbnail_profile_pic = models.TextField(null=True, blank=True)
+    linkedin_uid = models.CharField(max_length=256, null=True, blank=True)
     profile_pic = models.TextField(null=True, blank=True)
     resume_points = models.IntegerField(default='0')
 

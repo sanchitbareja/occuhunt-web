@@ -110,19 +110,35 @@ App.Router.map(function() {
 });
 
 // Routes
+App.RequestrecsRoute = Ember.Route.extend({
+	setupController: function(controller){
+		IN.API.Connections("me").result(function(result){
+			controller.set('my_connections',result.values);
+		});
+	}
+});
 
 // Views
 
 App.OtherrecsView = Ember.View.extend({
 	templateName: 'other-recs',
 	click: function(event){
+		// toggle the recommendations details
 		$($(event.target).find("#category_details")[0]).slideToggle();
 	},
 });
 
 // Controllers
-App.ApplicationController = Ember.Controller.extend({
-	
+App.ApplicationController = Ember.ObjectController.extend({
+	onLinkedInAuth: function(){
+		console.log("onLinkedInAuth");
+			IN.API.Profile("me").result(function(result) {
+			   console.log(result);
+		});
+		IN.API.Connections("me").result(function(result) {
+			console.log(result);
+		});
+	}
 });
 
 App.IndexController = Ember.Controller.extend({
@@ -136,7 +152,59 @@ App.SendrecsController = Ember.Controller.extend({
 	recommendation_requests: recommendation_requests,
 });
 
+App.RequestrecsController = Ember.Controller.extend({
+	my_connections: null,
+	connection:null,
+	connection_thumbnail: "http://emscu.ca/wp-content/uploads/2013/09/Unknown-person.gif",
+	connection_headline:"",
+	connection_relationship:'',
+	connection_project:'',
+	request_message: '',
+	actions: {
+		selected_connection: function(connection){
+			console.log(connection);
+			this.set('connection', connection);
+			if(connection.pictureUrl){
+				this.set('connection_thumbnail', connection.pictureUrl);
+			} else {
+				this.set('connection_thumbnail', "https://www.clearsounds.com/sites/default/files/images/color-linkedin-128.png");
+			}
+
+			if(connection.headline){
+				this.set('connection_headline', connection.headline);
+			} else {
+				this.set('connection_headline', "");
+			}			
+		},
+		send_request: function(){
+			var BODY = {
+		       	"recipients": {
+		          	"values": [{
+		            	"person": {
+		               	"_path": "/people/~", // need to replace with actual person's id.
+		            	}
+		          	}]
+		        },
+		      	"subject": "Hi "+this.get('connection.firstName')+", I wanted your input on my work for "+this.get("connection_project")+".",
+			    "body": this.get("request_message")+"View the request on http://occuhunt.com/recommend/#/sendrecs",
+			}
+
+		    IN.API.Raw("/people/~/mailbox")
+		          .method("POST")
+		          .body(JSON.stringify(BODY)) 
+		          .result(alert("successfully sent recommendation request"))
+		          .error(function error(e) { alert ("No dice") });
+		},
+	},
+})
+
+
+
 // Helpers
 Ember.Handlebars.helper('format-date', function(date) {
   return moment(date).fromNow();
+});
+
+Ember.Handlebars.helper('words-left', function(paragraph){
+	return 141 - paragraph.split(' ').length;
 });

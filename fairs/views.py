@@ -16,4 +16,3 @@ def create_fair(request):
     """View to automatically create fairs"""
     return render_to_response('create_fair_map.html', {'version': version},
                                   RequestContext(request))
-

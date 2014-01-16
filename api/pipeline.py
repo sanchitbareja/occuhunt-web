@@ -1,8 +1,13 @@
 from django.contrib.auth.models import Group
+from users.models import User
+from occuhunt.settings import LINKEDIN_CONSUMER_KEY, LINKEDIN_CONSUMER_SECRET
+import oauth2 as oauth
+import time, json
 
 def create_password(request, backend, *args, **kwargs):
     user = kwargs['user']
     uid = kwargs['uid']
+    user.linkedin_uid = uid
     user.set_password(uid)
     user.save()
 
@@ -24,3 +29,17 @@ def associate_group(request, backend, *args, **kwargs):
                     user.save()
     except Exception as e:
         print e
+
+def get_connections(request, backend, *args, **kwargs):
+    url = "http://api.linkedin.com/v1/people/~/connections?format=json"
+    consumer = oauth.Consumer(key=LINKEDIN_CONSUMER_KEY, secret=LINKEDIN_CONSUMER_SECRET)
+     
+    access_token = kwargs['response']['access_token']
+    oauth_token_secret = access_token[19:access_token.find("&oauth_token=")]
+    oauth_token_key = access_token[access_token.find("&oauth_token=")+13:]
+    token = oauth.Token(key=oauth_token_key, secret=oauth_token_secret)
+
+    client = oauth.Client(consumer, token)
+
+    resp, content = client.request(url)
+

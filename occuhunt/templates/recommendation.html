@@ -4,13 +4,11 @@
 {% load url from future %}
 
 {% block extra_style %}
-
+<link href="{% static "occuhunt/css/recommendation.css" %}" rel="stylesheet">
 {% endblock %}
 
 
 {% block extra_script %}
-
-<link href="{% static "occuhunt/css/recommendation.css" %}" rel="stylesheet">
 
 {% endblock %}
 
@@ -102,7 +100,7 @@
 <script type="text/x-handlebars" data-template-name='other-recs'>
 	<div class="category_box" id="about_me">
 	  	<h4 id="category_header">My Recs</h4>
-	  	<h5 id="category_subheader">These are private(How?) and confidential recommendations you have written for others</h5>
+	  	<h5 id="category_subheader">These are private(How?) and confidential recommendations you have written for others. Be open-minded about the feedback but know that everyone might not know you equally well.</h5>
 	  	<hr>
 		<div id="category_body">
 			<div class="list-group">
@@ -174,6 +172,7 @@
 				    	<p><strong>Deadline: </strong>{{format-date recommendation_request.deadline}}</p>
 				    {{/link-to}}
 	  			{{/each}}
+	  			<br />
 			</div>
 		</div>
 		<br />
@@ -209,48 +208,84 @@
 	<div class="col-lg-7">
 		<div class="category_box" id="about_me">
 		  	<h4 id="category_header">Request Recommendation</h4>
-		  	<h5 id="category_subheader">Your peers value your feedback. Help them improve!</h5>
+		  	<h5 id="category_subheader">Get a private recommendation from your peers!</h5>
 		  	<hr>
 		  	<div id="category_body">
 		  		<div class="row">
 					<div class="col-lg-9">
 						<div class="row">
 							<div class="col-lg-12">
-								<input class="input-text-bordered" type="text" placeholder="To" value="Andy">
+								<div class="list-group input-list-bordered">
+									{{#each connection for my_connections}}
+										<a class="list-group-item" {{action 'selected_connection' connection}}>{{connection.firstName}} {{connection.lastName}}</a>
+									{{/each}}
+								</div>
 							</div>
 						</div>
-						<br />
 						<div class="row">
 							<div class="col-lg-6">
-								<input type="text" class="input-text-bordered" placeholder="Relationship" value="Co-worker">
+								{{input type="text" class="input-text-bordered" placeholder="Relationship (e.g. Co-worker, Senior, Project Mate, Professor)" value=connection_relationship}}<br />
+								<em class="text-muted">This is for your future reference</em>
 							</div>
 							<div class="col-lg-6">
-								<input type="text" class="input-text-bordered" placeholder="At" value="Microsoft">
+								{{input type="text" class="input-text-bordered" placeholder="Project (XYZ Project at ABC Company)" value=connection_project}}
 							</div>
 						</div>						
 					</div>
 					<div class="col-lg-3">
-						<img src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-prn1/c0.0.180.180/s160x160/1504083_637521086310601_95883197_a.jpg" style="height:90px;"/>
-					</div>
-				</div>
-				<br />
-				<div class="row">
-					<div class="col-lg-12">
-						<textarea class="input-textarea-bordered" rows="3">Hey Andy, I havve a deadline on the 14th of Dec for my speech class. It would be wonderful if you could give me a recommendation.</textarea>
+						<img {{bindAttr src=connection_thumbnail}} style="height:90px;"/>
 						<br />
-						<span class="pull-right">140 words left</span>
+						<p>{{connection.firstName}} {{connection.lastName}}, {{connection.headline}}</p>
 					</div>
 				</div>
 				<br />
 				<div class="row">
 					<div class="col-lg-12">
-						<button class="btn btn-default" style="width:100%;">Request</button>
+						{{textarea value=request_message class="input-textarea-bordered" row="3" placeholder="Hey Andy, I have a deadline on the 14th of Dec for my speech class. It would be wonderful if you could give me a recommendation."}}
+						<br />
+						<em class="pull-right text-muted">{{words-left request_message}} words left</em>
+					</div>
+				</div>
+				<br />
+				<div class="row">
+					<div class="col-lg-12">
+						<button class="btn btn-default" style="width:100%;" {{action 'send_request'}}>Request</button>
 					</div>
 				</div>
 				<br />
 			</div>
 		</div>
 		<br />
+		<div class="category_box" id="about_me">
+		  	<h4 id="category_header">Preview</h4>
+		  	<h5 id="category_subheader">This will be the message your peer receives.</h5>
+		  	<hr>
+			<div id="category_body">
+				<div class="row">
+					<div class="col-lg-9">
+						<div class="row">
+							<div class="col-lg-12">
+								<strong>Subject:</strong>
+								Hi {{connection.firstName}}, I wanted your input on my work for {{connection_project}}!
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-12">
+								<strong>Message:</strong><br />
+								{{request_message}}
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3">
+						<img {{bindAttr src=connection_thumbnail}} style="height:90px;"/>
+						<br />
+						<p>{{connection.firstName}} {{connection.lastName}}, {{connection.headline}}</p>
+					</div>
+				</div>
+
+				<br />
+			</div>
+		</div>
 	</div>
 </script>
 
@@ -374,10 +409,27 @@
 
 {% block extra_script_end %}
 
+<script type="text/javascript">
+	$.getScript("http://platform.linkedin.com/in.js?async=true", function(success, response){
+		console.log("get api");
+		IN.init({ 
+			api_key:'xu79xm7p77of', 
+			authorize:true, 
+			onLoad: 'loadRecommendationsApp'
+		});
+	});
+
+	function loadRecommendationsApp(){
+		$.getScript("{% static 'occuhunt/js/recommendations-app.js' %}", function(success, response){
+			console.log("launch app");
+		});
+	}
+</script>
+
 <script src="{% static 'ember/js/libs/handlebars-1.0.0.js' %}"></script>
 <script src="{% static 'ember/js/libs/ember-1.1.2.js' %}"></script>
+<script src="http://builds.emberjs.com/ember-data-latest.js"></script>
 <!-- Date formatting library -->
 <script src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.1.0/moment.min.js"></script>
-<script src="{% static 'occuhunt/js/recommendations-app.js' %}"></script>
 
 {% endblock %}
