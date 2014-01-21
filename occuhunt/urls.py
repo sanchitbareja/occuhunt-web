@@ -13,16 +13,17 @@ admin.autodiscover()
 
 # API
 from tastypie.api import Api
-from api.api import CompanyResource, FavoriteResource, HuntingResource, UserResource, ResumeResource, CommentResource
+from api.api import CompanyResource, FavoriteResource, UserResource, ResumeResource, CommentResource, RecommendationRequestResource, RecommendationResource
 from api.views import logout_view, login_error, feedback_form
 
 v1_api = Api(api_name='v1')
 v1_api.register(CompanyResource())
 v1_api.register(FavoriteResource())
 v1_api.register(UserResource())
-v1_api.register(HuntingResource())
 v1_api.register(ResumeResource())
 v1_api.register(CommentResource())
+v1_api.register(RecommendationRequestResource())
+v1_api.register(RecommendationResource())
 
 urlpatterns = patterns('',
     url(r'^home/$', home, name='home'),

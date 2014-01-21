@@ -164,12 +164,18 @@
 		  	<div id="category_body">
 		  		{{#each recommendation_request for recommendation_requests}}
 		  			{{#link-to 'recform' class="list-group-item"}}
-		  				<img {{bindAttr src="recommendation_request.from.img"}} style="height:40px;">
-				    	<span>{{recommendation_request.from.name}}</span>
-				    	<br />
-				    	<br />
-				    	<p>{{recommendation_request.message}}</p>
-				    	<p><strong>Deadline: </strong>{{format-date recommendation_request.deadline}}</p>
+		  				<div class="row">
+		  					<div class="col-lg-2">
+		  						{{get-profile-picture request_profiles recommendation_request.request_from 90}}
+		  					</div>
+		  					<div class="col-lg-8">
+		  						{{get-profile-name request_profiles recommendation_request.request_from}}
+						    	<p>{{recommendation_request.message}}</p>
+		  					</div>
+		  					<div class="col-lg-2">
+		  						<p><strong>Deadline: </strong>{{format-date recommendation_request.timestamp}}</p>
+		  					</div>
+		  				</div>
 				    {{/link-to}}
 	  			{{/each}}
 	  			<br />
@@ -183,20 +189,10 @@
 		  	<br />
 		  	<br />
 		  	<div id="category_body">
-		  		{{#each person_to_recommend for people_to_recommend}}
-			      	{{#link-to 'recform'}}<img {{bindAttr src="person_to_recommend.img"}} class="friend_thumbnail" style="height:100px;">{{/link-to}}
-	  			{{/each}}
-	  			{{#each person_to_recommend for people_to_recommend}}
-			      	{{#link-to 'recform'}}<img {{bindAttr src="person_to_recommend.img"}} class="friend_thumbnail" style="height:100px;">{{/link-to}}
-	  			{{/each}}
-	  			{{#each person_to_recommend for people_to_recommend}}
-			      	{{#link-to 'recform'}}<img {{bindAttr src="person_to_recommend.img"}} class="friend_thumbnail" style="height:100px;">{{/link-to}}
-	  			{{/each}}
-	  			{{#each person_to_recommend for people_to_recommend}}
-			      	{{#link-to 'recform'}}<img {{bindAttr src="person_to_recommend.img"}} class="friend_thumbnail" style="height:100px;">{{/link-to}}
-	  			{{/each}}
-	  			{{#each person_to_recommend for people_to_recommend}}
-			      	{{#link-to 'recform'}}<img {{bindAttr src="person_to_recommend.img"}} class="friend_thumbnail" style="height:100px;">{{/link-to}}
+		  		{{#each connection for my_connections}}
+			      	{{#link-to 'recform'}}
+			      		{{get-profile-picture-helper connection.pictureUrl "friend_thumbnail" 100}}
+			      	{{/link-to}}
 	  			{{/each}}
 			</div>
 			<br />
@@ -311,10 +307,10 @@
 						<br />
 						<div class="row">
 							<div class="col-lg-6">
-								<input type="text" class="input-text-bordered" placeholder="Relationship" value="Physics Olympiad Trainer">
+								{{input type="text" class="input-text-bordered" placeholder="Relationship (e.g. Co-worker, Senior, Project Mate, Professor)" value=connection_relationship}}<br />
 							</div>
 							<div class="col-lg-6">
-								<input type="text" class="input-text-bordered" placeholder="At" value="NUS High School of Maths and Science">
+								{{input type="text" class="input-text-bordered" placeholder="Project (XYZ Project at ABC Company)" value=connection_project}}
 							</div>
 						</div>						
 					</div>
@@ -325,27 +321,27 @@
 				<hr />
 				<div class="row">
 					<div class="col-lg-12">
-						<input type="text" class="input-text-bordered" placeholder="What is Bernard Ricardo good at?" value="Humor, Physics educations">
+						{{input type="text" class="input-text-bordered" placeholder="What is Person A good at?" value=recommendation_answer1}}
 					</div>
 				</div>
 				<br />
 				<div class="row">
 					<div class="col-lg-12">
-						<input type="text" class="input-text-bordered" placeholder="How could Bernard improve?" value="">
+						{{input type="text" class="input-text-bordered" placeholder="How could Person A improve?" value=recommendation_answer2}}
 					</div>
 				</div>
 				<br />
 				<div class="row">
 					<div class="col-lg-12">
-						<textarea class="input-textarea-bordered" rows="3">Mr Bernard is a wonderful physics trainer. I'd say he's the Feynman of high school physics education. His lessons are fun and enjoyable. Funny thing is, he's a church pastor as well. It's interesting to see how he doesn't swear in class at all but yet alludes to curses at times. He's the one who incited a passion for physics in me! </textarea>
+						{{textarea value=recommendation_answer3 class="input-textarea-bordered" row="3" placeholder="Describe Person A. Give specific events where he did well or where he could have improved."}}
 						<br />
-						<span class="pull-right">140 words left</span>
+						<em class="pull-right text-muted">{{words-left recommendation_answer3}} words left</em>
 					</div>
 				</div>
 				<br />
 				<div class="row">
 					<div class="col-lg-12">
-						<button class="btn btn-default" style="width:100%;">Recommend</button>
+						<button class="btn btn-default" style="width:100%;" {{action 'send_recommendation'}}>Recommend</button>
 					</div>
 				</div>
 				<br />

@@ -110,6 +110,37 @@ App.Router.map(function() {
 });
 
 // Routes
+App.SendrecsRoute = Ember.Route.extend({
+	setupController: function(controller){
+		$.ajax({
+		    url: '/api/v1/recommendation_requests/?request_to=ykkFoi6c68',
+		    data: {},
+		    success: function(data, textStatus, jqXHR) {
+		    	console.log(data);
+		    	console.log(textStatus);
+		    	console.log(jqXHR);
+		        controller.set('recommendation_requests',data.response.requests);
+		        request_profile_ids = []
+		        for(var i = 0; i < data.response.requests.length; i++){
+		        	request_profile_ids.push(data.response.requests[i].request_from);
+		        }
+		        IN.API.Profile(request_profile_ids).result(function(result){
+		        	console.log(result)
+		        	for(var i = 0; i < data.response.requests.length; i++){
+		        		controller.set("request_profiles", result.values);
+		        	}
+		        });
+		      },
+		    dataType: 'json',
+		});
+
+		IN.API.Connections("me").result(function(result) {
+			console.log(result);
+			controller.set("my_connections",result.values);
+		});
+	}
+});
+
 App.RequestrecsRoute = Ember.Route.extend({
 	setupController: function(controller){
 		IN.API.Connections("me").result(function(result){
@@ -148,8 +179,9 @@ App.IndexController = Ember.Controller.extend({
 });
 
 App.SendrecsController = Ember.Controller.extend({
-	people_to_recommend: people_to_recommend,
-	recommendation_requests: recommendation_requests,
+	recommendation_requests: [],
+	my_connections: [],
+	request_profiles: [],
 });
 
 App.RequestrecsController = Ember.Controller.extend({
@@ -186,23 +218,124 @@ App.RequestrecsController = Ember.Controller.extend({
 		          	}]
 		        },
 		      	"subject": "Hi "+this.get('connection.firstName')+", I wanted your input on my work for "+this.get("connection_project")+".",
-			    "body": this.get("request_message")+"View the request on http://occuhunt.com/recommend/#/sendrecs",
+			    "body": this.get("request_message")+" View the request on http://occuhunt.com/recommend/#/sendrecs",
 			}
 
 		    IN.API.Raw("/people/~/mailbox")
 		          .method("POST")
 		          .body(JSON.stringify(BODY)) 
-		          .result(alert("successfully sent recommendation request"))
+		          .result(console.log("successfully posted message"))
 		          .error(function error(e) { alert ("No dice") });
+
+	    	$.ajax({ 
+			    url:'/api/v1/recommendation_requests/', 
+			    type:'POST',
+			    dataType: 'json',
+			    data: JSON.stringify({
+			      'from': 'ykkFoi6c68', 
+			      'to': this.get('connection.id'),
+			      'relationship': this.get('connection_relationship'),
+			      'project': this.get('connection_project'),
+			      'message': this.get('request_message'),
+			    }),
+			    contentType: 'application/json',
+			    statusCode : {
+			      201: function(data, textStatus, jsXHR){
+			        console.log(data);
+			        console.log(textStatus);
+			        console.log(jsXHR);
+			      },
+			      500: function(data, textStatus, jsXHR){
+			        console.log(data);
+			        console.log(textStatus);
+			        console.log(jsXHR);
+			      }
+			    }
+			});
 		},
 	},
-})
+});
+
+App.RecformController = Ember.Controller.extend({
+	recommendation_from: 'ykkFoi6c68',
+	recommendation_to: 'ykkFoi6c68',
+	connection_relationship: '',
+	connection_project: '',
+	recommendation_answer1: '',
+	recommendation_answer2: '',
+	recommendation_answer3: '',
+	actions: {
+		send_recommendation: function(){
+			$.ajax({ 
+			    url:'/api/v1/recommendations/', 
+			    type:'POST',
+			    dataType: 'json',
+			    data: JSON.stringify({
+			      'from': this.get('recommendation_from'), 
+			      'to': this.get('recommendation_to'),
+			      'relationship': this.get('connection_relationship'),
+			      'project': this.get('connection_project'),
+			      'answer1': this.get('recommendation_answer1'),
+			      'answer2': this.get('recommendation_answer2'),
+			      'answer3': this.get('recommendation_answer3'),
+			    }),
+			    contentType: 'application/json',
+			    statusCode : {
+			      201: function(data, textStatus, jsXHR){
+			        console.log(data);
+			        console.log(textStatus);
+			        console.log(jsXHR);
+			        console.log("successfully sent recommendation!");
+			      },
+			      500: function(data, textStatus, jsXHR){
+			        console.log(data);
+			        console.log(textStatus);
+			        console.log(jsXHR);
+			      }
+			    }
+			});
+		},
+	},
+});
 
 
 
 // Helpers
 Ember.Handlebars.helper('format-date', function(date) {
   return moment(date).fromNow();
+});
+
+Ember.Handlebars.helper('get-profile-name', function(array, uid){
+	console.log(array);
+	console.log(uid);
+	var a = $.grep(array, function(elem, i){
+		return elem.id == uid;
+	})[0];
+	if(a){
+		return a.firstName + " "+ a.lastName;
+	}
+	return a;
+});
+
+Ember.Handlebars.helper('get-profile-picture', function(array, uid, height){
+	var a = $.grep(array, function(elem, i){
+		return elem.id == uid;
+	})[0];
+	if(a && a.pictureUrl){
+		return new Ember.Handlebars.SafeString("<img src='"+a.pictureUrl+"' style='height:"+height+"px;'>");
+	} else {
+		return new Ember.Handlebars.SafeString("<img src='https://www.clearsounds.com/sites/default/files/images/color-linkedin-128.png' style='height:"+height+"px;'>");
+	}
+	return a;
+});
+
+Ember.Handlebars.helper('get-profile-picture-helper', function(pictureUrl, css_class, height){
+	if(pictureUrl){
+		return new Ember.Handlebars.SafeString("<img src='"+pictureUrl+"' class='"+css_class+"' style='height:"+height+"px;'>");
+	} else {
+		return new Ember.Handlebars.SafeString("<img src='https://www.clearsounds.com/sites/default/files/images/color-linkedin-128.png' class='"+css_class+"' style='height:"+height+"px;'>");
+	}
+	return a;
 });
 
 Ember.Handlebars.helper('words-left', function(paragraph){

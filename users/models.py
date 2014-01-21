@@ -47,6 +47,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     linkedin_uid = models.CharField(max_length=256, null=True, blank=True)
     profile_pic = models.TextField(null=True, blank=True)
     resume_points = models.IntegerField(default='0')
+    time_created = models.DateTimeField(auto_now=False, auto_now_add=True, null=True, blank=True)
 
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)

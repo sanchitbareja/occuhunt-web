@@ -22,8 +22,8 @@ from companies.models import Company
 from favorites.models import Favorite
 from fairs.models import Fair
 from users.models import User
-from hunting.models import Hunting
 from resumes.models import Resume, Comment
+from recommendations.models import Recommendation, Request
 import datetime
 
 
@@ -39,7 +39,7 @@ class UserResource(ModelResource):
         filtering = {
             "first_name": ("exact")
         }
-        excludes = ['password','last_login','is_active','is_admin','is_superuser']
+        excludes = ['password','last_login','is_active','is_admin','time_created']
 
     def dehydrate(self, bundle):
         """
@@ -213,47 +213,6 @@ class FairResource(ModelResource):
     def determine_format(self, request):
         return 'application/json'
 
-class HuntingResource(ModelResource):
-    fair = fields.OneToOneField(FairResource, 'fair', full=True)
-    user = fields.OneToOneField(UserResource, 'user', full=True)
-    class Meta:
-        queryset = Hunting.objects.all()
-        resource_name = 'hunting'
-        # Add it here.
-        # authentication = BasicAuthentication()
-        authorization = DjangoAuthorization()
-        limit = 0
-        allowed_methods = ['get','post']
-
-    def dehydrate(self, bundle):
-        """
-        Return a list of clubs formatted according to what the developer expects
-        """
-
-        return bundle
-
-    def obj_create(self, bundle, **kwargs):
-        """
-        Posts a new "hunt"
-        """
-        user = User.objects.get(id=bundle.data["user"])
-        fair = Fair.objects.get(id=bundle.data["fair"])
-        old_hunting = Hunting.objects.filter(user=user).filter(fair=fair)
-        if len(old_hunting) <= 0:
-            new_hunting = Hunting(user=user, fair=fair)
-            new_hunting.save()
-            bundle.obj = new_hunting
-        return bundle
-
-    def alter_list_data_to_serialize(self, request, data):
-        # rename "objects" to "response"
-        data['response'] = {"favorites":data['objects']}
-        del(data['objects'])
-        return data
-
-    def determine_format(self, request):
-        return 'application/json'
-
 class CommentResource(ModelResource):
     user = fields.OneToOneField(UserResource, 'user', full=True)
     class Meta:
@@ -337,6 +296,89 @@ class ResumeResource(ModelResource):
     def alter_list_data_to_serialize(self, request, data):
         # rename "objects" to "resumes"
         data['response'] = {"resumes":data["objects"]}
+        del(data["objects"])
+        return data
+
+    def determine_format(self, request):
+        return 'application/json'
+
+class RecommendationRequestResource(ModelResource):
+    class Meta:
+        queryset = Request.objects.all()
+        resource_name = 'recommendation_requests'
+        authorization = DjangoAuthorization()
+        limit = 100
+        always_return_data = False
+        allowed_methods = ['get', 'post']
+        filtering = {
+            "request_from": ("exact"),
+            "request_to": ("exact")
+        }
+        excludes = ['relationship','project']
+
+    def dehydrate(self, bundle):
+        """
+        Return a list of recommendation requests
+        """
+
+        return bundle
+
+    def obj_create(self, bundle, **kwargs):
+        """
+        Creates a new recommendation request
+        """
+        try:
+            new_request = Request(request_from=bundle.data['from'],request_to=bundle.data['to'],relationship=bundle.data['relationship'],project=bundle.data['project'],message=bundle.data['message'])
+            new_request.save()
+            bundle.obj = new_request
+        except Exception, e:
+            print e
+        return bundle
+
+    def alter_list_data_to_serialize(self, request, data):
+        # rename "objects" to "requests"
+        data['response'] = {"requests":data["objects"]}
+        del(data["objects"])
+        return data
+
+    def determina_format(self, request):
+        return 'application/json'
+
+class RecommendationResource(ModelResource):
+    class Meta:
+        queryset = Recommendation.objects.all()
+        resource_name = 'recommendations'
+        authorization = DjangoAuthorization()
+        limit = 100
+        always_return_data = False
+        allowed_methods = ['get','post']
+        filtering = {
+            "recommendation_from": ("exact"),
+            "recommendation_to": ("exact")
+        }
+
+    def dehydrate(self, bundle):
+        """
+        Return a list of recommendations
+        """
+
+        return bundle
+
+    def obj_create(self, bundle, **kwargs):
+        """
+        Creates a new recommendation
+        """
+        try:
+            new_rec = Recommendation(recommendation_from=bundle.data["from"], recommendation_to=bundle.data["to"],relationship=bundle.data["relationship"],project=bundle.data["project"],answer1=bundle.data["answer1"],answer2=bundle.data["answer2"],answer3=bundle.data["answer3"])
+            new_rec.save()
+            bundle.obj = new_rec
+        except Exception, e:
+            print e
+        return bundle
+
+    def alter_list_data_to_serialize(self, request, data):
+        # rename "objects" to "recommendations"
+        data["response"] = {"recommendations":data["objects"]}
         del(data["objects"])
         return data
 

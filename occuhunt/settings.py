@@ -139,7 +139,6 @@ INSTALLED_APPS = (
     'users',
     'favorites',
     'api',
-    'hunting',
     'fairs',
     'jobs',
     'resumes',
