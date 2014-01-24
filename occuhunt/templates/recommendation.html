@@ -10,400 +10,8 @@
 
 {% block extra_script %}
 
-{% endblock %}
-
-
-{% block content %}
-
-<!-- This is where the ember app will reside -->
-<div id="main-body"></div>
-
-{% verbatim %}
-
-<script type="text/x-handlebars" data-template-name='application'>
-	{{outlet}}
-</script>
-
-<script type="text/x-handlebars" data-template-name='index'>
-	<div class="row">
-	  	{{partial 'left-sidebar'}}
-	  	{{partial 'main-content-personal-recs'}}
-	  	{{partial 'right-sidebar'}}
-	</div>
-	{{outlet}}
-</script>
-
-<script type="text/x-handlebars" data-template-name='sendrecs'>
-	<div class="row">
-	  	{{partial 'left-sidebar'}}
-	  	{{partial 'main-content-send-recs'}}
-	  	{{partial 'right-sidebar-send-rec-tip'}}
-	</div>
-	{{outlet}}
-</script>
-
-<script type="text/x-handlebars" data-template-name='requestrecs'>
-	<div class="row">
-	  	{{partial 'left-sidebar'}}
-	  	{{partial 'main-content-request-recs'}}
-	  	{{partial 'right-sidebar-rec-form-tip'}}
-	</div>
-	{{outlet}}
-</script>
-
-<script type="text/x-handlebars" data-template-name='recform'>
-	<div class="row">
-	  	{{partial 'left-sidebar'}}
-	  	{{partial 'main-content-rec-form'}}
-	  	{{partial 'right-sidebar-rec-form-tip'}}
-	</div>
-	{{outlet}}
-</script>
-
-<script type="text/x-handlebars" data-template-name='left-sidebar'>
-	<div class="col-lg-2">
-  		<div class="list-group">
-		  	<div class="list-group-item">
-		    	{% endverbatim %}<img src="{% static 'images/Sanchit-rec-example.png' %}" style="width:100%;">{% verbatim %}
-			</div>
-			{{#link-to 'requestrecs' class="list-group-item btn btn-default" id="get_more_recs"}}Get more recs{{/link-to}}
-		</div>
-		<div class="text-right">
-			{{#link-to 'index' class="btn btn-link"}}My Recs{{/link-to}}
-  			{{#link-to 'sendrecs' class="btn btn-link"}}Send Recs{{/link-to}}
-		</div>
-  	</div>
-</script>
-
-<script type="text/x-handlebars" data-template-name='personal-recs'>
-	<div class="category_box" id="about_me">
-	  	<h4 id="category_header">About Me</h4>
-	  	<h5 id="category_subheader">These are recommendations people have written for you</h5>
-	  	<hr>
-	  	<div id="category_body">
-  			<h4>What are you good at?</h4>
-  			<p>{{personal_recs.answer1}}</p>
-  			<h4>How can you improve?</h4>
-  			<p>{{personal_recs.answer2}}</p>
-		</div>
-	</div>
-</script>
-
-<script type="text/x-handlebars" data-template-name='main-content-personal-recs'>
-	<div class="col-lg-7">
-  		{{partial 'personal-recs'}}
-		<br />
-		{{partial 'other-recs'}}  		
-  	</div>
-</script>
-
-<script type="text/x-handlebars" data-template-name='other-recs'>
-	<div class="category_box" id="about_me">
-	  	<h4 id="category_header">My Recs</h4>
-	  	<h5 id="category_subheader">These are private(How?) and confidential recommendations you have written for others. Be open-minded about the feedback but know that everyone might not know you equally well.</h5>
-	  	<hr>
-		<div id="category_body">
-			<div class="list-group">
-				{{#view App.OtherrecsView}}
-				{{#each other_rec for other_recs}}
-					<a class="list-group-item background-active">
-				    	<img {{bindAttr src="other_rec.to.img"}} style="height:40px;">
-				    	<span>{{other_rec.to.name}}</span>
-				    	<br />
-				    	<div id="category_details" style="display:none;">
-				    		<br />
-					    	<div class="row">
-					    		<div class="col-lg-6">
-					    			<p><strong>Relationship: </strong>{{other_rec.relationship}}</p>
-					    		</div>
-					    		<div class="col-lg-6">
-					    			<p><strong>At: </strong>{{other_rec.at}}</p>
-					    		</div>
-					    	</div>
-					    	<div class="row">
-					    		<div class="col-lg-6">
-					    			<p><strong>What is {{other_rec.to.name}} good at?</strong></p>
-					    		</div>
-					    		<div class="col-lg-6">
-					    			<strong>What could {{other_rec.to.name}} improve on?</strong>
-					    		</div>
-					    	</div>
-					    	<div class="row">
-					    		<div class="col-lg-6">
-					    			<p>{{other_rec.answer1}}</p>
-					    		</div>
-					    		<div class="col-lg-6">
-					    			<p>{{other_rec.answer2}}</p>
-					    		</div>
-					    	</div>
-					    	<div class="row">
-					    		<div class="col-lg-12">
-					    			<p><strong>Describe {{other_rec.to.name}}</strong></p>
-					    		</div>
-					    	</div>
-					    	<div class="row">
-					    		<div class="col-lg-12">
-					    			<p>{{other_rec.answer3}}</p>
-					    		</div>
-					    	</div>
-					    </div>
-					</a>
-				{{/each}}
-				{{/view}}
-			</div>
-		</div>
-	</div>
-</script>
-
-<script type="text/x-handlebars" data-template-name='main-content-send-recs'>
-	<div class="col-lg-7">
-		<div class="category_box" id="about_me">
-		  	<h4 id="category_header">Requests</h4>
-		  	<h5 id="category_subheader">Your peers value your feedback. Help them improve!</h5>
-		  	<hr>
-		  	<div id="category_body">
-		  		{{#each recommendation_request for recommendation_requests}}
-		  			{{#link-to 'recform' class="list-group-item"}}
-		  				<div class="row">
-		  					<div class="col-lg-2">
-		  						{{get-profile-picture request_profiles recommendation_request.request_from 90}}
-		  					</div>
-		  					<div class="col-lg-8">
-		  						{{get-profile-name request_profiles recommendation_request.request_from}}
-						    	<p>{{recommendation_request.message}}</p>
-		  					</div>
-		  					<div class="col-lg-2">
-		  						<p><strong>Deadline: </strong>{{format-date recommendation_request.timestamp}}</p>
-		  					</div>
-		  				</div>
-				    {{/link-to}}
-	  			{{/each}}
-	  			<br />
-			</div>
-		</div>
-		<br />
-		<div class="category_box" id="about_me">
-		  	<h4 id="category_header">Recommend your coworkers</h4>
-		  	<h5 id="category_subheader">Recommend your project mates, coworkers, associates and people you have worked with!</h5>
-		  	<input type="text" class="input-text-light-bordered"/>
-		  	<br />
-		  	<br />
-		  	<div id="category_body">
-		  		{{#each connection for my_connections}}
-			      	{{#link-to 'recform'}}
-			      		{{get-profile-picture-helper connection.pictureUrl "friend_thumbnail" 100}}
-			      	{{/link-to}}
-	  			{{/each}}
-			</div>
-			<br />
-		</div>
-	</div>
-</script>
-
-<script type="text/x-handlebars" data-template-name='main-content-request-recs'>
-	<div class="col-lg-7">
-		<div class="category_box" id="about_me">
-		  	<h4 id="category_header">Request Recommendation</h4>
-		  	<h5 id="category_subheader">Get a private recommendation from your peers!</h5>
-		  	<hr>
-		  	<div id="category_body">
-		  		<div class="row">
-					<div class="col-lg-9">
-						<div class="row">
-							<div class="col-lg-12">
-								<div class="list-group input-list-bordered">
-									{{#each connection for my_connections}}
-										<a class="list-group-item" {{action 'selected_connection' connection}}>{{connection.firstName}} {{connection.lastName}}</a>
-									{{/each}}
-								</div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-lg-6">
-								{{input type="text" class="input-text-bordered" placeholder="Relationship (e.g. Co-worker, Senior, Project Mate, Professor)" value=connection_relationship}}<br />
-								<em class="text-muted">This is for your future reference</em>
-							</div>
-							<div class="col-lg-6">
-								{{input type="text" class="input-text-bordered" placeholder="Project (XYZ Project at ABC Company)" value=connection_project}}
-							</div>
-						</div>						
-					</div>
-					<div class="col-lg-3">
-						<img {{bindAttr src=connection_thumbnail}} style="height:90px;"/>
-						<br />
-						<p>{{connection.firstName}} {{connection.lastName}}, {{connection.headline}}</p>
-					</div>
-				</div>
-				<br />
-				<div class="row">
-					<div class="col-lg-12">
-						{{textarea value=request_message class="input-textarea-bordered" row="3" placeholder="Hey Andy, I have a deadline on the 14th of Dec for my speech class. It would be wonderful if you could give me a recommendation."}}
-						<br />
-						<em class="pull-right text-muted">{{words-left request_message}} words left</em>
-					</div>
-				</div>
-				<br />
-				<div class="row">
-					<div class="col-lg-12">
-						<button class="btn btn-default" style="width:100%;" {{action 'send_request'}}>Request</button>
-					</div>
-				</div>
-				<br />
-			</div>
-		</div>
-		<br />
-		<div class="category_box" id="about_me">
-		  	<h4 id="category_header">Preview</h4>
-		  	<h5 id="category_subheader">This will be the message your peer receives.</h5>
-		  	<hr>
-			<div id="category_body">
-				<div class="row">
-					<div class="col-lg-9">
-						<div class="row">
-							<div class="col-lg-12">
-								<strong>Subject:</strong>
-								Hi {{connection.firstName}}, I wanted your input on my work for {{connection_project}}!
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-lg-12">
-								<strong>Message:</strong><br />
-								{{request_message}}
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-3">
-						<img {{bindAttr src=connection_thumbnail}} style="height:90px;"/>
-						<br />
-						<p>{{connection.firstName}} {{connection.lastName}}, {{connection.headline}}</p>
-					</div>
-				</div>
-
-				<br />
-			</div>
-		</div>
-	</div>
-</script>
-
-<script type="text/x-handlebars" data-template-name='main-content-rec-form'>
-	<div class="col-lg-7">
-		<div class="category_box" id="about_me">
-		  	<h4 id="category_header">Give a Recommendation (Private and Confidential)</h4>
-		  	<h5 id="category_subheader">Your peers value your feedback. Help them improve!</h5>
-		  	<hr>
-		  	<div id="category_body">
-		  		<div class="row">
-					<div class="col-lg-9">
-						<div class="row">
-							<div class="col-lg-6">
-								<span><strong>For: </strong>Bernard Ricardo</span>
-							</div>
-							<div class="col-lg-6">
-								<label>
-							      	<input type="checkbox"> Allow recruiters to contact me
-							    </label>
-							</div>
-						</div>
-						<br />
-						<div class="row">
-							<div class="col-lg-6">
-								{{input type="text" class="input-text-bordered" placeholder="Relationship (e.g. Co-worker, Senior, Project Mate, Professor)" value=connection_relationship}}<br />
-							</div>
-							<div class="col-lg-6">
-								{{input type="text" class="input-text-bordered" placeholder="Project (XYZ Project at ABC Company)" value=connection_project}}
-							</div>
-						</div>						
-					</div>
-					<div class="col-lg-3">
-						<img src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-prn1/c120.0.720.720/s160x160/1486742_10202761723350024_2107171884_n.jpg" style="height:90px;"/>
-					</div>
-				</div>
-				<hr />
-				<div class="row">
-					<div class="col-lg-12">
-						{{input type="text" class="input-text-bordered" placeholder="What is Person A good at?" value=recommendation_answer1}}
-					</div>
-				</div>
-				<br />
-				<div class="row">
-					<div class="col-lg-12">
-						{{input type="text" class="input-text-bordered" placeholder="How could Person A improve?" value=recommendation_answer2}}
-					</div>
-				</div>
-				<br />
-				<div class="row">
-					<div class="col-lg-12">
-						{{textarea value=recommendation_answer3 class="input-textarea-bordered" row="3" placeholder="Describe Person A. Give specific events where he did well or where he could have improved."}}
-						<br />
-						<em class="pull-right text-muted">{{words-left recommendation_answer3}} words left</em>
-					</div>
-				</div>
-				<br />
-				<div class="row">
-					<div class="col-lg-12">
-						<button class="btn btn-default" style="width:100%;" {{action 'send_recommendation'}}>Recommend</button>
-					</div>
-				</div>
-				<br />
-			</div>
-		</div>
-		<br />
-	</div>
-</script>
-
-<script type="text/x-handlebars" data-template-name='right-sidebar'>
-	<div class="col-lg-3">
-		<div class="list-group">
-			<div class="list-group-item">
-		    	<h4 id="category_header">Recommend your friends</h4>
-			</div>
-			{{#each person_to_recommend for people_to_recommend}}
-				<div class="list-group-item">
-			    	<img {{bindAttr src="person_to_recommend.img"}} style="height:40px;">
-			    	<span>{{person_to_recommend.name}}</span>
-			    	<a href="#" class="btn-sm btn btn-success pull-right">Rec</a>
-				</div>
-			{{/each}}
-		</div>
-	</div>
-</script>
-
-<script type="text/x-handlebars" data-template-name='right-sidebar-send-rec-tip'>
-	<div class="col-lg-3">
-		<div class="list-group">
-			<div class="list-group-item">
-		    	<h4 id="category_header">Tips</h4>
-			</div>
-			<div class="list-group-item" style="color:grey;">
-				<p>Your feedback is valuable</p>
-				<p>Your feedback helps your friends (friends, peers or coworkers? be consistent) grow</p>
-				<p>Occuhunt is the trustworthy site</p>
-			</div>
-		</div>
-	</div>
-</script>
-
-<script type="text/x-handlebars" data-template-name='right-sidebar-rec-form-tip'>
-	<div class="col-lg-3">
-		<div class="list-group">
-			<div class="list-group-item">
-		    	<h4 id="category_header">Tips</h4>
-			</div>
-			<div class="list-group-item" style="color:grey;">
-				<p>Be honest and straightforward</p>
-				<p>Your feedback will be confidential and anonymized</p>
-				<p>Your recommendation will propel your friend further in life</p>
-				<p>Think about what makes the person unique when giving feedback. E.g. Sense of humor, charisma, sociability and etc</p>
-			</div>
-		</div>
-	</div>
-</script>
-
-{% endverbatim %}
-
-{% endblock %}
-
-{% block extra_script_end %}
+<!-- Date formatting library -->
+<script src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.1.0/moment.min.js"></script>
 
 <script type="text/javascript">
 	$.getScript("http://platform.linkedin.com/in.js?async=true", function(success, response){
@@ -422,10 +30,242 @@
 	}
 </script>
 
-<script src="{% static 'ember/js/libs/handlebars-1.0.0.js' %}"></script>
-<script src="{% static 'ember/js/libs/ember-1.1.2.js' %}"></script>
-<script src="http://builds.emberjs.com/ember-data-latest.js"></script>
-<!-- Date formatting library -->
-<script src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.1.0/moment.min.js"></script>
+{% endblock %}
+
+
+{% block content %}
+
+
+<div class="row">
+	<div class="col-lg-2">
+		<div class="list-group">
+		  	<div class="list-group-item">
+		    	<img src="{% static 'images/Sanchit-rec-example.png' %}" style="width:100%;">
+			</div>			
+		</div>
+		<div class="text-right">
+			<a href="/recommend/" class="btn btn-link active">My Recs</a>
+			<a href="/recommend/requests/" class="btn btn-link">Requests</a>
+			<a href="/recommend/requests/new" class="btn btn-link">Send invites</a>
+		</div>
+	</div>
+
+	<div class="col-lg-7">
+		<div class="category_box" id="about_me">
+		  	<h4 id="category_header">About Me</h4>
+		  	<h5 id="category_subheader">These are recommendations people have written for you</h5>
+		  	<hr>
+		  	<div id="category_body">
+	  			<h4>What are you good at?</h4>
+	  			<p>A, B, C</p>
+	  			<h4>How can you improve?</h4>
+	  			<p>Self improvement</p>
+			</div>
+		</div>
+		<br />
+		<div class="category_box" id="about_me">
+		  	<h4 id="category_header">My Recs</h4>
+		  	<h5 id="category_subheader">These are private(How?) and confidential recommendations you have written for others. Be open-minded about the feedback but know that everyone might not know you equally well.</h5>
+		  	<hr>
+			<div id="category_body">
+				<div class="list-group">
+					<!-- For each of my recs -->
+						<a class="list-group-item background-active">
+					    	<img src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-frc3/c0.0.151.151/181592_10150105700371961_7986881_a.jpg" style="height:40px;">
+					    	<span>Bill Gates</span>
+					    	<br />
+					    	<div id="category_details">
+					    		<br />
+						    	<div class="row">
+						    		<div class="col-lg-6">
+						    			<p><strong>Relationship: </strong>Partner in Crime</p>
+						    		</div>
+						    		<div class="col-lg-6">
+						    			<p><strong>At: </strong>WHO</p>
+						    		</div>
+						    	</div>
+						    	<div class="row">
+						    		<div class="col-lg-6">
+						    			<p><strong>What is Bill Gates good at?</strong></p>
+						    		</div>
+						    		<div class="col-lg-6">
+						    			<strong>What could Bill Gates improve on?</strong>
+						    		</div>
+						    	</div>
+						    	<div class="row">
+						    		<div class="col-lg-6">
+						    			<p>Maths, CS, Physics</p>
+						    		</div>
+						    		<div class="col-lg-6">
+						    			<p>Design skills</p>
+						    		</div>
+						    	</div>
+						    	<div class="row">
+						    		<div class="col-lg-12">
+						    			<p><strong>Describe Bill Gates</strong></p>
+						    		</div>
+						    	</div>
+						    	<div class="row">
+						    		<div class="col-lg-12">
+						    			<p>Bill is an extremely dynamic person. His experience at Microsoft has really helped him hone his critical and analytical thinking skills which allow him to come up with highly creative and practical solutions. It is always a joy to have a conversation with him. He challenges me to think more broadly and on a larger scale that I would noramlly think of. Bill is also highly connected in the business circles. His influences allows him to speak with anyone at anytime without ever facing rejection. It has been extremely efficient in having him as a team member.</p>
+						    		</div>
+						    	</div>
+						    </div>
+						</a>
+						<a class="list-group-item background-active">
+					    	<img src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-frc3/c0.44.180.180/s160x160/24500_339205542615_5021059_a.jpg?lvh=1" style="height:40px;">
+					    	<span>Dalai Lama</span>
+					    	<br />
+					    	<div id="category_details">
+					    		<br />
+						    	<div class="row">
+						    		<div class="col-lg-6">
+						    			<p><strong>Relationship: </strong>Peace Advisor</p>
+						    		</div>
+						    		<div class="col-lg-6">
+						    			<p><strong>At: </strong>Nepal</p>
+						    		</div>
+						    	</div>
+						    	<div class="row">
+						    		<div class="col-lg-6">
+						    			<p><strong>What is Dalai Lama at?</strong></p>
+						    		</div>
+						    		<div class="col-lg-6">
+						    			<strong>What could Dalai Lama on?</strong>
+						    		</div>
+						    	</div>
+						    	<div class="row">
+						    		<div class="col-lg-6">
+						    			<p>Maths, CS, Physics, Free-sprited, Open-minded, </p>
+						    		</div>
+						    		<div class="col-lg-6">
+						    			<p>Clothing</p>
+						    		</div>
+						    	</div>
+						    	<div class="row">
+						    		<div class="col-lg-12">
+						    			<p><strong>Describe Dalai Lama</strong></p>
+						    		</div>
+						    	</div>
+						    	<div class="row">
+						    		<div class="col-lg-12">
+						    			<p>The Lama is an extremely respected and free-spirited person. His world views and forward thinking always impresses me. He strongly advocated world peace through inner growth (being compassionate and warm-hearted). Always something to learn. Nevertheless, he's extremely playful and jovial. Always fun to have him around.</p>
+						    		</div>
+						    	</div>
+						    </div>
+						</a>
+						<a class="list-group-item background-active">
+					    	<img src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-prn1/c0.0.180.180/s160x160/1504083_637521086310601_95883197_a.jpg" style="height:40px;">
+					    	<span>Lee Hsien Loong</span>
+					    	<br />
+					    	<div id="category_details">
+					    		<br />
+						    	<div class="row">
+						    		<div class="col-lg-6">
+						    			<p><strong>Relationship: </strong>Partner in Crime</p>
+						    		</div>
+						    		<div class="col-lg-6">
+						    			<p><strong>At: </strong>WHO</p>
+						    		</div>
+						    	</div>
+						    	<div class="row">
+						    		<div class="col-lg-6">
+						    			<p><strong>What is Lee Hsien Loong good at?</strong></p>
+						    		</div>
+						    		<div class="col-lg-6">
+						    			<strong>What could Lee Hsien Loong improve on?</strong>
+						    		</div>
+						    	</div>
+						    	<div class="row">
+						    		<div class="col-lg-6">
+						    			<p>Maths, CS, Physics</p>
+						    		</div>
+						    		<div class="col-lg-6">
+						    			<p>Design skills</p>
+						    		</div>
+						    	</div>
+						    	<div class="row">
+						    		<div class="col-lg-12">
+						    			<p><strong>Describe Lee Hsien Loong</strong></p>
+						    		</div>
+						    	</div>
+						    	<div class="row">
+						    		<div class="col-lg-12">
+						    			<p>Lee is an extremely dynamic person. His experience at Microsoft has really helped him hone his critical and analytical thinking skills which allow him to come up with highly creative and practical solutions. It is always a joy to have a conversation with him. He challenges me to think more broadly and on a larger scale that I would noramlly think of. Lee is also highly connected in the business circles. His influences allows him to speak with anyone at anytime without ever facing rejection. It has been extremely efficient in having him as a team member.</p>
+						    		</div>
+						    	</div>
+						    </div>
+						</a>
+						<a class="list-group-item background-active">
+					    	<img src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-frc3/t1/c0.34.180.180/s160x160/315409_10151057645386282_863370886_a.jpg" style="height:40px;">
+					    	<span>Steve Wozniak</span>
+					    	<br />
+					    	<div id="category_details">
+					    		<br />
+						    	<div class="row">
+						    		<div class="col-lg-6">
+						    			<p><strong>Relationship: </strong>Partner in Crime</p>
+						    		</div>
+						    		<div class="col-lg-6">
+						    			<p><strong>At: </strong>WHO</p>
+						    		</div>
+						    	</div>
+						    	<div class="row">
+						    		<div class="col-lg-6">
+						    			<p><strong>What is Steve Wozniak good at?</strong></p>
+						    		</div>
+						    		<div class="col-lg-6">
+						    			<strong>What could Steve Wozniak improve on?</strong>
+						    		</div>
+						    	</div>
+						    	<div class="row">
+						    		<div class="col-lg-6">
+						    			<p>Maths, CS, Physics</p>
+						    		</div>
+						    		<div class="col-lg-6">
+						    			<p>Design skills</p>
+						    		</div>
+						    	</div>
+						    	<div class="row">
+						    		<div class="col-lg-12">
+						    			<p><strong>Describe Steve Wozniak</strong></p>
+						    		</div>
+						    	</div>
+						    	<div class="row">
+						    		<div class="col-lg-12">
+						    			<p>Steve is an extremely dynamic person. His experience at Microsoft has really helped him hone his critical and analytical thinking skills which allow him to come up with highly creative and practical solutions. It is always a joy to have a conversation with him. He challenges me to think more broadly and on a larger scale that I would noramlly think of. Steve is also highly connected in the business circles. His influences allows him to speak with anyone at anytime without ever facing rejection. It has been extremely efficient in having him as a team member.</p>
+						    		</div>
+						    	</div>
+						    </div>
+						</a>
+					<!-- end for -->
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-lg-3">
+		<div class="list-group">
+			<div class="list-group-item">
+		    	<h4 id="category_header">Recommend your friends</h4>
+			</div>
+			<div class="list-group-item">
+		    	<img src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-frc3/c0.0.151.151/181592_10150105700371961_7986881_a.jpg" style="height:40px;">
+		    	<span>Sanchit Friend A</span>
+		    	<a href="#" class="btn-sm btn btn-success pull-right">Rec</a>
+			</div>
+			<div class="list-group-item">
+		    	<img src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-frc3/c0.0.151.151/181592_10150105700371961_7986881_a.jpg" style="height:40px;">
+		    	<span>Sanchit Friend B</span>
+		    	<a href="#" class="btn-sm btn btn-success pull-right">Rec</a>
+			</div>
+			<div class="list-group-item">
+		    	<img src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-frc3/c0.0.151.151/181592_10150105700371961_7986881_a.jpg" style="height:40px;">
+		    	<span>Sanchit Friend C</span>
+		    	<a href="#" class="btn-sm btn btn-success pull-right">Rec</a>
+			</div>
+		</div>
+	</div>
+</div>
 
 {% endblock %}

@@ -69,6 +69,15 @@
 	background-color:#dddddd;
 }
 
+#request_sent {
+	text-align: center;
+	color: #348891;
+	font-weight: 500;
+	vertical-align: middle;
+	padding-top: 200px;
+	padding-bottom: 200px;
+}
+
 .input-text-bordered {
 	border: 2px solid #70aab0;
 	padding: 5px;

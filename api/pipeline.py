@@ -20,6 +20,16 @@ def associate_group(request, backend, *args, **kwargs):
                     user = kwargs['user']
                     user.groups.add(g)
                     user.save()
+            elif "University of California Berkeley".lower() in kwargs['response']['educations']['education']['school-name'].lower():
+                    g = Group.objects.get(name='UC Berkeley')
+                    user = kwargs['user']
+                    user.groups.add(g)
+                    user.save()
+            elif "UC Berkeley".lower() in kwargs['response']['educations']['education']['school-name'].lower():
+                    g = Group.objects.get(name='UC Berkeley')
+                    user = kwargs['user']
+                    user.groups.add(g)
+                    user.save()
         elif type(kwargs['response']['educations']['education']) == type([]):
             for education in kwargs['response']['educations']['education']:
                 if "University of California, Berkeley".lower() in education['school-name'].lower():
@@ -27,5 +37,15 @@ def associate_group(request, backend, *args, **kwargs):
                     user = kwargs['user']
                     user.groups.add(g)
                     user.save()
+                elif "University of California Berkeley".lower() in kwargs['response']['educations']['education']['school-name'].lower():
+                    g = Group.objects.get(name='UC Berkeley')
+                    user = kwargs['user']
+                    user.groups.add(g)
+                    user.save()
+                elif "UC Berkeley".lower() in kwargs['response']['educations']['education']['school-name'].lower():
+                        g = Group.objects.get(name='UC Berkeley')
+                        user = kwargs['user']
+                        user.groups.add(g)
+                        user.save()
     except Exception as e:
         print e

@@ -161,15 +161,6 @@ App.OtherrecsView = Ember.View.extend({
 
 // Controllers
 App.ApplicationController = Ember.ObjectController.extend({
-	onLinkedInAuth: function(){
-		console.log("onLinkedInAuth");
-			IN.API.Profile("me").result(function(result) {
-			   console.log(result);
-		});
-		IN.API.Connections("me").result(function(result) {
-			console.log(result);
-		});
-	}
 });
 
 App.IndexController = Ember.Controller.extend({
@@ -182,6 +173,18 @@ App.SendrecsController = Ember.Controller.extend({
 	recommendation_requests: [],
 	my_connections: [],
 	request_profiles: [],
+	actions: {
+		create_rec: function(recommendation_to_uid){
+			cont = this;
+			IN.API.Profile(recommendation_to_uid).result(function(result) {
+				console.log("Recform New Route");
+			   	console.log(result);
+			   	cont.transitionToRoute('recform');.then(function(newRoute) {
+				  newRoute.controller.set('recommendation_to', recommendation_to_uid);
+				});
+			});
+		}
+	}
 });
 
 App.RequestrecsController = Ember.Controller.extend({
@@ -297,8 +300,6 @@ App.RecformController = Ember.Controller.extend({
 		},
 	},
 });
-
-
 
 // Helpers
 Ember.Handlebars.helper('format-date', function(date) {

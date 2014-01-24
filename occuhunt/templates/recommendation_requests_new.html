@@ -1,0 +1,149 @@
+{% extends "base.html" %}
+{% load static from staticfiles %}
+{% load i18n %}
+{% load url from future %}
+
+{% block extra_style %}
+<link href="{% static "occuhunt/css/recommendation.css" %}" rel="stylesheet">
+{% endblock %}
+
+
+{% block extra_script %}
+
+<!-- Date formatting library -->
+<script src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.1.0/moment.min.js"></script>
+
+<script type="text/javascript">
+	$.getScript("http://platform.linkedin.com/in.js?async=true", function(success, response){
+		console.log("get api");
+		IN.init({ 
+			api_key:'xu79xm7p77of', 
+			authorize:true, 
+			onLoad: 'loadRecommendationsApp'
+		});
+	});
+
+	function loadRecommendationsApp(){
+		$.getScript("{% static 'occuhunt/js/recommendation_requests_new-app.js' %}", function(success, response){
+			console.log("load js file");
+		});
+	}
+</script>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="row">
+	<div class="col-lg-2">
+		<div class="list-group">
+		  	<div class="list-group-item">
+		    	<img src="{% static 'images/Sanchit-rec-example.png' %}" style="width:100%;">
+			</div>
+		</div>
+		<div class="text-right">
+			<a href="/recommend/" class="btn btn-link">My Recs</a>
+			<a href="/recommend/requests/" class="btn btn-link">Requests</a>
+			<a href="/recommend/requests/new" class="btn btn-link active">Send invites</a>
+		</div>
+	</div>
+
+	<div class="col-lg-7">
+		<div class="category_box" id="request_recommendation">
+		  	<h4 id="category_header">Request Recommendation</h4>
+		  	<h5 id="category_subheader">Get a private recommendation from your peers!</h5>
+		  	<hr>
+		  	<div id="category_body">
+		  		<div class="row">
+					<div class="col-lg-9">
+						<div class="row">
+							<div class="col-lg-12">
+								<div class="list-group input-list-bordered" id="linkedin_connections">
+									<!-- For each connection -->
+									Loading...
+									<!-- end each -->
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-6">
+								<input type="text" id="linkedin_connection_input_relationship" class="input-text-bordered" placeholder="Relationship (e.g. Co-worker, Senior, Project Mate, Professor)"><br />
+								<em class="text-muted">This is for your future reference</em>
+							</div>
+							<div class="col-lg-6">
+								<input type="text" id="linkedin_connection_input_project" class="input-text-bordered" placeholder="Project (XYZ Project at ABC Company)">
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3">
+						<img id="linkedin_connection_image" src="http://findicons.com/files/icons/854/user_web_2_0/128/icontexto_user_web20_linkedin.png" style="height:90px;"/>
+						<br />
+						<p id="linkedin_connection_info"></p>
+					</div>
+				</div>
+				<br />
+				<div class="row">
+					<div class="col-lg-12">
+						<textarea id="linkedin_connection_textarea_message" class="input-textarea-bordered" row="3" placeholder="Hey Andy, I have a deadline on the 14th of Dec for my speech class. It would be wonderful if you could give me a recommendation."></textarea>
+						<br />
+						<em class="pull-right text-muted">140 words left</em>
+					</div>
+				</div>
+				<br />
+				<div class="row">
+					<div class="col-lg-12">
+						<button class="btn btn-default" style="width:100%;" onclick='send_request()'>Request</button>
+					</div>
+				</div>
+				<br />
+			</div>
+		</div>
+		<br />
+		<div class="category_box" id="request_preview">
+		  	<h4 id="category_header">Preview</h4>
+		  	<h5 id="category_subheader">This will be the message your peer receives.</h5>
+		  	<hr>
+			<div id="category_body">
+				<div class="row">
+					<div class="col-lg-9">
+						<div class="row">
+							<div class="col-lg-12">
+								<strong>Subject:</strong>
+								<p id="linkedin_subject_preview">Hi <span id="linkedin_subject_name_preview"></span>, I wanted your input on my work for <span id="linkedin_subject_project_preview"></span></p>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-12">
+								<strong>Message:</strong><br />
+								<p id="linkedin_message_preview"></p>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3">
+						<img id="linkedin_connection_image_preview" src="http://findicons.com/files/icons/854/user_web_2_0/128/icontexto_user_web20_linkedin.png" style="height:90px;"/>
+						<br />
+						<p id="linkedin_connection_info_preview"></p>
+					</div>
+				</div>
+
+				<br />
+			</div>
+		</div>
+	</div>
+
+	<div class="col-lg-3">
+		<div class="list-group">
+			<div class="list-group-item">
+		    	<h4 id="category_header">Tips</h4>
+			</div>
+			<div class="list-group-item" style="color:grey;">
+				<p>Your feedback is valuable</p>
+				<p>Your feedback helps your friends (friends, peers or coworkers? be consistent) grow</p>
+				<p>Occuhunt is the trustworthy site</p>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}
