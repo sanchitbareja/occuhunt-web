@@ -24,7 +24,7 @@
 	});
 
 	function loadRecommendationsApp(){
-		$.getScript("{% static 'occuhunt/js/recommendations-app.js' %}", function(success, response){
+		$.getScript("{% static 'occuhunt/js/recommendation-app.js' %}", function(success, response){
 			console.log("launch app");
 		});
 	}
@@ -56,10 +56,40 @@
 		  	<h5 id="category_subheader">These are recommendations people have written for you</h5>
 		  	<hr>
 		  	<div id="category_body">
-	  			<h4>What are you good at?</h4>
-	  			<p>A, B, C</p>
-	  			<h4>How can you improve?</h4>
-	  			<p>Self improvement</p>
+		  		<div class="row">
+		  			<div class="col-lg-11">
+			  			<h4>What are you good at?</h4>
+			  			<ul>
+			  				{% for rec in recommendations_for_me %}
+			  					<li>{{rec.answer1}}</li>
+			  				{% endfor %}
+			  			</ul>
+			  			<h4>How can you improve?</h4>
+			  			<ul>
+			  				{% for rec in recommendations_for_me %}
+			  					<li>{{rec.answer2}}</li>
+			  				{% endfor %}
+			  			</ul>
+			  			<h4>How people describe you?</h4>
+			  			<ul>
+			  				{% for rec in recommendations_for_me %}
+			  					<li>{{rec.answer3}}</li>
+			  				{% endfor %}
+			  			</ul>
+			  		</div>
+			  		<div class="col-lg-1">
+			  			{% for person in people_who_recommended_me %}
+			  				<input type="hidden" name="person_who_recommended_me" value="{{person.recommendation_from}}">
+				  			<img src="" id="person_who_recommended_me_{{person.recommendation_from}}" style="height:30px;">
+			  			{% endfor %}
+			  			{% for i in number_of_hidden_people %}
+			  				<img src="http://octopuspr.co.uk/wp-content/uploads/2013/02/anonymous-icon.png" style="height:30px;" id="unknown_recommender">
+			  			{% endfor %}
+			  			<script type="text/javascript">
+			  				$("#unknown_recommender").tooltip({'title':'unknown_recommender','placement':'left'});
+			  			</script>
+			  		</div>
+			  	</div>
 			</div>
 		</div>
 		<br />
@@ -70,15 +100,17 @@
 			<div id="category_body">
 				<div class="list-group">
 					<!-- For each of my recs -->
+					{% for recommendation in recommendations_given %}
+						<input type="hidden" name="recommendation_to" value="{{recommendation.recommendation_to}}">
 						<a class="list-group-item background-active">
-					    	<img src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-frc3/c0.0.151.151/181592_10150105700371961_7986881_a.jpg" style="height:40px;">
-					    	<span>Bill Gates</span>
+					    	<img src="" id="recommendation_given_image_{{recommendation.recommendation_to}}" style="height:40px;">
+					    	<span id="recommendation_given_name0_{{recommendation.recommendation_to}}"></span>
 					    	<br />
 					    	<div id="category_details">
 					    		<br />
 						    	<div class="row">
 						    		<div class="col-lg-6">
-						    			<p><strong>Relationship: </strong>Partner in Crime</p>
+						    			<p><strong>Relationship: </strong>{{recommendation.relationship}}</p>
 						    		</div>
 						    		<div class="col-lg-6">
 						    			<p><strong>At: </strong>WHO</p>
@@ -86,158 +118,33 @@
 						    	</div>
 						    	<div class="row">
 						    		<div class="col-lg-6">
-						    			<p><strong>What is Bill Gates good at?</strong></p>
+						    			<p><strong>What is <span id="recommendation_given_name1_{{recommendation.recommendation_to}}"></span> good at?</strong></p>
 						    		</div>
 						    		<div class="col-lg-6">
-						    			<strong>What could Bill Gates improve on?</strong>
+						    			<strong>What could <span id="recommendation_given_name2_{{recommendation.recommendation_to}}"></span> improve on?</strong>
 						    		</div>
 						    	</div>
 						    	<div class="row">
 						    		<div class="col-lg-6">
-						    			<p>Maths, CS, Physics</p>
+						    			<p>{{recommendation.answer1}}</p>
 						    		</div>
 						    		<div class="col-lg-6">
-						    			<p>Design skills</p>
-						    		</div>
-						    	</div>
-						    	<div class="row">
-						    		<div class="col-lg-12">
-						    			<p><strong>Describe Bill Gates</strong></p>
+						    			<p>{{recommendation.answer2}}</p>
 						    		</div>
 						    	</div>
 						    	<div class="row">
 						    		<div class="col-lg-12">
-						    			<p>Bill is an extremely dynamic person. His experience at Microsoft has really helped him hone his critical and analytical thinking skills which allow him to come up with highly creative and practical solutions. It is always a joy to have a conversation with him. He challenges me to think more broadly and on a larger scale that I would noramlly think of. Bill is also highly connected in the business circles. His influences allows him to speak with anyone at anytime without ever facing rejection. It has been extremely efficient in having him as a team member.</p>
+						    			<p><strong>Describe <span id="recommendation_given_name3_{{recommendation.recommendation_to}}"></span></strong></p>
+						    		</div>
+						    	</div>
+						    	<div class="row">
+						    		<div class="col-lg-12">
+						    			<p>{{recommendation.answer3}}</p>
 						    		</div>
 						    	</div>
 						    </div>
 						</a>
-						<a class="list-group-item background-active">
-					    	<img src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-frc3/c0.44.180.180/s160x160/24500_339205542615_5021059_a.jpg?lvh=1" style="height:40px;">
-					    	<span>Dalai Lama</span>
-					    	<br />
-					    	<div id="category_details">
-					    		<br />
-						    	<div class="row">
-						    		<div class="col-lg-6">
-						    			<p><strong>Relationship: </strong>Peace Advisor</p>
-						    		</div>
-						    		<div class="col-lg-6">
-						    			<p><strong>At: </strong>Nepal</p>
-						    		</div>
-						    	</div>
-						    	<div class="row">
-						    		<div class="col-lg-6">
-						    			<p><strong>What is Dalai Lama at?</strong></p>
-						    		</div>
-						    		<div class="col-lg-6">
-						    			<strong>What could Dalai Lama on?</strong>
-						    		</div>
-						    	</div>
-						    	<div class="row">
-						    		<div class="col-lg-6">
-						    			<p>Maths, CS, Physics, Free-sprited, Open-minded, </p>
-						    		</div>
-						    		<div class="col-lg-6">
-						    			<p>Clothing</p>
-						    		</div>
-						    	</div>
-						    	<div class="row">
-						    		<div class="col-lg-12">
-						    			<p><strong>Describe Dalai Lama</strong></p>
-						    		</div>
-						    	</div>
-						    	<div class="row">
-						    		<div class="col-lg-12">
-						    			<p>The Lama is an extremely respected and free-spirited person. His world views and forward thinking always impresses me. He strongly advocated world peace through inner growth (being compassionate and warm-hearted). Always something to learn. Nevertheless, he's extremely playful and jovial. Always fun to have him around.</p>
-						    		</div>
-						    	</div>
-						    </div>
-						</a>
-						<a class="list-group-item background-active">
-					    	<img src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-prn1/c0.0.180.180/s160x160/1504083_637521086310601_95883197_a.jpg" style="height:40px;">
-					    	<span>Lee Hsien Loong</span>
-					    	<br />
-					    	<div id="category_details">
-					    		<br />
-						    	<div class="row">
-						    		<div class="col-lg-6">
-						    			<p><strong>Relationship: </strong>Partner in Crime</p>
-						    		</div>
-						    		<div class="col-lg-6">
-						    			<p><strong>At: </strong>WHO</p>
-						    		</div>
-						    	</div>
-						    	<div class="row">
-						    		<div class="col-lg-6">
-						    			<p><strong>What is Lee Hsien Loong good at?</strong></p>
-						    		</div>
-						    		<div class="col-lg-6">
-						    			<strong>What could Lee Hsien Loong improve on?</strong>
-						    		</div>
-						    	</div>
-						    	<div class="row">
-						    		<div class="col-lg-6">
-						    			<p>Maths, CS, Physics</p>
-						    		</div>
-						    		<div class="col-lg-6">
-						    			<p>Design skills</p>
-						    		</div>
-						    	</div>
-						    	<div class="row">
-						    		<div class="col-lg-12">
-						    			<p><strong>Describe Lee Hsien Loong</strong></p>
-						    		</div>
-						    	</div>
-						    	<div class="row">
-						    		<div class="col-lg-12">
-						    			<p>Lee is an extremely dynamic person. His experience at Microsoft has really helped him hone his critical and analytical thinking skills which allow him to come up with highly creative and practical solutions. It is always a joy to have a conversation with him. He challenges me to think more broadly and on a larger scale that I would noramlly think of. Lee is also highly connected in the business circles. His influences allows him to speak with anyone at anytime without ever facing rejection. It has been extremely efficient in having him as a team member.</p>
-						    		</div>
-						    	</div>
-						    </div>
-						</a>
-						<a class="list-group-item background-active">
-					    	<img src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-frc3/t1/c0.34.180.180/s160x160/315409_10151057645386282_863370886_a.jpg" style="height:40px;">
-					    	<span>Steve Wozniak</span>
-					    	<br />
-					    	<div id="category_details">
-					    		<br />
-						    	<div class="row">
-						    		<div class="col-lg-6">
-						    			<p><strong>Relationship: </strong>Partner in Crime</p>
-						    		</div>
-						    		<div class="col-lg-6">
-						    			<p><strong>At: </strong>WHO</p>
-						    		</div>
-						    	</div>
-						    	<div class="row">
-						    		<div class="col-lg-6">
-						    			<p><strong>What is Steve Wozniak good at?</strong></p>
-						    		</div>
-						    		<div class="col-lg-6">
-						    			<strong>What could Steve Wozniak improve on?</strong>
-						    		</div>
-						    	</div>
-						    	<div class="row">
-						    		<div class="col-lg-6">
-						    			<p>Maths, CS, Physics</p>
-						    		</div>
-						    		<div class="col-lg-6">
-						    			<p>Design skills</p>
-						    		</div>
-						    	</div>
-						    	<div class="row">
-						    		<div class="col-lg-12">
-						    			<p><strong>Describe Steve Wozniak</strong></p>
-						    		</div>
-						    	</div>
-						    	<div class="row">
-						    		<div class="col-lg-12">
-						    			<p>Steve is an extremely dynamic person. His experience at Microsoft has really helped him hone his critical and analytical thinking skills which allow him to come up with highly creative and practical solutions. It is always a joy to have a conversation with him. He challenges me to think more broadly and on a larger scale that I would noramlly think of. Steve is also highly connected in the business circles. His influences allows him to speak with anyone at anytime without ever facing rejection. It has been extremely efficient in having him as a team member.</p>
-						    		</div>
-						    	</div>
-						    </div>
-						</a>
+					{% endfor %}
 					<!-- end for -->
 				</div>
 			</div>
@@ -245,24 +152,9 @@
 	</div>
 
 	<div class="col-lg-3">
-		<div class="list-group">
+		<div class="list-group" id="recommend_connections">
 			<div class="list-group-item">
 		    	<h4 id="category_header">Recommend your friends</h4>
-			</div>
-			<div class="list-group-item">
-		    	<img src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-frc3/c0.0.151.151/181592_10150105700371961_7986881_a.jpg" style="height:40px;">
-		    	<span>Sanchit Friend A</span>
-		    	<a href="#" class="btn-sm btn btn-success pull-right">Rec</a>
-			</div>
-			<div class="list-group-item">
-		    	<img src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-frc3/c0.0.151.151/181592_10150105700371961_7986881_a.jpg" style="height:40px;">
-		    	<span>Sanchit Friend B</span>
-		    	<a href="#" class="btn-sm btn btn-success pull-right">Rec</a>
-			</div>
-			<div class="list-group-item">
-		    	<img src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-frc3/c0.0.151.151/181592_10150105700371961_7986881_a.jpg" style="height:40px;">
-		    	<span>Sanchit Friend C</span>
-		    	<a href="#" class="btn-sm btn btn-success pull-right">Rec</a>
 			</div>
 		</div>
 	</div>
