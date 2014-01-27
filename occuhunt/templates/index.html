@@ -32,6 +32,13 @@
   background-size: 60px;
 }
 
+.exit {
+  background-image: url('/static/images/Entrance.jpg');
+  background-repeat: no-repeat;
+  background-position: bottom;
+  background-size: 60px;
+}
+
 </style>
 {% endblock %}
 
@@ -69,7 +76,7 @@
 {% endblock %}
 
 {% block content %}
-  <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1" style="left:20px;padding-top:42px;position:absolute;">
+  <div class="col-lg-1 visible-lg" style="left:20px;padding-top:42px;position:absolute;">
     <div class="btn-group-vertical" id="filter_bar" data-toggle="buttons" style="top: 0px;">
       <button type="button" class="btn btn-categorydisabled favorited-company btn-sm simplebox" onclick="toggleTable('.favorited-company');" style="background-image:url('/static/images/other/fold.png');">Favorites</button>
       <button type="button" class="btn btn-engineering btn-sm simplebox" onclick="toggleTable('.btn-engineering');">Engineering</button>
@@ -81,11 +88,500 @@
     </div>
   </div>
 
+  <!-- SPRING CAREER FAIR -->
+  <div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <!-- Information about the career fair -->
+        <div class="row visible-lg">
+          <div class="col-lg-4">
+            <h4 align="left">January 29-30th, 11am - 4pm</h4>
+          </div>
+          <div class="col-lg-4">
+            <h4 class="text-center venue-center">Spring Career Fair</h4>
+          </div>
+          <div class="col-lg-4">
+            <h4 class="text-right">Recreational Sports Facility</h4>
+          </div>
+        </div>
+        <div class="row hidden-lg">
+            <h4 align="left">Spring Career Fair, January 29-30th 11am - 4pm, RSF - Field House Gym</h4>
+        </div>
+        <!-- Spring Career Fair Day 1 Career -->
+
+        <p class="text-center room-top">Day 1 - Field House Gym</p>
+        <div class="row">
+          <div class="col-lg-8">
+            <table>
+              <tbody><tr>
+                <td id="career_fair_map" class="top-border left-border"><a class="btn btn-technology fair-table vcenter" data-poload="444" value="company_444">Ask.com</a></td>
+                <td id="career_fair_map" class="top-border"></td>
+                <td id="career_fair_map" class="top-border"></td>
+                <td id="career_fair_map" class="top-border"></td>
+                <td id="career_fair_map" class="top-border"></td>
+                <td id="career_fair_map" class="top-border"></td>
+                <td id="career_fair_map" class="top-border"></td>
+                <td id="career_fair_map" class="top-border"></td>
+                <td id="career_fair_map" class="top-border"></td>
+                <td id="career_fair_map" class="top-border"></td>
+                <td id="career_fair_map" class="top-border"></td>
+                <td id="career_fair_map" class="top-border"></td>
+                <td id="career_fair_map" class="top-border"></td>
+                <td id="career_fair_map" class="top-border"></td>
+                <td id="career_fair_map" class="top-border right-border"></td>
+              </tr><tr>
+                <td id="career_fair_map" class="left-border"><a class="btn btn-technology fair-table vcenter" data-poload="445" value="company_445">Wix.com</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="302" value="company_302">Salesforce</a></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="446" value="company_446">Rev.com</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="226" value="company_226">Yahoo!</a></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="447" value="company_447">vIPtela</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"><a class="btn btn-government fair-table vcenter" data-poload="448" value="company_448">NASA AMES</a></td>
+                <td id="career_fair_map"><a class="btn btn-government fair-table vcenter" data-poload="242" value="company_242">Sandia National Labs</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"><a class="btn btn-engineering fair-table vcenter" data-poload="449" value="company_449">Toyota</a></td>
+                <td id="career_fair_map"><a class="btn btn-engineering fair-table vcenter" data-poload="450" value="company_450">Altera</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map" class="right-border"><a class="btn btn-engineering fair-table vcenter" data-poload="451" value="company_451">Seagate</a></td>
+              </tr><tr>
+                <td id="career_fair_map" class="left-border"><a class="btn btn-technology fair-table vcenter" data-poload="452" value="company_452">Thoughtworks</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="453" value="company_453">CA Technologies</a></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="454" value="company_454">OSIsoft</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="455" value="company_455">Practice Fusion</a></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="381" value="company_381">Climate Corp</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="227" value="company_227">Workday</a></td>
+                <td id="career_fair_map"><a class="btn btn-other fair-table vcenter" data-poload="457" value="company_">E&J Gallo Winery</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"><a class="btn btn-engineering fair-table vcenter" data-poload="241" value="company_241">Sandisk</a></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="285" value="company_285">National Instruments</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map" class="right-border"><a class="btn btn-engineering fair-table vcenter" data-poload="398" value="company_398">CDM Smith</a></td>
+              </tr><tr>
+                <td id="career_fair_map" class="left-border"><a class="btn btn-technology fair-table vcenter" data-poload="297" value="company_297">Quizlet</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="458" value="company_458">Lithium Technologies</a></td>
+                <td id="career_fair_map"><a class="btn btn-engineering fair-table vcenter" data-poload="459" value="company_459">Canon USA</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="460" value="company_460">MapR Technologies</a></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="335" value="company_335">Reflektion</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="323" value="company_323">Arista Networks</a></td>
+                <td id="career_fair_map"><a class="btn btn-engineering fair-table vcenter" data-poload="461" value="company_461">Cray</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"><a class="btn btn-other fair-table vcenter" data-poload="" value="">Pearl Harbor</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map" class="right-border"><a class="btn btn-technology fair-table vcenter" data-poload="283" value="company_283">Motorola</a></td>
+              </tr><tr>
+                <td id="career_fair_map" class="left-border"><a class="btn btn-technology fair-table vcenter" data-poload="298" value="company_298">Rackspace</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"><a class="btn btn-finance fair-table vcenter" data-poload="462" value="company_462">Altman Vilandrie</a></td>
+                <td id="career_fair_map"><a class="btn btn-engineering fair-table vcenter" data-poload="463" value="company_463">Jut</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"><a class="btn btn-other fair-table vcenter" data-poload="464" value="company_464">Kohl's</a></td>
+                <td id="career_fair_map"><a class="btn btn-health fair-table vcenter" data-poload="465" value="company_465">Precision Health</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="466" value="company_466">Survey Monkey</a></td>
+                <td id="career_fair_map"><a class="btn btn-other fair-table vcenter" data-poload="" value="">PCTEST</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"><a class="btn btn-other fair-table vcenter" data-poload="467" value="company_467">CCC Central San</a></td>
+                <td id="career_fair_map"><a class="btn btn-other fair-table vcenter" data-poload="468" value="company_468">URS</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map" class="right-border"><a class="btn btn-other fair-table vcenter" data-poload="469" value="company_469">Permasteelisa</a></td>
+              </tr><tr>
+                <td id="career_fair_map" class="left-border"><a class="btn btn-technology fair-table vcenter" data-poload="293" value="company_293">Pivotal Labs</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="470" value="company_470">Symantec</a></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="471" value="company_471">Moka5</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="288" value="company_288">Oracle</a></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="290" value="company_290">Pandora</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"><a class="btn btn-engineering fair-table vcenter" data-poload="276" value="company_276">KLA-Tencor</a></td>
+                <td id="career_fair_map"><a class="btn btn-engineering fair-table vcenter" data-poload="472" value="472">DuPont Industrial Bio</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="473" value="company_473">Marvell</a></td>
+                <td id="career_fair_map"><a class="btn btn-other fair-table vcenter" data-poload="474" value="company_474">Schlumberger</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map" class="right-border"><a class="btn btn-tecnology fair-table vcenter" data-poload="475" value="company_475">Micron Technology</a></td>
+              </tr><tr>
+                <td id="career_fair_map" class="left-border"><a class="btn btn-technology fair-table vcenter" data-poload="263" value="company_263">GoDaddy</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map" class="right-border"><a class="btn btn-technology fair-table vcenter" data-poload="309" value="company_309">Sequoia</a></td>
+              </tr><tr>
+                <td id="career_fair_map" class="left-border"><a class="btn btn-technology fair-table vcenter" data-poload="342" value="company_342">Liveramp</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map" class="right-border"><a class="btn btn-other fair-table vcenter" data-poload="476" value="company_476">Imerys</a></td>
+              </tr><tr>
+                <td id="career_fair_map" class="left-border"><a class="btn btn-engineering fair-table vcenter" data-poload="477" value="company_477">Citrix</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="223" value="company_223">Zynga</a></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="478" value="company_478">Brightroll</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"><a class="btn btn-other fair-table vcenter" data-poload="479" value="company_479">Financial Engines</a></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="480" value="company_480">eBay</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="234" value="company_234">Texas Instruments</a></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="271" value="company_271">Intel</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="481" value="company_481">Location Labs</a></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="246" value="company_246">Meraki</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map" class="right-border"><a class="btn btn-technology fair-table vcenter" data-poload="482" value="company_482">MobileWorks</a></td>
+              </tr><tr>
+                <td id="career_fair_map" class="left-border"><a class="btn btn-technology fair-table vcenter" data-poload="257" value="company_257">Factset Research Sys</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"><a class="btn btn-health fair-table vcenter" data-poload="483" value="company_483">Kaiser Permanente</a></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="484" value="company_484">Healthline</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="485" value="company_485">Piazza</a></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="486" value="company_486">Maximus</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="487" value="company_487">Mu Sigma</a></td>
+                <td id="career_fair_map"><a class="btn btn-engineering fair-table vcenter" data-poload="488" value="company_488">Cymer</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"><a class="btn btn-engineering fair-table vcenter" data-poload="489" value="company_489">Applied Materials</a></td>
+                <td id="career_fair_map"><a class="btn btn-engineering fair-table vcenter" data-poload="424" value="company_424">Boldt</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map" class="right-border"><a class="btn btn-engineering fair-table vcenter" data-poload="320" value="company_320">C3 Energy</a></td>
+              </tr><tr>
+                <td id="career_fair_map" class="left-border"><a class="btn btn-technology fair-table vcenter" data-poload="490" value="company_490">Equilar</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="333" value="company_333">Inflection</a></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="491" value="company_491">Roblox</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="312" value="company_312">Readyforce Henke AI</a></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="492" value="company_492">Stottler Henke AI</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="319" value="company_319">EasyESI</a></td>
+                <td id="career_fair_map"><a class="btn btn-other fair-table vcenter" data-poload="493" value="company_493">FERC</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="494" value="company_494">MemSQL</a></td>
+                <td id="career_fair_map"><a class="btn btn-engineering fair-table vcenter" data-poload="495" value="company_495">Lit Motors</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map" class="right-border"><a class="btn btn-technology fair-table vcenter" data-poload="311" value="company_311">Redfine</a></td>
+              </tr><tr>
+                <td id="career_fair_map" class="left-border"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="496" value="company_496">Informatica</a></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="318" value="company_318">IXL Learning</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"><a class="btn btn-engineering fair-table vcenter" data-poload="248" value="company_248">Comcast</a></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="497" value="company_497">Lam Research</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"><a class="btn btn-other fair-table vcenter" data-poload="207" value="company_207">Accenture</a></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="255" value="company_255">F5 Networks</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="498" value="company_498">Fitbit</a></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="499" value="company_499">Analog Devices</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map" class="right-border"></td>
+              </tr><tr>
+                <td id="career_fair_map" class="left-border"><a class="btn btn-technology fair-table vcenter" data-poload="213" value="company_213">AppDynamics</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"><a class="btn btn-health fair-table vcenter" data-poload="220" value="company_220">AthenaHealth</a></td>
+                <td id="career_fair_map"><a class="btn btn-health fair-table vcenter" data-poload="249" value="company_249">Counsyl</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="270" value="company_270">Indiegogo</a></td>
+                <td id="career_fair_map"><a class="btn btn-other fair-table vcenter" data-poload="281" value="company_281">Microsoft</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="239" value="company_239">SK Hynix</a></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="280" value="company_280">Maxim Integrated</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="274" value="company_274">Juniper Networks</a></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="277" value="company_277">Amamzon Lab126</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map" class="right-border"><a class="btn btn-technology fair-table vcenter" data-poload="211" value="company_211">Akamai</a></td>
+              </tr><tr>
+                <td id="career_fair_map" class="left-border bottom-border"><a class="btn btn-technology fair-table vcenter" data-poload="268" value="company_268">Hewlett Packard</a></td>
+                <td id="career_fair_map" class="bottom-border"></td>
+                <td id="career_fair_map" class="bottom-border"></td>
+                <td id="career_fair_map" class="bottom-border"></td>
+                <td id="career_fair_map" class="bottom-border"></td>
+                <td id="career_fair_map" class="bottom-border"></td>
+                <td id="career_fair_map" class="entrance"></td>
+                <td id="career_fair_map" class="entrance"></td>
+                <td id="career_fair_map" class="entrance"></td>
+                <td id="career_fair_map" class="entrance"></td>
+                <td id="career_fair_map" class="bottom-border"></td>
+                <td id="career_fair_map" class="bottom-border"></td>
+                <td id="career_fair_map" class="bottom-border"></td>
+                <td id="career_fair_map" class="bottom-border"></td>
+                <td id="career_fair_map" class="bottom-border right-border"><a class="btn btn-engineering fair-table vcenter" data-poload="262" value="company_262">General Motors</a></td>
+              </tr>
+            </tbody></table>
+          </div>
+        </div>
+
+        <br /><br />
+
+        <p class="text-center room-top">Day 2 - Field House Gym</p>
+        <div class="row">
+          <div class="col-lg-8">
+            <table>
+              <tbody><tr>
+                <td id="career_fair_map" class="top-border left-border"><a class="btn btn-technology fair-table vcenter" data-poload="444" value="company_444">Ask.com</a></td>
+                <td id="career_fair_map" class="top-border"></td>
+                <td id="career_fair_map" class="top-border"></td>
+                <td id="career_fair_map" class="top-border"></td>
+                <td id="career_fair_map" class="top-border"></td>
+                <td id="career_fair_map" class="top-border"></td>
+                <td id="career_fair_map" class="top-border"></td>
+                <td id="career_fair_map" class="top-border"></td>
+                <td id="career_fair_map" class="top-border"></td>
+                <td id="career_fair_map" class="top-border"></td>
+                <td id="career_fair_map" class="top-border"></td>
+                <td id="career_fair_map" class="top-border"></td>
+                <td id="career_fair_map" class="top-border"></td>
+                <td id="career_fair_map" class="top-border"></td>
+                <td id="career_fair_map" class="top-border right-border"></td>
+              </tr><tr>
+                <td id="career_fair_map" class="left-border"><a class="btn btn-technology fair-table vcenter" data-poload="445" value="company_445">Wix.com</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="302" value="company_302">Salesforce</a></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="446" value="company_446">Rev.com</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="226" value="company_226">Yahoo!</a></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="447" value="company_447">vIPtela</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"><a class="btn btn-government fair-table vcenter" data-poload="448" value="company_448">NASA AMES</a></td>
+                <td id="career_fair_map"><a class="btn btn-government fair-table vcenter" data-poload="242" value="company_242">Sandia National Labs</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"><a class="btn btn-engineering fair-table vcenter" data-poload="449" value="company_449">Toyota</a></td>
+                <td id="career_fair_map"><a class="btn btn-engineering fair-table vcenter" data-poload="450" value="company_450">Altera</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map" class="right-border"><a class="btn btn-engineering fair-table vcenter" data-poload="451" value="company_451">Seagate</a></td>
+              </tr><tr>
+                <td id="career_fair_map" class="left-border"><a class="btn btn-technology fair-table vcenter" data-poload="452" value="company_452">Thoughtworks</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="453" value="company_453">CA Technologies</a></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="454" value="company_454">OSIsoft</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="455" value="company_455">Practice Fusion</a></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="381" value="company_381">Climate Corp</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="227" value="company_227">Workday</a></td>
+                <td id="career_fair_map"><a class="btn btn-other fair-table vcenter" data-poload="457" value="company_">E&J Gallo Winery</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"><a class="btn btn-engineering fair-table vcenter" data-poload="241" value="company_241">Sandisk</a></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="285" value="company_285">National Instruments</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map" class="right-border"><a class="btn btn-engineering fair-table vcenter" data-poload="398" value="company_398">CDM Smith</a></td>
+              </tr><tr>
+                <td id="career_fair_map" class="left-border"><a class="btn btn-technology fair-table vcenter" data-poload="297" value="company_297">Quizlet</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="458" value="company_458">Lithium Technologies</a></td>
+                <td id="career_fair_map"><a class="btn btn-engineering fair-table vcenter" data-poload="459" value="company_459">Canon USA</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="460" value="company_460">MapR Technologies</a></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="335" value="company_335">Reflektion</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="323" value="company_323">Arista Networks</a></td>
+                <td id="career_fair_map"><a class="btn btn-engineering fair-table vcenter" data-poload="461" value="company_461">Cray</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"><a class="btn btn-other fair-table vcenter" data-poload="" value="">Pearl Harbor</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map" class="right-border"><a class="btn btn-technology fair-table vcenter" data-poload="283" value="company_283">Motorola</a></td>
+              </tr><tr>
+                <td id="career_fair_map" class="left-border"><a class="btn btn-technology fair-table vcenter" data-poload="298" value="company_298">Rackspace</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"><a class="btn btn-finance fair-table vcenter" data-poload="462" value="company_462">Altman Vilandrie</a></td>
+                <td id="career_fair_map"><a class="btn btn-engineering fair-table vcenter" data-poload="463" value="company_463">Jut</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"><a class="btn btn-other fair-table vcenter" data-poload="464" value="company_464">Kohl's</a></td>
+                <td id="career_fair_map"><a class="btn btn-health fair-table vcenter" data-poload="465" value="company_465">Precision Health</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="466" value="company_466">Survey Monkey</a></td>
+                <td id="career_fair_map"><a class="btn btn-other fair-table vcenter" data-poload="" value="">PCTEST</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"><a class="btn btn-other fair-table vcenter" data-poload="467" value="company_467">CCC Central San</a></td>
+                <td id="career_fair_map"><a class="btn btn-other fair-table vcenter" data-poload="468" value="company_468">URS</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map" class="right-border"><a class="btn btn-other fair-table vcenter" data-poload="469" value="company_469">Permasteelisa</a></td>
+              </tr><tr>
+                <td id="career_fair_map" class="left-border"><a class="btn btn-technology fair-table vcenter" data-poload="293" value="company_293">Pivotal Labs</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="470" value="company_470">Symantec</a></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="471" value="company_471">Moka5</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="288" value="company_288">Oracle</a></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="290" value="company_290">Pandora</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"><a class="btn btn-engineering fair-table vcenter" data-poload="276" value="company_276">KLA-Tencor</a></td>
+                <td id="career_fair_map"><a class="btn btn-engineering fair-table vcenter" data-poload="472" value="472">DuPont Industrial Bio</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="473" value="company_473">Marvell</a></td>
+                <td id="career_fair_map"><a class="btn btn-other fair-table vcenter" data-poload="474" value="company_474">Schlumberger</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map" class="right-border"><a class="btn btn-tecnology fair-table vcenter" data-poload="475" value="company_475">Micron Technology</a></td>
+              </tr><tr>
+                <td id="career_fair_map" class="left-border"><a class="btn btn-technology fair-table vcenter" data-poload="263" value="company_263">GoDaddy</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map" class="right-border"><a class="btn btn-technology fair-table vcenter" data-poload="309" value="company_309">Sequoia</a></td>
+              </tr><tr>
+                <td id="career_fair_map" class="left-border"><a class="btn btn-technology fair-table vcenter" data-poload="342" value="company_342">Liveramp</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map" class="right-border"><a class="btn btn-other fair-table vcenter" data-poload="476" value="company_476">Imerys</a></td>
+              </tr><tr>
+                <td id="career_fair_map" class="left-border"><a class="btn btn-engineering fair-table vcenter" data-poload="477" value="company_477">Citrix</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="223" value="company_223">Zynga</a></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="478" value="company_478">Brightroll</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"><a class="btn btn-other fair-table vcenter" data-poload="479" value="company_479">Financial Engines</a></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="480" value="company_480">eBay</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="234" value="company_234">Texas Instruments</a></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="271" value="company_271">Intel</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="481" value="company_481">Location Labs</a></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="246" value="company_246">Meraki</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map" class="right-border"><a class="btn btn-technology fair-table vcenter" data-poload="482" value="company_482">MobileWorks</a></td>
+              </tr><tr>
+                <td id="career_fair_map" class="left-border"><a class="btn btn-technology fair-table vcenter" data-poload="257" value="company_257">Factset Research Sys</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"><a class="btn btn-health fair-table vcenter" data-poload="483" value="company_483">Kaiser Permanente</a></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="484" value="company_484">Healthline</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="485" value="company_485">Piazza</a></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="486" value="company_486">Maximus</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="487" value="company_487">Mu Sigma</a></td>
+                <td id="career_fair_map"><a class="btn btn-engineering fair-table vcenter" data-poload="488" value="company_488">Cymer</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"><a class="btn btn-engineering fair-table vcenter" data-poload="489" value="company_489">Applied Materials</a></td>
+                <td id="career_fair_map"><a class="btn btn-engineering fair-table vcenter" data-poload="424" value="company_424">Boldt</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map" class="right-border"><a class="btn btn-engineering fair-table vcenter" data-poload="320" value="company_320">C3 Energy</a></td>
+              </tr><tr>
+                <td id="career_fair_map" class="left-border"><a class="btn btn-technology fair-table vcenter" data-poload="490" value="company_490">Equilar</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="333" value="company_333">Inflection</a></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="491" value="company_491">Roblox</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="312" value="company_312">Readyforce Henke AI</a></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="492" value="company_492">Stottler Henke AI</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="319" value="company_319">EasyESI</a></td>
+                <td id="career_fair_map"><a class="btn btn-other fair-table vcenter" data-poload="493" value="company_493">FERC</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="494" value="company_494">MemSQL</a></td>
+                <td id="career_fair_map"><a class="btn btn-engineering fair-table vcenter" data-poload="495" value="company_495">Lit Motors</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map" class="right-border"><a class="btn btn-technology fair-table vcenter" data-poload="311" value="company_311">Redfine</a></td>
+              </tr><tr>
+                <td id="career_fair_map" class="left-border"></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="496" value="company_496">Informatica</a></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="318" value="company_318">IXL Learning</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"><a class="btn btn-engineering fair-table vcenter" data-poload="248" value="company_248">Comcast</a></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="497" value="company_497">Lam Research</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"><a class="btn btn-other fair-table vcenter" data-poload="207" value="company_207">Accenture</a></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="255" value="company_255">F5 Networks</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="498" value="company_498">Fitbit</a></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="499" value="company_499">Analog Devices</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map" class="right-border"></td>
+              </tr><tr>
+                <td id="career_fair_map" class="left-border"><a class="btn btn-technology fair-table vcenter" data-poload="213" value="company_213">AppDynamics</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"><a class="btn btn-health fair-table vcenter" data-poload="220" value="company_220">AthenaHealth</a></td>
+                <td id="career_fair_map"><a class="btn btn-health fair-table vcenter" data-poload="249" value="company_249">Counsyl</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="270" value="company_270">Indiegogo</a></td>
+                <td id="career_fair_map"><a class="btn btn-other fair-table vcenter" data-poload="281" value="company_281">Microsoft</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="239" value="company_239">SK Hynix</a></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="280" value="company_280">Maxim Integrated</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="274" value="company_274">Juniper Networks</a></td>
+                <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="277" value="company_277">Amamzon Lab126</a></td>
+                <td id="career_fair_map"></td>
+                <td id="career_fair_map" class="right-border"><a class="btn btn-technology fair-table vcenter" data-poload="211" value="company_211">Akamai</a></td>
+              </tr><tr>
+                <td id="career_fair_map" class="left-border bottom-border"><a class="btn btn-technology fair-table vcenter" data-poload="268" value="company_268">Hewlett Packard</a></td>
+                <td id="career_fair_map" class="bottom-border"></td>
+                <td id="career_fair_map" class="bottom-border"></td>
+                <td id="career_fair_map" class="bottom-border"></td>
+                <td id="career_fair_map" class="bottom-border"></td>
+                <td id="career_fair_map" class="bottom-border"></td>
+                <td id="career_fair_map" class="entrance"></td>
+                <td id="career_fair_map" class="entrance"></td>
+                <td id="career_fair_map" class="entrance"></td>
+                <td id="career_fair_map" class="entrance"></td>
+                <td id="career_fair_map" class="bottom-border"></td>
+                <td id="career_fair_map" class="bottom-border"></td>
+                <td id="career_fair_map" class="bottom-border"></td>
+                <td id="career_fair_map" class="bottom-border"></td>
+                <td id="career_fair_map" class="bottom-border right-border"><a class="btn btn-engineering fair-table vcenter" data-poload="262" value="company_262">General Motors</a></td>
+              </tr>
+            </tbody></table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <hr />
   <div class="row">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="fair_map">
       <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-          <!-- Information about the Civil and Environmental Engineering fair -->
           <div class="row visible-lg">
             <div class="col-lg-4">
               <h4 align="left">January 27th, 11am - 2pm</h4>
@@ -811,11 +1307,11 @@
                   <td id="career_fair_map"></td>
                   <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="304" value="company_304">Tubemogul</a></td>
                   <td id="career_fair_map"></td>
-                  <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter favorited-company" data-poload="317" value="company_317">Lumosity</a></td>
+                  <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="317" value="company_317">Lumosity</a></td>
                   <td id="career_fair_map"></td>
                   <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="337" value="company_337">Liveramp</a></td>
                   <td id="career_fair_map"></td>
-                  <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter favorited-company" data-poload="346" value="company_346">Nest Labs</a></td>
+                  <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="346" value="company_346">Nest Labs</a></td>
                 </tr><tr>
                   <td id="career_fair_map"></td>
                   <td id="career_fair_map"></td>
@@ -1018,7 +1514,7 @@
                     <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="278" value="company_278">LinkedIn / Slideshare</a></td>
                     <td id="career_fair_map"></td>
                     <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="292" value="company_292">Pinterest</a></td>
-                    <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter favorited-company" data-poload="256" value="company_256">Facebook</a></td>
+                    <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="256" value="company_256">Facebook</a></td>
                     <td id="career_fair_map"></td>
                     <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="227" value="company_227">Workday</a></td>
                     <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="226" value="company_226">Yahoo!</a></td>
@@ -1049,7 +1545,7 @@
                     <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="254" value="company_254">EMC</a></td>
                     <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="224" value="company_224">Zazzle</a></td>
                     <td id="career_fair_map"></td>
-                    <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter favorited-company" data-poload="291" value="company_291">Path</a></td>
+                    <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="291" value="company_291">Path</a></td>
                     <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="209" value="company_209">Adobe</a></td>
                     <td id="career_fair_map"></td>
                     <td id="career_fair_map"><a class="btn btn-engineering fair-table vcenter" data-poload="222" value="company_222">Box</a></td>
@@ -1073,7 +1569,7 @@
                     <td id="career_fair_map"></td>
                     <td id="career_fair_map"><a class="btn btn-other fair-table vcenter" data-poload="299" value="company_299">Redfin</a></td>
                   </tr><tr>
-                    <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter favorited-company" data-poload="210" value="company_210">Airbnb</a></td>
+                    <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="210" value="company_210">Airbnb</a></td>
                     <td id="career_fair_map"></td>
                     <td id="career_fair_map"></td>
                     <td id="career_fair_map"></td>
@@ -1124,7 +1620,7 @@
                     <td id="career_fair_map"><a class="btn btn-engineering fair-table vcenter" data-poload="262" value="company_262">General Motors</a></td>
                     <td id="career_fair_map"></td>
                     <td id="career_fair_map"><a class="btn btn-government fair-table vcenter" data-poload="242" value="company_242">Sandia National Labs</a></td>
-                    <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter favorited-company" data-poload="211" value="company_211">Akamai Technologies</a></td>
+                    <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="211" value="company_211">Akamai Technologies</a></td>
                     <td id="career_fair_map"></td>
                     <td id="career_fair_map"><a class="btn btn-engineering fair-table vcenter" data-poload="216" value="company_216">ARM</a></td>
                     <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="219" value="company_219">AT&amp;T</a></td>
@@ -1133,9 +1629,9 @@
                     <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="281" value="company_281">Microsoft</a></td>
                     <td id="career_fair_map"></td>
                     <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="298" value="company_298">Rackspace</a></td>
-                    <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter favorited-company" data-poload="265" value="company_265">Google</a></td>
+                    <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="265" value="company_265">Google</a></td>
                     <td id="career_fair_map"></td>
-                    <td id="career_fair_map"><a class="btn btn-health fair-table vcenter favorited-company" data-poload="249" value="company_249">Counsyl</a></td>
+                    <td id="career_fair_map"><a class="btn btn-health fair-table vcenter" data-poload="249" value="company_249">Counsyl</a></td>
                   </tr><tr>
                     <td id="career_fair_map"><a class="btn btn-engineering fair-table vcenter" data-poload="248" value="company_248">Comcast / NBC Universal</a></td>
                     <td id="career_fair_map"></td>
@@ -1172,10 +1668,10 @@
                     <td id="career_fair_map"></td>
                     <td id="career_fair_map"></td>
                     <td id="career_fair_map"><a class="btn btn-engineering fair-table vcenter" data-poload="271" value="company_271">Intel</a></td>
-                    <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter favorited-company" data-poload="212" value="company_212">Amazon</a></td>
+                    <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="212" value="company_212">Amazon</a></td>
                     <td id="career_fair_map"></td>
                     <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="261" value="company_261">General Electric</a></td>
-                    <td id="career_fair_map"><a class="btn btn-other fair-table vcenter favorited-company" data-poload="207" value="company_207">Accenture</a></td>
+                    <td id="career_fair_map"><a class="btn btn-other fair-table vcenter" data-poload="207" value="company_207">Accenture</a></td>
                     <td id="career_fair_map"></td>
                     <td id="career_fair_map"><a class="btn btn-engineering fair-table vcenter" data-poload="274" value="company_274">Juniper Networks</a></td>
                     <td id="career_fair_map"><a class="btn btn-finance fair-table vcenter" data-poload="296" value="company_296">PWC</a></td>
