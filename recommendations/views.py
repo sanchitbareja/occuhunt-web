@@ -24,18 +24,10 @@ def recommendation_main(request):
 	print request.user
 	print request.user.linkedin_uid
 	# get recommendations for this guy
-	recommendations_given = Recommendation.objects.filter(recommendation_from=request.user.linkedin_uid)
-	recommendations_for_me = Recommendation.objects.filter(recommendation_to=request.user.linkedin_uid).values('recommendation_to','relationship','project','answer1','answer2','answer3')
-	people_who_recommended_me = Recommendation.objects.filter(recommendation_to=request.user.linkedin_uid).values('recommendation_from')
-	number_of_hidden_people = 0
-	if len(people_who_recommended_me)%3 != 0:
-		number_of_hidden_people = len(people_who_recommended_me)%3
-		people_who_recommended_me = people_who_recommended_me[0:len(people_who_recommended_me)-len(people_who_recommended_me)%3]
-	print people_who_recommended_me
-	print number_of_hidden_people
+	recommendations_for_me = Recommendation.objects.filter(recommendation_to=request.user.linkedin_uid)
 	# jumble these recs up
 	# get recommendations by this guy
-	return render_to_response('recommendation.html', {'version': version, 'recommendations_given':recommendations_given,'recommendations_for_me':recommendations_for_me,'people_who_recommended_me':people_who_recommended_me,'number_of_hidden_people':range(number_of_hidden_people)}, RequestContext(request))
+	return render_to_response('recommendation.html', {'version': version, 'recommendations_for_me':recommendations_for_me, 'user_linkedin_uid':request.user.linkedin_uid}, RequestContext(request))
 
 @login_required
 def recommendation_new(request, linkedin_uid):
@@ -62,6 +54,13 @@ def recommendation_requests(request):
 
 @login_required
 def recommendation_requests_new(request):
+	"""
+	Create a new request for recommendation
+	"""
+	return render_to_response('recommendation_requests_new.html', {'version': version}, RequestContext(request))
+
+@login_required
+def recommendation_analytics(request):
 	"""
 	Create a new request for recommendation
 	"""

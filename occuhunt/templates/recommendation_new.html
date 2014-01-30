@@ -1,12 +1,7 @@
-{% extends "base.html" %}
+{% extends "showcase_base.html" %}
 {% load static from staticfiles %}
 {% load i18n %}
 {% load url from future %}
-
-{% block extra_style %}
-<link href="{% static "occuhunt/css/recommendation.css" %}" rel="stylesheet">
-{% endblock %}
-
 
 {% block extra_script %}
 
@@ -33,100 +28,89 @@
 {% endblock %}
 
 
-{% block content %}
+{% block main_content %}
 
 
-<div class="row">
-	<div class="col-lg-2">
-		<div class="list-group">
-		  	<div class="list-group-item">
-		    	<img src="{% static 'images/Sanchit-rec-example.png' %}" style="width:100%;">
-			</div>
-		</div>
-		<div class="text-right">
-			<a href="/recommend/" class="btn btn-link">My Recs</a>
-			<a href="/recommend/requests/" class="btn btn-link">Requests</a>
-			<a href="/recommend/requests/new" class="btn btn-link">Send invites</a>
-		</div>
-	</div>
-
-	<input type="hidden" name="recommendation_for" value="{{recommendation_for}}">
-	<input type="hidden" name="recommendation_by" value="{{recommendation_by}}">
-	<div class="col-lg-7">
-		<div class="category_box" id="recommendation_form">
-		  	<h4 id="category_header">Give a Recommendation (Private and Confidential)</h4>
-		  	<h5 id="category_subheader">Your peers value your feedback. Help them improve!</h5>
-		  	<hr>
-		  	<div id="category_body">
-		  		<div class="row">
-					<div class="col-lg-9">
-						<div class="row">
-							<div class="col-lg-6">
-								<p><strong>For: </strong><span id="recommendation_for_name"></span></p>
-							</div>
-							<div class="col-lg-6">
-								<label>
-							      	<input type="checkbox"> Allow recruiters to contact me
-							    </label>
-							</div>
+<input type="hidden" name="recommendation_for" value="{{recommendation_for}}">
+<input type="hidden" name="recommendation_by" value="{{recommendation_by}}">
+<div class="col-lg-7">
+	<div class="category_box" id="recommendation_form">
+	  	<h4 id="category_header">Give a Recommendation (Private and Confidential)</h4>
+	  	<h5 id="category_subheader">Your peers value your feedback. Help them improve!</h5>
+	  	<hr>
+	  	<div id="category_body">
+	  		<div class="row">
+				<div class="col-lg-9">
+					<div class="row">
+						<div class="col-lg-6">
+							<p><strong>For: </strong><span id="recommendation_for_name"></span></p>
 						</div>
-						<br />
-						<div class="row">
-							<div class="col-lg-6">
-								<input type="text" class="input-text-bordered" name="recommendation_relationship" placeholder="Relationship (e.g. Co-worker, Senior, Project Mate, Professor)"><br />
-							</div>
-							<div class="col-lg-6">
-								<input type="text" class="input-text-bordered" name="recommendation_project" placeholder="Project (XYZ Project at ABC Company)">
-							</div>
-						</div>						
+						<div class="col-lg-6">
+							<label>
+						      	<input type="checkbox"> Allow recruiters to contact me
+						    </label>
+						</div>
 					</div>
-					<div class="col-lg-3">
-						<img id="recommendation_for_image" src="" style="height:90px;"/>
-					</div>
+					<br />
+					<div class="row">
+						<div class="col-lg-6">
+							<input type="text" class="input-text-bordered" name="recommendation_relationship" placeholder="Relationship (e.g. Co-worker, Senior, Project Mate, Professor)"><br />
+						</div>
+						<div class="col-lg-6">
+							<input type="text" class="input-text-bordered" name="recommendation_project" placeholder="Project (XYZ Project at ABC Company)">
+						</div>
+					</div>						
 				</div>
-				<hr />
-				<div class="row">
-					<div class="col-lg-12">
-						<input type="text" class="input-text-bordered" name="recommendation_answer1" placeholder="What is Person A good at?">
-					</div>
+				<div class="col-lg-3">
+					<img id="recommendation_for_image" src="" style="height:90px;"/>
 				</div>
-				<br />
-				<div class="row">
-					<div class="col-lg-12">
-						<input type="text" class="input-text-bordered" name="recommendation_answer2" placeholder="How could Person A improve?">
-					</div>
-				</div>
-				<br />
-				<div class="row">
-					<div class="col-lg-12">
-						<textarea class="input-textarea-bordered" row="3" name="recommendation_answer3" placeholder="Describe Person A. Give specific events where he did well or where he could have improved."></textarea>
-						<br />
-						<em class="pull-right text-muted">140 words left</em>
-					</div>
-				</div>
-				<br />
-				<div class="row">
-					<div class="col-lg-12">
-						<button class="btn btn-default" style="width:100%;" onclick="send_recommendation();">Recommend</button>
-					</div>
-				</div>
-				<br />
 			</div>
+			<hr />
+			<div class="row">
+				<div class="col-lg-12">
+					<input type="text" class="input-text-bordered" name="recommendation_answer1" placeholder="What is Person A good at?">
+				</div>
+			</div>
+			<br />
+			<div class="row">
+				<div class="col-lg-12">
+					<input type="text" class="input-text-bordered" name="recommendation_answer2" placeholder="How could Person A improve?">
+				</div>
+			</div>
+			<br />
+			<div class="row">
+				<div class="col-lg-12">
+					<textarea class="input-textarea-bordered" row="3" name="recommendation_answer3" placeholder="Describe Person A. Give specific events where he did well or where he could have improved."></textarea>
+					<br />
+					<em class="pull-right text-muted">140 words left</em>
+				</div>
+			</div>
+			<br />
+			<div class="row">
+				<div class="col-lg-12">
+					<button class="btn btn-default" style="width:100%;" onclick="send_recommendation();">Recommend</button>
+				</div>
+			</div>
+			<br />
 		</div>
-		<br />
 	</div>
+	<br />
+</div>
 
-	<div class="col-lg-3">
-		<div class="list-group">
-			<div class="list-group-item">
-		    	<h4 id="category_header">Tips</h4>
-			</div>
-			<div class="list-group-item" style="color:grey;">
-				<p>Be honest and straightforward</p>
-				<p>Your feedback will be confidential and anonymized</p>
-				<p>Your recommendation will propel your friend further in life</p>
-				<p>Think about what makes the person unique when giving feedback. E.g. Sense of humor, charisma, sociability and etc</p>
-			</div>
+{% endblock %}
+
+{% block right_content %}
+
+<div class="col-lg-3">
+	<div class="list-group">
+		<div class="list-group-item">
+	    	<h4 id="category_header">Tips</h4>
+		</div>
+		<div class="list-group-item" style="color:grey;">
+			<p>Be honest and straightforward</p>
+			<p>Your feedback will be confidential and anonymized</p>
+			<p>Your recommendation will propel your friend further in life</p>
+			<p>Think about what makes the person unique when giving feedback. E.g. Sense of humor, charisma, sociability and etc</p>
 		</div>
 	</div>
 </div>

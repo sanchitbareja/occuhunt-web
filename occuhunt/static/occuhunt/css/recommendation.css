@@ -117,3 +117,20 @@
 	padding: 3px;
 	border: 1px solid #70aab0;
 }
+
+#file_upload {
+	position:absolute;
+	z-index:500;
+	top:0;
+	left:0;
+	filter: alpha(opacity=0);
+	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+	opacity:0;
+	background-color:transparent;
+	color:black;
+}
+
+.resume-image {
+	width: 100%;
+	border: 1px solid #acacac;
+}

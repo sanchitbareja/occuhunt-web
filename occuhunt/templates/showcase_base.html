@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load static from staticfiles %}
+{% load i18n %}
+{% load url from future %}
+
+{% block extra_style %}
+<link href="{% static "occuhunt/css/recommendation.css" %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+
+
+<div class="row">
+	<div class="col-lg-2">
+		<div class="text-right">
+			{% if request.get_full_path == "/showcase/" %}
+				<a href="/showcase/" class="btn btn-link active">My Profile</a><br />
+			{% else %}
+				<a href="/showcase/" class="btn btn-link">My Profile</a><br />
+			{% endif %}
+			{% if request.get_full_path == "/showcase/requests/" %}
+				<a href="/showcase/requests/" class="btn btn-link active">Requests</a><br />
+			{% else %}
+				<a href="/showcase/requests/" class="btn btn-link">Requests</a><br />
+			{% endif %}
+			{% if request.get_full_path == "/showcase/requests/new/" %}
+				<a href="/showcase/requests/new/" class="btn btn-link active">Invite</a><br />
+			{% else %}
+				<a href="/showcase/requests/new/" class="btn btn-link">Invite</a><br />
+			{% endif %}
+			{% if request.get_full_path == "/showcase/analytics/" %}
+				<a href="/showcase/analytics/" class="btn btn-link active">Analytics</a><br />
+			{% else %}
+				<a href="/showcase/analytics/" class="btn btn-link">Analytics</a><br />
+			{% endif %}
+		</div>
+	</div>
+
+	{% block main_content %}
+	{% endblock %}
+
+	{% block right_content %}
+	{% endblock %}
+
+</div>
+
+{% endblock %}

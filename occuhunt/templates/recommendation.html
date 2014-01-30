@@ -1,17 +1,37 @@
-{% extends "base.html" %}
+{% extends "showcase_base.html" %}
 {% load static from staticfiles %}
 {% load i18n %}
 {% load url from future %}
-
-{% block extra_style %}
-<link href="{% static "occuhunt/css/recommendation.css" %}" rel="stylesheet">
-{% endblock %}
-
 
 {% block extra_script %}
 
 <!-- Date formatting library -->
 <script src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.1.0/moment.min.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.2/underscore-min.js" type="text/javascript"></script>
+<script type="text/javascript" src="/static/occuhunt/js/lodash.min.js"></script>
+<script type="text/javascript" src="/static/occuhunt/js/s3upload.js"></script>
+<script type="text/javascript" src="/static/occuhunt/js/progress-meter.js"></script>
+<!-- In production, only one script (pdf.js) is necessary -->
+<!-- In production, change the content of PDFJS.workerSrc below -->
+<script type="text/javascript" src="/static/pdfjs/src/shared/util.js"></script>
+<script type="text/javascript" src="/static/pdfjs/src/shared/colorspace.js"></script>
+<script type="text/javascript" src="/static/pdfjs/src/shared/pattern.js"></script>
+<script type="text/javascript" src="/static/pdfjs/src/shared/function.js"></script>
+<script type="text/javascript" src="/static/pdfjs/src/shared/annotation.js"></script>
+<script type="text/javascript" src="/static/pdfjs/src/display/api.js"></script>
+<script type="text/javascript" src="/static/pdfjs/src/display/metadata.js"></script>
+<script type="text/javascript" src="/static/pdfjs/src/display/canvas.js"></script>
+<script type="text/javascript" src="/static/pdfjs/src/display/font_loader.js"></script>
+
+<script type="text/javascript">
+  // Specify the main script used to create a new PDF.JS web worker.
+  // In production, change this to point to the combined `pdf.js` file.
+  PDFJS.workerSrc = '/static/pdfjs/src/worker_loader.js';
+</script>
+
+<script src="/static/occuhunt/js/waypoints.min.js"></script>
+<script src="/static/occuhunt/js/waypoints-infinite.min.js"></script>
+<script src="/static/occuhunt/js/recommendation-app.js"></script>
 
 <script type="text/javascript">
 	$.getScript("http://platform.linkedin.com/in.js?async=true", function(success, response){
@@ -24,8 +44,12 @@
 	});
 
 	function loadRecommendationsApp(){
-		$.getScript("{% static 'occuhunt/js/recommendation-app.js' %}", function(success, response){
-			console.log("launch app");
+		$(document).ready(function(){
+			$("input[name=recommendation_from]").each(function(index){
+				person_who_recommended_me_ui($(this).val());
+			});
+
+			recommend_friends_ui();
 		});
 	}
 </script>
@@ -33,129 +57,102 @@
 {% endblock %}
 
 
-{% block content %}
+{% block main_content %}
 
+<div class="col-lg-7">
+	<input type="hidden" name="user_linkedin_uid" value="{{user_linkedin_uid}}">
 
-<div class="row">
-	<div class="col-lg-2">
-		<div class="list-group">
-		  	<div class="list-group-item">
-		    	<img src="{% static 'images/Sanchit-rec-example.png' %}" style="width:100%;">
-			</div>			
-		</div>
-		<div class="text-right">
-			<a href="/recommend/" class="btn btn-link active">My Recs</a>
-			<a href="/recommend/requests/" class="btn btn-link">Requests</a>
-			<a href="/recommend/requests/new" class="btn btn-link">Send invites</a>
-		</div>
+	<!-- PDF upload process begins -->
+    <div id="file_select_div">
+      <a class='btn btn-lg btn-block btn-done' id="file_select_button" href='javascript:;'>
+        UPLOAD RESUME
+        <input class="btn btn-lg btn-block" type="file" id="file_upload" name="file_source" accept="application/pdf" onchange='render_pdf();'>
+      </a>
+      &nbsp;
+    </div>
+    
+    <!-- This is where the pdf renders -->
+    <div class="row" id="canvas_div">
+      	<canvas id="the-canvas" style="display:none;" />
 	</div>
+  	
+	
+	<div id="resume-showcase"></div>
 
-	<div class="col-lg-7">
-		<div class="category_box" id="about_me">
-		  	<h4 id="category_header">About Me</h4>
-		  	<h5 id="category_subheader">These are recommendations people have written for you</h5>
-		  	<hr>
-		  	<div id="category_body">
-		  		<div class="row">
-		  			<div class="col-lg-11">
-			  			<h4>What are you good at?</h4>
-			  			<ul>
-			  				{% for rec in recommendations_for_me %}
-			  					<li>{{rec.answer1}}</li>
-			  				{% endfor %}
-			  			</ul>
-			  			<h4>How can you improve?</h4>
-			  			<ul>
-			  				{% for rec in recommendations_for_me %}
-			  					<li>{{rec.answer2}}</li>
-			  				{% endfor %}
-			  			</ul>
-			  			<h4>How people describe you?</h4>
-			  			<ul>
-			  				{% for rec in recommendations_for_me %}
-			  					<li>{{rec.answer3}}</li>
-			  				{% endfor %}
-			  			</ul>
-			  		</div>
-			  		<div class="col-lg-1">
-			  			{% for person in people_who_recommended_me %}
-			  				<input type="hidden" name="person_who_recommended_me" value="{{person.recommendation_from}}">
-				  			<img src="" id="person_who_recommended_me_{{person.recommendation_from}}" style="height:30px;">
-			  			{% endfor %}
-			  			{% for i in number_of_hidden_people %}
-			  				<img src="http://octopuspr.co.uk/wp-content/uploads/2013/02/anonymous-icon.png" style="height:30px;" id="unknown_recommender">
-			  			{% endfor %}
-			  			<script type="text/javascript">
-			  				$("#unknown_recommender").tooltip({'title':'unknown_recommender','placement':'left'});
-			  			</script>
-			  		</div>
-			  	</div>
-			</div>
-		</div>
-		<br />
-		<div class="category_box" id="about_me">
-		  	<h4 id="category_header">My Recs</h4>
-		  	<h5 id="category_subheader">These are private(How?) and confidential recommendations you have written for others. Be open-minded about the feedback but know that everyone might not know you equally well.</h5>
-		  	<hr>
-			<div id="category_body">
-				<div class="list-group">
-					<!-- For each of my recs -->
-					{% for recommendation in recommendations_given %}
-						<input type="hidden" name="recommendation_to" value="{{recommendation.recommendation_to}}">
-						<a class="list-group-item background-active">
-					    	<img src="" id="recommendation_given_image_{{recommendation.recommendation_to}}" style="height:40px;">
-					    	<span id="recommendation_given_name0_{{recommendation.recommendation_to}}"></span>
-					    	<br />
-					    	<div id="category_details">
-					    		<br />
-						    	<div class="row">
-						    		<div class="col-lg-6">
-						    			<p><strong>Relationship: </strong>{{recommendation.relationship}}</p>
-						    		</div>
-						    		<div class="col-lg-6">
-						    			<p><strong>At: </strong>WHO</p>
-						    		</div>
-						    	</div>
-						    	<div class="row">
-						    		<div class="col-lg-6">
-						    			<p><strong>What is <span id="recommendation_given_name1_{{recommendation.recommendation_to}}"></span> good at?</strong></p>
-						    		</div>
-						    		<div class="col-lg-6">
-						    			<strong>What could <span id="recommendation_given_name2_{{recommendation.recommendation_to}}"></span> improve on?</strong>
-						    		</div>
-						    	</div>
-						    	<div class="row">
-						    		<div class="col-lg-6">
-						    			<p>{{recommendation.answer1}}</p>
-						    		</div>
-						    		<div class="col-lg-6">
-						    			<p>{{recommendation.answer2}}</p>
-						    		</div>
-						    	</div>
-						    	<div class="row">
-						    		<div class="col-lg-12">
-						    			<p><strong>Describe <span id="recommendation_given_name3_{{recommendation.recommendation_to}}"></span></strong></p>
-						    		</div>
-						    	</div>
-						    	<div class="row">
-						    		<div class="col-lg-12">
-						    			<p>{{recommendation.answer3}}</p>
-						    		</div>
-						    	</div>
-						    </div>
-						</a>
-					{% endfor %}
-					<!-- end for -->
-				</div>
+	<div class="category_box" id="about_me">
+	  	<h4 id="category_header">My Recommendations</h4>
+	  	<h5 id="category_subheader">What are people saying about you?</h5>
+	  	<hr>
+		<div id="category_body">
+			<div class="list-group">
+				<!-- For each of my recs -->
+				{% for recommendation in recommendations_for_me %}
+					<input type="hidden" name="recommendation_from" value="{{recommendation.recommendation_from}}">
+					<a class="list-group-item background-active">
+				    	<img src="" id="recommendation_from_image_{{recommendation.recommendation_from}}" style="height:40px;">
+				    	<span id="recommendation_from_name0_{{recommendation.recommendation_from}}"></span>
+				    	<br />
+				    	<div id="category_details">
+				    		<br />
+					    	<div class="row">
+					    		<div class="col-lg-6">
+					    			<p><strong>Relationship: </strong>{{recommendation.relationship}}</p>
+					    		</div>
+					    		<div class="col-lg-6">
+					    			<p><strong>At: </strong>WHO</p>
+					    		</div>
+					    	</div>
+					    	<div class="row">
+					    		<div class="col-lg-6">
+					    			<p><strong>What are you good at?</strong></p>
+					    		</div>
+					    		<div class="col-lg-6">
+					    			<strong>What could you improve on?</strong>
+					    		</div>
+					    	</div>
+					    	<div class="row">
+					    		<div class="col-lg-6">
+					    			<p>{{recommendation.answer1}}</p>
+					    		</div>
+					    		<div class="col-lg-6">
+					    			<p>{{recommendation.answer2}}</p>
+					    		</div>
+					    	</div>
+					    	<div class="row">
+					    		<div class="col-lg-12">
+					    			<p><strong>How he/she described you?</span></strong></p>
+					    		</div>
+					    	</div>
+					    	<div class="row">
+					    		<div class="col-lg-12">
+					    			<p>{{recommendation.answer3}}</p>
+					    		</div>
+					    	</div>
+					    </div>
+					</a>
+				{% endfor %}
+				<!-- end for -->
 			</div>
 		</div>
 	</div>
+</div>
 
-	<div class="col-lg-3">
-		<div class="list-group" id="recommend_connections">
-			<div class="list-group-item">
-		    	<h4 id="category_header">Recommend your friends</h4>
-			</div>
+{% endblock %}
+
+{% block right_content %}
+
+<div class="col-lg-3">
+	<div class="list-group" id="tips">
+		<div class="list-group-item">
+	    	<h4 id="category_header">Tips</h4>
+		</div>
+		<div class="list-group-item">
+	    	<p id="category_header">Your profile can be viewed by recruiters only</p>
+		</div>
+	</div>
+	<div class="list-group" id="recommend_connections">
+		<div class="list-group-item">
+	    	<h4 id="category_header">Recommend your friends</h4>
 		</div>
 	</div>
 </div>

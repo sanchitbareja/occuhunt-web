@@ -2,7 +2,7 @@ from django.conf.urls import patterns, include, url
 from companies.views import home, splash, companies, company, search
 from resumes.views import resume_feed, sign_s3_upload, submit_resume, individual_resume
 from jobs.views import favorites, apply_jobs, match_jobs
-from recommendations.views import recommendation_main, recommendation_new, recommendation_requests, recommendation_requests_new
+from recommendations.views import recommendation_main, recommendation_new, recommendation_requests, recommendation_requests_new, recommendation_analytics
 from fairs.views import create_fair
 from django.conf import settings
 from django.conf.urls.static import static
@@ -36,10 +36,11 @@ urlpatterns = patterns('',
     url(r'^plan/resume-feed/new-resume/submit_resume/$', submit_resume, name="submit_resume"),
     # url(r'^plan/organize/$', organize_companies, name="organize"),
     url(r'^plan/companies/$', favorites, name='favorites'),
-    url(r'^recommend/$', recommendation_main, name='recommendation_main'),
-    url(r'^recommend/new/(.+)/$', recommendation_new, name='recommendation_new'),
-    url(r'^recommend/requests/$', recommendation_requests, name='recommendation_requests'),
-    url(r'^recommend/requests/new/$', recommendation_requests_new, name='recommendation_requests_new'),
+    url(r'^showcase/$', recommendation_main, name='recommendation_main'),
+    url(r'^showcase/new/(.+)/$', recommendation_new, name='recommendation_new'),
+    url(r'^showcase/requests/$', recommendation_requests, name='recommendation_requests'),
+    url(r'^showcase/requests/new/$', recommendation_requests_new, name='recommendation_requests_new'),
+    url(r'^showcase/analytics/$', recommendation_analytics, name='recommendation_analytics'),
     url(r'^match/$', match_jobs, name='match'),
     url(r'^apply/$', apply_jobs, name='apply'),
     url(r'^feedback/$',feedback_form),
