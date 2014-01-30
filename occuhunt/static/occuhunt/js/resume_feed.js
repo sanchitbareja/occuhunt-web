@@ -330,7 +330,7 @@ function add_new_comment(e) {
 function get_resumes(){
     $.ajax({
         url: '/api/v1/resumes/',
-        data: {'limit':page_limit, 'offset':current_offset},
+        data: {'limit':page_limit, 'offset':current_offset, 'showcase':false},
         dataType: 'json',
         success: function(data, textStatus, jqXHR){
             for (var i = data['response']['resumes'].length - 1; i >= 0; i--) {
@@ -344,7 +344,7 @@ function get_resumes(){
 function get_featured_resumes(){
     $.ajax({
         url: '/api/v1/resumes/',
-        data: {'featured':true, 'limit':page_limit, 'offset':current_offset},
+        data: {'featured':true, 'limit':page_limit, 'offset':current_offset, 'showcase':false},
         dataType: 'json',
         success: function(data, textStatus, jqXHR){
             console.log(data);
@@ -360,7 +360,7 @@ function get_my_resumes(){
     var user_id = $("#user_id").val();
     $.ajax({
         url: '/api/v1/resumes/',
-        data: {'user':user_id, 'limit':page_limit, 'offset':current_offset},
+        data: {'user':user_id, 'limit':page_limit, 'offset':current_offset, 'showcase':false},
         dataType: 'json',
         success: function(data, textStatus, jqXHR){
             console.log(data);
@@ -390,7 +390,8 @@ function new_resume(url,anonymous,original,should_add_new_resume){
               'url': url,
               'anonymous': anonymous,
               'original': original,
-              'featured': feature_resume
+              'featured': feature_resume,
+              'showcase': false,
             }), 
             dataType: 'json',
             contentType: 'application/json',

@@ -11,6 +11,7 @@ class Resume(models.Model):
 	anonymous = models.BooleanField()
 	original = models.BooleanField()
 	featured = models.BooleanField(default=False)
+	showcase = models.BooleanField(default=False)
 
 	def __unicode__(self):
 		return str(self.user)+":"+self.url

@@ -10,6 +10,7 @@ import os, time, simplejson
 from datetime import datetime, timedelta, time
 
 from recommendations.models import Recommendation, Request
+from resumes.models import Resume
 
 from social_auth import __version__ as version
 from social_auth.utils import setting
@@ -25,9 +26,12 @@ def recommendation_main(request):
 	print request.user.linkedin_uid
 	# get recommendations for this guy
 	recommendations_for_me = Recommendation.objects.filter(recommendation_to=request.user.linkedin_uid)
-	# jumble these recs up
-	# get recommendations by this guy
-	return render_to_response('recommendation.html', {'version': version, 'recommendations_for_me':recommendations_for_me, 'user_linkedin_uid':request.user.linkedin_uid}, RequestContext(request))
+	resume = Resume.objects.filter(user=request.user, showcase=True, original=False).order_by('-timestamp')
+	if len(resume) > 0:
+		resume = resume[0]
+	else:
+		resume = None
+	return render_to_response('recommendation.html', {'version': version, 'recommendations_for_me':recommendations_for_me, 'user_linkedin_uid':request.user.linkedin_uid, 'resume':resume}, RequestContext(request))
 
 @login_required
 def recommendation_new(request, linkedin_uid):

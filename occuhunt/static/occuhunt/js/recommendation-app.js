@@ -237,7 +237,8 @@ function new_resume(url,anonymous,original,should_add_new_resume){
           'url': url,
           'anonymous': anonymous,
           'original': original,
-          'featured': feature_resume
+          'featured': feature_resume,
+          'showcase': true
         }), 
         dataType: 'json',
         contentType: 'application/json',
@@ -262,11 +263,9 @@ function new_resume(url,anonymous,original,should_add_new_resume){
 function add_new_resume_html(resume_id,url,comments){
     // add image element
     var resume_direct_url = window.location.origin+"/plan/resume-feed/"+url.slice(36);
-    $("#resume-showcase").prepend(
-    '<div class="category_box">'+
-          '<img class="resume-image" src="'+url+'" />'+
-          '<input type="hidden" id="resume_id" value="'+resume_id+'" >'+
-    '</div><br />');
+    $("#resume-showcase").empty();
+    $("#resume-showcase").append('<img class="resume-image" src="'+url+'" />'+
+          '<input type="hidden" id="resume_id" value="'+resume_id+'" >');
 
     $("#spinnerWait").hide();
 }

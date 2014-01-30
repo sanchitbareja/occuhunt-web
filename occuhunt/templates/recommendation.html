@@ -61,24 +61,49 @@
 
 <div class="col-lg-7">
 	<input type="hidden" name="user_linkedin_uid" value="{{user_linkedin_uid}}">
-
-	<!-- PDF upload process begins -->
-    <div id="file_select_div">
-      <a class='btn btn-lg btn-block btn-done' id="file_select_button" href='javascript:;'>
-        UPLOAD RESUME
-        <input class="btn btn-lg btn-block" type="file" id="file_upload" name="file_source" accept="application/pdf" onchange='render_pdf();'>
-      </a>
-      &nbsp;
-    </div>
     
     <!-- This is where the pdf renders -->
     <div class="row" id="canvas_div">
       	<canvas id="the-canvas" style="display:none;" />
 	</div>
   	
+  	{% if resume %}
+		<!-- PDF upload process begins -->
+	    <div id="file_select_div">
+	      <a class='btn btn-lg btn-block btn-done' id="file_select_button" href='javascript:;'>
+	        UPDATE RESUME
+	        <input class="btn btn-lg btn-block" type="file" id="file_upload" name="file_source" accept="application/pdf" onchange='render_pdf();'>
+	      </a>
+	      &nbsp;
+	    </div>
+	{% else %}
+		<!-- PDF upload process begins -->
+	    <div id="file_select_div">
+	      <a class='btn btn-lg btn-block btn-done' id="file_select_button" href='javascript:;'>
+	        UPLOAD RESUME
+	        <input class="btn btn-lg btn-block" type="file" id="file_upload" name="file_source" accept="application/pdf" onchange='render_pdf();'>
+	      </a>
+	      &nbsp;
+	    </div>
+	{% endif %}
 	
-	<div id="resume-showcase"></div>
-
+	<div class="category_box">
+		<h4 id="category_header">My Resume</h4>
+		<h5 id="category_subheader">This is what recruiters get to see.</h5>
+	  	<div id="category_body" style="margin:0px;">
+	  		<!-- This will be where the resume appears -->
+	  		<div id="resume-showcase">
+	  			{% if resume %}
+				    <!-- Resume appears here -->
+	  				<img class="resume-image" src="{{resume.url}}">
+	  			{% else %}
+	  				<!-- PDF upload process begins -->
+				    <p style="text-align:center;">Upload a resume and showcase your profile to recruiters! This will not be shared with your friends</p>
+	  			{% endif %}
+	  		</div>
+	  	</div>
+	</div>
+	<br />
 	<div class="category_box" id="about_me">
 	  	<h4 id="category_header">My Recommendations</h4>
 	  	<h5 id="category_subheader">What are people saying about you?</h5>

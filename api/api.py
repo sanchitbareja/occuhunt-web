@@ -266,7 +266,7 @@ class ResumeResource(ModelResource):
         always_return_data = True
         allowed_methods = ['get','post']
         filtering = {
-            "featured": ("exact"), "user": ("exact")
+            "featured": ("exact"), "user": ("exact"), "showcase": ("exact")
         }
 
     def dehydrate(self, bundle):
@@ -286,7 +286,7 @@ class ResumeResource(ModelResource):
                 user.resume_points -= 20
                 user.save()
             # need to check if url, anonymous, original supplied
-            new_resume = Resume(user=user, url=bundle.data['url'], anonymous=bundle.data['anonymous'], original=bundle.data['original'], featured=bundle.data['featured'])
+            new_resume = Resume(user=user, url=bundle.data['url'], anonymous=bundle.data['anonymous'], original=bundle.data['original'], featured=bundle.data['featured'], showcase=bundle.data['showcase'])
             new_resume.save()
             bundle.obj = new_resume
         except Exception, e:
