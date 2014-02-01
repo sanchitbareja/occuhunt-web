@@ -5,12 +5,47 @@
 
 {% block extra_style %}
 <link href="{% static "occuhunt/css/recommendation.css" %}" rel="stylesheet">
+
+{% endblock %}
+
+{% block extra_script %}
+
+<script type="text/javascript">
+	$.getScript("http://platform.linkedin.com/in.js?async=true", function(success, response){
+		console.log("get api");
+		IN.init({ 
+			api_key:'xu79xm7p77of', 
+			authorize:true, 
+			onLoad: 'onLinkedInLoad'
+		});
+	});
+
+	function onLinkedInLoad() {
+		console.log("onLinkedInLoad");
+	    IN.Event.on(IN, "auth", loadMainContent);
+	}
+
+	function loadMainContent(){
+		$("#login_content").hide();
+		$("#main_content").show();
+		loadRecommendationsApp();
+	}
+
+</script>
+
+
+	{% block extra_extra_script %}{% endblock %}
+
 {% endblock %}
 
 {% block content %}
 
+<!-- 3. Displays a button to let the viewer authenticate -->
+<div style="text-align:center; height:500px; padding-top:250px;" id="login_content">
+	<script type="IN/Login"></script>
+</div>
 
-<div class="row">
+<div class="row" id="main_content" style="display:none;">
 	<div class="col-lg-2">
 		<div class="text-right">
 			{% if request.get_full_path == "/showcase/" %}

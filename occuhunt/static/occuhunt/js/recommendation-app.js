@@ -55,6 +55,7 @@ function render_pdf(){
 
 function parse_pdf(data){
     // function variables
+    canvasHeight = 0;
     var pages = new Array();
     var pageStarts = new Array();
     var canvas = document.getElementById(canvasId);
@@ -67,7 +68,7 @@ function parse_pdf(data){
     pageStarts[0] = 0;
 
     // Show loading state
-    $("#"+fileUploadId).before('<br /></br /><div id="spinnerWait"><div class="spinner"><div class="bar1"></div><div class="bar2"></div><div class="bar3"></div><div class="bar4"></div><div class="bar5"></div><div class="bar6"></div><div class="bar7"></div><div class="bar8"></div><div class="bar9"></div><div class="bar10"></div><div class="bar11"></div><div class="bar12"></div></div><p></p></div>');
+    $("#"+fileUploadId).before('<div id="spinnerWait"><div class="spinner"><div class="bar1"></div><div class="bar2"></div><div class="bar3"></div><div class="bar4"></div><div class="bar5"></div><div class="bar6"></div><div class="bar7"></div><div class="bar8"></div><div class="bar9"></div><div class="bar10"></div><div class="bar11"></div><div class="bar12"></div></div><p></p></div>');
 
     PDFJS.getDocument(data).then(function(pdf) {
         pdfPages = pdf;
@@ -113,7 +114,6 @@ function parse_pdf(data){
                     context.putImageData(pages[i], 0, pageStarts[i]);
                 }
             }
-
             s3_upload(false);
         });
     }
@@ -247,7 +247,9 @@ function new_resume(url,anonymous,original,should_add_new_resume){
                 console.log(data);
                 if(should_add_new_resume){
                     // remove canvas_div
-                    $("#canvas_div").remove();
+                    // $("#"+canvasId).remove();
+                    // $("#canvas_div").append('<canvas id="the-canvas" style="display:none;" />');
+
                     console.log("uplaoded resume");
                     add_new_resume_html(data['id'],data['url']);
                 }
@@ -267,7 +269,7 @@ function add_new_resume_html(resume_id,url,comments){
     $("#resume-showcase").append('<img class="resume-image" src="'+url+'" />'+
           '<input type="hidden" id="resume_id" value="'+resume_id+'" >');
 
-    $("#spinnerWait").hide();
+    $("#spinnerWait").remove();
 }
 
 

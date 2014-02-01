@@ -197,7 +197,7 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 
-LOGIN_URL = '/login-form/'
+LOGIN_URL = '/login/linkedin/'
 LOGIN_REDIRECT_URL = '/home/'
 LOGIN_ERROR_URL = '/login-error/'
 AUTH_USER_MODEL = 'users.User'

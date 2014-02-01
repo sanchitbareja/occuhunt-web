@@ -3,21 +3,12 @@
 {% load i18n %}
 {% load url from future %}
 
-{% block extra_script %}
+{% block extra_extra_script %}
 
 <!-- Date formatting library -->
 <script src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.1.0/moment.min.js"></script>
 
 <script type="text/javascript">
-	$.getScript("http://platform.linkedin.com/in.js?async=true", function(success, response){
-		console.log("get api");
-		IN.init({ 
-			api_key:'xu79xm7p77of', 
-			authorize:true, 
-			onLoad: 'loadRecommendationsApp'
-		});
-	});
-
 	function loadRecommendationsApp(){
 		$.getScript("{% static 'occuhunt/js/recommendation_new-app.js' %}", function(success, response){
 			console.log("launch app");
