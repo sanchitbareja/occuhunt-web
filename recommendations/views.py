@@ -44,6 +44,19 @@ def recommendation_new(request, linkedin_uid):
 	return render_to_response('recommendation_new.html', {'version': version, 'recommendation_for':linkedin_uid, 'recommendation_by':request.user.linkedin_uid}, RequestContext(request))
 
 @login_required
+def recommendation_new_with_request(request, linkedin_uid, request_id):
+	"""
+	Create a new recommendation
+	"""
+	# check if request_id even exists in the database -> else redirect to normal recommendation with linkedin_uid
+	response_to = Request.objects.filter(id=request_id, request_from=linkedin_uid)
+	if len(response_to):
+		print response_to[0].id
+		return render_to_response('recommendation_new.html', {'version': version, 'recommendation_for':linkedin_uid, 'recommendation_by':request.user.linkedin_uid, 'request_id':response_to[0].id}, RequestContext(request))
+	else:
+		return redirect('recommendation_new', linkedin_uid)
+
+@login_required
 def recommendation_requests(request):
 	"""
 	Lists all the outstanding recommendation requests

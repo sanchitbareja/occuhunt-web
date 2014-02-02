@@ -369,6 +369,13 @@ class RecommendationResource(ModelResource):
         Creates a new recommendation
         """
         try:
+            if bundle.data['replied'] != None:
+                try:
+                    request_obj = Request.objects.get(id=bundle.data['replied'])
+                    request_obj.replied = True
+                    request_obj.save()
+                except Exception, e:
+                    print e
             new_rec = Recommendation(recommendation_from=bundle.data["from"], recommendation_to=bundle.data["to"],relationship=bundle.data["relationship"],project=bundle.data["project"],answer1=bundle.data["answer1"],answer2=bundle.data["answer2"],answer3=bundle.data["answer3"])
             new_rec.save()
             bundle.obj = new_rec

@@ -30,7 +30,7 @@
 	  		<!-- For each request -->
 	  		{% for request in recommendation_requests %}
 		  		<input type="hidden" name="rec_request" value="{{request.request_from}}">
-	  			<a class="list-group-item" onclick="window.location.href='/recommend/new/{{request.request_from}}/';">
+	  			<a class="list-group-item" onclick="window.location.href='/showcase/new/{{request.request_from}}/request/{{request.id}}/';">
 	  				<div class="row">
 	  					<div class="col-lg-2">
 	  						<img id="request_image_{{request.request_from}}" src="" style="height:90px;">

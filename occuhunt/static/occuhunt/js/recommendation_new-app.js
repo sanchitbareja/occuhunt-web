@@ -19,7 +19,8 @@ function update_details(linkedin_uid){
 }
 
 function send_recommendation(){
-	$.ajax({ 
+	var request_id = ($("input[name=request_id]").val())? $("input[name=request_id]").val(): null;
+	$.ajax({
 	    url:'/api/v1/recommendations/', 
 	    type:'POST',
 	    dataType: 'json',
@@ -31,6 +32,7 @@ function send_recommendation(){
 	      'answer1': $("input[name=recommendation_answer1]").val(),
 	      'answer2': $("input[name=recommendation_answer2]").val(),
 	      'answer3': $("textarea[name=recommendation_answer3]").val(),
+	      'replied': request_id
 	    }),
 	    contentType: 'application/json',
 	    statusCode : {

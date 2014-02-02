@@ -24,6 +24,7 @@ class Request(models.Model):
 	project = models.CharField(max_length=1000, null=True, blank=True)
 	message = models.TextField(null=True, blank=True)
 	timestamp = models.DateTimeField(auto_now=False, auto_now_add=True, null=True, blank=True)
+	replied = models.BooleanField(default=False)
 
 	def __unicode__(self):
 		return str(self.request_from)+":"+str(self.request_to)
