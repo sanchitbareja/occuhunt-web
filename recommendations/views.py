@@ -42,7 +42,8 @@ def recommendation_new(request, linkedin_uid):
 	"""
 	print linkedin_uid
 	print request.user
-	print request.user.linkedin_uid
+	print request.user.linkedin_uid		
+	requests_number = Request.objects.filter(request_to=request.user.linkedin_uid, replied=False).count()
 	return render_to_response('recommendation_new.html', {'version': version, 'requests_number':requests_number, 'recommendation_for':linkedin_uid, 'recommendation_by':request.user.linkedin_uid}, RequestContext(request))
 
 @login_required
