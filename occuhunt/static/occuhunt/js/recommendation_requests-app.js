@@ -26,12 +26,14 @@ function recommend_friends_ui(){
 	IN.API.Connections("me").result(function(result) {
 		for (var i = result.values.length - 1; i >= 0; i--) {
 			if(result.values[i].pictureUrl){
-				$("#recommend_connections").append('<a href="/recommend/new/'+result.values[i].id+'/">'+
-		      		'<img class="friend_thumbnail" src="'+result.values[i].pictureUrl+'" style="height:100px;">'+
+				$("#recommend_connections").append('<a href="/showcase/new/'+result.values[i].id+'/">'+
+		      		'<div class="friend_thumbnail"><img src="'+result.values[i].pictureUrl+'" style="height:100px;">'+
+		      		'<span>'+result.values[i].firstName+' '+result.values[i].lastName+'</span></div>'+
 		      	'</a>');
 		    } else {
-		    	$("#recommend_connections").append('<a href="/recommend/new/'+result.values[i].id+'/">'+
-		      		'<img class="friend_thumbnail" src="https://www.clearsounds.com/sites/default/files/images/color-linkedin-128.png" style="height:100px;">'+
+		    	$("#recommend_connections").append('<a href="/showcase/new/'+result.values[i].id+'/">'+
+		      		'<div class="friend_thumbnail"><img src="https://www.clearsounds.com/sites/default/files/images/color-linkedin-128.png" style="height:100px;">'+
+		      		'<span>'+result.values[i].firstName+' '+result.values[i].lastName+'</span></div>'+
 		      	'</a>');
 		    }
 		};

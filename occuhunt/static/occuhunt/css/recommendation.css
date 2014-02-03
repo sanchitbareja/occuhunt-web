@@ -86,8 +86,8 @@
 }
 
 .input-list-bordered {
-	height:90px !important;
-	overflow:scroll;
+	height: 180px !important;
+	overflow: scroll;
 	border: 2px solid #70aab0;
 }
 
@@ -109,13 +109,26 @@
 }
 
 .friend_thumbnail {
-	padding: 3px;
+	display: inline-block;
+	margin: 4px;
+	line-height: 1.428571429;
+	background-color: #fff;
 	border: 1px solid #eee;
+	border-radius: 4px;
+	width: 110px;
+	text-align: center;
 }
 
 .friend_thumbnail:hover {
-	padding: 3px;
 	border: 1px solid #70aab0;
+}
+
+.friend_thumbnail > img {
+
+}
+
+.friend_thumbnail > span {
+	color: #777;
 }
 
 #file_upload {
@@ -133,4 +146,10 @@
 .resume-image {
 	width: 100%;
 	border: 1px solid #acacac;
+}
+
+.notification_number {
+	border:1px solid grey;
+	border-radius:10px;
+	padding:4px;
 }

@@ -55,11 +55,11 @@ function selected_connection(list_index){
 
 	// update headline
 	if(connection.headline){
-		$("#"+linkedin_connection_info).text(connection.firstName+" "+connection.firstName+", "+connection.headline);
-		$("#"+linkedin_connection_info_preview).text(connection.firstName+" "+connection.firstName+", "+connection.headline);
+		$("#"+linkedin_connection_info).text(connection.firstName+" "+connection.lastName+", "+connection.headline);
+		$("#"+linkedin_connection_info_preview).text(connection.firstName+" "+connection.lastName+", "+connection.headline);
 	} else {
-		$("#"+linkedin_connection_info).text(connection.firstName+" "+connection.firstName);
-		$("#"+linkedin_connection_info_preview).text(connection.firstName+" "+connection.firstName);
+		$("#"+linkedin_connection_info).text(connection.firstName+" "+connection.lastName);
+		$("#"+linkedin_connection_info_preview).text(connection.firstName+" "+connection.lastName);
 	}
 
 	// update subject line with name
@@ -87,12 +87,12 @@ function send_request(){
 	       	"recipients": {
 	          	"values": [{
 	            	"person": {
-	               	"_path": "/people/~", // need to replace with actual person's id.
+	               	"_path": "/people/"+connection.id, // need to replace with actual person's id.
 	            	}
 	          	}]
 	        },
 	      	"subject": "Hi "+connection.firstName+", I wanted your input on my work for "+$("#"+linkedin_connection_input_project).val()+".",
-		    "body": $("#"+linkedin_connection_textarea_message).val()+" View the request on http://occuhunt.com/recommend/requests/",
+		    "body": $("#"+linkedin_connection_textarea_message).val()+" View the request on http://occuhunt.com/showcase/requests/",
 		}
 
 		// send linkedin API request
@@ -134,7 +134,7 @@ function send_request(){
 		$("#"+request_recommendation_div).replaceWith('<div class="category_box" id="request_sent">'+
 			'<img src="/static/images/checkmark.png" style="height:100px;"/>'+
 			'<h1>Request Sent</h1>'+
-			'<i>Good work! Recommendations are the first step to a great start! <a href="/recommend/requests/new/" class="btn btn-link">Send more recs</a></i>'+
+			'<i>Good work! Recommendations are the first step to a great start! <a href="/showcase/requests/new/" class="btn btn-link">Send more recs</a></i>'+
 		'</div>');
 	} else {
 		// show error message that they need to select someone to send to

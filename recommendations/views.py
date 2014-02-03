@@ -31,7 +31,9 @@ def recommendation_main(request):
 		resume = resume[0]
 	else:
 		resume = None
-	return render_to_response('recommendation.html', {'version': version, 'recommendations_for_me':recommendations_for_me, 'user_linkedin_uid':request.user.linkedin_uid, 'resume':resume}, RequestContext(request))
+	# number of requests he has
+	requests_number = Request.objects.filter(request_to=request.user.linkedin_uid, replied=False).count()
+	return render_to_response('recommendation.html', {'version': version, 'requests_number':requests_number, 'recommendations_for_me':recommendations_for_me, 'user_linkedin_uid':request.user.linkedin_uid, 'resume':resume}, RequestContext(request))
 
 @login_required
 def recommendation_new(request, linkedin_uid):
@@ -41,7 +43,7 @@ def recommendation_new(request, linkedin_uid):
 	print linkedin_uid
 	print request.user
 	print request.user.linkedin_uid
-	return render_to_response('recommendation_new.html', {'version': version, 'recommendation_for':linkedin_uid, 'recommendation_by':request.user.linkedin_uid}, RequestContext(request))
+	return render_to_response('recommendation_new.html', {'version': version, 'requests_number':requests_number, 'recommendation_for':linkedin_uid, 'recommendation_by':request.user.linkedin_uid}, RequestContext(request))
 
 @login_required
 def recommendation_new_with_request(request, linkedin_uid, request_id):
@@ -52,7 +54,9 @@ def recommendation_new_with_request(request, linkedin_uid, request_id):
 	response_to = Request.objects.filter(id=request_id, request_from=linkedin_uid)
 	if len(response_to):
 		print response_to[0].id
-		return render_to_response('recommendation_new.html', {'version': version, 'recommendation_for':linkedin_uid, 'recommendation_by':request.user.linkedin_uid, 'request_id':response_to[0].id}, RequestContext(request))
+		# number of requests he has
+		requests_number = Request.objects.filter(request_to=request.user.linkedin_uid, replied=False).count()
+		return render_to_response('recommendation_new.html', {'version': version, 'requests_number':requests_number, 'recommendation_for':linkedin_uid, 'recommendation_by':request.user.linkedin_uid, 'request_id':response_to[0].id}, RequestContext(request))
 	else:
 		return redirect('recommendation_new', linkedin_uid)
 
@@ -64,21 +68,27 @@ def recommendation_requests(request):
 	# get current user_id
 	print request.user
 	print request.user.linkedin_uid
-	print Request.objects.filter(request_to=request.user.linkedin_uid)
+	recommendation_requests = Request.objects.filter(request_to=request.user.linkedin_uid, replied=False)
 	# get linkedin uid for this user_id
 	# get requests for this person
-	return render_to_response('recommendation_requests.html', {'version': version, 'recommendation_requests':Request.objects.filter(request_to=request.user.linkedin_uid)}, RequestContext(request))
+	# number of requests he has
+	requests_number = Request.objects.filter(request_to=request.user.linkedin_uid, replied=False).count()
+	return render_to_response('recommendation_requests.html', {'version': version, 'requests_number':requests_number, 'recommendation_requests':recommendation_requests}, RequestContext(request))
 
 @login_required
 def recommendation_requests_new(request):
 	"""
 	Create a new request for recommendation
 	"""
-	return render_to_response('recommendation_requests_new.html', {'version': version}, RequestContext(request))
+	# number of requests he has
+	requests_number = Request.objects.filter(request_to=request.user.linkedin_uid, replied=False).count()
+	return render_to_response('recommendation_requests_new.html', {'version': version, 'requests_number':requests_number}, RequestContext(request))
 
 @login_required
 def recommendation_analytics(request):
 	"""
 	Create a new request for recommendation
 	"""
-	return render_to_response('recommendation_requests_new.html', {'version': version}, RequestContext(request))
+	# number of requests he has
+	requests_number = Request.objects.filter(request_to=request.user.linkedin_uid, replied=False).count()
+	return render_to_response('recommendation_requests_new.html', {'version': version, 'requests_number':requests_number}, RequestContext(request))

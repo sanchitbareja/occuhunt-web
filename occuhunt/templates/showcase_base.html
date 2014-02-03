@@ -54,9 +54,9 @@
 				<a href="/showcase/" class="btn btn-link">My Profile</a><br />
 			{% endif %}
 			{% if request.get_full_path == "/showcase/requests/" %}
-				<a href="/showcase/requests/" class="btn btn-link active">Requests</a><br />
+				<a href="/showcase/requests/" class="btn btn-link active">Recommend <span class="notification_number">{{requests_number}}</span></a><br />
 			{% else %}
-				<a href="/showcase/requests/" class="btn btn-link">Requests</a><br />
+				<a href="/showcase/requests/" class="btn btn-link">Recommend <span class="notification_number">{{requests_number}}</span></a><br />
 			{% endif %}
 			{% if request.get_full_path == "/showcase/requests/new/" %}
 				<a href="/showcase/requests/new/" class="btn btn-link active">Invite</a><br />
@@ -64,9 +64,9 @@
 				<a href="/showcase/requests/new/" class="btn btn-link">Invite</a><br />
 			{% endif %}
 			{% if request.get_full_path == "/showcase/analytics/" %}
-				<a href="/showcase/analytics/" class="btn btn-link active">Analytics</a><br />
+				<a href="#" class="btn btn-link active disabled">Who's viewed you?</a><br />
 			{% else %}
-				<a href="/showcase/analytics/" class="btn btn-link">Analytics</a><br />
+				<a href="#" class="btn btn-link disabled">Who's viewed you?</a><br />
 			{% endif %}
 		</div>
 	</div>

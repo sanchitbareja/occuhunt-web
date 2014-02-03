@@ -42,7 +42,7 @@ function send_recommendation(){
 			$("#recommendation_form").replaceWith('<div class="category_box" id="request_sent">'+
 				'<img src="/static/images/checkmark.png" style="height:100px;"/>'+
 				'<h1>Recommendation Sent</h1>'+
-				'<i>Good work! Recommendations are the first step to a great start! <a href="/recommend/requests/new/" class="btn btn-link">Send more recs</a></i>'+
+				'<i>Good work! Recommendations are the first step to a great start! <a href="/showcase/requests/new/" class="btn btn-link">Send more recs</a></i>'+
 			'</div>');
 	      },
 	      500: function(data, textStatus, jsXHR){

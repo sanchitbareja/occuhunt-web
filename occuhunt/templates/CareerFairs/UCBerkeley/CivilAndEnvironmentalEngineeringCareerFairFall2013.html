@@ -1,0 +1,322 @@
+{% extends "base.html" %}
+{% load static from staticfiles %}
+{% load i18n %}
+{% load url from future %}
+
+{% block head_title_base %}Upcoming Fairs{% endblock %}
+
+
+{% block extra_style %}
+<link href="/static/occuhunt/css/index.css" rel="stylesheet">
+<style type="text/css">
+.top-border{
+  border-top: 1px solid #acacac;
+}
+
+.left-border{
+  border-left: 1px solid #acacac;
+}
+
+.right-border{
+  border-right: 1px solid #acacac;
+}
+
+.bottom-border{
+  border-bottom: 1px solid #acacac;
+}
+
+.entrance {
+  background-image: url('/static/images/Entrance.jpg');
+  background-repeat: no-repeat;
+  background-position: bottom;
+  background-size: 60px;
+}
+
+.exit {
+  background-image: url('/static/images/Entrance.jpg');
+  background-repeat: no-repeat;
+  background-position: bottom;
+  background-size: 60px;
+}
+
+</style>
+{% endblock %}
+
+{% block extra_script %}
+<script type="text/javascript">
+  mixpanel.track_links("#mp-viewjobs", "Clicked on view jobs from modal in fair page", {'referrer': document.referrer });
+  $(document).ready(function(){
+    getCompanies();
+    $('*[data-poload]').on("click", function() {
+      var e = $(this);
+      mixpanel.track('Viewed company popup from Fair Page');
+      $.ajax({
+          url: '/api/v1/companies/'+e.data('poload')+'/',
+          data: {},
+          dataType: 'json',
+          success: function(data, textStatus, jqXHR){
+            console.log(data);
+            e.unbind("click").popover({
+              html:true,
+              trigger: 'click',
+              container: $(this).attr('id'),
+              title:"<a class='btn-link pull-left' onclick='closeModal("+data['id']+")'><b>X</b></a><h3 class='text-center'>"+data["name"]+"</h3><a class='btn-link' id='modal-plus' onclick='favoriteCompanyWithId("+data['id']+",this, null);' style='right:17px; top:10px;position:absolute; float:right; '><span class='glyphicon glyphicon-plus'></span></a>",
+              content:"<div class='popover-company-info'><img id='background_banner' src='"+data["banner_image"]+"'/><img id='foreground_banner' src='"+data['logo']+"'><p>"+data["company_description"].slice(0,140)+"...</p><a class='btn btn-done' id='mp-viewjobs' href='/company/"+data['id']+" /'>VIEW JOBS</a></div>"
+            }).popover("show");
+          },
+      });
+    });
+  });
+
+  function closeModal(id){
+    $('[data-poload='+id+']').click();
+  }
+
+  $(window).bind('scroll resize', function() {
+      $('#filter_bar').css('top', $(this).scrollTop());
+  });
+
+</script>
+{% endblock %}
+
+{% block content %}
+  <div class="col-lg-1 visible-lg" style="left:20px;padding-top:42px;position:absolute;">
+    <div class="btn-group-vertical" id="filter_bar" data-toggle="buttons" style="top: 0px;">
+      <button type="button" class="btn btn-categorydisabled favorited-company btn-sm simplebox" onclick="toggleTable('.favorited-company');" style="background-image:url('/static/images/other/fold.png');">Favorites</button>
+      <button type="button" class="btn btn-engineering btn-sm simplebox" onclick="toggleTable('.btn-engineering');">Engineering</button>
+      <button type="button" class="btn btn-finance btn-sm simplebox" onclick="toggleTable('.btn-finance');">Finance</button>
+      <button type="button" class="btn btn-government btn-sm simplebox" onclick="toggleTable('.btn-government');">Government</button>
+      <button type="button" class="btn btn-health btn-sm simplebox" onclick="toggleTable('.btn-health');">Health</button>
+      <button type="button" class="btn btn-technology btn-sm simplebox" onclick="toggleTable('.btn-technology');">Technology</button>
+      <button type="button" class="btn btn-other btn-sm simplebox" onclick="toggleTable('.btn-other');">Other</button>
+    </div>
+  </div>
+
+  <!-- Main content - Civil and Environmental Engineering Career Fair -->
+  <div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+      <!-- Information about the Civil and Environmental Engineering fair -->
+      <div class="row visible-lg">
+        <div class="col-lg-4">
+          <h4 align="left">October 30th, 4 - 7pm</h4>
+        </div>
+        <div class="col-lg-4">
+          <h4 class="text-center venue-center">Civil and Environmental Engineering Fair</h4>
+        </div>
+        <div class="col-lg-4">
+          <h4 class="text-right">International House</h4>
+        </div>
+      </div>
+      <div class="row hidden-lg">
+          <h4 align="left">Civil and Environmental Engineering Fair, Oct 30, 4-7pm, International House</h4>
+      </div>
+      <div class="row">
+        <div class="col-lg-12">
+          <p class="text-center room-top">Chevron Auditorium</p>
+          <table>
+            <tbody><tr>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"><a class="btn btn-engineering fair-table vcenter" data-poload="406" value="company_406">Fehr &amp; Peers</a></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"><a class="btn btn-other fair-table vcenter" data-poload="411" value="company_411">Hathaway Dinwiddie Construction</a></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"><a class="btn btn-engineering fair-table vcenter" data-poload="398" value="company_398">CDM Smith</a></td>
+            </tr><tr>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"><a class="btn btn-engineering fair-table vcenter" data-poload="403" value="company_403">Engeo</a></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"><a class="btn btn-other fair-table vcenter" data-poload="409" value="company_409">Granite Construction Inc.</a></td>
+              <td id="career_fair_map"><a class="btn btn-other fair-table vcenter" data-poload="412" value="company_412">Hilti North America</a></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"><a class="btn btn-engineering fair-table vcenter" data-poload="408" value="company_408">GHD</a></td>
+            </tr><tr>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"><a class="btn btn-engineering fair-table vcenter" data-poload="399" value="company_399">Coughlin Porter Lundeen</a></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"><a class="btn btn-engineering fair-table vcenter" data-poload="407" value="company_407">Geosyntec</a></td>
+              <td id="career_fair_map"><a class="btn btn-other fair-table vcenter" data-poload="424" value="company_424">The Boldt Company</a></td>
+            </tr><tr>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"><a class="btn btn-engineering fair-table vcenter" data-poload="401" value="company_401">dk Consulting</a></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"><a class="btn btn-other fair-table vcenter" data-poload="402" value="company_402">DPR Construction</a></td>
+              <td id="career_fair_map"><a class="btn btn-engineering fair-table vcenter" data-poload="410" value="company_410">Harder Mechanical</a></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"><a class="btn btn-other fair-table vcenter" data-poload="419" value="company_419">San Jose Water Company</a></td>
+            </tr><tr>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"><a class="btn btn-engineering fair-table vcenter" data-poload="396" value="company_396">Buro Happold</a></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"><a class="btn btn-engineering fair-table vcenter" data-poload="414" value="company_414">Jacobs Associates</a></td>
+              <td id="career_fair_map"><a class="btn btn-other fair-table vcenter" data-poload="391" value="company_391">ARCO Murray National</a></td>
+            </tr><tr>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"><a class="btn btn-engineering fair-table vcenter" data-poload="395" value="company_395">Brown and Caldwell</a></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"><a class="btn btn-engineering fair-table vcenter" data-poload="397" value="company_397">Cahill Contractors</a></td>
+              <td id="career_fair_map"><a class="btn btn-engineering fair-table vcenter" data-poload="393" value="company_393">BKF Engineers</a></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"><a class="btn btn-other fair-table vcenter" data-poload="432" value="company_432">XL Construction</a></td>
+            </tr><tr>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"><a class="btn btn-other fair-table vcenter" data-poload="394" value="company_394">Blach Construction Company</a></td>
+            </tr><tr>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"><a class="btn btn-engineering fair-table vcenter" data-poload="417" value="company_417">Magnusson Klemencic Associates</a></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"><a class="btn btn-government fair-table vcenter" data-poload="400" value="company_400">County of L.A. Dept of Public Works</a></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"><a class="btn btn-other fair-table vcenter" data-poload="423" value="company_423">Skidmore, Owings &amp; Merrill LLP</a></td>
+            </tr>
+          </tbody></table>
+          <p class="text-center room-custom">Home Room</p>
+          <table>
+            <tbody><tr>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"><a class="btn btn-other fair-table vcenter" data-poload="405" value="company_405">Exponent</a></td>
+              <td id="career_fair_map"><a class="btn btn-engineering fair-table vcenter" data-poload="420" value="company_420">Shimmick Construction</a></td>
+            </tr><tr>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"><a class="btn btn-engineering fair-table vcenter" data-poload="415" value="company_415">Kiewit Infrastructure West Co.</a></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+            </tr><tr>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"><a class="btn btn-other fair-table vcenter" data-poload="392" value="company_392">Arup</a></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"><a class="btn btn-engineering fair-table vcenter" data-poload="421" value="company_421">Simpson Gumpertz &amp; Heger</a></td>
+            </tr><tr>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"><a class="btn btn-government fair-table vcenter" data-poload="427" value="company_427">U.S. Navy</a></td>
+              <td id="career_fair_map"><a class="btn btn-other fair-table vcenter" data-poload="413" value="company_413">HNTB Corporation</a></td>
+            </tr>
+          </tbody></table>
+          <p class="text-center room-custom">Sproul Room</p>
+          <table>
+            <tbody><tr>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"><a class="btn btn-other fair-table vcenter" data-poload="422" value="company_422">Skanska</a></td>
+              <td id="career_fair_map"><a class="btn btn-other fair-table vcenter" data-poload="425" value="company_425">The Walsh Group</a></td>
+              <td id="career_fair_map"><a class="btn btn-other fair-table vcenter" data-poload="430" value="company_430">Webcor Builders</a></td>
+            </tr><tr>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+            </tr><tr>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"><a class="btn btn-other fair-table vcenter" data-poload="428" value="company_428">W.E. O'Neil Construction Co. of California</a></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"><a class="btn btn-other fair-table vcenter" data-poload="426" value="company_426">Turner Construction</a></td>
+              <td id="career_fair_map"></td>
+            </tr><tr>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"><a class="btn btn-engineering fair-table vcenter" data-poload="416" value="company_416">Liftech Consultants</a></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"><a class="btn btn-other fair-table vcenter" data-poload="404" value="company_404">Environ</a></td>
+            </tr><tr>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"><a class="btn btn-other fair-table vcenter" data-poload="431" value="company_431">Wiss, Janney, Elstner Associates, Inc.</a></td>
+            </tr><tr>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"><a class="btn btn-other fair-table vcenter" data-poload="418" value="company_418">Parsons Brinckerhoff</a></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"><a class="btn btn-engineering fair-table vcenter" data-poload="429" value="company_429">Walters &amp; Wolf</a></td>
+            </tr>
+          </tbody></table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

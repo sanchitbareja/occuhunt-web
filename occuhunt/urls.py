@@ -6,6 +6,7 @@ from recommendations.views import recommendation_main, recommendation_new, recom
 from fairs.views import create_fair
 from django.conf import settings
 from django.conf.urls.static import static
+from django.views.generic import TemplateView
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -47,6 +48,15 @@ urlpatterns = patterns('',
     url(r'^feedback/$',feedback_form),
     url(r'^logout/$', logout_view, name='logout'),
     url(r'^login-error/$', login_error, name='login-error'),
+
+    # Career Fairs
+    url(r'^fair/UCBerkeley/Startup-Fair-Spring-2014/$', TemplateView.as_view(template_name="CareerFairs/UCBerkeley/StartupCareerFairSpring2014.html")),
+    url(r'^fair/UCBerkeley/Spring-Career-Fair-Spring-2014/$', TemplateView.as_view(template_name="CareerFairs/UCBerkeley/SpringCareerFairSpring2014.html")),
+    url(r'^fair/UCBerkeley/EECS-Internship-Fair-Spring-2014/$', TemplateView.as_view(template_name="CareerFairs/UCBerkeley/EECSInternshipOpenHouseSpring2014.html")),
+    url(r'^fair/UCBerkeley/Civil-Environmental-Fair-Fall-2013/$', TemplateView.as_view(template_name="CareerFairs/UCBerkeley/CivilAndEnvironmentalEngineeringCareerFairFall2013.html")),
+    url(r'^fair/UCBerkeley/Early-Bird-Internship-Fair-Fall-2013/$', TemplateView.as_view(template_name="CareerFairs/UCBerkeley/EarlyBirdInternshipFairFall2013.html")),
+    url(r'^fair/UCBerkeley/Startup-Fair-Fall-2013/$', TemplateView.as_view(template_name="CareerFairs/UCBerkeley/StartupCareerFairFall2013.html")),
+    url(r'^fair/UCBerkeley/EECS-Fair-Fall-2013/$', TemplateView.as_view(template_name="CareerFairs/UCBerkeley/EECSCareerFairFall2013.html")),
 
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
