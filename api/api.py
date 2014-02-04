@@ -37,7 +37,7 @@ class UserResource(ModelResource):
 
         allowed_methods = ['get']
         filtering = {
-            "first_name": ("exact")
+            "first_name": ("exact"), "linkedin_uid": ("exact"),
         }
         excludes = ['password','last_login','is_active','is_admin','time_created']
 
