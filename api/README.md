@@ -12,10 +12,10 @@ This is the `/v1/` API documentation for the Occuhunt API. All requests are REST
 **Recruiter Workflow** (will include recruiter_id for all)
 
 *	[List of attendees, attendees that expressed interest in a specific company, attendees interacted with](#getusers)
-*	As soon as you get the attendee detail, should track that the recruiter viewed the resume
+*	As soon as you get the attendee detail, should track that the recruiter viewed the resume - will be the same as #getusers but supplied with recruiter_id
 *	[Update User](#updateuser)
-*	[Add User](#adduser)
-*	[Reject User](#rejectuser)
+*	[Add User](#adduser) - Prompt the recruiter to ask the student if he has a linkedin acct
+*	[Reject User](#rejectuser) - send email to student that he's rejected
 
 ** By default, all requests have an application/json content type. **
 

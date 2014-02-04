@@ -45,6 +45,17 @@ class UserResource(ModelResource):
         """
         Return a list of clubs formatted according to what the developer expects
         """
+        # get resume
+        resume = Resume.objects.filter(user__id=bundle.data['id'], showcase=True, original=False).order_by('-timestamp')
+        if len(resume) > 0:
+            resume = resume[0]
+            bundle.data['resume'] = resume.url
+        else:
+            resume = None
+            bundle.data['resume'] = None
+
+        # get school
+        bundle.data['school'] = [name for name in bundle.obj.groups.values('name')]
 
         return bundle
 
