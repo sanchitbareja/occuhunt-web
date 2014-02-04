@@ -1,6 +1,8 @@
 {
   "cols": 13,
   "rows": 6,
+  "blank_columns": 6,
+  "blank_rows": 0,
   "coys": [
       {"x": 1,
       "y": 4,
