@@ -89,7 +89,7 @@ params: company_id
 **Example Response Body**
 To return: Category, ...
 
-	
+
 ##<a id="posthunt"></a>Post Check-in/Hunt
 
 params: user_id, event_id (check if the user is from the correct school before he's allowed to check-in)

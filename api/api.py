@@ -20,7 +20,7 @@ from haystack.query import SearchQuerySet
 from django.db.models import Q
 from companies.models import Company
 from favorites.models import Favorite
-from fairs.models import Fair
+from fairs.models import Fair, Room
 from users.models import User
 from resumes.models import Resume, Comment
 from recommendations.models import Recommendation, Request
@@ -211,7 +211,21 @@ class FavoriteResource(ModelResource):
     def determine_format(self, request):
         return 'application/json'
 
+class RoomResource(ModelResource):
+    class Meta:
+        queryset = Room.objects.all()
+        resource_name = 'rooms'
+        # Add it here.
+        # authentication = BasicAuthentication()
+        authorization = DjangoAuthorization()
+
+        allowed_methods = ['get']
+
+    def determine_format(self, request):
+        return 'application/json'
+
 class FairResource(ModelResource):
+    rooms = fields.ManyToManyField(RoomResource, 'rooms', full=True)
     class Meta:
         queryset = Fair.objects.all()
         resource_name = 'fairs'
