@@ -25,7 +25,7 @@ from users.models import User
 from resumes.models import Resume, Comment
 from recommendations.models import Recommendation, Request
 from hunts.models import Hunt, Resumedrop
-from recruiterupdates.models import Note, RecruiterUpdate
+from recruiterupdates.models import Note
 import datetime
 
 
