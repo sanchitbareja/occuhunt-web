@@ -14,7 +14,7 @@ admin.autodiscover()
 
 # API
 from tastypie.api import Api
-from api.api import FairResource, RoomResource, CompanyResource, FavoriteResource, UserResource, ResumeResource, CommentResource, RecommendationRequestResource, RecommendationResource
+from api.api import FairResource, RoomResource, CompanyResource, FavoriteResource, UserResource, ResumeResource, CommentResource, RecommendationRequestResource, RecommendationResource, HuntResource, ResumedropResource, RecruiterNotesResource, RecruiterUpdateResource
 from api.views import logout_view, login_error, feedback_form
 
 v1_api = Api(api_name='v1')
@@ -27,6 +27,9 @@ v1_api.register(RecommendationRequestResource())
 v1_api.register(RecommendationResource())
 v1_api.register(RoomResource())
 v1_api.register(FairResource())
+v1_api.register(HuntResource())
+v1_api.register(ResumedropResource())
+v1_api.register(RecruiterNotesResource())
 
 urlpatterns = patterns('',
     url(r'^home/$', home, name='home'),
@@ -73,6 +76,7 @@ urlpatterns = patterns('',
     url(r'^fair/create-fair/$', create_fair, name="create_fair"),
 
     # v1 API
+
     url(r'^api/', include(v1_api.urls)),
     url(r'^oauth2/', include('provider.oauth2.urls', namespace = 'oauth2')),
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

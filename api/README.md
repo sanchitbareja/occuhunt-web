@@ -13,7 +13,7 @@ This is the `/v1/` API documentation for the Occuhunt API. All requests are REST
 
 *	[List of attendees, attendees that expressed interest in a specific company, attendees interacted with](#getusers)
 *	As soon as you get the attendee detail, should track that the recruiter viewed the resume - will be the same as #getusers but supplied with recruiter_id
-*	[Update User](#updateuser)
+*	[Add Note](#addnote)
 *	[Add User](#adduser) - Prompt the recruiter to ask the student if he has a linkedin acct
 *	[Reject User](#rejectuser) - send email to student that he's rejected
 
@@ -110,9 +110,9 @@ params: user_id, event_id, company_id
 **Example Response Body**
 
 
-##<a id="updateuser"></a>Update User
+##<a id="addnote"></a>Add Note
 
-params: notes, attendee details, interest category, recruiter_id
+params: user_id, recruiter_id, note
 
 **Filtering options**
 

@@ -24,6 +24,8 @@ from fairs.models import Fair, Room
 from users.models import User
 from resumes.models import Resume, Comment
 from recommendations.models import Recommendation, Request
+from hunts.models import Hunt, Resumedrop
+from recruiterupdates.models import Note, RecruiterUpdate
 import datetime
 
 
@@ -411,6 +413,181 @@ class RecommendationResource(ModelResource):
     def alter_list_data_to_serialize(self, request, data):
         # rename "objects" to "recommendations"
         data["response"] = {"recommendations":data["objects"]}
+        del(data["objects"])
+        return data
+
+    def determine_format(self, request):
+        return 'application/json'
+
+class HuntResource(ModelResource):
+    user = fields.OneToOneField(UserResource, 'user', full=True)
+    fair = fields.OneToOneField(FairResource, 'fair', full=True)
+    class Meta:
+        queryset = Hunt.objects.all()
+        resource_name = 'hunts'
+        authorization = DjangoAuthorization()
+        limit = 100
+        always_return_data = True
+        allowed_methods = ['get','post']
+        filtering = {
+            "user": ("exact"), "fair": ("exact")
+        }
+
+    def dehydrate(self, bundle):
+        """
+        Return a list of hunts
+        """
+        return bundle
+
+    def obj_create(self, bundle, **kwargs):
+        """
+        Creates a new hunt
+        """
+        try:
+            user = User.objects.get(id=bundle.data['user_id'])
+            fair = Fair.objects.get(id=bundle.data['event_id'])
+            old_hunt = Hunt.objects.filter(user=user, fair=fair)
+            if len(old_hunt) > 0:
+                bundle.obj = old_hunt[0]
+            else:
+                new_hunt = Hunt(user=user, fair=fair)
+                new_hunt.save()
+                bundle.obj = new_hunt
+        except Exception, e:
+            raise e
+        return bundle
+
+    def alter_list_data_to_serialize(self, request, data):
+        # rename "objects" to "hunts"
+        data['response'] = {"hunts":data["objects"]}
+        del(data["objects"])
+        return data
+
+    def determine_format(self, request):
+        return 'application/json'
+
+class ResumedropResource(ModelResource):
+    user = fields.OneToOneField(UserResource, 'user', full=True)
+    fair = fields.OneToOneField(FairResource, 'fair', full=True)
+    company = fields.OneToOneField(CompanyResource, 'company', full=True)
+    class Meta:
+        queryset = Resumedrop.objects.all()
+        resource_name = 'resumedrops'
+        authorization = DjangoAuthorization()
+        limit = 100
+        always_return_data = True
+        allowed_methods = ['get','post']
+        filtering = {
+            "user": ("exact"), "fair": ("exact"), 'company': ("exact")
+        }
+
+    def dehydrate(self, bundle):
+        """
+        Return a list of resumedrops
+        """
+        return bundle
+
+    def obj_create(self, bundle, **kwargs):
+        """
+        Creates a new resumedrop
+        """
+        try:
+            user = User.objects.get(id=bundle.data['user_id'])
+            company = Company.objects.get(id=bundle.data['company_id'])
+            fair = Fair.objects.get(id=bundle.data['event_id'])
+            old_share = Resumedrop.objects.filter(user=user, fair=fair, company=company)
+            if len(old_share) > 0:
+                bundle.obj = old_share[0]
+            else:
+                new_share = Resumedrop(user=user, fair=fair, company=company)
+                new_share.save()
+                bundle.obj = new_share
+        except Exception, e:
+            raise e
+        return bundle
+
+    def alter_list_data_to_serialize(self, request, data):
+        # rename "objects" to "resumedrops"
+        data['response'] = {"resumedrops":data["objects"]}
+        del(data["objects"])
+        return data
+
+    def determine_format(self, request):
+        return 'application/json'
+
+class RecruiterNotesResource(ModelResource):
+    user = fields.OneToOneField(UserResource, 'user', full=True)
+    recruiter = fields.OneToOneField(UserResource, 'recruiter', full=True)
+    class Meta:
+        queryset = Note.objects.all()
+        resource_name = 'notes'
+        authorization = DjangoAuthorization()
+        limit = 100
+        always_return_data = True
+        allowed_methods = ['get','post']
+        filtering = {
+            "user": ("exact"), "recruiter": ("exact")
+        }
+
+    def dehydrate(self, bundle):
+        """
+        Return a list of resumedrops
+        """
+        return bundle
+
+    def obj_create(self, bundle, **kwargs):
+        """
+        Creates a new resumedrop
+        """
+        try:
+            user = User.objects.get(id=bundle.data['user_id'])
+            recruiter = User.objects.get(id=bundle.data['recruiter_id'])
+            new_note = Note(user=user, recruiter=recruiter, note=bundle.data['note'])
+            new_note.save()
+            bundle.obj = new_note
+        except Exception, e:
+            raise e
+        return bundle
+
+    def alter_list_data_to_serialize(self, request, data):
+        # rename "objects" to "resumedrops"
+        data['response'] = {"notes":data["objects"]}
+        del(data["objects"])
+        return data
+
+    def determine_format(self, request):
+        return 'application/json'
+
+class RecruiterUpdateResource(ModelResource):
+    user = fields.OneToOneField(UserResource, 'user', full=True)
+    fair = fields.OneToOneField(FairResource, 'fair', full=True)
+    company = fields.OneToOneField(CompanyResource, 'company', full=True)
+    class Meta:
+        queryset = Hunt.objects.all()
+        resource_name = 'updates'
+        authorization = DjangoAuthorization()
+        limit = 100
+        always_return_data = False
+        allowed_methods = ['get','post']
+        filtering = {
+            "user": ("exact"), "fair": ("exact"), 'company': ("exact")
+        }
+
+    def dehydrate(self, bundle):
+        """
+        Return a list of resumedrops
+        """
+        return bundle
+
+    def obj_create(self, bundle, **kwargs):
+        """
+        Creates a new resumedrop
+        """
+        return bundle
+
+    def alter_list_data_to_serialize(self, request, data):
+        # rename "objects" to "resumedrops"
+        data['response'] = {"updates":data["objects"]}
         del(data["objects"])
         return data
 

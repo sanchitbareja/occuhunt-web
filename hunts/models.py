@@ -10,5 +10,5 @@ class Hunt(models.Model):
 
 class Resumedrop(models.Model):
 	user = models.ForeignKey(User)
-	fair = models.ForeignKey(fair)
+	fair = models.ForeignKey(Fair)
 	company = models.ForeignKey(Company)
