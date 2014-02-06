@@ -439,6 +439,19 @@ class HuntResource(ModelResource):
         """
         return bundle
 
+    def build_filters(self, filters=None):
+        if filters is None:
+            filters = {}
+
+        orm_filters = super(HuntResource, self).build_filters(filters)
+
+        if "user_id" in filters:
+            sqs = Hunt.objects.filter(user__id=filters['user_id'])
+
+            orm_filters["pk__in"] = [i.pk for i in sqs]
+
+        return orm_filters
+
     def obj_create(self, bundle, **kwargs):
         """
         Creates a new hunt
@@ -537,7 +550,7 @@ class ApplicationResource(ModelResource):
         return bundle
 
     def alter_list_data_to_serialize(self, request, data):
-        # rename "objects" to "hunts"
+        # rename "objects" to "applications"
         data['response'] = {"applications":data["objects"]}
         del(data["objects"])
         return data

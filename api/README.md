@@ -153,11 +153,15 @@ Returns a list of Companies
             	"website": "http://www.salesforce.com/"
         	}]
     	}
-	}
+	}		
 
 ##<a id="posthunt"></a>Post Check-in/Hunt
 
 params: user_id, event_id (check if the user is from the correct school before he's allowed to check-in)
+
+**filtering**
+
+	user_id
 
 **Example Request Header**
 
