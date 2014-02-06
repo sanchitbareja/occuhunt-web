@@ -81,7 +81,7 @@ class CompanyResource(ModelResource):
 
         allowed_methods = ['get']
         filtering = {
-            "name": ("exact")
+            "name": ("exact"), "id": ("exact")
         }
 
     def prepend_urls(self):
