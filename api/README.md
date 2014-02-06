@@ -203,6 +203,19 @@ status takes 3 values, "Applied", "Reject", "Interview". "Applied" is the defaul
 **Example Response Body**
 
 	Status Code: 201
+	
+For sharing resume with multiple recruiters at once, we send a PATCH request with the payload as follows:
+
+	{"objects":[
+		{"user_id":1,"company_id":302,"status":"Applied"},
+		{"user_id":1,"company_id":301,"status":"Applied"},
+		{"user_id":1,"company_id":300,"status":"Applied"},
+		{"user_id":1,"company_id":299,"status":"Applied"}
+	]}
+
+**Example Response Body**
+
+	Status Code: 202
 
 ##<a id="addnote"></a>Add Note
 

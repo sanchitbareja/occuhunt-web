@@ -488,7 +488,7 @@ class ApplicationResource(ModelResource):
         authorization = DjangoAuthorization()
         limit = 100
         always_return_data = 100
-        allowed_methods = ['get','post','put']
+        allowed_methods = ['get','post','put','patch']
         filtering = {
             "user": ("exact"), "company": ("exact"), "status":("exact")
         }
