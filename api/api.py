@@ -139,7 +139,7 @@ class FavoriteResource(ModelResource):
     user = fields.OneToOneField(UserResource, 'user', full=True)
     company = fields.OneToOneField(CompanyResource, 'company', full=True)
     class Meta:
-        queryset = Favorite.objects.all()
+        queryset = Favorite.objects.all().order_by('-date_start')
         resource_name = 'favorites'
         # Add it here.
         # authentication = BasicAuthentication()
