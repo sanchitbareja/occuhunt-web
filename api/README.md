@@ -179,27 +179,99 @@ params: user_id, event_id (check if the user is from the correct school before h
 
 ##<a id="postshareresume"></a>Share Resume with Recruiter
 
-params: user_id, event_id, company_id
+params: user_id, company_id, status
+
+status takes 3 values, "Applied", "Reject", "Interview". "Applied" is the default option and should be the one used when performing a "resume drop"
 
 **Filtering options**
 
+	user
+	company
+	status
+
 **Example Request Body**
+	
+	Content-Type: application/json
+
+	Request Url: http://127.0.0.1:8000/api/v1/applications/
+	Request Method: POST
 
 **Example Response Body**
 
+	Status Code: 201
 
 ##<a id="addnote"></a>Add Note
 
 params: user_id, recruiter_id, note
 
+recruiter_id is also the is corresponding to the user who is a recruiter
+
 **Filtering options**
+
+	None
 
 **Example Request Body**
 
+	Content-Type: application/json
+
+	Request Url: http://127.0.0.1:8000/api/v1/notes/
+	Request Method: POST
+
 **Example Response Body**
 
+	{
+    "meta": {
+        "limit": 100,
+        "next": null,
+        "offset": 0,
+        "previous": null,
+        "total_count": 2
+    },
+    "response": {
+        "notes": [{
+            "id": 1,
+            "note": "Very nice to talk to",
+            "recruiter": {
+                "email": "sanchitbareja@gmail.com",
+                "first_name": "Sanchit",
+                "id": 1,
+                "is_superuser": false,
+                "last_name": "Bareja",
+                "linkedin_uid": null,
+                "profile_pic": "",
+                "resource_uri": "/api/v1/users/1/",
+                "resume": "https://resumefeed.s3.amazonaws.com/sanchit-barejapdfGKCe1iIpV",
+                "resume_points": 10,
+                "school": [{
+                    "name": "UC Berkeley"
+                }],
+                "thumbnail_profile_pic": "",
+                "username": "sanchitbareja"
+            },
+            "resource_uri": "/api/v1/notes/1/",
+            "timestamp": "2014-02-06T09:15:07.104676",
+            "user": {
+                "email": "sanchitbareja@gmail.com",
+                "first_name": "Sanchit",
+                "id": 1,
+                "is_superuser": false,
+                "last_name": "Bareja",
+                "linkedin_uid": null,
+                "profile_pic": "",
+                "resource_uri": "/api/v1/users/1/",
+                "resume": "https://resumefeed.s3.amazonaws.com/sanchit-barejapdfGKCV",
+                "resume_points": 10,
+                "school": [{
+                    "name": "UC Berkeley"
+                }],
+                "thumbnail_profile_pic": "",
+                "username": "sanchitbareja"
+            }
+        }]
+    }
 
-##<a id="adduser"></a>Add User
+
+##<a id="adduser"></a>Add User (Not implemented yet)
 
 params: resume_img and all other standard details
 
@@ -210,9 +282,13 @@ params: resume_img and all other standard details
 **Example Response Body**
 
 
-##<a id="rejectuser"></a>Reject User
+##<a id="rejectuser"></a>Reject/Interview User (PUT) - still debugging
 
-params: attendee_id, recruiter_id
+params: status
+
+status takes 3 values, "Applied", "Reject", "Interview". "Applied" is the default option and should be the one used when performing a "resume drop". In this case, status should be either "Reject" or "Interview"
+
+	Need to specifically send to /api/v1/applications/{application_id}/
 
 **Filtering options**
 

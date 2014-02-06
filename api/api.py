@@ -466,6 +466,85 @@ class HuntResource(ModelResource):
     def determine_format(self, request):
         return 'application/json'
 
+class ApplicationResource(ModelResource):
+    user = fields.OneToOneField(UserResource, 'user', full=True)
+    company = fields.OneToOneField(CompanyResource, 'company', full=True)
+    class Meta:
+        queryset = Application.objects.all()
+        resource_name = 'applications'
+        authorization = DjangoAuthorization()
+        limit = 100
+        always_return_data = 100
+        allowed_methods = ['get','post','put']
+        filtering = {
+            "user": ("exact"), "company": ("exact"), "status":("exact")
+        }
+    def dehydrate(self, bundle):
+        """
+        Return a list of applications
+        """
+        return bundle
+
+    def obj_create(self, bundle, **kwargs):
+        """
+        Creates a new application
+        """
+        try:
+            user = User.objects.get(id=bundle.data['user_id'])
+            company = Company.objects.get(id=bundle.data['company_id'])
+            status = bundle.data['status']
+            # check if an application already exists
+            old_application = Application.objects.filter(user=user, company=company, status=status)
+            if len(old_application) > 0:
+                bundle.obj = old_application[0]
+            else:
+                new_application = Application(user=user, company=company, status=status)
+                new_application.save()
+                bundle.obj = new_application
+            print bundle.obj
+        except Exception, e:
+            print e
+            raise e
+        return bundle
+
+    def obj_update(self, bundle, **kwargs):
+        """
+        Normally used for 'rejecting' an applicant
+        """
+        try:
+            print "hello"
+            user = User.objects.get(id=bundle.data['user_id'])
+            company = Company.objects.get(id=bundle.data['company_id'])
+            status = bundle.data['status']
+            print user
+            print company
+            print status
+            # check if an application already exists
+            old_application = Application.objects.filter(user=user, company=company, status="Applied")
+            print old_application
+            if len(old_application) > 0:
+                old_application = old_application[0]
+                print old_application
+                if status == "Reject" or status == "Interview":
+                    print status
+                    old_application.status = status
+                    old_application.save()
+                    bundle.obj = old_application
+                    print old_application
+        except Exception, e:
+            print e
+            raise e
+        return bundle
+
+    def alter_list_data_to_serialize(self, request, data):
+        # rename "objects" to "hunts"
+        data['response'] = {"applications":data["objects"]}
+        del(data["objects"])
+        return data
+
+    def determine_format(self, request):
+        return 'application/json'
+
 class RecruiterNotesResource(ModelResource):
     user = fields.OneToOneField(UserResource, 'user', full=True)
     recruiter = fields.OneToOneField(UserResource, 'recruiter', full=True)
@@ -482,13 +561,13 @@ class RecruiterNotesResource(ModelResource):
 
     def dehydrate(self, bundle):
         """
-        Return a list of resumedrops
+        Return a list of notes
         """
         return bundle
 
     def obj_create(self, bundle, **kwargs):
         """
-        Creates a new resumedrop
+        Creates a new note
         """
         try:
             user = User.objects.get(id=bundle.data['user_id'])
