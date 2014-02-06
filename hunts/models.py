@@ -7,8 +7,4 @@ from companies.models import Company
 class Hunt(models.Model):
 	user = models.ForeignKey(User)
 	fair = models.ForeignKey(Fair)
-
-class Resumedrop(models.Model):
-	user = models.ForeignKey(User)
-	fair = models.ForeignKey(Fair)
-	company = models.ForeignKey(Company)
+	timestamp = models.DateTimeField(auto_now_add=True)
