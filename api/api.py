@@ -139,7 +139,7 @@ class FavoriteResource(ModelResource):
     user = fields.OneToOneField(UserResource, 'user', full=True)
     company = fields.OneToOneField(CompanyResource, 'company', full=True)
     class Meta:
-        queryset = Favorite.objects.all().order_by('date_start')
+        queryset = Favorite.objects.all()
         resource_name = 'favorites'
         # Add it here.
         # authentication = BasicAuthentication()
@@ -229,7 +229,7 @@ class RoomResource(ModelResource):
 class FairResource(ModelResource):
     rooms = fields.ManyToManyField(RoomResource, 'rooms', full=True)
     class Meta:
-        queryset = Fair.objects.all()
+        queryset = Fair.objects.all().order_by('-date_start')
         resource_name = 'fairs'
         # Add it here.
         # authentication = BasicAuthentication()
