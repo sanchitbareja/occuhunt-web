@@ -9,8 +9,8 @@ class Room(models.Model):
 		return self.name
 
 class Fair(models.Model):
-	date_start = models.DateField(auto_now=False, auto_now_add=False, default=0)
-	date_end = models.DateField(auto_now=False, auto_now_add=False, default=0)
+	time_start = models.DateTimeField(auto_now=False, auto_now_add=False)
+	time_end = models.DateTimeField(auto_now=False, auto_now_add=False)
 	name = models.CharField(max_length=512)
 	rooms = models.ManyToManyField(Room)
 	logo = models.URLField(max_length=512, null=True, blank=True)
