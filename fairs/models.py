@@ -13,6 +13,7 @@ class Fair(models.Model):
 	date_end = models.DateField(auto_now=False, auto_now_add=False, default=0)
 	name = models.CharField(max_length=512)
 	rooms = models.ManyToManyField(Room)
+	logo = models.URLField(max_length=512, null=True, blank=True)
 
 	def get_rooms(self):
 		return ", ".join([room.name for room in self.rooms.all()])
