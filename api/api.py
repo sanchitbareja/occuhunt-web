@@ -229,7 +229,7 @@ class RoomResource(ModelResource):
 class FairResource(ModelResource):
     rooms = fields.ManyToManyField(RoomResource, 'rooms', full=True)
     class Meta:
-        queryset = Fair.objects.all().order_by('-date_start')
+        queryset = Fair.objects.all().order_by('-time_start')
         resource_name = 'fairs'
         # Add it here.
         # authentication = BasicAuthentication()
