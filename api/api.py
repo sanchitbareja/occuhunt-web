@@ -25,7 +25,7 @@ from users.models import User
 from resumes.models import Resume, Comment
 from recommendations.models import Recommendation, Request
 from hunts.models import Hunt, Resumedrop
-from recruiterupdates.models import Note
+from applications.models import Application, Note
 import datetime
 
 
@@ -552,42 +552,6 @@ class RecruiterNotesResource(ModelResource):
     def alter_list_data_to_serialize(self, request, data):
         # rename "objects" to "resumedrops"
         data['response'] = {"notes":data["objects"]}
-        del(data["objects"])
-        return data
-
-    def determine_format(self, request):
-        return 'application/json'
-
-class RecruiterUpdateResource(ModelResource):
-    user = fields.OneToOneField(UserResource, 'user', full=True)
-    fair = fields.OneToOneField(FairResource, 'fair', full=True)
-    company = fields.OneToOneField(CompanyResource, 'company', full=True)
-    class Meta:
-        queryset = Hunt.objects.all()
-        resource_name = 'updates'
-        authorization = DjangoAuthorization()
-        limit = 100
-        always_return_data = False
-        allowed_methods = ['get','post']
-        filtering = {
-            "user": ("exact"), "fair": ("exact"), 'company': ("exact")
-        }
-
-    def dehydrate(self, bundle):
-        """
-        Return a list of resumedrops
-        """
-        return bundle
-
-    def obj_create(self, bundle, **kwargs):
-        """
-        Creates a new resumedrop
-        """
-        return bundle
-
-    def alter_list_data_to_serialize(self, request, data):
-        # rename "objects" to "resumedrops"
-        data['response'] = {"updates":data["objects"]}
         del(data["objects"])
         return data
 
