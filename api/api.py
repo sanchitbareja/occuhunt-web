@@ -24,7 +24,7 @@ from fairs.models import Fair, Room
 from users.models import User
 from resumes.models import Resume, Comment
 from recommendations.models import Recommendation, Request
-from hunts.models import Hunt, Resumedrop
+from hunts.models import Hunt
 from applications.models import Application, Note
 import datetime
 
@@ -460,55 +460,6 @@ class HuntResource(ModelResource):
     def alter_list_data_to_serialize(self, request, data):
         # rename "objects" to "hunts"
         data['response'] = {"hunts":data["objects"]}
-        del(data["objects"])
-        return data
-
-    def determine_format(self, request):
-        return 'application/json'
-
-class ResumedropResource(ModelResource):
-    user = fields.OneToOneField(UserResource, 'user', full=True)
-    fair = fields.OneToOneField(FairResource, 'fair', full=True)
-    company = fields.OneToOneField(CompanyResource, 'company', full=True)
-    class Meta:
-        queryset = Resumedrop.objects.all()
-        resource_name = 'resumedrops'
-        authorization = DjangoAuthorization()
-        limit = 100
-        always_return_data = True
-        allowed_methods = ['get','post']
-        filtering = {
-            "user": ("exact"), "fair": ("exact"), 'company': ("exact")
-        }
-
-    def dehydrate(self, bundle):
-        """
-        Return a list of resumedrops
-        """
-        return bundle
-
-    def obj_create(self, bundle, **kwargs):
-        """
-        Creates a new resumedrop
-        """
-        try:
-            user = User.objects.get(id=bundle.data['user_id'])
-            company = Company.objects.get(id=bundle.data['company_id'])
-            fair = Fair.objects.get(id=bundle.data['event_id'])
-            old_share = Resumedrop.objects.filter(user=user, fair=fair, company=company)
-            if len(old_share) > 0:
-                bundle.obj = old_share[0]
-            else:
-                new_share = Resumedrop(user=user, fair=fair, company=company)
-                new_share.save()
-                bundle.obj = new_share
-        except Exception, e:
-            raise e
-        return bundle
-
-    def alter_list_data_to_serialize(self, request, data):
-        # rename "objects" to "resumedrops"
-        data['response'] = {"resumedrops":data["objects"]}
         del(data["objects"])
         return data
 
