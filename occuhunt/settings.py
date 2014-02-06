@@ -144,7 +144,6 @@ INSTALLED_APPS = (
     'resumes',
     'recommendations',
     'hunts',
-    'recruiterupdates',
     'applications'
 )
 
