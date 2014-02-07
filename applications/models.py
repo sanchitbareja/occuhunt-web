@@ -14,6 +14,7 @@ STATUS_CATEGORIES = (
 class Application(models.Model):
 	user = models.ForeignKey(User)
 	company = models.ForeignKey(Company)
+	fair = models.ForeignKey(Fair)
 	status = models.CharField(max_length=512, choices=STATUS_CATEGORIES, default="Applied")
 	timestamp = models.DateTimeField(auto_now_add=True)
 

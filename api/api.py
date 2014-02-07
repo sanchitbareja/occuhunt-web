@@ -481,6 +481,7 @@ class HuntResource(ModelResource):
 
 class ApplicationResource(ModelResource):
     user = fields.OneToOneField(UserResource, 'user', full=True)
+    fair = fields.OneToOneField(FairResource, 'fair', full=True)
     company = fields.OneToOneField(CompanyResource, 'company', full=True)
     class Meta:
         queryset = Application.objects.all()
@@ -490,7 +491,7 @@ class ApplicationResource(ModelResource):
         always_return_data = 100
         allowed_methods = ['get','post','put','patch']
         filtering = {
-            "user": ("exact"), "company": ("exact"), "status":("exact")
+            "user": ("exact"), "company": ("exact"), "fair":("exact"), "status":("exact")
         }
     def dehydrate(self, bundle):
         """
@@ -505,13 +506,14 @@ class ApplicationResource(ModelResource):
         try:
             user = User.objects.get(id=bundle.data['user_id'])
             company = Company.objects.get(id=bundle.data['company_id'])
+            fair = Fair.objects.get(id=bundle.data['fair_id'])
             status = bundle.data['status']
             # check if an application already exists
-            old_application = Application.objects.filter(user=user, company=company, status=status)
+            old_application = Application.objects.filter(user=user, company=company, fair=fair, status=status)
             if len(old_application) > 0:
                 bundle.obj = old_application[0]
             else:
-                new_application = Application(user=user, company=company, status=status)
+                new_application = Application(user=user, company=company, fair=fair, status=status)
                 new_application.save()
                 bundle.obj = new_application
             print bundle.obj

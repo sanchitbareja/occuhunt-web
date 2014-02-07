@@ -4,7 +4,7 @@ from applications.models import Application, Note
 #register the admin site
 
 class ApplicationAdmin(admin.ModelAdmin):
-	list_display = ['id','user','company','status','timestamp']
+	list_display = ['id','user','company','fair','status','timestamp']
 
 admin.site.register(Application,ApplicationAdmin)
 
