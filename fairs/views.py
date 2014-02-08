@@ -16,3 +16,7 @@ def create_fair(request):
     """View to automatically create fairs"""
     return render_to_response('create_fair_map.html', {'version': version},
                                   RequestContext(request))
+
+def StartupCareerFairSpring2014View(request):
+	"""View to StartupCareerFairSpring2014V """
+	return render_to_response('CareerFairs/UCBerkeley/StartupCareerFairSpring204.html', {'version':version}, RequestContext(request))
