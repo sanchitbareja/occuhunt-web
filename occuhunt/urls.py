@@ -3,7 +3,7 @@ from companies.views import home, splash, companies, company, search
 from resumes.views import resume_feed, sign_s3_upload, submit_resume, individual_resume
 from jobs.views import favorites, apply_jobs, match_jobs
 from recommendations.views import recommendation_main, recommendation_new, recommendation_new_with_request, recommendation_requests, recommendation_requests_new, recommendation_analytics
-from fairs.views import create_fair
+from fairs.views import create_fair, StartupCareerFairSpring2014View
 from django.conf import settings
 from django.conf.urls.static import static
 from django.views.generic import TemplateView
@@ -55,7 +55,7 @@ urlpatterns = patterns('',
     url(r'^login-error/$', login_error, name='login-error'),
 
     # Career Fairs
-    url(r'^fair/UCBerkeley/Startup-Fair-Spring-2014/$', TemplateView.as_view(template_name="CareerFairs/UCBerkeley/StartupCareerFairSpring2014.html")),
+    url(r'^fair/UCBerkeley/Startup-Fair-Spring-2014/$', StartupCareerFairSpring2014View, name='Startup-Fair-Spring-2014'),
     url(r'^fair/UCBerkeley/Spring-Career-Fair-Spring-2014/$', TemplateView.as_view(template_name="CareerFairs/UCBerkeley/SpringCareerFairSpring2014.html")),
     url(r'^fair/UCBerkeley/EECS-Internship-Fair-Spring-2014/$', TemplateView.as_view(template_name="CareerFairs/UCBerkeley/EECSInternshipOpenHouseSpring2014.html")),
     url(r'^fair/UCBerkeley/Civil-Environmental-Fair-Fall-2013/$', TemplateView.as_view(template_name="CareerFairs/UCBerkeley/CivilAndEnvironmentalEngineeringCareerFairFall2013.html")),

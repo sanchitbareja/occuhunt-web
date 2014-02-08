@@ -26,6 +26,7 @@ body {
   background-image: url('/static/images/other/fold.png');
   background-repeat: no-repeat;
   background-size: 14px;
+  /*border-top: 4px solid #348891 !important;*/
 }
 
 .fair-table {
@@ -33,7 +34,7 @@ body {
   max-width: 80px;
   word-wrap: break-word;
   overflow: hidden;
-  font-weight: 500; 
+  font-weight: 400; 
   display: table-cell;
   vertical-align: middle;
   height: 80px;
@@ -44,6 +45,15 @@ body {
   margin: 0px;
   text-align: center;
   line-height: 18px;
+  
+  background-color: #eef7f7;
+  border-color: #adadad;
+  font-size: 13px;
+  letter-spacing: 0.3px;
+}
+
+.fair-table:hover {
+  background-color: #a4c8cb
 }
 
 .vcenter{
@@ -151,4 +161,60 @@ td#career_fair_map{
 
 .event-image {
   width: 64px;
+}
+
+.top-border{
+  border-top: 1px solid #acacac;
+}
+
+.left-border{
+  border-left: 1px solid #acacac;
+}
+
+.right-border{
+  border-right: 1px solid #acacac;
+}
+
+.bottom-border{
+  border-bottom: 1px solid #acacac;
+}
+
+.entrance {
+  background-image: url('/static/images/Entrance.jpg');
+  background-repeat: no-repeat;
+  background-position: bottom;
+  background-size: 60px;
+}
+
+.exit {
+  background-image: url('/static/images/Entrance.jpg');
+  background-repeat: no-repeat;
+  background-position: bottom;
+  background-size: 60px;
+}
+
+.resume_drop {
+  float: right;
+  position:absolute;
+  display:block;
+  color:black;
+  border: 1px solid #c44d48;
+  background: transparent;
+  margin-top: 2px;
+  margin-left: 59px;
+  width: 20px;
+  height: 20px;
+  border-radius: 10px;
+}
+
+.resume_drop:hover {
+  background: white;
+}
+
+.resume_dropped {
+  background-color: green;
+}
+
+#career_fair_map {
+  border-spacing: 0px;
 }

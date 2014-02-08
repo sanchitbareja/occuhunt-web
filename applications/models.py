@@ -11,11 +11,19 @@ STATUS_CATEGORIES = (
 	('Interview','Interview'),
 	)
 
+POSITION_CATEGORIES = (
+	('Software Engineering','Software Engineering'),
+	('Accountant','Accountant'),
+	('Product Manager','Product Manager'),
+	('Other','Other')
+	)
+
 class Application(models.Model):
 	user = models.ForeignKey(User)
 	company = models.ForeignKey(Company)
 	fair = models.ForeignKey(Fair)
 	status = models.CharField(max_length=512, choices=STATUS_CATEGORIES, default="Applied")
+	position = models.CharField(max_length=512, choices=POSITION_CATEGORIES, default="Other")
 	timestamp = models.DateTimeField(auto_now_add=True)
 
 class Note(models.Model):
