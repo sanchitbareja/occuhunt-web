@@ -22,7 +22,7 @@ class Application(models.Model):
 	user = models.ForeignKey(User)
 	company = models.ForeignKey(Company)
 	fair = models.ForeignKey(Fair)
-	status = models.CharField(max_length=512, choices=STATUS_CATEGORIES, default=1)
+	status = models.SmallIntegerField(choices=STATUS_CATEGORIES, default=1)
 	position = models.CharField(max_length=512, default="Other")
 	timestamp = models.DateTimeField(auto_now_add=True)
 
