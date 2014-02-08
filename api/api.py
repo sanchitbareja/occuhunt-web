@@ -187,13 +187,22 @@ class FavoriteResource(ModelResource):
             except:
                 user = User.objects.get(id=bundle.data["user"])
                 company = Company.objects.get(id=bundle.data["company"])
+            print "1"
             if bundle.data['unfavorite']:
+                print "2"
                 a = Favorite.objects.filter(user=user).filter(company=company)
                 a.delete()
             else:
-                new_favorite = Favorite(user=user, company=company)
-                new_favorite.save()
-                bundle.obj = new_favorite
+                print "3"
+                old_favorite = Favorite.objects.filter(user=user, company=company)
+                if len(old_favorite) > 0:
+                    print "4"
+                    bundle.obj = old_favorite[0]
+                else:
+                    print "5"
+                    new_favorite = Favorite(user=user, company=company)
+                    new_favorite.save()
+                    bundle.obj = new_favorite
             return bundle
         except Exception, e:
             print e
