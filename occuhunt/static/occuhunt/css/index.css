@@ -197,6 +197,10 @@ td#career_fair_map{
   opacity: 1;
 }
 
+.fair-table ~ .resume_drop.resume_dropped {
+  opacity: 1;
+}
+
 .resume_drop {
   opacity: 0;
   float: right;
@@ -229,6 +233,7 @@ td#career_fair_map{
 }
 
 .resume_dropped {
+  opacity: 1;
   background-color: green;
 }
 

@@ -180,20 +180,23 @@ class FavoriteResource(ModelResource):
         """
         Posts a new favorite
         """
-        if bundle.data['user_id'] and bundle.data['company_id']:
-            user = User.objects.get(id=bundle.data["user_id"])
-            company = Company.objects.get(id=bundle.data["company_id"])
-        else:
-            user = User.objects.get(id=bundle.data["user_id"])
-            company = Company.objects.get(id=bundle.data["company_id"])
-        if bundle.data['unfavorite']:
-            a = Favorite.objects.filter(user=user).filter(company=company)
-            a.delete()
-        else:
-            new_favorite = Favorite(user=user, company=company)
-            new_favorite.save()
-            bundle.obj = new_favorite
-        return bundle
+        try:
+            try:
+                user = User.objects.get(id=bundle.data["user_id"])
+                company = Company.objects.get(id=bundle.data["company_id"])
+            except:
+                user = User.objects.get(id=bundle.data["user"])
+                company = Company.objects.get(id=bundle.data["company"])
+            if bundle.data['unfavorite']:
+                a = Favorite.objects.filter(user=user).filter(company=company)
+                a.delete()
+            else:
+                new_favorite = Favorite(user=user, company=company)
+                new_favorite.save()
+                bundle.obj = new_favorite
+            return bundle
+        except Exception, e:
+            print e
 
     def obj_update(self, bundle, **kwargs):
         """
@@ -517,7 +520,10 @@ class ApplicationResource(ModelResource):
                 position = 'Other'
             status = bundle.data['status']
             # auto-checkin the user
-            
+            old_checkin = Hunt.objects.filter(user=user, fair=fair)
+            if not len(old_checkin) > 0:
+                new_checkin = Hunt(user=user, fair=fair)
+                new_checkin.save()
             # check if an application already exists
             old_application = Application.objects.filter(user=user, company=company, fair=fair, status=status)
             if len(old_application) > 0:
