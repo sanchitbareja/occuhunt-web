@@ -23,7 +23,7 @@ class Application(models.Model):
 	company = models.ForeignKey(Company)
 	fair = models.ForeignKey(Fair)
 	status = models.CharField(max_length=512, choices=STATUS_CATEGORIES, default="Applied")
-	position = models.CharField(max_length=512, choices=POSITION_CATEGORIES, default="Other")
+	position = models.CharField(max_length=512, default="Other")
 	timestamp = models.DateTimeField(auto_now_add=True)
 
 class Note(models.Model):

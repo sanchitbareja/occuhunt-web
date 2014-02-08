@@ -193,46 +193,39 @@ td#career_fair_map{
   background-size: 60px;
 }
 
+.fair-table:hover ~ .resume_drop {
+  opacity: 1;
+}
+
 .resume_drop {
+  opacity: 0;
   float: right;
   position:absolute;
   display:block;
   color:black;
   border: 1px solid #c44d48;
   background: transparent;
-  margin-top: 2px;
+  margin-top: -23px;
   margin-left: 59px;
   width: 20px;
   height: 20px;
   border-radius: 10px;
-  -webkit-transform: rotate(100deg);
-  transform: rotate(100deg);
-  -webkit-transform-origin: -200% 50%;
-  transform-origin: -200% 50%;
-  -webkit-transition: -webkit-transform 0.2s ease 0.2s, opacity 0.2s ease, visibility 0s 0.2s ease;
-  transition: transform 0.2s ease 0.2s, opacity 0.2s ease, visibility 0s 0.2s ease;
+  z-index: 100;
+
+  -webkit-transition: background 0.3s ease;
+  transition: background 0.3s ease;
 }
 
 .resume_drop:hover {
-  background-size: 14px;
+  /*background-size: 14px;
   background: url('/static/images/checkmark.png');
   background-repeat: no-repeat;
-  content: '';
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  left: 0;
-  border-radius: 50%;
-  visibility: hidden;
-  background: blue;
-  opacity: 0;
-
-  visibility: visible;
+  background: green;
+*/
   opacity: 1;
-  -webkit-transform: rotate(0deg);
-  transform: rotate(0deg);
-  -webkit-transition: -webkit-transform 0.2s ease, opacity 0.2s ease;
-  transition: transform 0.2s ease, opacity 0.2s ease;
+  background-color: green;
+  -webkit-transition: background 0.3s ease;
+  transition: background 0.3s ease;
 }
 
 .resume_dropped {

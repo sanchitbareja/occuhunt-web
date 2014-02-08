@@ -511,13 +511,19 @@ class ApplicationResource(ModelResource):
             user = User.objects.get(id=bundle.data['user_id'])
             company = Company.objects.get(id=bundle.data['company_id'])
             fair = Fair.objects.get(id=bundle.data['fair_id'])
+            if bundle.data['position']:
+                position = bundle.data['position']
+            else:
+                position = 'Other'
             status = bundle.data['status']
+            # auto-checkin the user
+            
             # check if an application already exists
             old_application = Application.objects.filter(user=user, company=company, fair=fair, status=status)
             if len(old_application) > 0:
                 bundle.obj = old_application[0]
             else:
-                new_application = Application(user=user, company=company, fair=fair, status=status)
+                new_application = Application(user=user, company=company, fair=fair, status=status, position=position)
                 new_application.save()
                 bundle.obj = new_application
             print bundle.obj
