@@ -7,5 +7,5 @@ class RoomAdmin(admin.ModelAdmin):
 admin.site.register(Room, RoomAdmin)
 
 class FairAdmin(admin.ModelAdmin):
-	list_display = ['id','time_start','time_end','name','logo','get_rooms']
+	list_display = ['id','time_start','time_end','name','logo','venue','get_rooms']
 admin.site.register(Fair, FairAdmin)
