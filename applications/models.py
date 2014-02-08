@@ -6,9 +6,9 @@ from companies.models import Company
 # Create your models here.
 
 STATUS_CATEGORIES = (
-	('Applied','Applied'),
-	('Reject','Reject'),
-	('Interview','Interview'),
+	(1,'Applied'),
+	(2,'Reject'),
+	(3,'Interview'),
 	)
 
 POSITION_CATEGORIES = (
@@ -22,7 +22,7 @@ class Application(models.Model):
 	user = models.ForeignKey(User)
 	company = models.ForeignKey(Company)
 	fair = models.ForeignKey(Fair)
-	status = models.CharField(max_length=512, choices=STATUS_CATEGORIES, default="Applied")
+	status = models.CharField(max_length=512, choices=STATUS_CATEGORIES, default=1)
 	position = models.CharField(max_length=512, default="Other")
 	timestamp = models.DateTimeField(auto_now_add=True)
 
