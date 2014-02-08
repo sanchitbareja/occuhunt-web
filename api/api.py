@@ -523,10 +523,10 @@ class ApplicationResource(ModelResource):
             user = User.objects.get(id=bundle.data['user_id'])
             company = Company.objects.get(id=bundle.data['company_id'])
             fair = Fair.objects.get(id=bundle.data['fair_id'])
-            if bundle.data['position']:
+            if 'position' in bundle.data.keys():
                 position = bundle.data['position']
             else:
-                position = 'Other'
+                position = 'Any'
             status = bundle.data['status']
             # auto-checkin the user
             old_checkin = Hunt.objects.filter(user=user, fair=fair)
