@@ -180,8 +180,12 @@ class FavoriteResource(ModelResource):
         """
         Posts a new favorite
         """
-        user = User.objects.get(id=bundle.data["user"])
-        company = Company.objects.get(id=bundle.data["company"])
+        if bundle.data['user_id'] and bundle.data['company_id']:
+            user = User.objects.get(id=bundle.data["user_id"])
+            company = Company.objects.get(id=bundle.data["company_id"])
+        else:
+            user = User.objects.get(id=bundle.data["user_id"])
+            company = Company.objects.get(id=bundle.data["company_id"])
         if bundle.data['unfavorite']:
             a = Favorite.objects.filter(user=user).filter(company=company)
             a.delete()
