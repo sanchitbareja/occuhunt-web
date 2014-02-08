@@ -104,7 +104,7 @@
               console.log(jsXHR);
               console.log($(this));
               // feedback on the small dot that the resume has been submitted
-              // e.css({"background":"white"});
+              $(".resume_drop[value="+company_id+"]").css({"background":"url('/static/images/checkmark.png')"});
 
               // give confirmation message about successful resume submission
               $("#messages").append('<div class="alert alert-success alert-dismissable">'+
@@ -239,7 +239,7 @@
       {% if request.user.is_anonymous %}
         <div class="thumbnail">
           <img src="/static/images/example-resume.png">
-          <div class="caption">
+          <div class="caption text-center">
             <p><a href="/login/linkedin/?next={{request.path}}" class="btn btn-login" style="font-weight:500;">LOG IN / SIGN UP</a></p>
             <p>Login to activate Resume Drop</p>
           </div>
@@ -247,21 +247,15 @@
       {% else %}
         {% if resume_url %}
           <div class="thumbnail">
-            <div class="caption">
-              <h3>Your profile</h3>
-            </div>
             <img src="{{resume_url}}" alt="Resume">
-            <div class="caption">
+            <div class="caption text-center">
               <p><a href="/showcase/" class="btn btn-done" role="button">Edit Profile</a></p>
             </div>
           </div>
         {% else %}
           <div class="thumbnail">
-            <div class="caption">
-              <h3>Update profile</h3>
-            </div>
             <img src="/static/images/example-resume.png" alt="Resume">
-            <div class="caption">
+            <div class="caption text-center">
               <p><a href="/showcase/" class="btn btn-done" role="button">Add Resume</a></p>
               <p>We don't have your resume on file. Upload it to be able to drop them off at the various recruiters</p>
             </div>
