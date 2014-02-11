@@ -4,6 +4,7 @@ from resumes.views import resume_feed, sign_s3_upload, submit_resume, individual
 from jobs.views import favorites, apply_jobs, match_jobs
 from recommendations.views import recommendation_main, recommendation_new, recommendation_new_with_request, recommendation_requests, recommendation_requests_new, recommendation_analytics
 from fairs.views import create_fair, StartupCareerFairSpring2014View
+from recruiter.views import recruiter_hire, recruiter_market, recruiter_sell
 from django.conf import settings
 from django.conf.urls.static import static
 from django.views.generic import TemplateView
@@ -50,6 +51,9 @@ urlpatterns = patterns('',
     url(r'^showcase/analytics/$', recommendation_analytics, name='recommendation_analytics'),
     url(r'^match/$', match_jobs, name='match'),
     url(r'^apply/$', apply_jobs, name='apply'),
+    url(r'^recruiter/hire/$', recruiter_hire, name='recruiter_hire'),
+    url(r'^recruiter/market/$', recruiter_market, name='recruiter_market'),
+    url(r'^recruiter/sell/$', recruiter_sell, name='recruiter_sell'),
     url(r'^feedback/$',feedback_form),
     url(r'^logout/$', logout_view, name='logout'),
     url(r'^login-error/$', login_error, name='login-error'),

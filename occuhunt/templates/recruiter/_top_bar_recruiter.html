@@ -1,0 +1,49 @@
+{% load static from staticfiles %}
+{% load i18n %}
+{% load url from future %}
+
+{% csrf_token %}
+<script type="text/javascript">
+
+  mixpanel.track_links("#mp-logohome", "Clicked logo from top bar", {'referrer': document.referrer });
+  mixpanel.track_links("#mp-viewdiscover", "Viewed discover from top bar", {'referrer': document.referrer });
+  mixpanel.track_links("#mp-viewrecommendation", "Viewed recommendation from top bar", {'referrer': document.referrer });
+  mixpanel.track_links("#mp-viewfair", "Viewed fair from top bar", {'referrer': document.referrer });
+  mixpanel.track_links("#mp-viewsearch", "Viewed search from top bar", {'referrer': document.referrer });
+  mixpanel.track_links("#mp-viewresumefeed", "Viewed resume feed from top bar", {'referrer': document.referrer });
+  mixpanel.track_links("#mp-vieworganize", "Viewed organize from top bar", {'referrer': document.referrer });
+  mixpanel.track_links("#mp-loggedout", "Logged out from top bar", {'referrer': document.referrer });
+  mixpanel.track_links("#mp-loggedin", "Logged in from top bar", {'referrer': document.referrer });
+</script>
+
+
+<div class="navbar navbar-default" role="navigation">
+  <div class="container">    
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a href="/" id="mp-logohome"><img src="{% static "images/logo/OccuhuntLogo.png" %}" style="height:30px; margin-top:10px; margin-bottom:4px"></a>
+    </div>
+    <div class="collapse navbar-collapse navbar-ex1-collapse">
+      <ul class="nav navbar-nav nav">
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/recruiter/hire/">HIRE</a></li>
+        <li><a href="/recruiter/market/">MARKET</a></li>
+        <li><a href="/recruiter/sell/">SELL</a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{user.first_name | upper}}
+            <b class="caret"></b></a>
+          <ul class="dropdown-menu">
+            <li><a href="/logout/" id="mp-loggedout">Logout</a></li>
+            <input type="hidden" name="user_id" value="{{user.id}}" id="user_id">
+          </ul>
+        </li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div>
+</div>
