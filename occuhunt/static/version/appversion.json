@@ -1,0 +1,8 @@
+{
+   "version":{
+      "number":"1.0",
+      "mandatory":false,
+      "install_url":""
+   },
+   "min-version-number":1.0 
+}
