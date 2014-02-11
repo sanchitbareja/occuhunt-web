@@ -11,6 +11,9 @@ from string import strip
 from django.http import Http404
 from django.core import serializers
 
+from companies.models import Company
+from jobs.models import Job
+
 from social_auth import __version__ as version
 from social_auth.utils import setting
 
@@ -20,7 +23,9 @@ def recruiter_hire(request):
 
 def recruiter_market(request):
     """Recruiter interface for editting their profile"""
-    return render_to_response('recruiter/recruiter_market.html', {'version': version}, RequestContext(request))
+    company = Company.objects.get(id=302)
+    jobs = Job.objects.filter(company=company)
+    return render_to_response('recruiter/recruiter_market.html', {'version': version, 'company':company}, RequestContext(request))
 
 def recruiter_sell(request):
     """Recruiter interface for sponsoring events"""

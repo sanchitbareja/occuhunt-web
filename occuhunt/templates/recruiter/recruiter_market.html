@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% load static from staticfiles %}
+{% load i18n %}
+{% load url from future %}
+
+{% block extra_style %}
+<!-- Add css here -->
+<style type="text/css">
+	body {
+		background-color: white;	
+		-webkit-font-smoothing: antialiased;
+		font-smoothing: antialiased;
+		font-smooth: always;
+	}
+</style>
+
+{% endblock %}
+
+{% block extra_script %}
+<!-- Add javascript here -->
+{% endblock %}
+
+{% block content %}
+
+<div class="row">
+	<div class="col-lg-8 col-lg-offset-2">
+	  	<h1 id="company_title" style="color:#035d67;">{{ company.name }}</h1>
+	</div>
+</div>
+<div class="row">
+	<div class="col-lg-8 col-lg-offset-2 no-space">
+		<img id="company_banner" src="{{ company.banner_image }}">
+		<input type="text" class="form-control" style="width:100%;" placeholder="Banner: http://google.com/image/jpg/1.jpg">
+	</div>
+</div>
+<div class="row">
+	<div class="col-lg-8 col-lg-offset-2" id="company_description_container">
+		<div class="row">
+			<div class="col-lg-4 col-lg-offset-1" id="company_stats">
+				<img id="company_logo" style="margin-bottom:0px;" src="{{ company.logo }}">
+				<input type="text" class="form-control" style="width:100%;" placeholder="Logo: http://google.com/image/jpg/1.jpg"><br />
+				<div class="text-center">
+					<input type="text" class="form-control" style="width:100%;" placeholder="Location: {{company.location}}">
+					<input type="text" class="form-control" style="width:100%;" placeholder="Founded: {{company.founded}}">
+					<input type="text" class="form-control" style="width:100%;" placeholder="Number of employees: {{company.number_employees}}">
+				</div>
+			</div>
+			<div class="col-lg-5 col-lg-offset-1" id="company_description">
+				<div>
+					<h4 id="company_header">COMPANY INFO</h4>
+				</div>
+				<textarea class="form-control" style="font-size:16px;" rows="20">{{company.company_description}}</textarea>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-lg-8 col-lg-offset-2" id="job_description_container">
+		<div class="row">
+			<div class="col-lg-offset-1 col-lg-10">
+				{% if user.is_authenticated %}
+					<h4 id="company_header">JOBS&nbsp;&nbsp;&nbsp;<a class="btn btn-done btn-sm"><span class="glyphicon glyphicon-plus" style="color:white;"></span></a></h4>
+					{% if jobs %}					
+						{% for job in jobs %}
+						<p id="job_description">{{ job.name }}<span id="job_location">&nbsp;{{ job.location }}</span></p>
+						<p id="company_detailed_info">{{ job.description }}</p>
+						{% endfor %}
+					{% else %} <!-- Logged in but has no jobs available -->
+						<div class="row">
+							<div class="col-lg-4">
+								<input type="text" class="form-control" style="width:100%;" placeholder="Title (e.g. Software Engineering Intern)">
+							</div>
+							<div class="col-lg-4">
+								<select class="form-control" style="width:100%;">
+								  	<option>Job Type</option>
+								  	<option>2</option>
+								  	<option>3</option>
+								  	<option>4</option>
+								  	<option>5</option>
+								</select>
+							</div>
+							<div class="col-lg-4">
+								<input type="text" class="form-control" style="width:100%;" placeholder="Location: (e.g. San Francisco, CA)">
+							</div>
+						</div>
+						<br />
+						<div class="row">
+							<div class="col-lg-12">
+								<textarea class="form-control" style="font-size:16px; width:100%;" rows="3">Job Description
+								</textarea>
+							</div>
+						</div>
+					{% endif %}
+				{% else %}
+					<h3 class="text-center text-white">Login to view Jobs<br /><br /><a href="/login/linkedin/?next={{request.path}}"><img src="{% static 'images/login-with-linkedin.png' %}" onclick="mixpanel.track('Logged In from Company Page'); return true;"></a></h3>
+				{% endif %}
+				<br />
+				<br />
+				<div class="text-center">
+					<a class="btn btn-done" id="visit_careers_site_btn" onclick="mixpanel.track('Clicked on careers site from Company Page'); return true;"><input type="text" class="form-control" style="width:300px;" placeholder="Student Career Site: {{company.careers_website}}"></a>
+				</div>
+				<br />
+				<br />
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<!-- hard code everything for design -->
+{% endblock %}
