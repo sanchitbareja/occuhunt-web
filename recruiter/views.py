@@ -11,6 +11,7 @@ from string import strip
 from django.http import Http404
 from django.core import serializers
 
+from occuhunt.settings import EMAIL_MASTERS
 from companies.models import Company
 from jobs.models import Job
 
@@ -30,3 +31,13 @@ def recruiter_market(request):
 def recruiter_sell(request):
     """Recruiter interface for sponsoring events"""
     return render_to_response('recruiter/recruiter_sell.html', {'version': version}, RequestContext(request))
+
+def recruiter_sponsorship_request(request):
+    """post sponsorship request form and send email"""
+    results = {'success':False}
+    if(request.method == u'POST'):
+        POST = request.POST
+        send_mail('[Occuhunt] Recruiter Sponsorship Request!', POST['sponsorRequest']+" Recruiter ID: "+POST['sponsorId']+" Event ID: "+POST['eventId'], 'occuhunt@gmail.com', EMAIL_MASTERS, fail_silently=False)
+        results['success'] = True
+    json_results = simplejson.dumps(results)
+    return HttpResponse(json_results, mimetype='application/json')
