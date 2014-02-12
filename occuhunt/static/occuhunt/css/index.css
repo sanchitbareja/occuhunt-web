@@ -207,13 +207,14 @@ td#career_fair_map{
   position:absolute;
   display:block;
   color:black;
-  border: 1px solid #c44d48;
-  background: transparent;
-  margin-top: -23px;
-  margin-left: 59px;
-  width: 20px;
-  height: 20px;
-  border-radius: 10px;
+  background: url('/static/images/download_open.png');
+  background-repeat: no-repeat;
+  background-position: bottom;
+  background-size: 18px 24px;
+  margin-top: -28px;
+  margin-left: 60px;
+  width: 18px;
+  height: 24px;
   z-index: 100;
 
   -webkit-transition: background 0.3s ease;
@@ -227,14 +228,17 @@ td#career_fair_map{
   background: green;
 */
   opacity: 1;
-  background-color: green;
   -webkit-transition: background 0.3s ease;
   transition: background 0.3s ease;
 }
 
 .resume_dropped {
   opacity: 1;
-  background-color: green;
+  /*background-color: green;*/
+  background: url('/static/images/download_closed.png');
+  background-repeat: no-repeat;
+  background-position: bottom;
+  background-size: 18px 24px;
 }
 
 #career_fair_map {

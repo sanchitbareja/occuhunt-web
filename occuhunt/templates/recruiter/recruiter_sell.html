@@ -1,0 +1,113 @@
+{% extends "recruiter/recruiter_base.html" %}
+{% load static from staticfiles %}
+{% load i18n %}
+{% load url from future %}
+
+{% block head_title_base %}Upcoming Fairs{% endblock %}
+
+
+{% block extra_style %}
+
+<link href="/static/occuhunt/css/index.css" rel="stylesheet">
+<style type="text/css">
+.media-body {
+  display: inline-block;
+}
+
+.event-stats {
+  display: inline-block;
+  vertical-align: top;
+
+  height: 64px;
+  background-color: #759fc7;
+  color: white;
+  padding-right: 10px;
+  padding-left: 10px;
+}
+
+.event-stats-number {
+  margin-top: 10px;
+  margin-bottom: 0px;
+}
+
+.event-stats-number {
+
+}
+
+.event-sponsor {
+  display: inline-block;
+  vertical-align: top;
+  height: 64px;
+  background-color: #917239;
+  color: white;
+  padding-right: 10px;
+  padding-left: 10px;
+}
+
+</style>
+
+{% endblock %}
+
+{% block extra_script %}
+
+{% endblock %}
+
+{% block content %}
+
+<h1 class="text-center">Upcoming Events</h1>
+<div class="row">
+  <div class="col-lg-8 col-lg-offset-2">
+    <div class="panel panel-event">
+      <div class="panel-heading">February 2014</div>
+      <div class="panel-body">
+        <div class="media">
+          <a class="pull-left" href="#">
+            <img class="media-object event-image" src="{% static 'images/startupfair.png' %}" alt="UC Berkeley">
+          </a>
+          <div class="media-body" style="display:inline-block;">
+            <h4 class="media-heading"><a href="/fair/UCBerkeley/Startup-Fair-Spring-2014/" class="event-header">Startup Fair</a></h4>
+            February 26th, 12-4pm<br />
+            International House
+          </div>
+          <div style="float:right">
+            <div class="event-stats text-center">
+              <h3 class="event-stats-number">500</h3>
+              <p class="event-stats-word">expected</p>
+            </div>
+            <a data-toggle="modal" href="#sponsorModal" class="event-sponsor text-center" >
+              <h3 class="event-stats-number">Sponsor</h3>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Sponsor Modal -->
+<div class="modal fade" id="sponsorModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Sponsor</h4>
+      </div>
+      <div class="modal-body">
+        <div id="feedbackForm">
+          <div class="row">
+            <div class="col-lg-12">
+              <textarea class="form-control" rows="5" id="feedbackFormText" style="width:100%;">Write to us to let us know that you're interested in sponsoring. Alternatively, you could call us at 510-612-7328 or shoot us an email at occuhunt@gmail.com and we'll get back to you ASAP.</textarea>
+            </div>
+          </div>
+          <br />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="mixpanel.track('Closed feedback modal'); return true;">Close</button>
+        <button type="button" class="btn btn-done" id="feedbackFormSubmit" onclick="mixpanel.track('Sent feedback'); return true;">Sponsor Request</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+{% endblock %}
