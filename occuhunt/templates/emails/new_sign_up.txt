@@ -1,0 +1,5 @@
+Hello {{name}}! Welcome to Occuhunt!
+
+We wanted to get you started with Occuhunt. Upload your resume here (http://occuhunt.com/showcase/) to be prepared to drop off your resumes at upcoming infosessions and career fairs.
+
+Check out upcoming infosessions and career fairs here: http://occuhunt.com/home/

@@ -144,7 +144,8 @@ INSTALLED_APPS = (
     'resumes',
     'recommendations',
     'hunts',
-    'applications'
+    'applications',
+    'recruiters'
 )
 
 # A sample logging configuration. The only tangible logging
