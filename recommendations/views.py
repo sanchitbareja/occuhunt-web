@@ -22,8 +22,6 @@ def recommendation_main(request):
 	"""
 	# get current user_id
 	# get linkedin uid for this user_id
-	print request.user
-	print request.user.linkedin_uid
 	# get recommendations for this guy
 	recommendations_for_me = Recommendation.objects.filter(recommendation_to=request.user.linkedin_uid)
 	resume = Resume.objects.filter(user=request.user, showcase=True, original=False).order_by('-timestamp')
@@ -40,9 +38,6 @@ def recommendation_new(request, linkedin_uid):
 	"""
 	Create a new recommendation 
 	"""
-	print linkedin_uid
-	print request.user
-	print request.user.linkedin_uid		
 	requests_number = Request.objects.filter(request_to=request.user.linkedin_uid, replied=False).count()
 	return render_to_response('recommendation_new.html', {'version': version, 'requests_number':requests_number, 'recommendation_for':linkedin_uid, 'recommendation_by':request.user.linkedin_uid}, RequestContext(request))
 
@@ -54,7 +49,6 @@ def recommendation_new_with_request(request, linkedin_uid, request_id):
 	# check if request_id even exists in the database -> else redirect to normal recommendation with linkedin_uid
 	response_to = Request.objects.filter(id=request_id, request_from=linkedin_uid)
 	if len(response_to):
-		print response_to[0].id
 		# number of requests he has
 		requests_number = Request.objects.filter(request_to=request.user.linkedin_uid, replied=False).count()
 		return render_to_response('recommendation_new.html', {'version': version, 'requests_number':requests_number, 'recommendation_for':linkedin_uid, 'recommendation_by':request.user.linkedin_uid, 'request_id':response_to[0].id}, RequestContext(request))
@@ -67,8 +61,6 @@ def recommendation_requests(request):
 	Lists all the outstanding recommendation requests
 	"""
 	# get current user_id
-	print request.user
-	print request.user.linkedin_uid
 	recommendation_requests = Request.objects.filter(request_to=request.user.linkedin_uid, replied=False)
 	# get linkedin uid for this user_id
 	# get requests for this person

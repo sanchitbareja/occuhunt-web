@@ -1,9 +1,15 @@
-{% extends "showcase_base.html" %}
+{% extends "base.html" %}
 {% load static from staticfiles %}
 {% load i18n %}
 {% load url from future %}
 
-{% block extra_extra_script %}
+{% block extra_style %}
+<link href="{% static "occuhunt/css/recommendation.css" %}" rel="stylesheet">
+
+{% endblock %}
+
+
+{% block extra_script %}
 
 <!-- Date formatting library -->
 <script src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.1.0/moment.min.js"></script>
@@ -37,10 +43,10 @@
 	function loadRecommendationsApp(){
 		$(document).ready(function(){
 			$("input[name=recommendation_from]").each(function(index){
-				person_who_recommended_me_ui($(this).val());
+				// person_who_recommended_me_ui($(this).val());
 			});
 
-			recommend_friends_ui();
+			// recommend_friends_ui();
 		});
 	}
 </script>
@@ -48,8 +54,32 @@
 {% endblock %}
 
 
-{% block main_content %}
+{% block content %}
 
+<div class="col-lg-2">
+	<div class="text-right">
+		{% if request.get_full_path == "/showcase/" %}
+			<a href="/showcase/" class="btn btn-link active">My Profile</a><br />
+		{% else %}
+			<a href="/showcase/" class="btn btn-link">My Profile</a><br />
+		{% endif %}
+		{% if request.get_full_path == "/showcase/requests/" %}
+			<a href="/showcase/requests/" class="btn btn-link active">Recommend <span class="notification_number">{{requests_number}}</span></a><br />
+		{% else %}
+			<a href="/showcase/requests/" class="btn btn-link">Recommend <span class="notification_number">{{requests_number}}</span></a><br />
+		{% endif %}
+		{% if request.get_full_path == "/showcase/requests/new/" %}
+			<a href="/showcase/requests/new/" class="btn btn-link active">Invite</a><br />
+		{% else %}
+			<a href="/showcase/requests/new/" class="btn btn-link">Invite</a><br />
+		{% endif %}
+		{% if request.get_full_path == "/showcase/analytics/" %}
+			<a href="#" class="btn btn-link active disabled">Who's viewed you?</a><br />
+		{% else %}
+			<a href="#" class="btn btn-link disabled">Who's viewed you?</a><br />
+		{% endif %}
+	</div>
+</div>
 <div class="col-lg-7">
 	<input type="hidden" name="user_linkedin_uid" value="{{user_linkedin_uid}}">
     
@@ -153,10 +183,6 @@
 	</div>
 </div>
 
-{% endblock %}
-
-{% block right_content %}
-
 <div class="col-lg-3">
 	<div class="list-group" id="tips">
 		<div class="list-group-item">
@@ -164,11 +190,6 @@
 		</div>
 		<div class="list-group-item" style="color:grey;">
 			<p>Your profile can be viewed by recruiters only</p>
-		</div>
-	</div>
-	<div class="list-group" id="recommend_connections">
-		<div class="list-group-item">
-	    	<h4 id="category_header">Recommend your friends</h4>
 		</div>
 	</div>
 </div>
