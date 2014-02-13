@@ -2,6 +2,11 @@ from django.db import models
 from users.models import User
 from fairs.models import Fair
 from companies.models import Company
+from hunts.models import Hunt
+
+# signals
+from django.db.models.signals import pre_save, post_save
+from django.dispatch import receiver
 
 # Create your models here.
 
@@ -31,3 +36,21 @@ class Note(models.Model):
 	recruiter = models.ForeignKey(User, related_name='recruiter_note')
 	note = models.TextField()
 	timestamp = models.DateTimeField(auto_now_add=True)
+
+
+def auto_hunt(sender, instance, **kwargs):
+	"""
+	auto create a unique 'hunt' for the person
+	"""
+	# get user and fair
+	# check if user has already checked in for that fair
+	# 	if he has - do nothing
+	# 	else create a hunt entry for him
+	user = instance.user
+	fair = instance.fair
+	existing_hunt = Hunt.objects.filter(user=user, fair=fair)
+	if not len(existing_hunt) > 0:
+		new_hunt = Hunt(user=user, fair=fair)
+		new_hunt.save()
+
+post_save.connect(auto_hunt, sender=Application)

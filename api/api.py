@@ -541,7 +541,6 @@ class ApplicationResource(ModelResource):
                 new_application = Application(user=user, company=company, fair=fair, status=status, position=position)
                 new_application.save()
                 bundle.obj = new_application
-            print bundle.obj
         except Exception, e:
             print e
             raise e
@@ -552,25 +551,18 @@ class ApplicationResource(ModelResource):
         Normally used for 'rejecting' an applicant
         """
         try:
-            print "hello"
             user = User.objects.get(id=bundle.data['user_id'])
             company = Company.objects.get(id=bundle.data['company_id'])
             status = bundle.data['status']
-            print user
-            print company
-            print status
             # check if an application already exists
             old_application = Application.objects.filter(user=user, company=company, status="Applied")
-            print old_application
             if len(old_application) > 0:
                 old_application = old_application[0]
                 print old_application
                 if status == "Reject" or status == "Interview":
-                    print status
                     old_application.status = status
                     old_application.save()
                     bundle.obj = old_application
-                    print old_application
         except Exception, e:
             print e
             raise e
