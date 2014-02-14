@@ -43,6 +43,11 @@ $(document).ready(function() {
 
 	$("#bannerImgUrl").on("change", onChangeBanner);
 	$("#logoImgUrl").on("change", onChangeLogo);
+	$("#companyLocation").on("change", onChangeLocation);
+	$("#companyFounded").on("change", onChangeFoundedOn);
+	$("#companyNumEmployees").on("change", onChangeNumEmployees);
+	$("#companyDescription").on("change", onChangeCompanyInfo);
+	$("#companyCareersWebsite").on("change", onChangeCareersSite);
 
 	// enable save state on changes being made
 	$("input").on("change", enableSaveState);
@@ -53,10 +58,11 @@ function onChangeBanner() {
 	// get new image URL	
 	// if valid URL, change banner image
 	// if empty, revert to original src
-	new_image_url = $("#bannerImgUrl").val();
-	if(new_image_url){
-		$("#company_banner").attr("src",new_image_url);
+	new_banner_img = $("#bannerImgUrl").val();
+	if(new_banner_img){
+		$("#company_banner").attr("src",new_banner_img);
 	} else {
+		new_banner_img = original_banner_img; 
 		$("#company_banner").attr("src",original_banner_img);
 		$("#bannerImgUrl").val(original_banner_img);
 	}
@@ -92,6 +98,10 @@ function onChangeCompanyInfo() {
 	new_description = $("#companyDescription").val();
 }
 
+function onChangeCareersSite() {
+	new_career_site = $("#companyCareersWebsite").val();
+}
+
 function addJob() {
 
 }
@@ -122,8 +132,9 @@ function saveChanges() {
           'logo': new_logo_img,
           'banner_image': new_banner_img,
           'number_employees': new_num_employees,
-          'description': new_description,
+          'company_description': new_description,
           'location': new_location,
+          'careers_website': new_career_site,
         }),
         dataType: 'json',
         contentType: 'application/json',
