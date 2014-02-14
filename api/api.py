@@ -79,7 +79,7 @@ class CompanyResource(ModelResource):
         limit = 0
         authorization = DjangoAuthorization()
 
-        allowed_methods = ['get']
+        allowed_methods = ['get','put']
         filtering = {
             "name": ("exact"), "id": ("exact")
         }

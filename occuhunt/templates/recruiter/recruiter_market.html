@@ -18,6 +18,132 @@
 
 {% block extra_script %}
 <!-- Add javascript here -->
+
+<script type="text/javascript">
+
+var original_banner_img = '{{ company.banner_image }}';
+var original_logo_img = '{{ company.logo }}';
+var original_location = '{{ company.location }}';
+var original_founded = '{{ company.founded }}';
+var original_num_employees = '{{ company.number_employees }}';
+var original_description = '{{ company.description }}';
+var original_career_site = '{{ company.careers_website }}';
+
+var new_banner_img = '{{ company.banner_image }}';
+var new_logo_img = '{{ company.logo }}';
+var new_location = '{{ company.location }}';
+var new_founded = '{{ company.founded }}';
+var new_num_employees = '{{ company.number_employees }}';
+var new_description = '{{ company.description }}';
+var new_career_site = '{{ company.careers_website }}';
+
+$(document).ready(function() {
+	// initially, save button has to be disabled
+	disableSaveState();
+
+	$("#bannerImgUrl").on("change", onChangeBanner);
+	$("#logoImgUrl").on("change", onChangeLogo);
+
+	// enable save state on changes being made
+	$("input").on("change", enableSaveState);
+	$("textarea").on("change", enableSaveState);
+});
+
+function onChangeBanner() {
+	// get new image URL	
+	// if valid URL, change banner image
+	// if empty, revert to original src
+	new_image_url = $("#bannerImgUrl").val();
+	if(new_image_url){
+		$("#company_banner").attr("src",new_image_url);
+	} else {
+		$("#company_banner").attr("src",original_banner_img);
+		$("#bannerImgUrl").val(original_banner_img);
+	}
+}
+
+function onChangeLogo() {
+	// get new image URL	
+	// if valid URL, change logo image
+	// if empty, revert to original src
+	new_logo_img = $("#logoImgUrl").val();
+	if(new_image_url){
+		$("#company_logo").attr("src",new_logo_img);
+	} else {
+		$("#company_logo").attr("src",original_logo_img);
+		$("#logoImgUrl").val(original_logo_img);
+		new_logo_img = original_logo_img
+	}
+}
+
+function onChangeLocation() {
+	new_location = $("#companyLocation").val();
+}
+
+function onChangeFoundedOn() {
+	new_founded = $("#companyFounded").val();
+}
+
+function onChangeNumEmployees() {
+	new_num_employees = $("#companyNumEmployees").val();
+}
+
+function onChangeCompanyInfo() {
+	new_description = $("#companyDescription").val();
+}
+
+function addJob() {
+
+}
+
+function removeJob() {
+
+}
+
+function enableSaveState() {
+	$("#saveChangeBtn").text("Save Changes");
+	$("#saveChangeBtn").attr("disabled",false);
+}
+
+function disableSaveState() {
+	$("#saveChangeBtn").text("Saved");
+	$("#saveChangeBtn").attr("disabled",true);
+}
+
+function saveChanges() {
+	// check for new values
+	// only send up new values if not it should use old values
+	$.ajax({
+        url: '/api/v1/companies/{{company.id}}/',
+        type: 'PUT',
+        data: JSON.stringify({
+          'founded': new_founded,
+          'careers_website': new_career_site,
+          'logo': new_logo_img,
+          'banner_image': new_banner_img,
+          'number_employees': new_num_employees,
+          'description': new_description,
+          'location': new_location,
+        }),
+        dataType: 'json',
+        contentType: 'application/json',
+        statusCode : {
+            204: function(data, textStatus, jsXHR){
+                console.log(data);
+            	// disable save changes button
+            	disableSaveState();
+                alert("changes saved!");
+            },
+            500: function(data, textStatus, jsXHR){
+                console.log(data);
+                console.log(textStatus);
+                console.log(jsXHR);
+            }
+        }
+    });
+}
+
+</script>
 {% endblock %}
 
 {% block content %}
@@ -26,11 +152,14 @@
 	<div class="col-lg-8 col-lg-offset-2">
 	  	<h1 id="company_title" style="color:#035d67;">{{ company.name }}</h1>
 	</div>
+	<div class="col-lg-2">
+		<button class="btn btn-danger btn-lg" style="position:fixed;" onclick="saveChanges();" id="saveChangeBtn">Save Changes</button>
+	</div>
 </div>
 <div class="row">
 	<div class="col-lg-8 col-lg-offset-2 no-space">
 		<img id="company_banner" src="{{ company.banner_image }}">
-		<input type="text" class="form-control" style="width:100%;" placeholder="Banner: http://google.com/image/jpg/1.jpg">
+		<input type="text" class="form-control" style="width:100%;" id="bannerImgUrl" value="{{company.banner_image}}" placeholder="Banner: {{ company.banner_image }}">
 	</div>
 </div>
 <div class="row">
@@ -38,18 +167,18 @@
 		<div class="row">
 			<div class="col-lg-4 col-lg-offset-1" id="company_stats">
 				<img id="company_logo" style="margin-bottom:0px;" src="{{ company.logo }}">
-				<input type="text" class="form-control" style="width:100%;" placeholder="Logo: http://google.com/image/jpg/1.jpg"><br />
+				<input type="text" class="form-control" style="width:100%;" id="logoImgUrl" placeholder="Logo: {{company.logo}}"><br />
 				<div class="text-center">
-					<input type="text" class="form-control" style="width:100%;" placeholder="Location: {{company.location}}">
-					<input type="text" class="form-control" style="width:100%;" placeholder="Founded: {{company.founded}}">
-					<input type="text" class="form-control" style="width:100%;" placeholder="Number of employees: {{company.number_employees}}">
+					<input type="text" class="form-control" style="width:100%;" id="companyLocation" placeholder="Location: {{company.location}}">
+					<input type="text" class="form-control" style="width:100%;" id="companyFounded" placeholder="Founded: {{company.founded}}">
+					<input type="text" class="form-control" style="width:100%;" id="companyNumEmployees" placeholder="Number of employees: {{company.number_employees}}">
 				</div>
 			</div>
 			<div class="col-lg-5 col-lg-offset-1" id="company_description">
 				<div>
 					<h4 id="company_header">COMPANY INFO</h4>
 				</div>
-				<textarea class="form-control" style="font-size:16px;" rows="20">{{company.company_description}}</textarea>
+				<textarea class="form-control" style="font-size:16px;" rows="20" id="companyDescription">{{company.company_description}}</textarea>
 			</div>
 		</div>
 	</div>
@@ -97,7 +226,7 @@
 				<br />
 				<br />
 				<div class="text-center">
-					<a class="btn btn-done" id="visit_careers_site_btn" onclick="mixpanel.track('Clicked on careers site from Company Page'); return true;"><input type="text" class="form-control" style="width:300px;" placeholder="Student Career Site: {{company.careers_website}}"></a>
+					<a class="btn btn-done" id="visit_careers_site_btn"><input type="text" class="form-control" style="width:300px;" id="companyCareersWebsite" placeholder="Student Career Site: {{company.careers_website}}"></a>
 				</div>
 				<br />
 				<br />
@@ -105,7 +234,6 @@
 		</div>
 	</div>
 </div>
-
 
 <!-- hard code everything for design -->
 {% endblock %}

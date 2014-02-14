@@ -24,7 +24,7 @@ def recruiter_hire(request):
 
 def recruiter_market(request):
     """Recruiter interface for editting their profile"""
-    company = Company.objects.get(id=302)
+    company = Company.objects.get(id=305)
     jobs = Job.objects.filter(company=company)
     return render_to_response('recruiter/recruiter_market.html', {'version': version, 'company':company}, RequestContext(request))
 
