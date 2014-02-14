@@ -509,6 +509,37 @@ class ApplicationResource(ModelResource):
         filtering = {
             "user": ("exact"), "company": ("exact"), "fair":("exact"), "status":("exact")
         }
+
+    def build_filters(self, filters=None):
+        if filters is None:
+            filters = {}
+
+        orm_filters = super(ApplicationResource, self).build_filters(filters)
+
+        # build filters on user, company, fair and status
+        sqs = Application.objects.all()
+        try:
+            if "user_id" in filters:
+                user_id = filters['user_id']
+                user = User.objects.get(id=user_id)
+                sqs = sqs.filter(user=user)
+            if "company_id" in filters:
+                company_id = filters['company_id']
+                company = Company.objects.get(id=company_id)
+                sqs = sqs.filter(company=company)
+            if "fair_id" in filters:
+                fair_id = filters['fair_id']
+                fair = Fair.objects.get(id=fair_id)
+                sqs = sqs.filter(fair=fair)
+        except:
+            sqs = []
+
+        if "pk__in" not in orm_filters.keys():
+            orm_filters["pk__in"] = []
+            orm_filters["pk__in"] = orm_filters["pk__in"] + [i.pk for i in sqs]
+
+        return orm_filters
+
     def dehydrate(self, bundle):
         """
         Return a list of applications

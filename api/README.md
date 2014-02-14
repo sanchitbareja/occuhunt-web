@@ -11,7 +11,7 @@ This is the `/v1/` API documentation for the Occuhunt API. All requests are REST
 
 **Recruiter Workflow** (will include recruiter_id for all)
 
-*	[List of attendees, attendees that expressed interest in a specific company, attendees interacted with](#getusers)
+*	[List of attendees, attendees that expressed interest in a specific company, attendees interacted with](#getapplications)
 *	As soon as you get the attendee detail, should track that the recruiter viewed the resume - will be the same as #getusers but supplied with recruiter_id
 *	[Add Note](#addnote)
 *	[Add User](#adduser) - Prompt the recruiter to ask the student if he has a linkedin acct
@@ -154,6 +154,100 @@ Returns a list of Companies
         	}]
     	}
 	}		
+
+##<a id="getapplications"></a>Get Attendees and applcations
+
+**filtering**
+
+	To get the list of attendees for the career fair, only have the fair_id filter. To get list of applicants to a particular company at a career fair, include both fair_id and company_id
+
+	user_id
+	fair_id
+	company_id
+	status (1,2,3,4)
+	
+	1 - Applied
+	2 - Interacted With
+	3 - Rejected
+	4 - To Interview
+
+**Example Request Header**
+
+	Request Url: http://127.0.0.1:8000/api/v1/applications/?fair_id=1
+	Request Method: GET
+
+**Example Response Body**
+
+	{
+    	"meta": {
+        	"limit": 100,
+        	"next": null,
+        	"offset": 0,
+        	"previous": null,
+        	"total_count": 1
+    	},
+    	"response": {
+        	"applications": [{
+            	"company": {
+                	"avg_salary": "",
+                	"banner_image": "https://www.room77.com/images/web/teamphoto.jpg",
+                	"careers_website": "https://www.room77.com/jobs.html?pid=PJ5tys&id=fZ3C5q",
+                	"company_description": "Room 77 offers the most advanced hotel shopping experience on the Web today by allowing travelers to simultaneously compare pricing across every major online travel agency and more, shop across a variety of room types, and book more than 200,000 hotel rooms worldwide.\r\nUnlike other travel sites, Room 77 doesn’t stop at the booking. Travelers booking 4- or 5-star hotels, or stays totaling more than $400 on Room 77 get access to a complimentary Room Concierge who utilizes Room 77’s proprietary RoomMatch technology to identify the best rooms for each traveler then works directly with the hotel to score one of those rooms for the guest.",
+                	"competitors": "",
+                	"favorites": [37, 3],
+                	"founded": "4/10",
+                	"funding": "43.8M",
+               	 	"id": 336,
+                	"intro_video": "",
+                	"location": "Mountain View, CA",
+                	"logo": "http://s3.amazonaws.com/crunchbase_prod_assets/assets/images/resized/0012/3815/123815v5-max-250x250.png",
+                	"name": "Room 77",
+                	"number_employees": "20",
+                	"organization_type": "Computer Software",
+                	"resource_uri": "/api/v1/companies/336/",
+                	"website": "https://www.room77.com/"
+            	},
+            	"fair": {
+                	"id": 1,
+                	"logo": "http://occuhunt.com/static/images/berkeley.gif",
+                	"name": "EECS Career Fair",
+                	"resource_uri": "/api/v1/fairs/1/",
+                	"rooms": [{
+                   		"id": 1,
+                   		"name": "RSF - Field House Gym",
+                    	"resource_uri": "/api/v1/rooms/1/"
+                	}],
+                	"time_end": "2013-09-25T15:00:00",
+                	"time_start": "2013-09-25T11:00:00",
+                	"venue": "International House"
+            	},
+            	"id": 1,
+            	"note": "",
+            	"position": "Other",
+            	"resource_uri": "/api/v1/applications/1/",
+            	"status": 1,
+            	"timestamp": "2014-02-07T02:26:44.550560",
+            	"user": {
+                	"email": "sanchitbareja@gmail.com",
+                	"first_name": "Sanchit",
+                	"id": 1,
+                	"is_superuser": false,
+                	"last_name": "Bareja",
+                	"linkedin_uid": null,
+                	"profile_pic": "",
+                	"resource_uri": "/api/v1/users/1/",
+                	"resume": "https://resumefeed.s3.amazonaws.com/sanchit-barejapdf7krG0TT66sC2tnMkTjdx3dz2nXglCA",
+                	"resume_points": 10,
+                	"school": [{
+                    "name": "UC Berkeley"
+                	}],
+                	"thumbnail_profile_pic": "",
+                	"username": "sanchitbareja"
+            	}
+        	}]
+    	}
+	}
+
 
 ##<a id="posthunt"></a>Post Check-in/Hunt
 

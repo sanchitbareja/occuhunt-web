@@ -12,8 +12,9 @@ from django.dispatch import receiver
 
 STATUS_CATEGORIES = (
 	(1,'Applied'),
-	(2,'Reject'),
-	(3,'Interview'),
+	(2,'Interacted With'),
+	(3,'Rejected'),
+	(4,'To Interview'),
 	)
 
 POSITION_CATEGORIES = (
@@ -29,6 +30,7 @@ class Application(models.Model):
 	fair = models.ForeignKey(Fair)
 	status = models.SmallIntegerField(choices=STATUS_CATEGORIES, default=1)
 	position = models.CharField(max_length=512, default="Other")
+	note = models.TextField(default='')
 	timestamp = models.DateTimeField(auto_now_add=True)
 
 class Note(models.Model):
