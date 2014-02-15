@@ -467,6 +467,24 @@ class HuntResource(ModelResource):
 
             orm_filters["pk__in"] = [i.pk for i in sqs]
 
+        # build filters on user, company, fair and status
+        sqs = Hunt.objects.all()
+        try:
+            if "user_id" in filters:
+                user_id = filters['user_id']
+                user = User.objects.get(id=user_id)
+                sqs = sqs.filter(user=user)
+            if "fair_id" in filters:
+                fair_id = filters['fair_id']
+                fair = Fair.objects.get(id=fair_id)
+                sqs = sqs.filter(fair=fair)
+        except:
+            sqs = []
+
+        if "pk__in" not in orm_filters.keys():
+            orm_filters["pk__in"] = []
+            orm_filters["pk__in"] = orm_filters["pk__in"] + [i.pk for i in sqs]
+
         return orm_filters
 
     def obj_create(self, bundle, **kwargs):
