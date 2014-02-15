@@ -164,6 +164,7 @@ Returns a list of Companies
 	user_id
 	fair_id
 	company_id
+	unique_students (boolean)
 	status (1,2,3,4)
 	
 	1 - Applied
@@ -173,7 +174,7 @@ Returns a list of Companies
 
 **Example Request Header**
 
-	Request Url: http://127.0.0.1:8000/api/v1/applications/?fair_id=1
+	Request Url: http://127.0.0.1:8000/api/v1/applications/?fair_id=1&unique_students=true
 	Request Method: GET
 
 **Example Response Body**

@@ -12,6 +12,15 @@
 		font-smoothing: antialiased;
 		font-smooth: always;
 	}
+
+	.existing_job {
+		margin-bottom: 20px;
+	}
+
+	.new_job {
+		margin-bottom: 20px;
+	}
+
 </style>
 
 {% endblock %}
@@ -36,6 +45,8 @@ var new_founded = '{{ company.founded }}';
 var new_num_employees = '{{ company.number_employees }}';
 var new_description = '{{ company.description }}';
 var new_career_site = '{{ company.careers_website }}';
+
+var new_job_array = [1];
 
 $(document).ready(function() {
 	// initially, save button has to be disabled
@@ -103,11 +114,87 @@ function onChangeCareersSite() {
 }
 
 function addJob() {
+	// get the maximum in the new_job_array and add 1 to it for a new entry.
+	// add new name, job type, location and description
+	var new_job_num = Math.max.apply(Math,new_job_array) + 1;
+	if(new_job_num > 0){
+		new_job_array.push(new_job_num);
+	} else {
+		// this is the case where we emptied the array
+		new_job_num = 1;
+		new_job_array.push(new_job_num);
+	}
+	$("#add_jobs").append('<div class="new_job" id="new_job_'+String(new_job_num)+'">'+
+							'<div class="row">'+
+								'<div class="col-lg-1">'+
+									'<a class="btn btn-done btn-sm" onclick="removeJob(false, '+String(new_job_num)+', false);"><span class="glyphicon glyphicon-minus" style="color:white;"></span></a>'+
+								'</div>'+
+								'<div class="col-lg-4">'+
+									'<input type="text" class="form-control" style="width:100%;" id="new_job_'+String(new_job_num)+'_title" placeholder="Title (e.g. Software Engineering Intern)">'+
+								'</div>'+
+								'<div class="col-lg-4">'+
+									'<select class="form-control" id="new_job_'+String(new_job_num)+'_type" style="width:100%;">'+
+									  	'<option>Job Type</option>'+
+									'</select>'+
+								'</div>'+
+								'<div class="col-lg-3">'+
+									'<input type="text" class="form-control" style="width:100%;" id="new_job_'+String(new_job_num)+'_location" placeholder="Location: (e.g. San Francisco, CA)">'+
+								'</div>'+
+							'</div>'+
+							'<br />'+
+							'<div class="row">'+
+								'<div class="col-lg-12">'+
+									'<textarea class="form-control" style="font-size:16px; width:100%;" id="new_job_'+String(new_job_num)+'_description" rows="3">'+'Job Description</textarea>'+
+								'</div>'+
+							'</div>'+
+						'</div>');
 
+	// enable save state on changes being made
+	$("input").on("change", enableSaveState);
+	$("textarea").on("change", enableSaveState);
+	
 }
 
-function removeJob() {
-
+function removeJob(jobId, domId, isOnServer) {
+	// given the job id, remove the name, job type, location and description
+	// sends an ajax request for delete
+	// if the job they want to delete is something that hasn't been saved yet
+	//     	then it should be just removed from the dom
+	// 		it should also remove the job number from the new_job_array
+	console.log(domId);
+	if(isOnServer){
+		if(jobId) {
+			$.ajax({
+		        url: '/api/v1/jobs/'+String(jobId)+'/',
+		        type: 'PUT',
+		        data: JSON.stringify({
+		          'job_id': jobId,
+		          'deactivate': true,
+		        }),
+		        dataType: 'json',
+		        contentType: 'application/json',
+		        statusCode : {
+		            200: function(data, textStatus, jsXHR){
+		                console.log(data);
+		                // remove job from the dom
+		                $("#existing_job_"+String(domId)).remove();
+		                alert("changes saved!");
+		            },
+		            500: function(data, textStatus, jsXHR){
+		                console.log(data);
+		                console.log(textStatus);
+		                console.log(jsXHR);
+		            }
+		        }
+		    });
+		}
+	} else {
+		index = new_job_array.indexOf(domId);
+		if (index > -1) {
+		    new_job_array.splice(index, 1);
+		}
+		$("#new_job_"+String(domId)).remove();
+	}
 }
 
 function enableSaveState() {
@@ -140,10 +227,9 @@ function saveChanges() {
         contentType: 'application/json',
         statusCode : {
             204: function(data, textStatus, jsXHR){
-                console.log(data);
             	// disable save changes button
             	disableSaveState();
-                alert("changes saved!");
+                // alert("changes saved!");
             },
             500: function(data, textStatus, jsXHR){
                 console.log(data);
@@ -152,6 +238,54 @@ function saveChanges() {
             }
         }
     });
+    // send up new jobs added as well. only the new jobs that are not empty - need to check if the fields are not empty.
+    for (var i = new_job_array.length - 1; i >= 0; i--) {
+    	new_job_id = new_job_array[i];
+    	job_name = $("#new_job_"+String(new_job_id)+"_title").val();
+    	job_type = $("#new_job_"+String(new_job_id)+"_type").val();
+    	job_location = $("#new_job_"+String(new_job_id)+"_location").val();
+    	job_description = $("#new_job_"+String(new_job_id)+"_description").val();
+	    if(job_name && job_type && job_location && job_description) {
+	    	$.ajax({
+		        url: '/api/v1/jobs/',
+		        type: 'POST',
+		        data: JSON.stringify({
+		          'company_id': {{company.id}},
+		          'name': job_name,
+		          'job_type': job_type,
+		          'location': job_location,
+		          'description': job_description,
+		        }),
+		        dataType: 'json',
+		        contentType: 'application/json',
+		        statusCode : {
+		            201: function(data, textStatus, jsXHR){
+		                console.log(data);
+		                console.log("removing job_id: "+String(new_job_id));
+		            	// remove it from new_job pile & remove it from existing new_job_array
+		            	// once job is saved - move it to existing pile
+		            	$("#existing_jobs").append('<div class="existing_job" id="existing_job_'+String(data['id'])+'">'+
+									'<a class="btn btn-done btn-sm" style="display:inline-block;" onclick="removeJob('+String(data['id'])+', '+String(data['id'])+', true);"><span class="glyphicon glyphicon-minus" style="color:white;"></span></a>'+
+									'<p id="job_description" style="display:inline-block;">&nbsp;&nbsp;&nbsp;'+String(data['name'])+'<span id="job_location">&nbsp;'+String(data['location'])+'</span></p>'+
+									'<p id="company_detailed_info">'+String(data['description'])+'</p>'+
+								'</div>');
+		            	disableSaveState();
+		                // alert("job saved!");
+		            },
+		            500: function(data, textStatus, jsXHR){
+		                console.log(data);
+		                console.log(textStatus);
+		                console.log(jsXHR);
+		            }
+		        }
+		    });
+		}
+    };
+    // being optimistic here by assuming all jobs updates will be successful
+    // remove all input fields
+    $("#add_jobs").empty();
+    // empty array as well
+    new_job_array = [];
 }
 
 </script>
@@ -199,41 +333,50 @@ function saveChanges() {
 		<div class="row">
 			<div class="col-lg-offset-1 col-lg-10">
 				{% if user.is_authenticated %}
-					<h4 id="company_header">JOBS&nbsp;&nbsp;&nbsp;<a class="btn btn-done btn-sm"><span class="glyphicon glyphicon-plus" style="color:white;"></span></a></h4>
-					{% if jobs %}					
-						{% for job in jobs %}
-						<p id="job_description">{{ job.name }}<span id="job_location">&nbsp;{{ job.location }}</span></p>
-						<p id="company_detailed_info">{{ job.description }}</p>
-						{% endfor %}
-					{% else %} <!-- Logged in but has no jobs available -->
-						<div class="row">
-							<div class="col-lg-4">
-								<input type="text" class="form-control" style="width:100%;" placeholder="Title (e.g. Software Engineering Intern)">
+					<h4 id="company_header">JOBS&nbsp;&nbsp;&nbsp;<a class="btn btn-done btn-sm" onclick="addJob();"><span class="glyphicon glyphicon-plus" style="color:white;"></span></a></h4>
+						{% if jobs %}		
+							<div id="existing_jobs">			
+								{% for job in jobs %}
+								<div class="existing_job" id="existing_job_{{job.id}}">
+									<a class="btn btn-done btn-sm" style="display:inline-block;" onclick="removeJob({{job.id}}, {{job.id}}, true);"><span class="glyphicon glyphicon-minus" style="color:white;"></span></a>
+									<p id="job_description" style="display:inline-block;">&nbsp;&nbsp;&nbsp;{{ job.name }}<span id="job_location">&nbsp;{{ job.location }}</span></p>
+									<p id="company_detailed_info">{{ job.description }}</p>
+								</div>
+								{% endfor %}
 							</div>
-							<div class="col-lg-4">
-								<select class="form-control" style="width:100%;">
-								  	<option>Job Type</option>
-								  	<option>2</option>
-								  	<option>3</option>
-								  	<option>4</option>
-								  	<option>5</option>
-								</select>
-							</div>
-							<div class="col-lg-4">
-								<input type="text" class="form-control" style="width:100%;" placeholder="Location: (e.g. San Francisco, CA)">
-							</div>
-						</div>
-						<br />
-						<div class="row">
-							<div class="col-lg-12">
-								<textarea class="form-control" style="font-size:16px; width:100%;" rows="3">Job Description
-								</textarea>
+						{% endif %} <!-- Logged in but has no jobs available -->
+						<div id="add_jobs">
+							<div class="new_job" id="new_job_1">
+								<div class="row">
+									<div class="col-lg-1">
+										<a class="btn btn-done btn-sm" onclick="removeJob(false, 1, false);"><span class="glyphicon glyphicon-minus" style="color:white;"></span></a>
+									</div>
+									<div class="col-lg-4">
+										<input type="text" class="form-control" style="width:100%;" id="new_job_1_title" placeholder="Title (e.g. Software Engineering Intern)">
+									</div>
+									<div class="col-lg-4">
+										<select class="form-control" id="new_job_1_type" style="width:100%;">
+										  	<option>Job Type</option>
+										  	<option>2</option>
+										  	<option>3</option>
+										  	<option>4</option>
+										  	<option>5</option>
+										</select>
+									</div>
+									<div class="col-lg-3">
+										<input type="text" class="form-control" style="width:100%;" id="new_job_1_location" placeholder="Location: (e.g. San Francisco, CA)">
+									</div>
+								</div>
+								<br />
+								<div class="row">
+									<div class="col-lg-12">
+										<textarea class="form-control" style="font-size:16px; width:100%;" id="new_job_1_description" rows="3">Job Description</textarea>
+									</div>
+								</div>
 							</div>
 						</div>
 					{% endif %}
-				{% else %}
-					<h3 class="text-center text-white">Login to view Jobs<br /><br /><a href="/login/linkedin/?next={{request.path}}"><img src="{% static 'images/login-with-linkedin.png' %}" onclick="mixpanel.track('Logged In from Company Page'); return true;"></a></h3>
-				{% endif %}
+
 				<br />
 				<br />
 				<div class="text-center">

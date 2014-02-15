@@ -26,6 +26,7 @@ from resumes.models import Resume, Comment
 from recommendations.models import Recommendation, Request
 from hunts.models import Hunt
 from applications.models import Application, Note
+from jobs. models import Job
 import datetime
 
 
@@ -531,6 +532,9 @@ class ApplicationResource(ModelResource):
                 fair_id = filters['fair_id']
                 fair = Fair.objects.get(id=fair_id)
                 sqs = sqs.filter(fair=fair)
+            if "unique_students" in filters:
+                if filters['unique_students']:
+                    sqs = sqs.distinct('user')
         except:
             sqs = []
 
@@ -647,6 +651,63 @@ class RecruiterNotesResource(ModelResource):
         data['response'] = {"notes":data["objects"]}
         del(data["objects"])
         return data
+
+    def determine_format(self, request):
+        return 'application/json'
+
+class JobResource(ModelResource):
+    company = fields.OneToOneField(CompanyResource, 'company', full=True)
+    class Meta:
+        queryset = Job.objects.all()
+        resource_name = 'jobs'
+        authorization = DjangoAuthorization()
+        limit = 100
+        always_return_data = True
+        allowed_methods = ['get','post', 'put']
+        filtering = {}
+
+    def obj_create(self, bundle, **kwargs):
+        """
+        Create or delete a new job
+        """
+        print 1
+        try:
+            if 'deactivate' in bundle.data.keys() and bundle.data['deactivate']:
+                print 2
+                existing_job = Job.objects.get(id=bundle.data['job_id'])
+                existing_job.deactivate = True
+                existing_job.save()
+                bundle.obj = existing_job
+            else:
+                print 3
+                company = Company.objects.get(id=bundle.data['company_id'])
+                new_job = Job(name=bundle.data['name'], job_type=bundle.data['job_type'], location=bundle.data['location'], description=bundle.data['description'], company=company)
+                new_job.save()
+                bundle.obj = new_job
+        except Exception, e:
+            print e
+            raise e
+        return bundle
+
+    def obj_update(self, bundle, **kwargs):
+        """
+        Update to deactive mostly
+        """
+        try:
+            if 'deactivate' in bundle.data.keys() and bundle.data['deactivate']:
+                existing_job = Job.objects.get(id=bundle.data['job_id'])
+                existing_job.deactivate = True
+                existing_job.save()
+                bundle.obj = existing_job
+            else:
+                company = Company.objects.get(id=bundle.data['company_id'])
+                new_job = Job(name=bundle.data['name'], job_type=bundle.data['job_type'], location=bundle.data['location'], description=bundle.data['description'], company=company)
+                new_job.save()
+                bundle.obj = new_job
+        except Exception, e:
+            print e
+            raise e
+        return bundle
 
     def determine_format(self, request):
         return 'application/json'

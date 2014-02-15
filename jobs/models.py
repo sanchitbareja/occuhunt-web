@@ -38,6 +38,7 @@ class Job(models.Model):
 	company = models.ForeignKey(Company)
 	network = models.ForeignKey(Group, null=True, blank=True)
 	fair = models.ForeignKey(Fair, null=True, blank=True)
+	deactivate = models.BooleanField(default=False)
 
 	def __unicode__(self):
 		return self.name
