@@ -19,7 +19,7 @@ class UserCreationForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ['groups','user_permissions','username','email', 'is_admin','first_name','last_name','thumbnail_profile_pic','profile_pic']
+        fields = ['groups','user_permissions','username','email', 'is_admin','first_name','last_name','thumbnail_profile_pic','profile_pic','recruiter_for']
 
     def clean_password2(self):
         # Check that the two password entries match
@@ -50,7 +50,7 @@ class UserChangeForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ['groups','user_permissions','username','email', 'is_admin','first_name','last_name', 'thumbnail_profile_pic','profile_pic']
+        fields = ['groups','user_permissions','username','email', 'is_admin','first_name','last_name', 'thumbnail_profile_pic','profile_pic','recruiter_for']
         
     def clean_password(self):
         # Regardless of what the user provides, return the initial value.
@@ -67,17 +67,17 @@ class UserAdmin(UserAdmin):
     # The fields to be used in displaying the User model.
     # These override the definitions on the base UserAdmin
     # that reference specific fields on auth.User.
-    list_display = ('username','email', 'is_admin','first_name','last_name','thumbnail_profile_pic','profile_pic','linkedin_uid','time_created')
-    list_filter = ('is_admin',)
+    list_display = ('username','email', 'is_admin','first_name','last_name','thumbnail_profile_pic','profile_pic','linkedin_uid','recruiter_for','time_created')
+    list_filter = ('is_admin','recruiter_for')
     fieldsets = (
         (None, {'fields': ('username', 'password')}),
         ('Personal Info', {'fields': ('email', 'first_name','last_name','thumbnail_profile_pic','profile_pic')}),
-        ('Permissions', {'fields': ('is_admin','groups','user_permissions')}),
+        ('Permissions', {'fields': ('is_admin','groups','user_permissions','recruiter_for')}),
     )
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('username','email', 'password1', 'password2','first_name','last_name','thumbnail_profile_pic','profile_pic')}
+            'fields': ('username','email', 'password1', 'password2','first_name','last_name','thumbnail_profile_pic','profile_pic','recruiter_for')}
         ),
     )
     search_fields = ('username','email',)

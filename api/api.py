@@ -30,46 +30,6 @@ from jobs. models import Job
 import datetime
 
 
-class UserResource(ModelResource):
-    class Meta:
-        queryset = User.objects.all()
-        resource_name = 'users'
-        # Add it here.
-        # authentication = BasicAuthentication()
-        authorization = DjangoAuthorization()
-
-        allowed_methods = ['get']
-        filtering = {
-            "first_name": ("exact"), "linkedin_uid": ("exact"),
-        }
-        excludes = ['password','last_login','is_active','is_admin','time_created']
-
-    def dehydrate(self, bundle):
-        """
-        Return a list of clubs formatted according to what the developer expects
-        """
-        # get resume
-        resume = Resume.objects.filter(user__id=bundle.data['id'], showcase=True, original=False).order_by('-timestamp')
-        if len(resume) > 0:
-            resume = resume[0]
-            bundle.data['resume'] = resume.url
-        else:
-            resume = None
-            bundle.data['resume'] = None
-
-        # get school
-        bundle.data['school'] = [name for name in bundle.obj.groups.values('name')]
-
-        return bundle
-
-    def alter_list_data_to_serialize(self, request, data):
-        # rename "objects" to "response"
-        data['response'] = {"users":data['objects']}
-        del(data['objects'])
-        return data
-
-    def determine_format(self, request):
-        return 'application/json'
 
 class CompanyResource(ModelResource):
     class Meta:
@@ -130,6 +90,48 @@ class CompanyResource(ModelResource):
     def alter_list_data_to_serialize(self, request, data):
         # rename "objects" to "response"
         data['response'] = {"companies":data['objects']}
+        del(data['objects'])
+        return data
+
+    def determine_format(self, request):
+        return 'application/json'
+
+class UserResource(ModelResource):
+    recruiter_for = fields.OneToOneField(CompanyResource, 'recruiter_for', full=True, null=True)
+    class Meta:
+        queryset = User.objects.all()
+        resource_name = 'users'
+        # Add it here.
+        # authentication = BasicAuthentication()
+        authorization = DjangoAuthorization()
+
+        allowed_methods = ['get']
+        filtering = {
+            "first_name": ("exact"), "linkedin_uid": ("exact"),
+        }
+        excludes = ['password','last_login','is_active','is_admin','time_created']
+
+    def dehydrate(self, bundle):
+        """
+        Return a list of clubs formatted according to what the developer expects
+        """
+        # get resume
+        resume = Resume.objects.filter(user__id=bundle.data['id'], showcase=True, original=False).order_by('-timestamp')
+        if len(resume) > 0:
+            resume = resume[0]
+            bundle.data['resume'] = resume.url
+        else:
+            resume = None
+            bundle.data['resume'] = None
+
+        # get school
+        bundle.data['school'] = [name for name in bundle.obj.groups.values('name')]
+
+        return bundle
+
+    def alter_list_data_to_serialize(self, request, data):
+        # rename "objects" to "response"
+        data['response'] = {"users":data['objects']}
         del(data['objects'])
         return data
 

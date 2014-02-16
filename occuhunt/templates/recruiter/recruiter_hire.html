@@ -14,12 +14,85 @@
     font-smoothing: antialiased;
     font-smooth: always;
   }
+  .list-group-item {
+    border-radius: 0px;
+  }
+
 </style>
 
 {% endblock %}
 
 {% block extra_script %}
 <!-- Add javascript here -->
+<script type="text/javascript">
+
+function get_candidates(fair_id, company_id) {
+  // order by timestamp
+  $.ajax({
+      url: '/api/v1/applications/',
+      data: { 'fair_id':fair_id },
+      success: function(data, textStatus, jqXHR) {
+          console.log(data);
+          console.log(textStatus);
+          console.log(jqXHR);
+          for (var i = data['response']['applications'].length - 1; i >= 0; i--) {
+            $("#candidate_list").append('<a onclick="get_candidate('+data['response']['applications'][i]['id']+')" class="list-group-item">'+data['response']['applications'][i]['user']['first_name']+' '+data['response']['applications'][i]['user']['last_name']+'</a>');
+          };
+        },
+      dataType: 'json',
+    });
+}
+
+function clear_candidates(){
+  $("#candidate_list").empty();
+}
+
+function get_candidate(application_id) {
+  // if candidate did apply to the company, then it must in fact 
+  console.log(application_id);
+  $.ajax({
+    url: '/api/v1/applications/'+application_id+'/',
+    data: { },
+    success: function(data, textStatus, jqXHR) {
+        console.log(data);
+        console.log(textStatus);
+        console.log(jqXHR);
+        $("#application_first_name").text(data['user']['first_name']);
+        $("#application_last_name").text(data['user']['last_name']);
+        $("#application_email").text(data['user']['email']);
+        $("#application_note").val(data['note']);
+        $("#application_resume_img").attr({'src': data['user']['resume']});
+      },
+    dataType: 'json',
+  });
+}
+
+function accept_candidate(application_id){
+
+}
+
+function reject_candidate(application_id){
+
+}
+
+function save_note(application_id) {
+
+}
+
+function download_pdf(application_id) {
+
+}
+
+function get_analytics(application_id) {
+
+}
+
+$(document).ready(function() {
+  clear_candidates();
+  get_candidates(8);
+});
+
+</script>
 
 {% endblock %}
 
@@ -52,74 +125,44 @@
 <br />
 
 <div class="row">
-  <div class="col-lg-2 col-md-2 category_box">
+  <div class="col-lg-3 col-md-3 category_box">
     <div class="row" id="category_header_box">
       <h4 id="category_header">CHOOSE CANDIDATE</h4>
       <h5 id="category_subheader">Select a candidate.</h5>
-      <hr>
+      <hr style="margin-bottom:0px;">
+      <input type="text" class="form-control" placeholder="Search by name" style="width:100%;border-radius:0px;">
     </div>
     <div class="row">
-      <div id="applicant_main">
-        <img id="applicant_logo" src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-prn2/t1/c3.0.160.160/p160x160/1474590_10152026189784110_1340713522_n.jpg">
-        <div id="applicant_info">
-          <p id="applicant_name">Sanchit Bareja</p>
-          <p id="applicant_title">EECS 2014</p>
-        </div>
-      </div>
-      <div id="applicant_main">
-        <img id="applicant_logo" src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-prn2/t1/c3.0.160.160/p160x160/1474590_10152026189784110_1340713522_n.jpg">
-        <div id="applicant_info">
-          <p id="applicant_name">Sanchit Bareja</p>
-          <p id="applicant_title">EECS 2014</p>
-        </div>
+      <div class="list-group" id="candidate_list">
+        <!-- Candidates will appear here -->
       </div>
     </div>
   </div>
-  <div class="col-lg-10 col-md-10 category_box">
+  <div class="col-lg-9 col-md-9 category_box">
     <div class="row" id="category_header_box">
-        <h4 id="category_header">Sanchit Bareja</h4>
+        <h4 id="category_header"><span id="application_first_name"></span>&nbsp;<span id="application_last_name"></span>,&nbsp;<span id="application_email"></span></h4>
         <h5 id="category_subheader">Accept or Reject this applicant! Accept = interview, Reject = don't expect a call</h5>
         <button class="btn btn-lg btn-success" style="position:absolute; top:10px; right:10px;">Accept</button>
         <button class="btn btn-lg btn-danger" style="position:absolute; top:10px; left:10px;">Reject</button>
         <hr>
     </div>
     <div class="row">
-      <div class="col-lg-4">
-        <input class="input-text" type="text" placeholder="First Name" value="Sanchit">
-      </div>
-      <div class="col-lg-4">
-        <input type="text" class="input-text" placeholder="Last Name" value="Bareja">
-      </div>
-      <div class="col-lg-4">
-        <input type="text" class="input-text" placeholder="Major" value="EECS">
+      <div class="col-lg-12">
+        <h4>Notes&nbsp;&nbsp;&nbsp;<a class="btn btn-done btn-sm">Save Note</a></h4>
+        <textarea class="form-control" id="application_note"></textarea>        
       </div>
     </div>
-    <br />
     <div class="row">
-      <div class="col-lg-4">
-        <input type="text" class="input-text" placeholder="Email" value="sanchit@berkeley.edu">
-      </div>
-      <div class="col-lg-4">
-        <input type="text" class="input-text" placeholder="Phone" value="+1 (510) 612-7328">
-      </div>
-      <div class="col-lg-4">
-        <input type="text" class="input-text" placeholder="Graduation Year" value="2015">
+      <div class="col-lg-12">
+        <h4>Resume&nbsp;&nbsp;&nbsp;<a class="btn btn-done btn-sm">Download .pdf</a></h4>
+        <img style="border:1px solid #acacac" src="https://resumefeed.s3.amazonaws.com/sanchit-barejapdfu01nBM1mjF4kaWEJmaXcdgkyP4fBqI" id="application_resume_img">
       </div>
     </div>
-    <br />
     <div class="row">
-      <div class="col-lg-10">
-        <h4>Resume</h4>
-        <img style="border:1px solid #acacac" src="https://resumefeed.s3.amazonaws.com/sanchit-barejapdfu01nBM1mjF4kaWEJmaXcdgkyP4fBqI">
-      </div>
-      <div class="col-lg-2">
-        Notes
+      <div class="col-lg-12">
+        <h4>Analytics</h4>
       </div>
     </div>
-  </div>
-  <div class="col-lg-10 col-md-10 category_box" id="application_sent">
-    <img src="/static/images/checkmark.png" style="height:100px;"/>
-    <h1>Application Sent</h1>
   </div>
 </div>
 

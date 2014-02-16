@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import (
     BaseUserManager, AbstractBaseUser, PermissionsMixin
 )
+from companies.models import Company
 
 class UserManager(BaseUserManager):
     def create_user(self, username, email=None, password=None):
@@ -48,6 +49,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     profile_pic = models.TextField(null=True, blank=True)
     resume_points = models.IntegerField(default='0')
     time_created = models.DateTimeField(auto_now=False, auto_now_add=True, null=True, blank=True)
+    recruiter_for = models.ForeignKey(Company, null=True, blank=True)
 
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
