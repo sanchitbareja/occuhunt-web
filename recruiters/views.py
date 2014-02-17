@@ -45,8 +45,6 @@ def recruiter_login(request):
 
 @csrf_exempt
 def recruiter_login_third_party(request):
-    print request.POST
-    print request
     username = request.POST['username']
     password = request.POST['password']
     user = authenticate(username=username, password=password)
