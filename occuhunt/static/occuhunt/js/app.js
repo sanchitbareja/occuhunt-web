@@ -196,7 +196,7 @@ function toggleTable(cssID){
       decolorTables('.btn-categorydisabled');
     }
   } else {
-    if($(cssID).css('background-color') == "rgb(255, 255, 255)") {
+    if($(cssID).css('border-color') == "rgb(255, 255, 255)") {
       if(cssID == '.btn-categorydisabled'){
         recolorTables(cssID,'#dcdcdc');
       }
@@ -225,11 +225,11 @@ function toggleTable(cssID){
 }
 
 function decolorTables(cssID){
-  $(cssID).css('background-color','white');
+  $(cssID).css('border-color','white');
 }
 
 function recolorTables(cssID, color){
-  $(cssID).css('background-color',color);
+  $(cssID).css('border-color',color);
 }
 
 function get_favorites(){

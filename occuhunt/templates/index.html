@@ -15,7 +15,7 @@
 }
 
 .event-stats {
-  float: right;
+  float:right;
   display: inline-block;
   height: 64px;
   background-color: #759fc7;
@@ -31,6 +31,16 @@
 
 .event-stats-number {
 
+}
+
+.event-feature {
+  display: inline-block;
+  vertical-align: top;
+  height: 64px;
+  background-color: #ff8700;
+  color: white;
+  padding-right: 10px;
+  padding-left: 10px;
 }
 
 </style>
@@ -62,9 +72,31 @@
             February 26th, 12-4pm<br />
             International House
           </div>
-          <div class="event-stats text-center">
-            <h3 class="event-stats-number">500</h3>
-            <p class="event-stats-word">expected</p>
+          <div style="float:right">
+            <div class="event-feature text-center">
+              <h3 class="event-stats-number">NEW</h3>
+              <p class="event-stats-word">Resume Drop!</p>
+            </div>
+            <div class="event-stats text-center" style="float:none;">
+              <h3 class="event-stats-number">500</h3>
+              <p class="event-stats-word">expected</p>
+            </div>
+          </div>
+        </div>
+        <div class="media">
+          <a class="pull-left" href="#">
+            <img class="media-object event-image" src="{% static 'images/berkeley.gif' %}" alt="UC Berkeley">
+          </a>
+          <div class="media-body" style="display:inline-block;">
+            <h4 class="media-heading"><a href="/fair/UCBerkeley/Internship-Summer-Fair-Spring-2014/" class="event-header">Internship & Summer Job Fair</a></h4>
+            February 19-20th, 11am-3pm<br />
+            Recreational Sports Facility
+          </div>
+          <div style="float:right">
+            <div class="event-stats text-center" style="float:none;">
+              <h3 class="event-stats-number">1000+</h3>
+              <p class="event-stats-word">expected</p>
+            </div>
           </div>
         </div>
       </div>

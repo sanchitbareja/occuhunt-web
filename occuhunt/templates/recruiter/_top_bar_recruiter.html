@@ -28,6 +28,7 @@
       </button>
       <a href="/" id="mp-logohome"><img src="{% static "images/logo/OccuhuntLogo.png" %}" style="height:30px; margin-top:10px; margin-bottom:4px"></a>
     </div>
+    {% if user.is_authenticated %}
     <div class="collapse navbar-collapse navbar-ex1-collapse">
       <ul class="nav navbar-nav nav">
       </ul>
@@ -45,5 +46,6 @@
         </li>
       </ul>
     </div><!--/.nav-collapse -->
+    {% endif %}
   </div>
 </div>
