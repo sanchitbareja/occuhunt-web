@@ -524,11 +524,11 @@ class ApplicationResource(ModelResource):
         queryset = Application.objects.all()
         resource_name = 'applications'
         authorization = DjangoAuthorization()
-        limit = 100
+        limit = 10000
         always_return_data = 100
         allowed_methods = ['get','post','put','patch']
         filtering = {
-            "user": ("exact"), "company": ("exact"), "fair":("exact"), "status":("exact")
+            "user": ("exact"), "company": ("exact"), "fair":("exact"), "status":ALL
         }
 
     def build_filters(self, filters=None):
@@ -589,35 +589,13 @@ class ApplicationResource(ModelResource):
                 new_checkin = Hunt(user=user, fair=fair)
                 new_checkin.save()
             # check if an application already exists
-            old_application = Application.objects.filter(user=user, company=company, fair=fair, status=status)
+            old_application = Application.objects.filter(user=user, company=company, fair=fair)
             if len(old_application) > 0:
                 bundle.obj = old_application[0]
             else:
                 new_application = Application(user=user, company=company, fair=fair, status=status, position=position)
                 new_application.save()
                 bundle.obj = new_application
-        except Exception, e:
-            print e
-            raise e
-        return bundle
-
-    def obj_update(self, bundle, **kwargs):
-        """
-        Normally used for 'rejecting' an applicant
-        """
-        try:
-            user = User.objects.get(id=bundle.data['user_id'])
-            company = Company.objects.get(id=bundle.data['company_id'])
-            status = bundle.data['status']
-            # check if an application already exists
-            old_application = Application.objects.filter(user=user, company=company, status="Applied")
-            if len(old_application) > 0:
-                old_application = old_application[0]
-                print old_application
-                if status == "Reject" or status == "Interview":
-                    old_application.status = status
-                    old_application.save()
-                    bundle.obj = old_application
         except Exception, e:
             print e
             raise e
