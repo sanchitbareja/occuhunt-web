@@ -10,6 +10,8 @@ import os, time, simplejson, base64, urllib, hmac, sha, random, string
 from string import strip
 from django.http import Http404
 from django.core import serializers
+from django.contrib.auth import authenticate, login
+from django.views.decorators.csrf import csrf_exempt, csrf_protect
 
 from occuhunt.settings import EMAIL_MASTERS
 from companies.models import Company
@@ -23,6 +25,41 @@ from social_auth.utils import setting
 
 def recruiter_splash(request):
     return render_to_response('recruiter/recruiter_splash.html', {'version': version}, RequestContext(request))
+
+def recruiter_login(request):
+    print request.POST
+    username = request.POST['username']
+    password = request.POST['password']
+    user = authenticate(username=username, password=password)
+    if user is not None:
+        if user.is_active:
+            login(request, user)
+            # Redirect to a success page.
+            return redirect('/recruiter/hire/')
+        else:
+            # Return a 'disabled account' error message
+            return render_to_response('recruiter/recruiter_splash.html', {'version': version, 'error_loggin_in':True}, RequestContext(request))
+    else:
+        # Return an 'invalid login' error message.
+        return render_to_response('recruiter/recruiter_splash.html', {'version': version, 'error_loggin_in':True}, RequestContext(request))
+
+@csrf_exempt
+def recruiter_login_third_party(request):
+    print request.POST
+    print request
+    username = request.POST['username']
+    password = request.POST['password']
+    user = authenticate(username=username, password=password)
+    results = {'success':False}
+    if user is not None:
+        if user.is_active:
+            if user.recruiter_for:
+                results['success'] = True
+                json_results = simplejson.dumps(results)
+                return HttpResponse(json_results, mimetype='application/json')
+    # Return an 'invalid login' error message.
+    json_results = simplejson.dumps(results)
+    return HttpResponse(json_results, mimetype='application/json')
 
 def check_if_recruiter(user):
     if user.recruiter_for:

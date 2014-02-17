@@ -14,6 +14,11 @@ body {
 {% endblock %}
 
 {% block content %}
+
+{% if error_loggin_in %}
+  <div class="alert alert-danger">Oops! There was an error logging in. Please check back later. If this happens multiple times, please call us at 510-612-7328 or drop us some feedback below! Sorry for the inconvenience</div>
+{% endif %}
+
   <div class="row">
     <div class="col-lg-8">
       <div class="jumbotron" style="background:rgba(250,250,250,0.5)">
@@ -47,15 +52,16 @@ body {
     </div>
     <div class="col-lg-4">
       <h3 style="color:white;">Login</h3>
-      <form role="form">
+      <form role="form" action="/recruiter/login/" method="post">
         <div class="form-group input-group-lg">
-          <input type="text" class="form-control" id="input_username" placeholder="Enter username">
+          <input type="text" class="form-control" id="input_username" name="username" placeholder="Enter username">
         </div>
         <div class="form-group input-group-lg">
-          <input type="password" class="form-control" id="input_password" placeholder="Password">
+          <input type="password" class="form-control" id="input_password" name="password" placeholder="Password">
         </div>
+        {% csrf_token %}
+        <input type="submit" value="Login" class="btn btn-done btn-lg">
       </form>
-      <button type="submit" class="btn btn-done btn-lg">Login</button>
     </div>
   </div>
 {% endblock %}

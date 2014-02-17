@@ -4,7 +4,7 @@ from resumes.views import resume_feed, sign_s3_upload, submit_resume, individual
 from jobs.views import favorites, apply_jobs, match_jobs
 from recommendations.views import recommendation_main, recommendation_new, recommendation_new_with_request, recommendation_requests, recommendation_requests_new, recommendation_analytics
 from fairs.views import create_fair, StartupCareerFairSpring2014View
-from recruiters.views import recruiter_splash, recruiter_hire, recruiter_market, recruiter_sell, recruiter_sponsorship_request, download_pdf
+from recruiters.views import recruiter_splash, recruiter_hire, recruiter_market, recruiter_sell, recruiter_sponsorship_request, download_pdf, recruiter_login, recruiter_login_third_party
 from django.conf import settings
 from django.conf.urls.static import static
 from django.views.generic import TemplateView
@@ -53,6 +53,8 @@ urlpatterns = patterns('',
     url(r'^match/$', match_jobs, name='match'),
     url(r'^apply/$', apply_jobs, name='apply'),
     url(r'^recruiter/$', recruiter_splash, name='recruiter_splash'),
+    url(r'^recruiter/login/$', recruiter_login, name='recruiter_login'),
+    url(r'^recruiter/login/third_party/$', recruiter_login_third_party, name='recruiter_login_third_party'),
     url(r'^recruiter/hire/$', recruiter_hire, name='recruiter_hire'),
     url(r'^recruiter/candidate/download_pdf/$',download_pdf),
     url(r'^recruiter/market/$', recruiter_market, name='recruiter_market'),
