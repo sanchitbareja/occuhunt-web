@@ -582,7 +582,10 @@ class ApplicationResource(ModelResource):
                 position = bundle.data['position']
             else:
                 position = 'Any'
-            status = bundle.data['status']
+            if 'status' in bundle.data.keys():
+                status = bundle.data['status']
+            else:
+                status = 1
             # auto-checkin the user
             old_checkin = Hunt.objects.filter(user=user, fair=fair)
             if not len(old_checkin) > 0:
