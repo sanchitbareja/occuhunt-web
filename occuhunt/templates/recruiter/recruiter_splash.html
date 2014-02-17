@@ -1,0 +1,61 @@
+{% extends "recruiter/recruiter_base.html" %}
+{% load static from staticfiles %}
+{% load i18n %}
+{% load url from future %}
+
+{% block extra_style %}
+<style type="text/css">
+
+body {
+  background: url('/static/images/Home.jpg');
+}
+
+</style>
+{% endblock %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-lg-8">
+      <div class="jumbotron" style="background:rgba(250,250,250,0.5)">
+        <br />
+        <br />
+        <br />
+
+        <h1>Occuhunt</h1>
+        <p class="lead">A platform to help you hire effectively on college campuses.</p>
+        <br />
+        <div class="row text-center">
+          <div class="col-lg-3">
+            <h4>Receive digital versions of student resumes</h4>
+            <h1><span class="glyphicon glyphicon-thumbs-up"></span></h1>
+          </div>
+          <div class="col-lg-3">
+            <h4>Increase brand awareness on campus</h4>
+            <h1><span class="glyphicon glyphicon-user"></span></h1>
+          </div>
+          <div class="col-lg-3">
+            <h4>Analyze effectiveness of recruiting efforts</h4>
+            <h1><span class="glyphicon glyphicon-send"></span></h1>
+          </div>
+          <div class="col-lg-3">
+            <h4>Keep students informed on their application status</h4>
+            <h1><span class="glyphicon glyphicon-send"></span></h1>
+          </div>
+        </div>
+        <br />
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <h3 style="color:white;">Login</h3>
+      <form role="form">
+        <div class="form-group input-group-lg">
+          <input type="text" class="form-control" id="input_username" placeholder="Enter username">
+        </div>
+        <div class="form-group input-group-lg">
+          <input type="password" class="form-control" id="input_password" placeholder="Password">
+        </div>
+      </form>
+      <button type="submit" class="btn btn-done btn-lg">Login</button>
+    </div>
+  </div>
+{% endblock %}

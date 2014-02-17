@@ -30,7 +30,7 @@ class Application(models.Model):
 	fair = models.ForeignKey(Fair)
 	status = models.SmallIntegerField(choices=STATUS_CATEGORIES, default=1)
 	position = models.CharField(max_length=512, default="Other")
-	note = models.TextField(default='')
+	note = models.TextField(default='', blank=True)
 	timestamp = models.DateTimeField(auto_now_add=True)
 
 class Note(models.Model):

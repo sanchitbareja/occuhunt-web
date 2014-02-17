@@ -4,7 +4,7 @@ from resumes.views import resume_feed, sign_s3_upload, submit_resume, individual
 from jobs.views import favorites, apply_jobs, match_jobs
 from recommendations.views import recommendation_main, recommendation_new, recommendation_new_with_request, recommendation_requests, recommendation_requests_new, recommendation_analytics
 from fairs.views import create_fair, StartupCareerFairSpring2014View
-from recruiters.views import recruiter_hire, recruiter_market, recruiter_sell, recruiter_sponsorship_request
+from recruiters.views import recruiter_splash, recruiter_hire, recruiter_market, recruiter_sell, recruiter_sponsorship_request, download_pdf
 from django.conf import settings
 from django.conf.urls.static import static
 from django.views.generic import TemplateView
@@ -45,14 +45,16 @@ urlpatterns = patterns('',
     # url(r'^plan/organize/$', organize_companies, name="organize"),
     url(r'^plan/companies/$', favorites, name='favorites'),
     url(r'^showcase/$', recommendation_main, name='recommendation_main'),
-    url(r'^showcase/new/([A-Za-z0-9]+)/$', recommendation_new, name='recommendation_new'),
-    url(r'^showcase/new/([A-Za-z0-9]+)/request/([A-Za-z0-9]+)/$', recommendation_new_with_request, name='recommendation_new_with_request'),
+    url(r'^showcase/new/([A-Za-z0-9_-]+)/$', recommendation_new, name='recommendation_new'),
+    url(r'^showcase/new/([A-Za-z0-9_-]+)/request/([A-Za-z0-9_-]+)/$', recommendation_new_with_request, name='recommendation_new_with_request'),
     url(r'^showcase/requests/$', recommendation_requests, name='recommendation_requests'),
     url(r'^showcase/requests/new/$', recommendation_requests_new, name='recommendation_requests_new'),
     url(r'^showcase/analytics/$', recommendation_analytics, name='recommendation_analytics'),
     url(r'^match/$', match_jobs, name='match'),
     url(r'^apply/$', apply_jobs, name='apply'),
+    url(r'^recruiter/$', recruiter_splash, name='recruiter_splash'),
     url(r'^recruiter/hire/$', recruiter_hire, name='recruiter_hire'),
+    url(r'^recruiter/candidate/download_pdf/$',download_pdf),
     url(r'^recruiter/market/$', recruiter_market, name='recruiter_market'),
     url(r'^recruiter/sell/$', recruiter_sell, name='recruiter_sell'),
     url(r'^recruiter/sponsorship-request/$', recruiter_sponsorship_request, name='recruiter_sponsorship_request'),

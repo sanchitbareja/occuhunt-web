@@ -70,7 +70,7 @@ mixpanel.init("a84e2f34f22d01f012b63767216f0853");</script>
         {% endblock %}
     </head>
 
-    <body class="{% block body_class %}{% endblock %}" id="{% block body_id %}{% endblock %}" style="-webkit-font-smoothing: antialiased; font-smoothing: antialiased; padding-bottom:50px;">
+    <body class="{% block body_class %}{% endblock %}" id="{% block body_id %}{% endblock %}" style="-webkit-font-smoothing: antialiased; font-smoothing: antialiased;">
       <div id="fb-root"></div>
       <script>(function(d, s, id) {
         var js, fjs = d.getElementsByTagName(s)[0];
@@ -79,6 +79,9 @@ mixpanel.init("a84e2f34f22d01f012b63767216f0853");</script>
         js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=576667545721505";
         fjs.parentNode.insertBefore(js, fjs);
       }(document, 'script', 'facebook-jssdk'));</script>
+
+      <!-- recruiter id -->
+      <input type="hidden" name="recruiter_id" value="{{recruiter_id}}" id="recruiter_id">
       {% block topbar_base %}
         {% include "recruiter/_top_bar_recruiter.html" %}
       {% endblock %}

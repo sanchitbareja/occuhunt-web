@@ -7,6 +7,7 @@
 <!-- Add css here -->
 <link href="/static/occuhunt/css/recruiter_hire.css" rel="stylesheet">
 <script src="/static/occuhunt/js/custom-form-elements.js"></script>
+<script src="/static/underscore/underscore-min.js"></script>
 <style type="text/css">
   body {
     background-color: white;
@@ -26,21 +27,71 @@
 <!-- Add javascript here -->
 <script type="text/javascript">
 
-function get_candidates(fair_id, company_id) {
-  // order by timestamp
+var applicants = [];
+
+function get_events() {
   $.ajax({
-      url: '/api/v1/applications/',
-      data: { 'fair_id':fair_id },
-      success: function(data, textStatus, jqXHR) {
-          console.log(data);
-          console.log(textStatus);
-          console.log(jqXHR);
-          for (var i = data['response']['applications'].length - 1; i >= 0; i--) {
-            $("#candidate_list").append('<a onclick="get_candidate('+data['response']['applications'][i]['id']+')" class="list-group-item">'+data['response']['applications'][i]['user']['first_name']+' '+data['response']['applications'][i]['user']['last_name']+'</a>');
+    url: '/api/v1/fairs/',
+    data: { },
+    success: function(data, textStatus, jqXHR) {
+        console.log(data);
+        console.log(textStatus);
+        console.log(jqXHR);
+        for (var i = 0; i < data['objects'].length; i++) {
+          $("#filter_event").append('<option value="'+data['objects'][i]['id']+'">'+data['objects'][i]['name']+'</option>');
+        };
+        get_candidates();
+      },
+    dataType: 'json',
+  });
+}
+
+function get_candidates() {
+  applicants = [];
+  clear_candidates();
+  fair_id = $("#filter_event").val();
+  // <option value="1">Applicants that are awaiting response</option>
+  // <option value="2">Applicants I've talked to</option>
+  // <option value="3">Applicants I've rejected</option>
+  // <option value="4">Applicants to interview</option>
+  // <option value="5">All event attendees</option>
+  data_to_send = {};
+  url = '/api/v1/applications/'
+  if($("#filter_applicants").val() == "1"){
+    company_id = $("#recruiter_id").val();
+    url = '/api/v1/applications/?fair_id='+fair_id+'&company_id='+company_id+'&status__in=1&status__in=2';
+  } else if ($("#filter_applicants").val() == "2") {
+    company_id = $("#recruiter_id").val();
+    url = '/api/v1/applications/?fair_id='+fair_id+'&company_id='+company_id+'&status__in=2';
+  } else if ($("#filter_applicants").val() == "3") {
+    company_id = $("#recruiter_id").val();
+    url = '/api/v1/applications/?fair_id='+fair_id+'&company_id='+company_id+'&status__in=3';
+  } else if ($("#filter_applicants").val() == "4") {
+    company_id = $("#recruiter_id").val();
+    url = '/api/v1/applications/?fair_id='+fair_id+'&company_id='+company_id+'&status__in=4';
+  } else {
+    url = '/api/v1/applications/?fair_id='+fair_id+'&unique_students=true';
+    data_to_send = {'fair_id':fair_id, 'unique_students':true};
+  }
+  $.ajax({
+    url: url,
+    data: {},
+    success: function(data, textStatus, jqXHR) {
+        console.log(data);
+        console.log(textStatus);
+        console.log(jqXHR);
+        search_applicants();
+        if(data['response']['applications'].length > 0) {
+          applicants = data['response']['applications'];
+          for (var i = 0; i < data['response']['applications'].length; i++) {
+            $("#candidate_list").append('<a id="applicant_list_id_'+data['response']['applications'][i]['id']+'" onclick="get_candidate('+data['response']['applications'][i]['id']+')" class="list-group-item">'+data['response']['applications'][i]['user']['first_name']+' '+data['response']['applications'][i]['user']['last_name']+'</a>');
           };
-        },
-      dataType: 'json',
-    });
+        } else {
+          $("#candidate_list").append('<a class="list-group-item">Sorry, no candidates :( Please choose another category</a>')
+        }
+      },
+    dataType: 'json',
+  });
 }
 
 function clear_candidates(){
@@ -57,39 +108,196 @@ function get_candidate(application_id) {
         console.log(data);
         console.log(textStatus);
         console.log(jqXHR);
+        // need to check if everything exist
         $("#application_first_name").text(data['user']['first_name']);
         $("#application_last_name").text(data['user']['last_name']);
         $("#application_email").text(data['user']['email']);
         $("#application_note").val(data['note']);
         $("#application_resume_img").attr({'src': data['user']['resume']});
+        if($("#filter_applicants").val() == "1" || $("#filter_applicants").val() == "2"){
+          // configure accept and reject buttons
+          $("#accept_applicant_btn").attr({'onclick':'accept_candidate('+application_id+');'});
+          $("#reject_applicant_btn").attr({'onclick':'reject_candidate('+application_id+');'});
+          $("#reject_applicant_btn").show();
+          $("#accept_applicant_btn").show();
+          // configure notes
+          $("#application_note_btn").attr({'onclick':'save_note('+application_id+');'});
+          $("#note_div").show();
+          // configure download pdf
+          $("#download_pdf_btn").show();
+          $("#download_pdf_btn").attr({'onclick':'download_pdf('+application_id+');'});
+          // application status
+          if($("#filter_applicants").val() == "1") {
+            $("#application_status").text("Awaiting response");
+          }
+          if($("#filter_applicants").val() == "2") {
+            $("#application_status").text("Met at fair - Awaiting response");
+          }
+        } else if ($("#filter_applicants").val() == "3" || $("#filter_applicants").val() == "4") {
+          // configure accept and reject buttons
+          $("#reject_applicant_btn").hide();
+          $("#accept_applicant_btn").hide();
+          // configure application notes
+          $("#application_note_btn").attr({'onclick':'save_note('+application_id+');'});
+          $("#note_div").show();
+          // configure download pdf
+          $("#download_pdf_btn").show();
+          $("#download_pdf_btn").attr({'onclick':'download_pdf('+application_id+');'});
+          // application status
+          if($("#filter_applicants").val() == "3") {
+            $("#application_status").text("Rejected");
+          }
+          if($("#filter_applicants").val() == "4") {
+            $("#application_status").text("To invite for interview");
+          }
+        } else {
+          // hide all other buttons
+          $("#accept_applicant_btn").hide();
+          $("#reject_applicant_btn").hide();
+          $("#note_div").hide();
+          $("#download_pdf_btn").hide();
+          // application status config
+          $("#application_status").text("Fair Attendee");
+        }
       },
     dataType: 'json',
   });
 }
 
-function accept_candidate(application_id){
 
+function accept_candidate(application_id){
+  $.ajax({
+    url: '/api/v1/applications/'+String(application_id)+'/',
+    type: 'PUT',
+    data: JSON.stringify({
+      'status': 4,
+    }),
+    dataType: 'json',
+    contentType: 'application/json',
+    success: function(data, textStatus, jsXHR){
+      console.log(data);
+      // remove person from list dom - never need to show again
+      $("#applicant_list_id_"+String(application_id)).next().click();
+      $("#applicant_list_id_"+String(application_id)).remove();
+
+      alert("changes saved!");
+    }
+  });
 }
 
 function reject_candidate(application_id){
-
+  $.ajax({
+    url: '/api/v1/applications/'+String(application_id)+'/',
+    type: 'PUT',
+    data: JSON.stringify({
+      'status': 3,
+    }),
+    dataType: 'json',
+    contentType: 'application/json',
+    success: function(data, textStatus, jsXHR){
+      console.log(data);
+      // remove person from list dom and send it to 
+      $("#applicant_list_id_"+String(application_id)).next().click();
+      $("#applicant_list_id_"+String(application_id)).remove();
+      alert("changes saved!");
+    }
+  });
 }
 
 function save_note(application_id) {
-
+  if($("#application_note").val()){
+    $.ajax({
+      url: '/api/v1/applications/'+String(application_id)+'/',
+      type: 'PUT',
+      data: JSON.stringify({
+        'note': $("#application_note").val(),
+      }),
+      dataType: 'json',
+      contentType: 'application/json',
+      success: function(data, textStatus, jsXHR){
+        console.log(data);
+        // disable saving note
+        disable_save_note();
+        alert("changes saved!");
+      }
+    });
+  } else {
+    alert("your note is empty!");
+  }
 }
 
 function download_pdf(application_id) {
-
+  // /recruiter/candidate/download_pdf/
+  $.ajax({
+    type: "POST",
+    url: "/recruiter/candidate/download_pdf/",
+    data: { application_id: application_id, csrfmiddlewaretoken: $('input[name="csrfmiddlewaretoken"]').val() }
+  }).done(function( returnData ) {
+    if(returnData['success']){
+      // extract resume url
+      console.log(returnData);
+      // being download process
+      window.open(returnData['resume_pdf'],'_blank');
+    } else {
+      // ask them to give feedback or try again in a while.
+    }
+  });
 }
 
 function get_analytics(application_id) {
 
 }
 
+function enable_save_note(){
+  $("#application_note_btn").attr({"disabled":false});
+}
+
+function disable_save_note(){
+  $("#application_note_btn").attr({"disabled":true});
+}
+
+function search_applicants(){
+  $("#search_applicants").keyup(function(){
+    query = $("#search_applicants").val();
+    // get applicants by first_name, last_name and email
+    applicants_sh = _.map(applicants,function(applicant){ 
+      app_id = String(applicant['id']);
+      search_text = applicant['user']["first_name"]+" "+applicant["user"]["last_name"]+" "+applicant["user"]["email"];
+      dict = {};
+      dict["app_id"] = app_id;
+      dict["search_text"] = search_text;
+      dict["first_name"] = applicant['user']["first_name"];
+      dict["last_name"] = applicant['user']["last_name"];
+      return dict;
+    });
+    // search in all 3
+    matched_applicants = _.filter(applicants_sh, function(applicant){ 
+      return (applicant["search_text"].toLowerCase().indexOf(query.toLowerCase()) > -1); 
+    });
+    console.log(matched_applicants);
+    // clear candidates adn display just the list
+    clear_candidates();
+    // if list is empty, just get candidates again
+    if(matched_applicants.length > 0) {
+      for (var i = 0; i < matched_applicants.length; i++) {
+        $("#candidate_list").append('<a id="applicant_list_id_'+matched_applicants[i]['app_id']+'" onclick="get_candidate('+matched_applicants[i]['app_id']+')" class="list-group-item">'+matched_applicants[i]['first_name']+' '+matched_applicants[i]['last_name']+'</a>');
+      };
+    } else {
+      $("#candidate_list").append('<a class="list-group-item">Sorry, no candidates :( Please choose another category</a>')
+    }
+  });
+}
+
 $(document).ready(function() {
-  clear_candidates();
-  get_candidates(8);
+  get_events();
+  // clear_candidates();
+  // get_candidates();
+
+  // on change of any of the filters
+  $("#filter_school").on("change",get_candidates);
+  $("#filter_event").on("change",get_candidates);
+  $("#filter_applicants").on("change",get_candidates);
+  $("#application_note").on("change",enable_save_note);
 });
 
 </script>
@@ -98,26 +306,30 @@ $(document).ready(function() {
 
 {% block content %}
 
+<ul class="nav nav-tabs">
+  <li class="active"><a href="#">Applicants</a></li>
+  <li><a href="#">Analytics</a></li>
+</ul>
+
+<br />
+
 <div class="row">
-  <div class="col-lg-3 no-space">
-    <select class="form-control">
-      <option>UC Berkeley</option>
-      <option>MIT</option>
-      <option>Stanford</option>
-      <option>UCLA</option>
-      <option>Harvard</option>
+  <div class="col-lg-3 col-md-3 no-space">
+    <select class="form-control" id="filter_school">
+      <option value="1">UC Berkeley</option>
     </select>
   </div>
-  <div class="col-lg-3 no-space">
-    <select class="form-control">
-      <option>Startup Fair</option>
-      <option>Spring Career Fair</option>
+  <div class="col-lg-3 col-md-3 no-space">
+    <select class="form-control" id="filter_event">
     </select>
   </div>
-  <div class="col-lg-3 no-space">
-    <select class="form-control">
-      <option>Applicants that applied to me</option>
-      <option>All attendees</option>
+  <div class="col-lg-3 col-md-3 no-space">
+    <select class="form-control" id="filter_applicants">
+      <option value="1">Applicants that are awaiting response</option>
+      <option value="2">Applicants I've talked to</option>
+      <option value="3">Applicants I've rejected</option>
+      <option value="4">Applicants to interview</option>
+      <option value="5">All event attendees</option>
     </select>
   </div>
 </div>
@@ -130,7 +342,7 @@ $(document).ready(function() {
       <h4 id="category_header">CHOOSE CANDIDATE</h4>
       <h5 id="category_subheader">Select a candidate.</h5>
       <hr style="margin-bottom:0px;">
-      <input type="text" class="form-control" placeholder="Search by name" style="width:100%;border-radius:0px;">
+      <input type="text" class="form-control" placeholder="Search by name" id="search_applicants" style="width:100%;border-radius:0px;">
     </div>
     <div class="row">
       <div class="list-group" id="candidate_list">
@@ -140,27 +352,22 @@ $(document).ready(function() {
   </div>
   <div class="col-lg-9 col-md-9 category_box">
     <div class="row" id="category_header_box">
-        <h4 id="category_header"><span id="application_first_name"></span>&nbsp;<span id="application_last_name"></span>,&nbsp;<span id="application_email"></span></h4>
-        <h5 id="category_subheader">Accept or Reject this applicant! Accept = interview, Reject = don't expect a call</h5>
-        <button class="btn btn-lg btn-success" style="position:absolute; top:10px; right:10px;">Accept</button>
-        <button class="btn btn-lg btn-danger" style="position:absolute; top:10px; left:10px;">Reject</button>
+        <h4 id="category_header"><span id="application_first_name">First</span>&nbsp;<span id="application_last_name">Last Name</span>,&nbsp;<span id="application_email">Email</span>,&nbsp;<span id="application_status">Application Status</span></h4>
+        <h5 id="category_subheader">To Interview or Reject this applicant!</h5>
+        <button class="btn btn-lg btn-success" id="accept_applicant_btn" style="position:absolute; top:10px; right:10px;">To Interview</button>
+        <button class="btn btn-lg btn-danger" id="reject_applicant_btn" style="position:absolute; top:10px; left:10px;">Reject</button>
         <hr>
     </div>
-    <div class="row">
+    <div class="row" id="note_div">
       <div class="col-lg-12">
-        <h4>Notes&nbsp;&nbsp;&nbsp;<a class="btn btn-done btn-sm">Save Note</a></h4>
-        <textarea class="form-control" id="application_note"></textarea>        
+        <h4>Notes&nbsp;&nbsp;&nbsp;<a class="btn btn-done btn-sm" disabled id="application_note_btn">Save Note</a></h4>
+        <textarea class="form-control" id="application_note">Sample Note</textarea>
       </div>
     </div>
     <div class="row">
       <div class="col-lg-12">
-        <h4>Resume&nbsp;&nbsp;&nbsp;<a class="btn btn-done btn-sm">Download .pdf</a></h4>
+        <h4>Resume&nbsp;&nbsp;&nbsp;<a class="btn btn-done btn-sm" id="download_pdf_btn">Download .pdf</a></h4>
         <img style="border:1px solid #acacac" src="https://resumefeed.s3.amazonaws.com/sanchit-barejapdfu01nBM1mjF4kaWEJmaXcdgkyP4fBqI" id="application_resume_img">
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-lg-12">
-        <h4>Analytics</h4>
       </div>
     </div>
   </div>

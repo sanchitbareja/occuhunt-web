@@ -604,6 +604,25 @@ class ApplicationResource(ModelResource):
             raise e
         return bundle
 
+    def obj_update(self, bundle, **kwargs):
+        """
+        Update application status and notes
+        """
+        try:
+            existing_application = Application.objects.get(id=int(kwargs['pk']))
+            if 'note' in bundle.data.keys():
+                existing_application.note = bundle.data['note']
+                existing_application.save()
+
+            if 'status' in bundle.data.keys():
+                existing_application.status = bundle.data['status']
+                existing_application.save()
+            bundle.obj = existing_application
+        except Exception, e:
+            print e
+            raise e
+        return bundle
+
     def alter_list_data_to_serialize(self, request, data):
         # rename "objects" to "applications"
         data['response'] = {"applications":data["objects"]}
