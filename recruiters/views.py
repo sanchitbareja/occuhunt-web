@@ -53,6 +53,7 @@ def recruiter_login_third_party(request):
         if user.is_active:
             if user.recruiter_for:
                 results['success'] = True
+                results['company_id'] = user.recruiter_for.id
                 json_results = simplejson.dumps(results)
                 return HttpResponse(json_results, mimetype='application/json')
     # Return an 'invalid login' error message.
