@@ -9,8 +9,7 @@ from django.core.mail import send_mail
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.shortcuts import redirect
-import os, time, simplejson
-from datetime import datetime, timedelta, time
+import os, time, simplejson, datetime
 from django.core.management.base import BaseCommand, CommandError
 
 from django.core import mail
@@ -35,7 +34,7 @@ class Command(BaseCommand):
         yesterday = datetime.datetime.now() - datetime.timedelta(days=1)
         new_users = User.objects.filter(time_created__gt=yesterday)        
         for user in new_users:
-            subject = '[Occuhunt] Welcome '+user.first_name+'! Setup your professional profile.'
+            subject = 'Welcome '+user.first_name+'! Setup your professional profile.'
             from_email = 'occuhunt@gmail.com'
             to_email = user.email
 
