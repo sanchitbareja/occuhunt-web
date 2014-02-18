@@ -1,5 +1,6 @@
 {
   "version": 1,
+  "room_name": "Chevron Auditorium",
   "cols": 13,
   "rows": 6,
   "blank_columns": 6,
@@ -7,8 +8,8 @@
   "coys": [
       {"x": 1,
       "y": 1,
-      "coy_id": 344,
-      "coy_name": "Twilio",
+      "coy_id": 0,
+      "coy_name": "",
       "blank_row": 0,
       "blank_column": 0},
       {"x": 2,
