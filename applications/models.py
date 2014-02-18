@@ -19,8 +19,12 @@ STATUS_CATEGORIES = (
 
 POSITION_CATEGORIES = (
 	('Software Engineering','Software Engineering'),
-	('Accountant','Accountant'),
 	('Product Manager','Product Manager'),
+	('UI/UX Engineering','UI/UX Engineering'),
+	('Marketing','Marketing'),
+	('Business Development','Business Development'),
+	('Growth Hacker','Growth Hacker'),
+	('Accountant','Accountant'),
 	('Other','Other')
 	)
 
