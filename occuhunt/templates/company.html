@@ -74,7 +74,7 @@
 					<h4 id="company_header">JOBS</h4>
 					{% if jobs %}					
 						{% for job in jobs %}
-						<p id="job_description">{{ job.name }}<span id="job_location">&nbsp;{{ job.location }}</span></p>
+						<p id="job_description">{{ job.name }}<span id="job_location">&nbsp;{{ job.location|default_if_none:"" }}</span></p>
 						<p id="company_detailed_info">{{ job.description }}</p>
 						{% endfor %}
 					{% else %} <!-- Logged in but has no jobs available -->
