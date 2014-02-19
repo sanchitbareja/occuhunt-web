@@ -138,8 +138,8 @@ function calculate_costs(){
   // get total expenditure
   var total_expenditure = parseFloat($("#event_cost").val());
   // update costs
-  $("#cost_per_application").text(total_expenditure/num_applied);
-  $("#cost_per_interview").text(total_expenditure/num_accepted);
+  $("#cost_per_application").text(round(total_expenditure/num_applied));
+  $("#cost_per_interview").text(round(total_expenditure/num_accepted));
 }
 
 $(document).ready(function() {
