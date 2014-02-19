@@ -12,6 +12,7 @@ from django.http import Http404
 from django.core import serializers
 from django.contrib.auth import authenticate, login
 from django.views.decorators.csrf import csrf_exempt, csrf_protect
+from django.db.models import Avg, Count
 
 from occuhunt.settings import EMAIL_MASTERS
 from companies.models import Company
@@ -19,6 +20,7 @@ from jobs.models import Job
 from users.models import User
 from resumes.models import Resume
 from applications.models import Application
+from fairs.models import Fair
 
 from social_auth import __version__ as version
 from social_auth.utils import setting
@@ -72,6 +74,50 @@ def recruiter_hire(request):
     """Recruiter interface for hiring candidates"""
     recruiter_id = request.user.recruiter_for.id
     return render_to_response('recruiter/recruiter_hire.html', {'version': version, 'recruiter_id':recruiter_id}, RequestContext(request))
+
+@login_required
+@user_passes_test(check_if_recruiter, redirect_field_name='')
+def recruiter_analytics(request):
+    """Recruiter interface for hiring candidates"""
+    # if POST, return json formatted data according to query
+        # check for existence of company_id and fair_id
+        # try getting the following data:
+            # 1. # of students that attended the fair
+            # 2. # of students that applied to them spcifically
+            # 3. # of students that they are calling for interview
+            # 4. # of students they rejected
+            # 5. avg number of applications received by other companies
+    # else, return analytics page
+    if request.method == 'POST':
+        results = {'success':False}
+        if 'company_id' in request.POST.keys() and 'fair_id' in request.POST.keys():
+            try:
+                company_id = request.POST['company_id']
+                fair_id = request.POST['fair_id']
+                company = Company.objects.get(id=company_id)
+                fair = Fair.objects.get(id=fair_id)
+                num_attendees = Application.objects.filter(fair=fair).distinct('user').count()
+                num_applicants = Application.objects.filter(fair=fair, company=company).count()
+                num_applicants_to_interview = Application.objects.filter(fair=fair, company=company, status=4).count()
+                num_applicants_rejected = Application.objects.filter(fair=fair, company=company, status=3).count()
+                # 1. companies that attended the fair
+                # 2. annontate each company with the number of applications they get
+                # 3. annotate each company with application count
+                # 4. get average of the application count
+                avg_num_applications = Company.objects.filter(id__in=Application.objects.filter(fair=fair).distinct('company').values_list('company__id')).annotate(application_count=Count('application')).aggregate(avg_applications_per_company=Avg('application_count'))
+                results['success'] = True
+                results['num_attendees'] = num_attendees
+                results['num_applicants'] = num_applicants
+                results['num_applicants_to_interview'] = num_applicants_to_interview
+                results['num_applicants_rejected'] = num_applicants_rejected
+                results['avg_num_applications'] = avg_num_applications['avg_applications_per_company']
+            except:
+                results['success'] = False
+        json_results = simplejson.dumps(results)
+        return HttpResponse(json_results, mimetype='application/json')
+    else:
+        recruiter_id = request.user.recruiter_for.id
+        return render_to_response('recruiter/recruiter_analytics.html', {'version': version, 'recruiter_id':recruiter_id}, RequestContext(request))
 
 @login_required
 @user_passes_test(check_if_recruiter, redirect_field_name='')

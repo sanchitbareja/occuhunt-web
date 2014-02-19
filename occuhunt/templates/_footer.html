@@ -1,12 +1,11 @@
 {% if not match_link %}
 
 <br>
-<nav class="navbar navbar-default" role="navigation" style="margin-bottom:0px;padding-bottom:0px;">
+<nav class="navbar navbar-default navbar-fixed-bottom" role="navigation" style="margin-bottom:0px;padding-bottom:0px;">
   <div class="container">
     <ul class="nav navbar-nav navbar-left">
       <li><a data-toggle="modal" href="#feedbackModal" onclick="mixpanel.track('Clicked on Feedback'); return true;">FEEDBACK</a></li>
-      <li><a id="mp-sanchit" href="http://www.linkedin.com/in/sanchitbareja"><strong>ABOUT SANCHIT</strong></a></li>
-      <li><a id="mp-sidwyn" href="http://www.sidwyn.com" onclick="mixpanel.track('Clicked on Sidwyn'); return true;"><strong>ABOUT SIDWYN</strong></a></li>
+      <li><a data-toggle="modal" href="#aboutModal"><strong><span class="glyphicon glyphicon-earphone"></span> 510-612-7328</strong></a></li>
     </ul>
     <ul class="nav navbar-nav navbar-right">
       <li><div class="fb-like" data-href="https://www.facebook.com/occuhunt" data-layout="button_count" data-action="like" data-show-faces="false" data-share="true" style="top:13px;"></div></li>
@@ -48,6 +47,44 @@
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
+<!-- About Us modal -->
+<div class="modal fade" id="aboutModal" tabindex="-1" role="dialog" aria-labelledby="about" aria-hidden="true">
+  <div class="modal-dialog text-center">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">About</h4>
+      </div>
+      <div class="modal-body">
+        <p>Call us at 510-612-7328 if you need any help!</p>
+        <div class="row">
+          <div class="col-sm-6 col-md-6">
+            <div class="thumbnail">
+              <img src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-frc3/t1/c3.0.160.160/p160x160/1474590_10152026189784110_1340713522_n.jpg" alt="Sanchit Bareja">
+              <div class="caption">
+                <h3>Sanchit Bareja</h3>
+                <p>sanchit@berkeley.edu</p>
+                <p>Eat. Sleep. Play. Hack.</p>
+                <a id="mp-sanchit" class="btn btn-done btn-sm" href="http://www.linkedin.com/in/sanchitbareja"><strong>More about Sanchit</strong></a>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-6">
+            <div class="thumbnail">
+              <img src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-frc3/t1/c27.0.160.160/p160x160/1450086_10152035536286590_950650072_n.jpg" alt="Sidwyn Koh">
+              <div class="caption">
+                <h3>Sidwyn Koh</h3>
+                <p>sidwyn@berkeley.edu</p>
+                <p>Eat. Sleep. Play. Hack More.</p>
+                <a id="mp-sidwyn" class="btn btn-done btn-sm" href="http://www.sidwyn.com" onclick="mixpanel.track('Clicked on Sidwyn'); return true;"><strong>More about Sidwyn</strong></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
 <script type="text/javascript">
   mixpanel.track_links("#mp-sanchit", "Click sanchit link", {'referrer': document.referrer });
