@@ -11,6 +11,8 @@ from datetime import datetime, timedelta, time
 
 from recommendations.models import Recommendation, Request
 from resumes.models import Resume
+from notifications.models import Notification
+from applications.models import Application
 
 from social_auth import __version__ as version
 from social_auth.utils import setting
@@ -78,10 +80,32 @@ def recommendation_requests_new(request):
 	return render_to_response('recommendation_requests_new.html', {'version': version, 'requests_number':requests_number}, RequestContext(request))
 
 @login_required
-def recommendation_analytics(request):
+def showcase_notifications(request):
 	"""
-	Create a new request for recommendation
+	show the last 50 notifications to the user
+	- if more than 50 unread notifications, show all
+	- if less than 50 unread notifications, show up to 50 notifications only
 	"""
-	# number of requests he has
+	# new notifications for the people
+	old_notifications = Notification.objects.filter(user=request.user, receiver=1, read_receipt=True).order_by('-timestamp')[0:50]
+	unread_notifications = Notification.objects.filter(user=request.user, receiver=1, read_receipt=False).order_by('-timestamp')
+	for notification in unread_notifications:
+		notification.read_receipt = True
+		notification.save()
 	requests_number = Request.objects.filter(request_to=request.user.linkedin_uid, replied=False).count()
-	return render_to_response('recommendation_requests_new.html', {'version': version, 'requests_number':requests_number}, RequestContext(request))
+	return render_to_response('showcase_notifications.html', {'requests_number':requests_number, 'unread_notifications':unread_notifications, 'old_notifications':old_notifications}, RequestContext(request))
+
+
+@login_required
+def showcase_applications(request):
+	"""
+	show the applications statuses
+	- user
+	- company
+	- fair
+	- status
+	"""
+	# new notifications for the people
+	applications = Application.objects.filter(user=request.user).order_by('-timestamp')
+	requests_number = Request.objects.filter(request_to=request.user.linkedin_uid, replied=False).count()
+	return render_to_response('showcase_applications.html', {'requests_number':requests_number, 'applications':applications}, RequestContext(request))

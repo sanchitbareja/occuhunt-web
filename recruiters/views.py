@@ -21,6 +21,7 @@ from users.models import User
 from resumes.models import Resume
 from applications.models import Application
 from fairs.models import Fair
+from notifications.models import Notification
 
 from social_auth import __version__ as version
 from social_auth.utils import setting
@@ -162,6 +163,13 @@ def download_pdf(request):
                 resume = resume[0]
                 results['resume_pdf'] = resume.url
                 results['success'] = True
+                # notify user that application has been downloaded by company
+                try:
+                    new_notification = Notification(user=application.user, company=application.company, receiver=1, notification=2)
+                    new_notification.save()
+                except Exception, e:
+                    print e
+                    raise e
             else:
                 # send student notification to upload pdf again.
                 results['success'] = False

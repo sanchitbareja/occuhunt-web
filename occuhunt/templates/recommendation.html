@@ -73,10 +73,15 @@
 		{% else %}
 			<a href="/showcase/requests/new/" class="btn btn-link">Invite</a><br />
 		{% endif %}
-		{% if request.get_full_path == "/showcase/analytics/" %}
-			<a href="#" class="btn btn-link active disabled">Who's viewed you?</a><br />
+		{% if request.get_full_path == "/showcase/applications/" %}
+			<a href="/showcase/applications/" class="btn btn-link active">Application Status</a><br />
 		{% else %}
-			<a href="#" class="btn btn-link disabled">Who's viewed you?</a><br />
+			<a href="/showcase/applications/" class="btn btn-link">Application Status</a><br />
+		{% endif %}
+		{% if request.get_full_path == "/showcase/analytics/" %}
+			<a href="/showcase/analytics/" class="btn btn-link active">Who's viewed you?</a><br />
+		{% else %}
+			<a href="/showcase/analytics/" class="btn btn-link">Who's viewed you?</a><br />
 		{% endif %}
 	</div>
 </div>

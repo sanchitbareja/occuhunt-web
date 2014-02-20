@@ -2,7 +2,7 @@ from django.conf.urls import patterns, include, url
 from companies.views import home, splash, companies, company, search
 from resumes.views import resume_feed, sign_s3_upload, submit_resume, individual_resume
 from jobs.views import favorites, apply_jobs, match_jobs
-from recommendations.views import recommendation_main, recommendation_new, recommendation_new_with_request, recommendation_requests, recommendation_requests_new, recommendation_analytics
+from recommendations.views import recommendation_main, recommendation_new, recommendation_new_with_request, recommendation_requests, recommendation_requests_new, showcase_notifications, showcase_applications
 from fairs.views import create_fair, StartupCareerFairSpring2014View
 from recruiters.views import recruiter_splash, recruiter_hire, recruiter_market, recruiter_sell, recruiter_sponsorship_request, download_pdf, recruiter_login, recruiter_login_third_party, recruiter_analytics
 from django.conf import settings
@@ -49,7 +49,8 @@ urlpatterns = patterns('',
     url(r'^showcase/new/([A-Za-z0-9_-]+)/request/([A-Za-z0-9_-]+)/$', recommendation_new_with_request, name='recommendation_new_with_request'),
     url(r'^showcase/requests/$', recommendation_requests, name='recommendation_requests'),
     url(r'^showcase/requests/new/$', recommendation_requests_new, name='recommendation_requests_new'),
-    url(r'^showcase/analytics/$', recommendation_analytics, name='recommendation_analytics'),
+    url(r'^showcase/analytics/$', showcase_notifications, name='showcase_notifications'),
+    url(r'^showcase/applications/$', showcase_applications, name='showcase_applications'),
     url(r'^match/$', match_jobs, name='match'),
     url(r'^apply/$', apply_jobs, name='apply'),
     url(r'^recruiter/$', recruiter_splash, name='recruiter_splash'),

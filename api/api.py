@@ -26,7 +26,8 @@ from resumes.models import Resume, Comment
 from recommendations.models import Recommendation, Request
 from hunts.models import Hunt
 from applications.models import Application, Note
-from jobs. models import Job
+from jobs.models import Job
+from notifications.models import Notification
 import datetime
 
 
@@ -599,6 +600,13 @@ class ApplicationResource(ModelResource):
                 new_application = Application(user=user, company=company, fair=fair, status=status, position=position)
                 new_application.save()
                 bundle.obj = new_application
+            # notify user that application has been viewed by company
+            try:
+                new_notification = Notification(user=user, company=company, receiver=1, notification=1)
+                new_notification.save()
+            except Exception, e:
+                print e
+                raise e
         except Exception, e:
             print e
             raise e
@@ -613,10 +621,30 @@ class ApplicationResource(ModelResource):
             if 'note' in bundle.data.keys():
                 existing_application.note = bundle.data['note']
                 existing_application.save()
-
+                # send notification to student that his app has been viewed
+                try:
+                    new_notification = Notification(user=existing_application.user, company=existing_application.company, receiver=1, notification=1)
+                    new_notification.save()
+                except Exception, e:
+                    print e
+                    raise e
             if 'status' in bundle.data.keys():
                 existing_application.status = bundle.data['status']
                 existing_application.save()
+                # send notification to student that his status has been updated
+                try:
+                    if bundle.data['status'] == 1 or bundle.data['status'] == 2:
+                        new_notification = Notification(user=existing_application.user, company=existing_application.company, receiver=1, notification=1)
+                        new_notification.save()
+                    if bundle.data['status'] == 3:
+                        new_notification = Notification(user=existing_application.user, company=existing_application.company, receiver=1, notification=3)
+                        new_notification.save()
+                    if bundle.data['status'] == 4:
+                        new_notification = Notification(user=existing_application.user, company=existing_application.company, receiver=1, notification=4)
+                        new_notification.save()
+                except Exception, e:
+                    print e
+                    raise e
             bundle.obj = existing_application
         except Exception, e:
             print e

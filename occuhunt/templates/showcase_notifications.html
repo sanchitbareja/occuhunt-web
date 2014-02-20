@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+{% load static from staticfiles %}
+{% load i18n %}
+{% load url from future %}
+
+{% block extra_style %}
+<link href="{% static "occuhunt/css/recommendation.css" %}" rel="stylesheet">
+
+{% endblock %}
+
+
+{% block extra_script %}
+
+<!-- Date formatting library -->
+<script src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.1.0/moment.min.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.2/underscore-min.js" type="text/javascript"></script>
+
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="col-lg-2">
+	<div class="text-right">
+		{% if request.get_full_path == "/showcase/" %}
+			<a href="/showcase/" class="btn btn-link active">My Profile</a><br />
+		{% else %}
+			<a href="/showcase/" class="btn btn-link">My Profile</a><br />
+		{% endif %}
+		{% if request.get_full_path == "/showcase/requests/" %}
+			<a href="/showcase/requests/" class="btn btn-link active">Recommend <span class="notification_number">{{requests_number}}</span></a><br />
+		{% else %}
+			<a href="/showcase/requests/" class="btn btn-link">Recommend <span class="notification_number">{{requests_number}}</span></a><br />
+		{% endif %}
+		{% if request.get_full_path == "/showcase/requests/new/" %}
+			<a href="/showcase/requests/new/" class="btn btn-link active">Invite</a><br />
+		{% else %}
+			<a href="/showcase/requests/new/" class="btn btn-link">Invite</a><br />
+		{% endif %}
+		{% if request.get_full_path == "/showcase/applications/" %}
+			<a href="/showcase/applications/" class="btn btn-link active">Application Status</a><br />
+		{% else %}
+			<a href="/showcase/applications/" class="btn btn-link">Application Status</a><br />
+		{% endif %}
+		{% if request.get_full_path == "/showcase/analytics/" %}
+			<a href="/showcase/analytics/" class="btn btn-link active">Who's viewed you?</a><br />
+		{% else %}
+			<a href="/showcase/analytics/" class="btn btn-link">Who's viewed you?</a><br />
+		{% endif %}
+	</div>
+</div>
+<div class="col-lg-7">
+	<input type="hidden" name="user_linkedin_uid" value="{{user_linkedin_uid}}">
+    
+	
+	<div class="category_box">
+		<h4 id="category_header">New Notifications</h4>
+	  	<div id="category_body" style="margin:10px;">
+	  		<!-- This will be where the notifications appears -->
+	  		{% for notification in unread_notification %}
+		  		<div class="media">
+				  	<a class="pull-left" href="#">
+				    	<img class="media-object" src="{{notification.company.logo}}" alt="..." style="width:64px;">
+				  	</a>
+				  	<div class="media-body">
+				    	<h4 class="media-heading">{{notification.company.name}}</h4>
+				    	{% if notification.notification == 1 %}
+				    		Your profile was viewed by {{notification.company.name}}
+				    	{% elif notification.notification == 2 %}
+				    		Your resume was downloaded by {{notification.company.name}}
+				    	{% elif notification.notification == 3 %}
+				    		Your application to {{notification.company.name}} has been rejected. Don't give up! Keep trying!
+				    	{% elif notification.notification == 4 %}
+				    		Congrats! Expect to get back a call from {{notification.company.name}}
+				    	{% endif %}
+				    	<i>&nbsp;{{notification.timestamp}}</i>
+				 	</div>
+				</div>
+	  		{% endfor %}
+	  	</div>
+	</div>
+	<br />
+	<div class="category_box">
+		<h4 id="category_header">Old Notifications</h4>
+	  	<div id="category_body" style="margin:10px;">
+	  		<!-- This will be where the notifications appears -->
+	  		{% for notification in old_notifications %}
+		  		<div class="media">
+				  	<a class="pull-left" href="#">
+				    	<img class="media-object" src="{{notification.company.logo}}" alt="..." style="width:64px;">
+				  	</a>
+				  	<div class="media-body">
+				    	<h4 class="media-heading">{{notification.company.name}}</h4>
+				    	{% if notification.notification == 1 %}
+				    		Your profile was viewed by {{notification.company.name}}
+				    	{% elif notification.notification == 2 %}
+				    		Your resume was downloaded by {{notification.company.name}}
+				    	{% elif notification.notification == 3 %}
+				    		Your application to {{notification.company.name}} has been rejected. Don't give up! Keep trying!
+				    	{% elif notification.notification == 4 %}
+				    		Congrats! Expect to get back a call from {{notification.company.name}}
+				    	{% endif %}
+				    	<i>&nbsp;{{notification.timestamp}}</i>
+				 	</div>
+				</div>
+	  		{% endfor %}	  		
+	  	</div>
+	</div>
+</div>
+
+<div class="col-lg-3">
+	<div class="list-group" id="tips">
+		<div class="list-group-item">
+	    	<h4 id="category_header">Tips</h4>
+		</div>
+		<div class="list-group-item" style="color:grey;">
+			<p>Your profile can be viewed by recruiters only</p>
+		</div>
+	</div>
+</div>
+
+{% endblock %}
