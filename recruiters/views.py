@@ -124,7 +124,7 @@ def recruiter_analytics(request):
 @user_passes_test(check_if_recruiter, redirect_field_name='')
 def recruiter_market(request):
     """Recruiter interface for editting their profile"""
-    company = Company.objects.get(id=305)
+    company = Company.objects.get(id=request.user.recruiter_for.id)
     jobs = Job.objects.filter(company=company, deactivate=False)
     recruiter_id = request.user.recruiter_for.id
     return render_to_response('recruiter/recruiter_market.html', {'version': version, 'company':company, 'jobs':jobs, 'recruiter_id':recruiter_id}, RequestContext(request))
