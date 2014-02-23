@@ -1,0 +1,42 @@
+{% if updated_status == 3 %}
+
+<html>
+<body>
+Hello {{name}},<br />
+<br />
+We're sorry to inform you that your application to {{company}} has been rejected.<br />
+<br />
+Don't take this to heart. You are unique and another company will recognize your talents very soon. We encourage you to continue applying to other companies! If you need assistance in your job search, take advantage of your career center as much as possible.<br />
+<br />
+Do let us know if we can help you in any way possible. We'll be more than glad to help you!<br />
+<br />
+Visit http://occuhunt.com/showcase/applications/ to stay up-to-date with your applications.<br/>
+<br />
+Keep pushing!<br />
+Occuhunt<br />
+</body>
+</html>
+
+{% endif %}
+
+<!-- If accepted, congratualte them and ask them to follow up with the recruiter immedietely if they have their contact -->
+{% if updated_status == 4 %}
+
+<html>
+<body>
+Hello {{name}},<br />
+<br />
+Congrats! We're happy to inform you that {{company}} has expressed interest in interviewing you.<br />
+<br />
+We encourage you to reach out to the recruiter you've been in touch with and schedule an interview (the recruiter will be really happy you saved him some work!). Send them your free times for the next two weeks.<br />
+<br />
+Keep up the good work!<br />
+<br />
+Visit http://occuhunt.com/showcase/applications/ to stay up-to-date with your applications.<br/>
+<br />
+Good luck!<br />
+Occuhunt<br />
+</body>
+</html>
+
+{% endif %}

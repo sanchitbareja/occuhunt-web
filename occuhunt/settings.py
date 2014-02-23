@@ -10,6 +10,7 @@ ADMINS = (
 )
 
 EMAIL_MASTERS = [email[1] for email in ADMINS]
+EMAIL_BACKEND = "mailer.backend.DbBackend"
 
 MANAGERS = ADMINS
 
@@ -131,6 +132,7 @@ INSTALLED_APPS = (
     'social_auth',
     'gunicorn',
     'haystack',
+    'mailer',
     'provider',
     'provider.oauth2',
 

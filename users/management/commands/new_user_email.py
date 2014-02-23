@@ -5,7 +5,7 @@ from django.shortcuts import render_to_response, redirect
 from django.template.loader import render_to_string
 from django import forms
 from django.http import HttpResponseRedirect
-from django.core.mail import send_mail
+from mailer import send_mail, send_html_mail
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.shortcuts import redirect
@@ -21,10 +21,6 @@ class Command(BaseCommand):
     help = 'Sends new users an email introducing us'
 
     def handle(self, *args, **options):
-        # open mail connections
-        connection = mail.get_connection()
-        connection.open()
-
         # defines the templates for sending emails
         template_html = 'emails/new_sign_up.html'
         template_text = 'emails/new_sign_up.txt'
@@ -32,7 +28,7 @@ class Command(BaseCommand):
         # all the emails that need to be sent
         emails = []
         yesterday = datetime.datetime.now() - datetime.timedelta(days=1)
-        new_users = User.objects.filter(time_created__gt=yesterday)        
+        new_users = User.objects.filter(time_created__gt=yesterday, recruiter_for__isnull=True)
         for user in new_users:
             subject = 'Welcome '+user.first_name+'! Setup your professional profile.'
             from_email = 'occuhunt@gmail.com'
@@ -41,12 +37,6 @@ class Command(BaseCommand):
             text_content = render_to_string(template_text, {'name':user.first_name+' '+user.last_name})
             html_content = render_to_string(template_html, {'name':user.first_name+' '+user.last_name})
 
-            msg = mail.EmailMultiAlternatives(subject, text_content, from_email, [to_email])
-            msg.attach_alternative(html_content, "text/html")
-            emails.append(msg)
-
-        # send all the emails at once
-        connection.send_messages(emails)
-        connection.close()
+            send_html_mail(subject, text_content, html_content, from_email, [to_email])
 
         self.stdout.write('Successfully sent email to new users!')

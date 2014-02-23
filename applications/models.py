@@ -8,6 +8,12 @@ from hunts.models import Hunt
 from django.db.models.signals import pre_save, post_save
 from django.dispatch import receiver
 
+# misc
+import datetime
+from mailer import send_mail, send_html_mail
+from occuhunt.settings import EMAIL_MASTERS
+from django.template.loader import render_to_string
+
 # Create your models here.
 
 STATUS_CATEGORIES = (
@@ -36,6 +42,7 @@ class Application(models.Model):
 	position = models.CharField(max_length=512, default="Other")
 	note = models.TextField(default='', blank=True)
 	timestamp = models.DateTimeField(auto_now_add=True)
+	response_timestamp = models.DateTimeField(blank=True, null=True)
 
 class Note(models.Model):
 	user = models.ForeignKey(User, related_name='candidate_note')
@@ -59,4 +66,32 @@ def auto_hunt(sender, instance, **kwargs):
 		new_hunt = Hunt(user=user, fair=fair)
 		new_hunt.save()
 
-post_save.connect(auto_hunt, sender=Application)
+def auto_update_response_time(sender, instance, **kwargs):
+	"""
+	auto update the response_timestamp field if the status changes to 3 or 4
+	- sends user email as a result
+
+	# check if current status is 3 or 4
+	# if current status is 3 or 4 - don't do anything
+	# if current status is 1 or 2 and the update_field is to update it to 3 or 4
+		#  then update response_timestamp
+		#  send user email about update
+	"""
+	current_app = Application.objects.get(id=instance.id)
+	if (current_app.status == 1 or current_app.status == 2) and (instance.status == 3 or instance.status == 4):
+		# update response_time
+		instance.response_timestamp = datetime.datetime.now()
+		# send user email that he got rejected/called for interview
+		template_html = 'emails/new_notification.html'
+		template_text = 'emails/new_notification.txt'
+
+		subject = "[Occuhunt] Your application to "+current_app.company.name+" has been updated!"
+		from_email = 'occuhunt@gmail.com'
+		to_email = current_app.user.email
+
+		text_content = render_to_string(template_text, {'name':current_app.user.first_name+' '+current_app.user.last_name, 'company':current_app.company.name, 'old_status':current_app.status, 'updated_status':instance.status})
+		html_content = render_to_string(template_html, {'name':current_app.user.first_name+' '+current_app.user.last_name, 'company':current_app.company.name, 'old_status':current_app.status, 'updated_status':instance.status})
+
+		send_html_mail(subject, text_content, html_content, from_email, [to_email])
+
+pre_save.connect(auto_update_response_time, sender=Application)
