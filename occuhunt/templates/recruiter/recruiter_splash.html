@@ -4,13 +4,24 @@
 {% load url from future %}
 
 {% block extra_style %}
+<link href="{% static "occuhunt/css/recruiter_splash.css" %}" rel="stylesheet">
 <style type="text/css">
 
-body {
-  background: url('/static/images/Home.jpg') !important;
-}
 
 </style>
+{% endblock %}
+
+{% block extra_script %}
+
+<script type="text/javascript">
+
+$(document).ready(function() {
+  $('#contact_us').tooltip();
+});
+
+</script>
+
+
 {% endblock %}
 
 {% block content %}
@@ -21,47 +32,45 @@ body {
 
   <div class="row">
     <div class="col-lg-8">
-      <div class="jumbotron" style="background:rgba(250,250,250,0.5)">
-        <br />
-        <div class="text-center">
-          <h1><img src="{% static 'images/logo/Occuhunt-Logo-4.png'%}" style="width: 400px;"></h1>
-          <p class="lead">Hire effectively on college campuses.</p>
-        </div>
-        <div class="row text-center">
-          <div class="col-lg-3">
-            <h4>Receive digital versions of student resumes</h4>
-            <h1><img src="{% static 'images/example-resume.png' %}" style="width:100%;"></h1>
-          </div>
-          <div class="col-lg-3">
-            <h4>Increase brand awareness on campus</h4>
-            <h1><img src="{% static 'images/example-fairchild.png' %}" style="width:100%;"></h1>
-          </div>
-          <div class="col-lg-3">
-            <h4>Analyze effectiveness of recruiting efforts</h4>
-            <h1><span class="glyphicon glyphicon-signal"></span></h1>
-          </div>
-          <div class="col-lg-3">
-            <h4>Keep students informed on their application</h4>
-            <h1><span class="glyphicon glyphicon-bell"></span></h1>
-          </div>
-        </div>
-        <br />
-      </div>
+      <p class="bold-statement">Hire effectively<br />on college campuses.</p>
     </div>
     <div class="col-lg-4">
-      <h3 style="color:white;">Login</h3>
+      <div class="text-center">
+        <h5 class="light-green" data-toggle="tooltip" data-placement="bottom" title="Call us at (510) 612-7328 or email us at occuhunt@gmail.com" id="contact_us">Don't have an account? <u>Contact us!</u></h5>
+      </div>
       <form role="form" action="/recruiter/login/" method="post">
         <div class="form-group input-group-lg">
-          <input type="text" class="form-control" id="input_username" name="username" placeholder="Enter username">
+          <input type="text" class="form-control" id="input_username" name="username" placeholder="Username">
         </div>
         <div class="form-group input-group-lg">
           <input type="password" class="form-control" id="input_password" name="password" placeholder="Password">
         </div>
         {% csrf_token %}
-        <input type="submit" value="Login" class="btn btn-done btn-lg">
+        <input type="submit" value="Sign In" class="btn btn-inverted-default btn-lg pull-right">
       </form>
-      <br />
-      <h4 style="color:white;">Call us at 510-612-7328 or send and email to occuhunt@gmail.com to sign up with us! We will give you a free account right away - no questions asked.</h4>
     </div>
+  </div>
+  <div class="row text-center">
+    <div class="col-lg-4">
+      <h1><img src="{% static 'images/Recruit.png' %}" style="width:100%;"></h1>
+      <h3 class="section-title">RECRUIT</h3>
+      <h4 class="section-blurb">See all resumes of students attending the career fair. Notify or reject applicants with just one single click.</h4>
+    </div>
+    <div class="col-lg-4">
+      <h1><img src="{% static 'images/Analyze.png' %}" style="width:100%;"></h1>
+      <h3 class="section-title">ANALYZE</h3>
+      <h4 class="section-blurb">View and analyze recruiting performance at specific events. Integrate directly with your Applicant Tracking system by exporting.</h4>
+    </div>
+    <div class="col-lg-4">
+      <h1><img src="{% static 'images/Publicize.png' %}" style="width:100%;"></h1>
+      <h3 class="section-title">PUBLICIZE</h3>
+      <h4 class="section-blurb">Customize your company's public-facing page to display to students on Occuhunt.</h4>
+    </div>
+  </div>
+
+  <div class="row text-center">
+    <h2 class="light-green">
+      Questions? Call us at (510) 612-7328!
+    </h2>
   </div>
 {% endblock %}

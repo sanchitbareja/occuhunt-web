@@ -437,6 +437,40 @@
   }
 }
 
+.button-inverted-variant(@color; @background; @border) {
+  color: @color;
+  background-color: @background;
+  border-color: @border;
+
+  &:hover,
+  &:focus,
+  &:active,
+  &.active,
+  .open .dropdown-toggle& {
+    color: @background;
+    background-color: @color;
+        border-color: @border;
+  }
+  &:active,
+  &.active,
+  .open .dropdown-toggle& {
+    background-image: none;
+  }
+  &.disabled,
+  &[disabled],
+  fieldset[disabled] & {
+    &,
+    &:hover,
+    &:focus,
+    &:active,
+    &.active {
+    color: @background;
+      background-color: @color;
+          border-color: @border
+    }
+  }
+}
+
 // Button sizes
 // -------------------------
 .button-size(@padding-vertical; @padding-horizontal; @font-size; @line-height; @border-radius) {

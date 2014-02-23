@@ -2258,6 +2258,44 @@ fieldset[disabled] .btn-search.active {
   background-color: #ff8700;
   border-color: #ff8700;
 }
+.btn-inverted-default {
+  color: #348891;
+  background-color: #ffffff;
+  border-color: #348891;
+}
+.btn-inverted-default:hover,
+.btn-inverted-default:focus,
+.btn-inverted-default:active,
+.btn-inverted-default.active,
+.open .dropdown-toggle.btn-inverted-default {
+  color: #ffffff;
+  background-color: #348891;
+  border-color: #348891;
+}
+.btn-inverted-default:active,
+.btn-inverted-default.active,
+.open .dropdown-toggle.btn-inverted-default {
+  background-image: none;
+}
+.btn-inverted-default.disabled,
+.btn-inverted-default[disabled],
+fieldset[disabled] .btn-inverted-default,
+.btn-inverted-default.disabled:hover,
+.btn-inverted-default[disabled]:hover,
+fieldset[disabled] .btn-inverted-default:hover,
+.btn-inverted-default.disabled:focus,
+.btn-inverted-default[disabled]:focus,
+fieldset[disabled] .btn-inverted-default:focus,
+.btn-inverted-default.disabled:active,
+.btn-inverted-default[disabled]:active,
+fieldset[disabled] .btn-inverted-default:active,
+.btn-inverted-default.disabled.active,
+.btn-inverted-default[disabled].active,
+fieldset[disabled] .btn-inverted-default.active {
+  color: #ffffff;
+  background-color: #348891;
+  border-color: #348891;
+}
 .btn-categorydisabled {
   color: #222222;
   background-color: #dcdcdc;
