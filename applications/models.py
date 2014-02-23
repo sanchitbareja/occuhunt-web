@@ -85,7 +85,7 @@ def auto_update_response_time(sender, instance, **kwargs):
 		template_html = 'emails/new_notification.html'
 		template_text = 'emails/new_notification.txt'
 
-		subject = "[Occuhunt] Your application to "+current_app.company.name+" has been updated!"
+		subject = "[Occuhunt] "+current_app.company.name+" Application Update"
 		from_email = 'occuhunt@gmail.com'
 		to_email = current_app.user.email
 
