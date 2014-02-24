@@ -77,21 +77,25 @@ def auto_update_response_time(sender, instance, **kwargs):
 		#  then update response_timestamp
 		#  send user email about update
 	"""
-	current_app = Application.objects.get(id=instance.id)
-	if (current_app.status == 1 or current_app.status == 2) and (instance.status == 3 or instance.status == 4):
-		# update response_time
-		instance.response_timestamp = datetime.datetime.now()
-		# send user email that he got rejected/called for interview
-		template_html = 'emails/new_notification.html'
-		template_text = 'emails/new_notification.txt'
+	try:
+		current_app = Application.objects.get(id=instance.id)
+		if (current_app.status == 1 or current_app.status == 2) and (instance.status == 3 or instance.status == 4):
+			# update response_time
+			instance.response_timestamp = datetime.datetime.now()
+			# send user email that he got rejected/called for interview
+			template_html = 'emails/new_notification.html'
+			template_text = 'emails/new_notification.txt'
 
-		subject = "[Occuhunt] "+current_app.company.name+" Application Update"
-		from_email = 'occuhunt@gmail.com'
-		to_email = current_app.user.email
+			subject = "[Occuhunt] "+current_app.company.name+" Application Update"
+			from_email = 'occuhunt@gmail.com'
+			to_email = current_app.user.email
 
-		text_content = render_to_string(template_text, {'name':current_app.user.first_name+' '+current_app.user.last_name, 'company':current_app.company.name, 'old_status':current_app.status, 'updated_status':instance.status})
-		html_content = render_to_string(template_html, {'name':current_app.user.first_name+' '+current_app.user.last_name, 'company':current_app.company.name, 'old_status':current_app.status, 'updated_status':instance.status})
+			text_content = render_to_string(template_text, {'name':current_app.user.first_name+' '+current_app.user.last_name, 'company':current_app.company.name, 'old_status':current_app.status, 'updated_status':instance.status})
+			html_content = render_to_string(template_html, {'name':current_app.user.first_name+' '+current_app.user.last_name, 'company':current_app.company.name, 'old_status':current_app.status, 'updated_status':instance.status})
 
-		send_html_mail(subject, text_content, html_content, from_email, [to_email])
+			send_html_mail(subject, text_content, html_content, from_email, [to_email])
+	except Exception, e:
+		print e
+		
 
 pre_save.connect(auto_update_response_time, sender=Application)
