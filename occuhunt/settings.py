@@ -59,10 +59,15 @@ STATIC_ROOT = 'staticfiles'
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"
 # AWS Storages
+AWS_ACCESS_KEY_ID = 'AKIAJMUV3JF5IGAOPF3A'
+AWS_SECRET_ACCESS_KEY = 'BwhrrDs7srYGyk9ZHfvn/V1/1dLLx30yg4mFu+Af'
 AWS_STORAGE_BUCKET_NAME = 'occuhuntstatic'
 STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 S3_URL = 'http://%s.s3.amazonaws.com/' % AWS_STORAGE_BUCKET_NAME
 STATIC_URL = S3_URL
+
+# from S3 import CallingFormat
+# AWS_CALLING_FORMAT = CallingFormat.SUBDOMAIN
 
 import posixpath
 ADMIN_MEDIA_PREFIX = posixpath.join(STATIC_URL, "admin/")
