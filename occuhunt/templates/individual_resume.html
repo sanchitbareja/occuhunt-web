@@ -5,13 +5,13 @@
 
 {% block extra_style %}
 
-<link href="/static/occuhunt/css/resume_feed.css" rel="stylesheet">
+<link href="{% static 'occuhunt/css/resume_feed.css' %}" rel="stylesheet">
 
 {% endblock %}
 
 {% block extra_script %}
 
-<script type="text/javascript" src="/static/occuhunt/js/individual_resume.js"></script>
+<script type="text/javascript" src="{% static 'occuhunt/js/individual_resume.js' %}"></script>
 <script type="text/javascript">
   $(document).ready(function() {
     add_new_resume_html("{{ resume.id }}", "{{ resume.url }}", {{ resume_comments|safe }});

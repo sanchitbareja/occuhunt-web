@@ -83,13 +83,14 @@ function onChangeLogo() {
 	// get new image URL	
 	// if valid URL, change logo image
 	// if empty, revert to original src
+	console.log("asdfadsf");
 	new_logo_img = $("#logoImgUrl").val();
-	if(new_image_url){
+	if(new_logo_img){
 		$("#company_logo").attr("src",new_logo_img);
 	} else {
+		new_logo_img = original_logo_img;
 		$("#company_logo").attr("src",original_logo_img);
 		$("#logoImgUrl").val(original_logo_img);
-		new_logo_img = original_logo_img
 	}
 }
 
@@ -162,7 +163,7 @@ function addJob() {
 							'<br />'+
 							'<div class="row">'+
 								'<div class="col-lg-12">'+
-									'<textarea class="form-control" style="font-size:16px; width:100%;" id="new_job_'+String(new_job_num)+'_description" rows="3">'+'Job Description</textarea>'+
+									'<textarea class="form-control" style="font-size:16px; width:100%;" id="new_job_'+String(new_job_num)+'_description" rows="3" placeholder="Job Description"></textarea>'+
 								'</div>'+
 							'</div>'+
 						'</div>');
@@ -331,10 +332,12 @@ function saveChanges() {
 	<div class="col-lg-8 col-lg-offset-2" id="company_description_container">
 		<div class="row">
 			<div class="col-lg-4 col-lg-offset-1" id="company_stats">
-				<img id="company_logo" style="margin-bottom:0px;" src="{{ company.logo }}">
-				<br />Logo:
-				<input type="text" class="form-control" style="width:100%;" id="logoImgUrl" value="{{company.logo}}"><br />
-				<div>
+				
+				<br /><br />
+				<div style="line-height:1.4;">
+					Logo:
+					<img id="company_logo" style="padding-top:0px;margin-bottom:0px;" src="{{ company.logo }}"><br /><br />
+					<input type="text" class="form-control" style="width:100%;" id="logoImgUrl" value="{{company.logo}}"><br />
 					Location: <input type="text" class="form-control" style="width:80%;" id="companyLocation" value="{{company.location}}"><br />
 					Founded: <input type="text" class="form-control" style="width:100%;" id="companyFounded" value="{{company.founded}}"><br />
 					Number of Employees:<input type="text" class="form-control" style="width:100%;" id="companyNumEmployees" value="{{company.number_employees}}">
@@ -354,7 +357,15 @@ function saveChanges() {
 		<div class="row">
 			<div class="col-lg-offset-1 col-lg-10">
 				{% if user.is_authenticated %}
-					<h4 id="company_header">JOBS&nbsp;&nbsp;&nbsp;<a class="btn btn-done btn-sm" onclick="addJob();"><span class="glyphicon glyphicon-plus" style="color:white;"></span></a></h4>
+					<br />
+					<br />
+					<br />
+					<div class="row">
+						<div class="col-lg-12">
+							<h4 id="company_header" style="display:inline;">JOBS</h4>
+							<a style="display:inline;" class="btn btn-done btn-mg pull-right" onclick="addJob();"><span class="glyphicon glyphicon-plus" style="color:white;"></span> Add Job</a>
+						</div>
+					</div>
 						{% if jobs %}		
 							<div id="existing_jobs">			
 								{% for job in jobs %}
@@ -405,7 +416,7 @@ function saveChanges() {
 								<br />
 								<div class="row">
 									<div class="col-lg-12">
-										<textarea class="form-control" style="font-size:16px; width:100%;" id="new_job_1_description" rows="3">Job Description</textarea>
+										<textarea class="form-control" style="font-size:16px; width:100%;" id="new_job_1_description" rows="3" placeholder="Job Description"></textarea>
 									</div>
 								</div>
 							</div>
@@ -414,8 +425,8 @@ function saveChanges() {
 
 				<br />
 				<br />
-				<div class="text-center">
-					<p style="color:white">Careers Website:</p><a class="btn btn-done" id="visit_careers_site_btn"><input type="text" class="form-control" style="width:300px;" id="companyCareersWebsite" value="{{company.careers_website}}"></a>
+				<div>
+					<p style="color:white; font-size: 16px;">Careers Website:</p><input type="text" class="form-control" style="width:300px;" id="companyCareersWebsite" value="{{company.careers_website}}"
 				</div>
 				<br />
 				<br />

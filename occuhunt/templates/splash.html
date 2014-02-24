@@ -54,13 +54,13 @@ mixpanel.track_links("#mp-berk", "Clicked berkeley logo from splash", {'referrer
         <div class="ss-left">
           <div class="show-link-to-timeline">
             <p class="section-blurb" style="margin-right:9%;font-size:15px;margin-bottom:10px;">Get a Detailed Map of Upcoming Fairs</p>
-            <img src="/static/images/example-fair.png" style="height:300px;">
+            <img src="{% static 'images/example-fair.png' %}" style="height:300px;">
           </div>
         </div>
         <div class="ss-right">
           <div class="show-link-to-timeline">
             <p class="section-blurb" style="padding-left:0px;font-size:15px;margin-bottom:10px;">Get a Snapshot of Your Favorite Companies</p>
-            <img src="/static/images/example-fairchild.png" style="height:300px;">
+            <img src="{% static 'images/example-fairchild.png' %}" style="height:300px;">
           </div>
         </div>
     </div>
@@ -79,13 +79,13 @@ mixpanel.track_links("#mp-berk", "Clicked berkeley logo from splash", {'referrer
         <div class="ss-left">
             <div class="show-link-to-timeline">
               <p class="section-blurb" style="margin-right:67px;font-size:15px;margin-bottom:10px;">Upload Your Resume</p>
-              <img src="/static/images/example-resume.png" style="height:410px;">
+              <img src="{% static 'images/example-resume.png' %}" style="height:410px;">
             </div>
         </div>
         <div class="ss-right">
             <div class="show-link-to-timeline">
               <p class="section-blurb" style="margin-left:53px;font-size:15px;margin-bottom:10px;">Receive Feedback on Your Resume</p>
-              <img src="/static/images/example-comments.png" style="height:410px;" />
+              <img src="{% static 'images/example-comments.png' %}" style="height:410px;" />
             </div>
         </div>
     </div>
@@ -102,13 +102,13 @@ mixpanel.track_links("#mp-berk", "Clicked berkeley logo from splash", {'referrer
     <div class="ss-row ss-medium">
         <div class="ss-left">
             <div class="show-link-to-timeline">
-              <img src="/static/images/companies-example.jpg">
+              <img src="{% static 'images/companies-example.jpg' %}">
             </div>
         </div>
         <div class="ss-right" style="height:500px;">
             <div class="show-link-to-timeline" style="padding-top:100px;margin-left:20px;">
               <p class="section-blurb" style="margin-left:80px;font-size:15px;margin-bottom:10px;">Get Noticed by Recruiters</p>
-              <img src="/static/images/application-example.png">
+              <img src="{% static 'images/application-example.png' %}">
             </div>
         </div>
     </div>
@@ -129,9 +129,9 @@ mixpanel.track_links("#mp-berk", "Clicked berkeley logo from splash", {'referrer
     </div>
   </div>
   <div class="row text-center">
-      <a href="https://career.berkeley.edu/" id="mp-ccc"><img src="/static/images/career-center-logo-gold_gs.png" class="featured-partners"></a>
-      <a href="http://cet.berkeley.edu/" id="mp-cet"><img src="/static/images/CET_logo_gs.png" class="featured-partners"></a>
-      <a href="http://berkeley.edu/index.html" id="mp-berk"><img src="/static/images/berkeley_gs.png" class="featured-partners"></a>
+      <a href="https://career.berkeley.edu/" id="mp-ccc"><img src="{% static 'images/career-center-logo-gold_gs.png' %}" class="featured-partners"></a>
+      <a href="http://cet.berkeley.edu/" id="mp-cet"><img src="{% static 'images/CET_logo_gs.png' %}" class="featured-partners"></a>
+      <a href="http://berkeley.edu/index.html" id="mp-berk"><img src="{% static 'images/berkeley_gs.png' %}" class="featured-partners"></a>
     <!-- </div> -->
   </div>
 </div>

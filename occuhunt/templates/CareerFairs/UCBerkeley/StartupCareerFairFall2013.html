@@ -7,7 +7,7 @@
 
 
 {% block extra_style %}
-<link href="/static/occuhunt/css/index.css" rel="stylesheet">
+<link href="{% static 'occuhunt/css/index.css' %}" rel="stylesheet">
 <style type="text/css">
 .top-border{
   border-top: 1px solid #acacac;
@@ -26,14 +26,14 @@
 }
 
 .entrance {
-  background-image: url('/static/images/Entrance.jpg');
+  background-image: url('{% static 'images/Entrance.jpg' %}');
   background-repeat: no-repeat;
   background-position: bottom;
   background-size: 60px;
 }
 
 .exit {
-  background-image: url('/static/images/Entrance.jpg');
+  background-image: url('{% static 'images/Entrance.jpg' %}');
   background-repeat: no-repeat;
   background-position: bottom;
   background-size: 60px;
@@ -82,7 +82,7 @@
 {% block content %}
   <div class="col-lg-1 visible-lg" style="left:20px;padding-top:42px;position:absolute;">
     <div class="btn-group-vertical" id="filter_bar" data-toggle="buttons" style="top: 0px;">
-      <button type="button" class="btn btn-categorydisabled favorited-company btn-sm simplebox" onclick="toggleTable('.favorited-company');" style="background-image:url('/static/images/other/fold.png');">Favorites</button>
+      <button type="button" class="btn btn-categorydisabled favorited-company btn-sm simplebox" onclick="toggleTable('.favorited-company');" style="background-image:url('{% static 'images/other/fold.png' %}');">Favorites</button>
       <button type="button" class="btn btn-engineering btn-sm simplebox" onclick="toggleTable('.btn-engineering');">Engineering</button>
       <button type="button" class="btn btn-finance btn-sm simplebox" onclick="toggleTable('.btn-finance');">Finance</button>
       <button type="button" class="btn btn-government btn-sm simplebox" onclick="toggleTable('.btn-government');">Government</button>
