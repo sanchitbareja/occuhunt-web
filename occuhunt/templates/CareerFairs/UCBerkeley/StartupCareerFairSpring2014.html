@@ -35,13 +35,42 @@
               trigger: 'click',
               container: $(this).attr('id'),
               title:"<a class='btn-link pull-left' onclick='closeModal("+data['id']+")'><b>X</b></a><h3 class='text-center'>"+data["name"]+"</h3><a class='btn-link' id='modal-plus' onclick='favoriteCompanyWithId("+data['id']+",this, null);' style='right:17px; top:10px;position:absolute; float:right; '><span class='glyphicon glyphicon-plus'></span></a>",
-              content:"<div class='popover-company-info'><img id='background_banner' src='"+data["banner_image"]+"'/><img id='foreground_banner' src='"+data['logo']+"'><p>"+data["company_description"].slice(0,140)+"...</p><a class='btn btn-done' id='mp-viewjobs' href='/company/"+data['id']+" /'>VIEW JOBS</a></div>"
+              content:"<div class='popover-company-info'><img id='background_banner' src='"+data["banner_image"]+"'/><img id='foreground_banner' src='"+data['logo']+"'><p>"+data["company_description"].slice(0,140)+"...</p><div><a class='btn btn-done' style='display:inline-block; margin-right:10px;' id='mp-viewjobs' href='/company/"+data['id']+" /'>VIEW JOBS</a><a class='btn btn-danger' id='resume_drop_"+data['id']+"' style='display:inline-block;' value='"+data['id']+"' name='"+data['name']+"'>DROP RESUME</a></div></div>"
             }).popover("show");
+
+            $('#resume_drop_'+data['id']+'').on("click", function() {
+              var e = $(this);
+              var company_id = $(this).attr("value");
+              var user_id = $("#user_id").val();
+              var fair_id = $("#fair_id").val();
+              var company_name = $(this).attr("name")
+              $("#company_id").attr('value',company_id);
+              
+              // show the modal with appropriate text
+              $(".companyTitle").text(company_name);
+              $("#resumeDropModal").modal("show");
+
+            });
+
           },
       });
     });
 
     $('.resume_drop').on("click", function() {
+      var e = $(this);
+      var company_id = $(this).attr("value");
+      var user_id = $("#user_id").val();
+      var fair_id = $("#fair_id").val();
+      var company_name = $(this).attr("name")
+      $("#company_id").attr('value',company_id);
+      
+      // show the modal with appropriate text
+      $(".companyTitle").text(company_name);
+      $("#resumeDropModal").modal("show");
+
+    });
+
+    $('#resume_drop_btn').on("click", function() {
       var e = $(this);
       var company_id = $(this).attr("value");
       var user_id = $("#user_id").val();
