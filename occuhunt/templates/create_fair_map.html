@@ -4,7 +4,7 @@
 {% load url from future %}
 
 {% block extra_style %}
-<link href="/static/occuhunt/css/create_fair_map.css" rel="stylesheet">
+<link href="{% static 'occuhunt/css/create_fair_map.css' %}" rel="stylesheet">
 
 {% endblock %}
 
@@ -641,7 +641,7 @@ function save_room(){
   </div>
     
 
-<script src="/static/ember/js/libs/ember-1.1.2.js"></script>
-<script src="/static/ember/js/libs/handlebars-1.0.0.js"></script>
+<script src="{% static 'ember/js/libs/ember-1.1.2.js' %}"></script>
+<script src="{% static 'ember/js/libs/handlebars-1.0.0.js' %}"></script>
 
 {% endblock %}

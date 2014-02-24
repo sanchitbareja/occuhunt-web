@@ -2,7 +2,7 @@
 import os.path
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 
-DEBUG = False
+DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -63,6 +63,7 @@ AWS_ACCESS_KEY_ID = 'AKIAJMUV3JF5IGAOPF3A'
 AWS_SECRET_ACCESS_KEY = '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'
 AWS_STORAGE_BUCKET_NAME = 'occuhuntstatic'
 STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 S3_URL = 'http://%s.s3.amazonaws.com/' % AWS_STORAGE_BUCKET_NAME
 STATIC_URL = S3_URL
 

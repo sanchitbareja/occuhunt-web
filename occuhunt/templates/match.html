@@ -7,7 +7,7 @@
 
 {% block extra_style %}
 
-<link href="/static/occuhunt/css/match.css" rel="stylesheet">
+<link href="{% static 'occuhunt/css/match.css' %}" rel="stylesheet">
 
 <style type="text/css">
   body {
@@ -19,8 +19,8 @@
 
 {% block extra_script %}
 
-<script type="text/javascript" src="/static/occuhunt/js/modernizr.custom.js"></script>
-<script type="text/javascript" src="/static/occuhunt/js/jquery.lettering.js"></script>
+<script type="text/javascript" src="{% static 'occuhunt/js/modernizr.custom.js' %}"></script>
+<script type="text/javascript" src="{% static 'occuhunt/js/jquery.lettering.js' %}"></script>
 <script type="text/javascript">
 
   $(document).ready(function() {

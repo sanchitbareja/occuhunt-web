@@ -7,7 +7,7 @@
 
 
 {% block extra_style %}
-<link href="/static/occuhunt/css/index.css" rel="stylesheet">
+<link href="{% static 'occuhunt/css/index.css' %}" rel="stylesheet">
 {% endblock %}
 
 {% block extra_script %}
@@ -195,17 +195,7 @@
 <input type="hidden" name="company_id" value="0" id="company_id">
 <input type="hidden" name="resume_enabled" value="{{resume_url}}" id="resume_enabled">
 
-<!--   <div class="col-lg-1 visible-lg" style="left:20px;padding-top:42px;position:absolute;">
-    <div class="btn-group-vertical" id="filter_bar" data-toggle="buttons" style="top: 0px;">
-      <button type="button" class="btn btn-categorydisabled favorited-company btn-sm simplebox" onclick="toggleTable('.favorited-company');" style="background-image:url('/static/images/other/fold.png');">Favorites</button>
-      <button type="button" class="btn btn-engineering btn-sm simplebox" onclick="toggleTable('.btn-engineering');">Engineering</button>
-      <button type="button" class="btn btn-finance btn-sm simplebox" onclick="toggleTable('.btn-finance');">Finance</button>
-      <button type="button" class="btn btn-government btn-sm simplebox" onclick="toggleTable('.btn-government');">Government</button>
-      <button type="button" class="btn btn-health btn-sm simplebox" onclick="toggleTable('.btn-health');">Health</button>
-      <button type="button" class="btn btn-engineering btn-sm simplebox" onclick="toggleTable('.btn-engineering');">engineering</button>
-      <button type="button" class="btn btn-other btn-sm simplebox" onclick="toggleTable('.btn-other');">Other</button>
-    </div>
-  </div> -->
+
 
   <!-- Main content - STARTUP CAREER FAIR -->
   <div id="messages">
@@ -313,7 +303,7 @@
     <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 hidden-xs">
       {% if request.user.is_anonymous %}
         <div class="thumbnail">
-          <img src="/static/images/example-resume.png">
+          <img src="{% static 'images/example-resume.png' %}">
           <div class="caption text-center">
             <p><a href="/login/linkedin/?next={{request.path}}" class="btn btn-login" style="font-weight:500;">LOG IN</a></p>
             <p>Login to activate Resume Drop</p>
@@ -329,7 +319,7 @@
           </div>
         {% else %}
           <div class="thumbnail">
-            <img src="/static/images/example-resume.png" alt="Resume">
+            <img src="{% static 'images/example-resume.png' %}" alt="Resume">
             <div class="caption text-center">
               <p><a href="/showcase/" class="btn btn-done" role="button">Add Resume</a></p>
               <p>We don't have your resume on file. Upload it to be able to drop them off at the various recruiters</p>
