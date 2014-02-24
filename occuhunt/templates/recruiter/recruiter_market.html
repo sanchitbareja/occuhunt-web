@@ -35,7 +35,7 @@ var original_logo_img = '{{ company.logo }}';
 var original_location = '{{ company.location }}';
 var original_founded = '{{ company.founded }}';
 var original_num_employees = '{{ company.number_employees }}';
-var original_description = '{{ company.description }}';
+var original_description = '{{ company.company_description }}';
 var original_career_site = '{{ company.careers_website }}';
 
 var new_banner_img = '{{ company.banner_image }}';
@@ -43,7 +43,7 @@ var new_logo_img = '{{ company.logo }}';
 var new_location = '{{ company.location }}';
 var new_founded = '{{ company.founded }}';
 var new_num_employees = '{{ company.number_employees }}';
-var new_description = '{{ company.description }}';
+var new_description = '{{ company.company_description }}';
 var new_career_site = '{{ company.careers_website }}';
 
 var new_job_array = [1];
@@ -52,17 +52,17 @@ $(document).ready(function() {
 	// initially, save button has to be disabled
 	disableSaveState();
 
-	$("#bannerImgUrl").on("change", onChangeBanner);
-	$("#logoImgUrl").on("change", onChangeLogo);
-	$("#companyLocation").on("change", onChangeLocation);
-	$("#companyFounded").on("change", onChangeFoundedOn);
-	$("#companyNumEmployees").on("change", onChangeNumEmployees);
-	$("#companyDescription").on("change", onChangeCompanyInfo);
-	$("#companyCareersWebsite").on("change", onChangeCareersSite);
+	$("#bannerImgUrl").on("keyup", onChangeBanner);
+	$("#logoImgUrl").on("keyup", onChangeLogo);
+	$("#companyLocation").on("keyup", onChangeLocation);
+	$("#companyFounded").on("keyup", onChangeFoundedOn);
+	$("#companyNumEmployees").on("keyup", onChangeNumEmployees);
+	$("#companyDescription").on("keyup", onChangeCompanyInfo);
+	$("#companyCareersWebsite").on("keyup", onChangeCareersSite);
 
 	// enable save state on changes being made
-	$("input").on("change", enableSaveState);
-	$("textarea").on("change", enableSaveState);
+	$("input").on("keyup", enableSaveState);
+	$("textarea").on("keyup", enableSaveState);
 });
 
 function onChangeBanner() {
@@ -134,7 +134,25 @@ function addJob() {
 								'</div>'+
 								'<div class="col-lg-4">'+
 									'<select class="form-control" id="new_job_'+String(new_job_num)+'_type" style="width:100%;">'+
-									  	'<option>Job Type</option>'+
+									  	'<option>Engineering Software</option>'+
+									  	'<option>Engineering Hardware</option>'+
+									  	'<option>Product/Project Management</option>'+
+									  	'<option>Engineering QA</option>'+
+									  	'<option>WebDev/Design/Internet</option>'+
+									  	'<option>Tech Ops/Data</option>'+
+									  	'<option>Technical/Customer Support</option>'+
+									  	'<option>Manufacturing</option>'+
+									  	'<option>Life Sciences</option>'+
+									  	'<option>Marketing/PR/Product Mktg</option>'+
+									  	'<option>Sales</option>'+
+									  	'<option>Business Dev</option>'+
+									  	'<option>Professional Svcs</option>'+
+									  	'<option>Accounting/Finance</option>'+
+									  	'<option>HR/Recruiting</option>'+
+									  	'<option>Administration</option>'+
+									  	'<option>Legal</option>'+
+									  	'<option>Operations</option>'+
+									  	'<option>Other</option>'+
 									'</select>'+
 								'</div>'+
 								'<div class="col-lg-3">'+
@@ -150,8 +168,8 @@ function addJob() {
 						'</div>');
 
 	// enable save state on changes being made
-	$("input").on("change", enableSaveState);
-	$("textarea").on("change", enableSaveState);
+	$("input").on("keyup", enableSaveState);
+	$("textarea").on("keyup", enableSaveState);
 	
 }
 
@@ -286,6 +304,8 @@ function saveChanges() {
     $("#add_jobs").empty();
     // empty array as well
     new_job_array = [];
+    // add 1 blank job field at the end
+    addJob();
 }
 
 </script>
@@ -357,11 +377,25 @@ function saveChanges() {
 									</div>
 									<div class="col-lg-4">
 										<select class="form-control" id="new_job_1_type" style="width:100%;">
-										  	<option>Job Type</option>
-										  	<option>2</option>
-										  	<option>3</option>
-										  	<option>4</option>
-										  	<option>5</option>
+										  	<option>Engineering Software</option>
+										  	<option>Engineering Hardware</option>
+										  	<option>Product/Project Management</option>
+										  	<option>Engineering QA</option>
+										  	<option>WebDev/Design/Internet</option>
+										  	<option>Tech Ops/Data</option>
+										  	<option>Technical/Customer Support</option>
+										  	<option>Manufacturing</option>
+										  	<option>Life Sciences</option>
+										  	<option>Marketing/PR/Product Mktg</option>
+										  	<option>Sales</option>
+										  	<option>Business Dev</option>
+										  	<option>Professional Svcs</option>
+										  	<option>Accounting/Finance</option>
+										  	<option>HR/Recruiting</option>
+										  	<option>Administration</option>
+										  	<option>Legal</option>
+										  	<option>Operations</option>
+										  	<option>Other</option>
 										</select>
 									</div>
 									<div class="col-lg-3">

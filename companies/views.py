@@ -9,6 +9,7 @@ from django.contrib.auth.decorators import login_required
 import os, time, simplejson
 from datetime import datetime, timedelta, time
 from django.http import Http404
+from itertools import chain
 
 from social_auth import __version__ as version
 from social_auth.utils import setting
@@ -44,8 +45,9 @@ def company(request, companyID):
     """Individual Company view"""
     try:
         company = Company.objects.get(id=companyID)
+        public_jobs = Job.objects.filter(network__isnull=True,company=company)
         if not request.user.is_authenticated():
-            return render_to_response('company.html', {'version': version, 'company': company},
+            return render_to_response('company.html', {'version': version, 'company': company, 'job':public_jobs},
                                   RequestContext(request))
         else:
             favorite = Favorite.objects.filter(company=company, user__id=request.user.id)
@@ -55,9 +57,9 @@ def company(request, companyID):
                 is_favorited = True
             if len(request.user.groups.filter(name="UC Berkeley")) > 0:
               filtered_jobs = Job.objects.filter(network__name="UC Berkeley").filter(company=company)
-            return render_to_response('company.html', {'version': version, 'company': company, 'is_favorited':is_favorited, 'jobs':filtered_jobs},
+              all_jobs = list(chain(filtered_jobs, public_jobs))
+            return render_to_response('company.html', {'version': version, 'company': company, 'is_favorited':is_favorited, 'jobs':all_jobs},
                                   RequestContext(request))
     except Exception as e:
       print e
       raise Http404('Sorry, no company found :(');
-
