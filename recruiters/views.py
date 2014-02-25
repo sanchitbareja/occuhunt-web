@@ -4,6 +4,7 @@ from django.shortcuts import render_to_response, redirect
 from django.template.loader import render_to_string
 from django import forms
 from django.http import HttpResponseRedirect
+from django.core.servers.basehttp import FileWrapper
 from django.core.mail import send_mail
 from django.contrib.auth.decorators import login_required, user_passes_test
 import os, time, simplejson, base64, urllib, hmac, sha, random, string
@@ -13,6 +14,7 @@ from django.core import serializers
 from django.contrib.auth import authenticate, login
 from django.views.decorators.csrf import csrf_exempt, csrf_protect
 from django.db.models import Avg, Count
+import xlsxwriter
 
 from occuhunt.settings import EMAIL_MASTERS
 from companies.models import Company
@@ -178,3 +180,41 @@ def download_pdf(request):
     json_results = simplejson.dumps(results)
     return HttpResponse(json_results, mimetype='application/json')
     
+def download_excel_to_export(request):
+    """
+    request download to export
+    1. check if recruiter has replied to all the applicants
+    2. If he has, then commence creation of excel sheet
+    3. send excel file in response
+    """
+    # Create a workbook and add a worksheet.
+    workbook = xlsxwriter.Workbook('Expenses01.xlsx')
+    worksheet = workbook.add_worksheet()
+
+    # Some data we want to write to the worksheet.
+    expenses = (
+        ['Rent', 1000],
+        ['Gas',   100],
+        ['Food',  300],
+        ['Gym',    50],
+    )
+
+    # Start from the first cell. Rows and columns are zero indexed.
+    row = 0
+    col = 0
+
+    # Iterate over the data and write it out row by row.
+    for item, cost in (expenses):
+        worksheet.write(row, col,     item)
+        worksheet.write(row, col + 1, cost)
+        row += 1
+
+    # Write a total using a formula.
+    worksheet.write(row, 0, 'Total')
+    worksheet.write(row, 1, '=SUM(B1:B4)')
+
+    workbook.close()
+    wrapper = FileWrapper(file('Expenses01.xlsx'))
+    response = HttpResponse(wrapper, content_type='application/vnd.ms-excel')
+    response['Content-Disposition'] = 'attachment; filename="name_of_excel_file.xls'
+    return response
