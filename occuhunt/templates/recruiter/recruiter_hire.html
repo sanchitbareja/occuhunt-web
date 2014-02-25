@@ -244,6 +244,19 @@ function download_pdf(application_id) {
   });
 }
 
+function export_data() {
+  $.ajax({
+    type: "POST",
+    url: "/recruiter/hire/download_excel_to_export/",
+    data: { fair_id: 8, company_id: 305, csrfmiddlewaretoken: $('input[name="csrfmiddlewaretoken"]').val() }
+  }).done(function( returnData ) {
+    console.log(returnData);
+    $("#export_data_btn").attr({onclick: ''});
+    $('#export_data_btn').attr({target: '_blank', href: returnData});
+    $("#export_data_btn").click();
+  });
+}
+
 function get_analytics(application_id) {
 
 }
@@ -324,6 +337,14 @@ $(document).ready(function() {
       <option value="4">Applicants to interview</option>
       <option value="5">All event attendees</option>
     </select>
+  </div>
+  <div class="col-lg-3 col-md-3 no-space">
+    <form action="/recruiter/hire/download_excel_to_export/" method="post">
+      <input type="hidden" name="fair_id" value="8">
+      <input type="hidden" name="company_id" value="305">
+      {% csrf_token %}
+      <input type="submit" value="Export Data" class="btn btn-inverted-default pull-right">
+    </form>
   </div>
 </div>
 

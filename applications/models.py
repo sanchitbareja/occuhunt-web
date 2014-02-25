@@ -3,6 +3,7 @@ from users.models import User
 from fairs.models import Fair
 from companies.models import Company
 from hunts.models import Hunt
+from resumes.models import Resume
 
 # signals
 from django.db.models.signals import pre_save, post_save
@@ -43,6 +44,15 @@ class Application(models.Model):
 	note = models.TextField(default='', blank=True)
 	timestamp = models.DateTimeField(auto_now_add=True)
 	response_timestamp = models.DateTimeField(blank=True, null=True)
+
+	def get_resume(self):
+		resume = Resume.objects.filter(user=self.user, showcase=True, original=True).order_by('-timestamp')
+		if len(resume) > 0:
+			resume = resume[0]
+			return resume.url
+		else:
+			resume = None
+			return None
 
 class Note(models.Model):
 	user = models.ForeignKey(User, related_name='candidate_note')
