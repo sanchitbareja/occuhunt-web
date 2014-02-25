@@ -210,18 +210,23 @@ def download_excel_to_export(request):
             worksheet.write(0, 1, 'Last Name')
             worksheet.write(0, 2, 'Email')
             worksheet.write(0, 3, 'Resume URL')
+            worksheet.write(0, 4, 'Application Status')
 
             # Start from the first cell. Rows and columns are zero indexed. Start with row=1 as first row is for titles
             row = 1
             col = 0
 
             # Iterate over the data and write it out row by row.
-            applications_enumerated = [(application.user.first_name, application.user.last_name, application.user.email, application.get_resume()) for application in applications]
-            for first_name, last_name, email, resume_url in applications_enumerated:
+            applications_enumerated = [(application.user.first_name, application.user.last_name, application.user.email, application.get_resume(), application.status) for application in applications]
+            for first_name, last_name, email, resume_url, status in applications_enumerated:
                 worksheet.write(row, col, first_name)
                 worksheet.write(row, col + 1, last_name)
                 worksheet.write(row, col + 2, email)
                 worksheet.write(row, col + 3, resume_url)
+                if status == 3:
+                    worksheet.write(row, col + 4, "Rejected")
+                if status == 4:
+                    worksheet.write(row, col + 4, "To Interview")
                 row += 1
 
             workbook.close()
