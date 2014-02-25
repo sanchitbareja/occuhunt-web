@@ -244,23 +244,6 @@ function download_pdf(application_id) {
   });
 }
 
-function export_data() {
-  $.ajax({
-    type: "POST",
-    url: "/recruiter/hire/download_excel_to_export/",
-    data: { fair_id: 8, company_id: 305, csrfmiddlewaretoken: $('input[name="csrfmiddlewaretoken"]').val() }
-  }).done(function( returnData ) {
-    console.log(returnData);
-    $("#export_data_btn").attr({onclick: ''});
-    $('#export_data_btn').attr({target: '_blank', href: returnData});
-    $("#export_data_btn").click();
-  });
-}
-
-function get_analytics(application_id) {
-
-}
-
 function enable_save_note(){
   $("#application_note_btn").attr({"disabled":false});
 }
