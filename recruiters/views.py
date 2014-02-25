@@ -3,7 +3,8 @@ from django.http import HttpResponse
 from django.shortcuts import render_to_response, redirect
 from django.template.loader import render_to_string
 from django import forms
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponseNotFound
+from django.core.servers.basehttp import FileWrapper
 from django.core.mail import send_mail
 from django.contrib.auth.decorators import login_required, user_passes_test
 import os, time, simplejson, base64, urllib, hmac, sha, random, string
@@ -13,6 +14,7 @@ from django.core import serializers
 from django.contrib.auth import authenticate, login
 from django.views.decorators.csrf import csrf_exempt, csrf_protect
 from django.db.models import Avg, Count
+import xlsxwriter
 
 from occuhunt.settings import EMAIL_MASTERS
 from companies.models import Company
@@ -178,3 +180,65 @@ def download_pdf(request):
     json_results = simplejson.dumps(results)
     return HttpResponse(json_results, mimetype='application/json')
     
+def download_excel_to_export(request):
+    """
+    request download to export
+    1. check if recruiter has replied to all the applicants from a fair
+    2. If he has, then commence creation of excel sheet
+    3. send excel file in response
+    """
+    if(request.method == u'POST'):
+        POST = request.POST
+        try:
+            # get fair_id
+            # get company_id
+            fair = Fair.objects.get(id=POST['fair_id'])
+            company = Company.objects.get(id=POST['company_id'])
+            applications = Application.objects.filter(fair=fair, company=company)
+
+            # the recruiter needs to accept or reject all the applications before he can download it
+            if applications.filter(status=1).count() > 0:
+                return HttpResponseNotFound("<h1>Sorry! You need to respond to all applicants before you can download the data. 'Interview' or 'Reject' all applicants at the fair. Thanks!</h1>")
+            if applications.filter(status=2).count() > 0:
+                return HttpResponseNotFound("<h1>Sorry! You need to respond to all applicants before you can download the data. 'Interview' or 'Reject' all applicants at the fair. Thanks!</h1>")
+            # Create a workbook and add a worksheet.
+            workbook = xlsxwriter.Workbook(''+fair.name+'_'+company.name+'.xlsx')
+            worksheet = workbook.add_worksheet()
+
+            # Write the titles of the cell in row 0
+            worksheet.write(0, 0, 'First Name')
+            worksheet.write(0, 1, 'Last Name')
+            worksheet.write(0, 2, 'Email')
+            worksheet.write(0, 3, 'Resume URL')
+            worksheet.write(0, 4, 'Application Status')
+
+            # Start from the first cell. Rows and columns are zero indexed. Start with row=1 as first row is for titles
+            row = 1
+            col = 0
+
+            # Iterate over the data and write it out row by row.
+            applications_enumerated = [(application.user.first_name, application.user.last_name, application.user.email, application.get_resume(), application.status) for application in applications]
+            for first_name, last_name, email, resume_url, status in applications_enumerated:
+                worksheet.write(row, col, first_name)
+                worksheet.write(row, col + 1, last_name)
+                worksheet.write(row, col + 2, email)
+                worksheet.write(row, col + 3, resume_url)
+                if status == 3:
+                    worksheet.write(row, col + 4, "Rejected")
+                if status == 4:
+                    worksheet.write(row, col + 4, "To Interview")
+                row += 1
+
+            workbook.close()
+            wrapper = FileWrapper(file(''+fair.name+'_'+company.name+'.xlsx'))
+            response = HttpResponse(wrapper, content_type='application/vnd.ms-excel')
+            response['Content-Disposition'] = 'attachment; filename="'+fair.name+'_'+company.name+'.xlsx"'
+            return response
+        except Exception, e:
+            # this is an error
+            print e
+            return HttpResponseNotFound("<h1>Oops! Our minions have failed us! Please try again later while our minions fix this.</h1>")
+    else:
+        # this is a get request
+        # a get request should not be made at this point
+        return HttpResponseNotFound("<h1>Sorry! This is an illegal request. Our minions do not recognize this command.</h1>")

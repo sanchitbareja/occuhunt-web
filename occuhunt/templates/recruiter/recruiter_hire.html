@@ -46,10 +46,15 @@ function get_events() {
   });
 }
 
+function set_fair_id(){
+  $("#fair_id_input").val($("#filter_event").val());
+}
+
 function get_candidates() {
   applicants = [];
   clear_candidates();
   fair_id = $("#filter_event").val();
+  set_fair_id();
   // <option value="1">Applicants that are awaiting response</option>
   // <option value="2">Applicants I've talked to</option>
   // <option value="3">Applicants I've rejected</option>
@@ -244,10 +249,6 @@ function download_pdf(application_id) {
   });
 }
 
-function get_analytics(application_id) {
-
-}
-
 function enable_save_note(){
   $("#application_note_btn").attr({"disabled":false});
 }
@@ -324,6 +325,14 @@ $(document).ready(function() {
       <option value="4">Applicants to interview</option>
       <option value="5">All event attendees</option>
     </select>
+  </div>
+  <div class="col-lg-3 col-md-3 no-space">
+    <form action="/recruiter/hire/download_excel_to_export/" method="post">
+      <input type="hidden" name="fair_id" value="" id="fair_id_input">
+      <input type="hidden" name="company_id" value="{{request.user.recruiter_for.id}}" id="company_id_input">
+      {% csrf_token %}
+      <input type="submit" value="Export Data" class="btn btn-inverted-default pull-right">
+    </form>
   </div>
 </div>
 
