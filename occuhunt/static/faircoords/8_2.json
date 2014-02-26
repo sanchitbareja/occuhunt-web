@@ -3,7 +3,7 @@
   "room_name": "Chevron Auditorium",
   "cols": 10,
   "rows": 6,
-  "blank_columns": 4,
+  "blank_columns": 3,
   "blank_rows": 0,
   "coys": [
       {"x": 1,
