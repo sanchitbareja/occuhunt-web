@@ -1,0 +1,13 @@
+Hi {{name}}!
+
+Thanks for attending the startup fair yesterday!
+
+We wanted to get some feedback from you about our service> It would be great if you could fill up this (https://occuhunt.typeform.com/to/rH6c2o) anonymous feedback form (5 simple questions - shouldn't take more than 2 minutes!).
+
+Also, do check http://occuhunt.com/showcase/applications/ (you'll need to be logged in. They're under 'Showcase' once you log-in) for your application status.
+
+Hope to meet you again!
+
+Cheers,
+Sanchit and Sidwyn
+Founders
