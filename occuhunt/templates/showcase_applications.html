@@ -44,9 +44,9 @@
 			<a href="/showcase/applications/" class="btn btn-link">Application Status</a><br />
 		{% endif %}
 		{% if request.get_full_path == "/showcase/analytics/" %}
-			<a href="/showcase/analytics/" class="btn btn-link active">Who's viewed you?</a><br />
+			<a href="/showcase/analytics/" class="btn btn-link active">Activity</a><br />
 		{% else %}
-			<a href="/showcase/analytics/" class="btn btn-link">Who's viewed you?</a><br />
+			<a href="/showcase/analytics/" class="btn btn-link">Activity</a><br />
 		{% endif %}
 	</div>
 </div>
@@ -66,18 +66,17 @@
 				  	<div class="media-body">
 				    	{% if application.status == 1 %}
 				    		<h4 class="media-heading">{{application.company.name}} - Applied</h4>
-				    		{{application.fair.name}}<i>{{application.timestamp}}</i>
+				    		Applied at {{application.fair.name}} on {{application.timestamp}}.
 				    	{% elif application.status == 2 %}
 				    		<h4 class="media-heading">{{application.company.name}} - Applied</h4>
-				    		{{application.fair.name}}<i>{{application.timestamp}}</i>
+				    		Applied at {{application.fair.name}} on {{application.timestamp}}.
 				    	{% elif application.status == 3 %}
 				    		<h4 class="media-heading">{{application.company.name}} - Rejected</h4>
-				    		{{application.fair.name}}<i>{{application.timestamp}}</i><br />
+				    		Applied at {{application.fair.name}} on {{application.timestamp}}.<br />
 				    		<i>Don't give up! Keep trying!</i>
 				    	{% elif application.status == 4 %}
-				    		<h4 class="media-heading">{{application.company.name}} - Expect a call!</h4>
-				    		{{application.fair.name}}<i>{{application.timestamp}}</i><br />
-				    		<i>Well done! Expect a call for an interview!</i>
+				    		<h4 class="media-heading">{{application.company.name}} - Interviewing</h4>
+				    		Applied at {{application.fair.name}} on{{application.timestamp}}.<br />
 				    	{% endif %}
 				    	<i>&nbsp;{{notification.timestamp}}</i>
 				 	</div>
@@ -93,7 +92,7 @@
 	    	<h4 id="category_header">Tips</h4>
 		</div>
 		<div class="list-group-item" style="color:grey;">
-			<p>Your profile can be viewed by recruiters only</p>
+			<p>Your profile can only be viewed by recruiters.</p>
 		</div>
 	</div>
 </div>
