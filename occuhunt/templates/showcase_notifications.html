@@ -44,9 +44,9 @@
 			<a href="/showcase/applications/" class="btn btn-link">Application Status</a><br />
 		{% endif %}
 		{% if request.get_full_path == "/showcase/analytics/" %}
-			<a href="/showcase/analytics/" class="btn btn-link active">Who's viewed you?</a><br />
+			<a href="/showcase/analytics/" class="btn btn-link active">Activity</a><br />
 		{% else %}
-			<a href="/showcase/analytics/" class="btn btn-link">Who's viewed you?</a><br />
+			<a href="/showcase/analytics/" class="btn btn-link">Activity</a><br />
 		{% endif %}
 	</div>
 </div>
@@ -93,13 +93,13 @@
 				  	<div class="media-body">
 				    	<h4 class="media-heading">{{notification.company.name}}</h4>
 				    	{% if notification.notification == 1 %}
-				    		Your profile was viewed by {{notification.company.name}}
+				    		Your profile was viewed by {{notification.company.name}}.
 				    	{% elif notification.notification == 2 %}
-				    		Your resume was downloaded by {{notification.company.name}}
+				    		Your resume was downloaded by {{notification.company.name}}.
 				    	{% elif notification.notification == 3 %}
-				    		Your application to {{notification.company.name}} has been rejected. Don't give up! Keep trying!
+				    		Your application to {{notification.company.name}} was rejected.
 				    	{% elif notification.notification == 4 %}
-				    		Congrats! Expect to get back a call from {{notification.company.name}}
+				    		Congrats! Expect to be in touch with {{notification.company.name}} shortly.
 				    	{% endif %}
 				    	<i>&nbsp;{{notification.timestamp}}</i>
 				 	</div>
@@ -115,7 +115,7 @@
 	    	<h4 id="category_header">Tips</h4>
 		</div>
 		<div class="list-group-item" style="color:grey;">
-			<p>Your profile can be viewed by recruiters only</p>
+			<p>Your profile can only be viewed by recruiters.</p>
 		</div>
 	</div>
 </div>
