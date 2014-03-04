@@ -47,17 +47,17 @@ def company(request, companyID):
         company = Company.objects.get(id=companyID)
         public_jobs = Job.objects.filter(network__isnull=True,company=company)
         if not request.user.is_authenticated():
-            return render_to_response('company.html', {'version': version, 'company': company, 'job':public_jobs},
+            return render_to_response('company.html', {'version': version, 'company': company, 'jobs':public_jobs},
                                   RequestContext(request))
         else:
             favorite = Favorite.objects.filter(company=company, user__id=request.user.id)
-            filtered_jobs = None
+            filtered_jobs = []
             is_favorited = False
             if len(favorite) > 0:
                 is_favorited = True
             if len(request.user.groups.filter(name="UC Berkeley")) > 0:
-              filtered_jobs = Job.objects.filter(network__name="UC Berkeley").filter(company=company)
-              all_jobs = list(chain(filtered_jobs, public_jobs))
+                filtered_jobs = Job.objects.filter(network__name="UC Berkeley").filter(company=company)
+            all_jobs = list(chain(filtered_jobs, public_jobs))
             return render_to_response('company.html', {'version': version, 'company': company, 'is_favorited':is_favorited, 'jobs':all_jobs},
                                   RequestContext(request))
     except Exception as e:
