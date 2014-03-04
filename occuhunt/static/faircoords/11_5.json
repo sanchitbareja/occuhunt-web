@@ -5,6 +5,7 @@
   "rows": 7,
   "blank_columns": 3,
   "blank_rows": 0,
+  "resume_drop": 0,
   "coys": [
       {"x": 1,
       "y": 1,
@@ -246,7 +247,7 @@
       "blank": 0},
       {"x": 7,
       "y": 5,
-      "coy_id": 631,
+      "coy_id": 682,
       "coy_name": "Energy Solutions",
       "blank_row": 0,
       "blank_column": 0,
