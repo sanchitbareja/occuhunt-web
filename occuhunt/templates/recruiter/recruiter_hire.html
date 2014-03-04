@@ -19,6 +19,14 @@
     border-radius: 0px;
   }
 
+  #application_email {
+    font-style: normal;
+  }
+
+  #application_status {
+    font-style: normal;
+  }
+
 </style>
 
 {% endblock %}
@@ -91,6 +99,8 @@ function get_candidates() {
           for (var i = 0; i < data['response']['applications'].length; i++) {
             $("#candidate_list").append('<a id="applicant_list_id_'+data['response']['applications'][i]['id']+'" onclick="get_candidate('+data['response']['applications'][i]['id']+')" class="list-group-item">'+data['response']['applications'][i]['user']['first_name']+' '+data['response']['applications'][i]['user']['last_name']+'</a>');
           };
+          // auto-select the first candidate
+          $("#applicant_list_id_"+data['response']['applications'][0]['id']).first().click();
         } else {
           $("#candidate_list").append('<a class="list-group-item">Sorry, no candidates :( Please choose another category</a>')
         }
@@ -113,6 +123,7 @@ function get_candidate(application_id) {
         console.log(data);
         console.log(textStatus);
         console.log(jqXHR);
+        $("#application_info").show();
         // need to check if everything exist
         $("#application_first_name").text(data['user']['first_name']);
         $("#application_last_name").text(data['user']['last_name']);
@@ -223,7 +234,7 @@ function save_note(application_id) {
         console.log(data);
         // disable saving note
         disable_save_note();
-        alert("changes saved!");
+        // alert("changes saved!");
       }
     });
   } else {
@@ -250,10 +261,12 @@ function download_pdf(application_id) {
 }
 
 function enable_save_note(){
+  $("#application_note_btn").text("Save Note");
   $("#application_note_btn").attr({"disabled":false});
 }
 
 function disable_save_note(){
+  $("#application_note_btn").text("Saved!");
   $("#application_note_btn").attr({"disabled":true});
 }
 
@@ -298,7 +311,7 @@ $(document).ready(function() {
   $("#filter_school").on("change",get_candidates);
   $("#filter_event").on("change",get_candidates);
   $("#filter_applicants").on("change",get_candidates);
-  $("#application_note").on("change",enable_save_note);
+  $("#application_note").on("keyup",enable_save_note);
 });
 
 </script>
@@ -341,8 +354,8 @@ $(document).ready(function() {
 <div class="row">
   <div class="col-lg-3 col-md-3 category_box">
     <div class="row" id="category_header_box">
-      <h4 id="category_header">CHOOSE CANDIDATE</h4>
-      <h5 id="category_subheader">Select a candidate.</h5>
+      <h4 id="category_header">List of Candidates</h4>
+      <!-- <h5 id="category_subheader">Select a candidate.</h5> -->
       <hr style="margin-bottom:0px;">
       <input type="text" class="form-control" placeholder="Search by name" id="search_applicants" style="width:100%;border-radius:0px;">
     </div>
@@ -352,24 +365,30 @@ $(document).ready(function() {
       </div>
     </div>
   </div>
-  <div class="col-lg-9 col-md-9 category_box">
+  <div class="col-lg-9 col-md-9 category_box" id="application_info" style="display:none; text-align:center;">
     <div class="row" id="category_header_box">
-        <h4 id="category_header"><span id="application_first_name">First</span>&nbsp;<span id="application_last_name">Last Name</span>,&nbsp;<span id="application_email">Email</span>,&nbsp;<span id="application_status">Application Status</span></h4>
-        <h5 id="category_subheader">To Interview or Reject this applicant!</h5>
+        <h3 id="category_header"><span id="application_first_name">First</span>&nbsp;<span id="application_last_name">Last Name</span></h3>
+        <h5 id="category_subheader"><span id="application_email">Email</span><h5>
+        <h5 id="category_subheader"><span id="application_status">Application Status</span></h5>
         <button class="btn btn-lg btn-success" id="accept_applicant_btn" style="position:absolute; top:10px; right:10px;">To Interview</button>
         <button class="btn btn-lg btn-danger" id="reject_applicant_btn" style="position:absolute; top:10px; left:10px;">Reject</button>
         <hr>
     </div>
     <div class="row" id="note_div">
       <div class="col-lg-12">
-        <h4>Notes&nbsp;&nbsp;&nbsp;<a class="btn btn-done btn-sm" disabled id="application_note_btn">Save Note</a></h4>
-        <textarea class="form-control" id="application_note">Sample Note</textarea>
+        <h4>Notes</h4>
+        <a class="btn btn-done btn-sm pull-right" disabled id="application_note_btn" style="margin-top:-34px;">Save Note</a>
+        <textarea class="form-control" style="width:100%;" id="application_note">Sample Note</textarea>
       </div>
     </div>
+    <br />
     <div class="row">
       <div class="col-lg-12">
-        <h4>Resume&nbsp;&nbsp;&nbsp;<a class="btn btn-done btn-sm" id="download_pdf_btn">Download .pdf</a></h4>
-        <img style="border:1px solid #acacac" src="https://resumefeed.s3.amazonaws.com/sanchit-barejapdfu01nBM1mjF4kaWEJmaXcdgkyP4fBqI" id="application_resume_img">
+        <h4>Resume</h4>
+        <a class="btn btn-done btn-sm pull-right" id="download_pdf_btn" style="margin-top:-34px;">Download</a>
+        <div style="text-align:center;">
+          <img style="border:1px solid #acacac;" src="https://resumefeed.s3.amazonaws.com/sanchit-barejapdfu01nBM1mjF4kaWEJmaXcdgkyP4fBqI" id="application_resume_img">
+        </div>
       </div>
     </div>
   </div>
