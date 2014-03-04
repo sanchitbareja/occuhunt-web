@@ -4,6 +4,7 @@
   "rows": 6,
   "blank_columns": 6,
   "blank_rows": 0,
+  "resume_drop": 1,
   "coys": [
       {"x": 3,
       "y": 4,
