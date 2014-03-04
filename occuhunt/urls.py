@@ -80,7 +80,6 @@ urlpatterns = patterns('',
     url(r'^fair/UCBerkeley/Startup-Fair-Fall-2013/$', TemplateView.as_view(template_name="CareerFairs/UCBerkeley/StartupCareerFairFall2013.html")),
     url(r'^fair/UCBerkeley/EECS-Fair-Fall-2013/$', TemplateView.as_view(template_name="CareerFairs/UCBerkeley/EECSCareerFairFall2013.html")),
 
-    url(r'^static/faircoords/10_1.json', RedirectView.as_view(url='https://occuhuntstatic.s3.amazonaws.com/faircoords/10_1.json')),
     url(r'^static/faircoords/1_1.json', RedirectView.as_view(url='https://occuhuntstatic.s3.amazonaws.com/faircoords/1_1.json')),
     url(r'^static/faircoords/2_2.json', RedirectView.as_view(url='https://occuhuntstatic.s3.amazonaws.com/faircoords/2_2.json')),
     url(r'^static/faircoords/2_3.json', RedirectView.as_view(url='https://occuhuntstatic.s3.amazonaws.com/faircoords/2_3.json')),
@@ -100,6 +99,8 @@ urlpatterns = patterns('',
     url(r'^static/faircoords/8_3.json', RedirectView.as_view(url='https://occuhuntstatic.s3.amazonaws.com/faircoords/8_3.json')),
     url(r'^static/faircoords/8_4.json', RedirectView.as_view(url='https://occuhuntstatic.s3.amazonaws.com/faircoords/8_4.json')),
     url(r'^static/faircoords/9_1.json', RedirectView.as_view(url='https://occuhuntstatic.s3.amazonaws.com/faircoords/9_1.json')),
+    url(r'^static/faircoords/10_1.json', RedirectView.as_view(url='https://occuhuntstatic.s3.amazonaws.com/faircoords/10_1.json')),
+    url(r'^static/faircoords/11_5.json', RedirectView.as_view(url='https://occuhuntstatic.s3.amazonaws.com/faircoords/11_5.json')),
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
