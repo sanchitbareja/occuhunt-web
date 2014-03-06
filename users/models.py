@@ -49,7 +49,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     profile_pic = models.TextField(null=True, blank=True)
     resume_points = models.IntegerField(default='0')
     time_created = models.DateTimeField(auto_now=False, auto_now_add=True, null=True, blank=True)
-    recruiter_for = models.ForeignKey(Company, null=True, blank=True)
+    phone_number = models.CharField(max_length=50, null=True, blank=True)
 
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
@@ -85,3 +85,10 @@ class User(AbstractBaseUser, PermissionsMixin):
         "Is the user a member of staff?"
         # Simplest possible answer: All admins are staff
         return self.is_admin
+
+class Student(User):
+    verified_email = models.EmailField(verbose_name="verified email", max_length=22, null=True, blank=True)
+    graduation_year = models.DateField(auto_now=False, auto_now_add=False, null=True, blank=True)
+
+class Recruiter(User):
+    company = models.ForeignKey(Company)
