@@ -4,6 +4,7 @@ from fairs.models import Fair
 from companies.models import Company
 from hunts.models import Hunt
 from resumes.models import Resume
+from jobs.models import Job
 
 # signals
 from django.db.models.signals import pre_save, post_save
@@ -35,6 +36,14 @@ POSITION_CATEGORIES = (
 	('Other','Other')
 	)
 
+WEIGHT_CHOICES = (
+	(1, 1),
+	(2, 2),
+	(3, 3),
+	(4, 4),
+	(5, 5)
+	)
+
 class Application(models.Model):
 	user = models.ForeignKey(User)
 	company = models.ForeignKey(Company)
@@ -44,6 +53,7 @@ class Application(models.Model):
 	note = models.TextField(default='', blank=True)
 	timestamp = models.DateTimeField(auto_now_add=True)
 	response_timestamp = models.DateTimeField(blank=True, null=True)
+	job = models.ForeignKey(Job, blank=True, null=True)
 
 	def get_resume(self):
 		resume = Resume.objects.filter(user=self.user, showcase=True, original=True).order_by('-timestamp')
@@ -54,12 +64,16 @@ class Application(models.Model):
 			resume = None
 			return None
 
-class Note(models.Model):
-	user = models.ForeignKey(User, related_name='candidate_note')
-	recruiter = models.ForeignKey(User, related_name='recruiter_note')
-	note = models.TextField()
-	timestamp = models.DateTimeField(auto_now_add=True)
+class Label(models.Model):
+	name = models.CharField(max_length=512)
+	company = models.ForeignKey(Company)
+	weight = models.IntegerField(choices=WEIGHT_CHOICES)
 
+class Rating(models.Model):
+	user = models.ForeignKey(User)
+	label = models.ForeignKey(Label)
+	application = models.ForeignKey(Application)
+	timestamp = models.DateTimeField(auto_now=False, auto_now_add=True)
 
 def auto_hunt(sender, instance, **kwargs):
 	"""
