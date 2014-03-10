@@ -1,4 +1,5 @@
 from django.conf.urls import patterns, include, url
+from users.views import verify_user_network, get_user_network
 from companies.views import home, splash, companies, company, search
 from resumes.views import resume_feed, sign_s3_upload, submit_resume, individual_resume
 from jobs.views import favorites, apply_jobs, match_jobs
@@ -15,7 +16,7 @@ admin.autodiscover()
 
 # API
 from tastypie.api import Api
-from api.api import FairResource, RoomResource, CompanyResource, FavoriteResource, UserResource, ResumeResource, CommentResource, RecommendationRequestResource, RecommendationResource, HuntResource, ApplicationResource, RecruiterNotesResource, JobResource
+from api.api import FairResource, RoomResource, CompanyResource, FavoriteResource, UserResource, ResumeResource, CommentResource, RecommendationRequestResource, RecommendationResource, HuntResource, ApplicationResource, JobResource
 from api.views import logout_view, login_error, feedback_form
 
 v1_api = Api(api_name='v1')
@@ -30,7 +31,6 @@ v1_api.register(RoomResource())
 v1_api.register(FairResource())
 v1_api.register(HuntResource())
 v1_api.register(ApplicationResource())
-v1_api.register(RecruiterNotesResource())
 v1_api.register(JobResource())
 
 urlpatterns = patterns('',
@@ -105,8 +105,11 @@ urlpatterns = patterns('',
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
     # social-auth-urls
-    url(r'', include('social_auth.urls')),
+    url(r'', include('social.apps.django_app.urls', namespace='social')),
     url(r'^done/$', home, name='home'),
+
+    # confirm network
+    url(r'^confirm-network/$', get_user_network, name='get-email-network'),
 
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),

@@ -2,7 +2,7 @@
 import os.path
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 
-DEBUG = False
+DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -140,7 +140,7 @@ INSTALLED_APPS = (
     'debug_toolbar',
     'tastypie',
     'storages',
-    'social_auth',
+    'social.apps.django_app.default',
     'gunicorn',
     'haystack',
     'mailer',
@@ -210,7 +210,7 @@ API_LIMIT_PER_PAGE = 20
 
 # Django Social Auth setup
 AUTHENTICATION_BACKENDS = (
-    'social_auth.backends.contrib.linkedin.LinkedinBackend',
+    'social.backends.linkedin.LinkedinOAuth',
     'django.contrib.auth.backends.ModelBackend',
 )
 
@@ -221,21 +221,44 @@ AUTH_USER_MODEL = 'users.User'
 SOCIAL_AUTH_USER_MODEL = AUTH_USER_MODEL
 SOCIAL_AUTH_RAISE_EXCEPTIONS = True
 # LinkedIn specific config
-LINKEDIN_CONSUMER_KEY = 'xu79xm7p77of'
-LINKEDIN_CONSUMER_SECRET = 'UnJhJkwNuUru2m4Y'
-LINKEDIN_SCOPE = ['r_basicprofile', 'r_emailaddress', 'r_fullprofile','r_contactinfo','r_network','w_messages']
+SOCIAL_AUTH_LINKEDIN_KEY = 'xu79xm7p77of'
+SOCIAL_AUTH_LINKEDIN_SECRET = 'UnJhJkwNuUru2m4Y'
+SOCIAL_AUTH_LINKEDIN_SCOPE = ['r_basicprofile', 'r_emailaddress', 'r_fullprofile','r_contactinfo','r_network','w_messages']
+SOCIAL_AUTH_LINKEDIN_FIELD_SELECTORS = [
+    'email-address',
+    'headline',
+    'industry',
+    'location',
+    'positions',
+    'educations',
+    'skills',
+]
+
+SOCIAL_AUTH_LINKEDIN_EXTRA_DATA = [('id', 'id'),
+                       ('first-name', 'first_name'),
+                       ('last-name', 'last_name'),
+                       ('email-address', 'email_address'),
+                       ('headline', 'headline'),
+                       ('industry', 'industry'),
+                       ('location', 'location'),
+                       ('positions', 'positions'),
+                       ('educations', 'educations'),
+                       ('skills', 'skills')]
+
 # LINKEDIN_FORCE_PROFILE_LANGUAGE = True
 # LINKEDIN_FORCE_PROFILE_LANGUAGE = 'en-US'
 
 SOCIAL_AUTH_PIPELINE = (
-    'social_auth.backends.pipeline.social.social_auth_user',
-    #'social_auth.backends.pipeline.associate.associate_by_email',
-    'social_auth.backends.pipeline.user.get_username',
-    'social_auth.backends.pipeline.user.create_user',
-    'social_auth.backends.pipeline.social.associate_user',
-    'social_auth.backends.pipeline.social.load_extra_data',
-    'social_auth.backends.pipeline.user.update_user_details',
-    'social_auth.backends.pipeline.misc.save_status_to_session',
+    'social.pipeline.social_auth.social_details',
+    'social.pipeline.social_auth.social_uid',
+    'social.pipeline.social_auth.auth_allowed',
+    'social.pipeline.social_auth.social_user',
+    'social.pipeline.user.get_username',
+    'social.pipeline.user.create_user',
+    'social.pipeline.social_auth.associate_user',
+    'social.pipeline.social_auth.load_extra_data',
+    'social.pipeline.user.user_details',
+    'social.pipeline.partial.save_status_to_session',
     'api.pipeline.create_password',
     'api.pipeline.associate_group',
 )
@@ -247,30 +270,9 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.media',
     'django.contrib.messages.context_processors.messages',
     'django.core.context_processors.request',
-    'social_auth.context_processors.social_auth_by_type_backends',
-    'social_auth.context_processors.social_auth_login_redirect',
+    'social.apps.django_app.context_processors.backends',
+    'social.apps.django_app.context_processors.login_redirect',
 )
-
-LINKEDIN_EXTRA_FIELD_SELECTORS = [
-    'email-address',
-    'headline',
-    'industry',
-    'location',
-    'positions',
-    'educations',
-    'skills',
-]
-
-LINKEDIN_EXTRA_DATA = [('id', 'id'),
-                       ('first-name', 'first_name'),
-                       ('last-name', 'last_name'),
-                       ('email-address', 'email_address'),
-                       ('headline', 'headline'),
-                       ('industry', 'industry'),
-                       ('location', 'location'),
-                       ('positions', 'positions'),
-                       ('educations', 'educations'),
-                       ('skills', 'skills')]
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')

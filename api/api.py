@@ -25,7 +25,7 @@ from users.models import User
 from resumes.models import Resume, Comment
 from recommendations.models import Recommendation, Request
 from hunts.models import Hunt
-from applications.models import Application, Note
+from applications.models import Application
 from jobs.models import Job
 from notifications.models import Notification
 import datetime
@@ -654,49 +654,6 @@ class ApplicationResource(ModelResource):
     def alter_list_data_to_serialize(self, request, data):
         # rename "objects" to "applications"
         data['response'] = {"applications":data["objects"]}
-        del(data["objects"])
-        return data
-
-    def determine_format(self, request):
-        return 'application/json'
-
-class RecruiterNotesResource(ModelResource):
-    user = fields.OneToOneField(UserResource, 'user', full=True)
-    recruiter = fields.OneToOneField(UserResource, 'recruiter', full=True)
-    class Meta:
-        queryset = Note.objects.all()
-        resource_name = 'notes'
-        authorization = DjangoAuthorization()
-        limit = 100
-        always_return_data = True
-        allowed_methods = ['get','post']
-        filtering = {
-            "user": ("exact"), "recruiter": ("exact")
-        }
-
-    def dehydrate(self, bundle):
-        """
-        Return a list of notes
-        """
-        return bundle
-
-    def obj_create(self, bundle, **kwargs):
-        """
-        Creates a new note
-        """
-        try:
-            user = User.objects.get(id=bundle.data['user_id'])
-            recruiter = User.objects.get(id=bundle.data['recruiter_id'])
-            new_note = Note(user=user, recruiter=recruiter, note=bundle.data['note'])
-            new_note.save()
-            bundle.obj = new_note
-        except Exception, e:
-            raise e
-        return bundle
-
-    def alter_list_data_to_serialize(self, request, data):
-        # rename "objects" to "resumedrops"
-        data['response'] = {"notes":data["objects"]}
         del(data["objects"])
         return data
 

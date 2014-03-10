@@ -14,9 +14,11 @@ FAVORITE_CATEGORIES = (
 class Favorite(models.Model):
 	user = models.ForeignKey(User, blank = True, null = True)
 	company = models.ForeignKey(Company, blank = True, null = True)
-	category = models.CharField(max_length=256, null=True, blank=True, choices=FAVORITE_CATEGORIES, default="Uncategorized")
-	note = models.TextField(default='')
 	timestamp = models.DateTimeField(auto_now=False, auto_now_add=True)
 
 	def __unicode__(self):
-		return unicode("Fav")
+		return unicode(self.user.first_name + ':' + self.company.name)
+
+	class Meta:
+		# each user can only favorite a company once
+		unique_together = (('user','company'),)

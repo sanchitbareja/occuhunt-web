@@ -9,14 +9,11 @@ from django.contrib.auth.decorators import login_required
 import os, time, simplejson
 from datetime import datetime, timedelta, time
 
-from social_auth import __version__ as version
-from social_auth.utils import setting
-
 from resumes.models import Resume
 
 def create_fair(request):
     """View to automatically create fairs"""
-    return render_to_response('create_fair_map.html', {'version': version},
+    return render_to_response('create_fair_map.html', {},
                                   RequestContext(request))
 
 def StartupCareerFairSpring2014View(request):
@@ -24,14 +21,14 @@ def StartupCareerFairSpring2014View(request):
 	print request.user
 	if request.user.is_anonymous():
 		# if it's anonymous user
-		return render_to_response('CareerFairs/UCBerkeley/StartupCareerFairSpring2014.html', {'version':version, 'resume_url':False}, RequestContext(request))
+		return render_to_response('CareerFairs/UCBerkeley/StartupCareerFairSpring2014.html', {'resume_url':False}, RequestContext(request))
 	else:
 		resume = Resume.objects.filter(user=request.user, showcase=True, original=False).order_by('-timestamp')
 		if len(resume) > 0:
 			# if user has a resume - yay!
 			resume = resume[0]
-			return render_to_response('CareerFairs/UCBerkeley/StartupCareerFairSpring2014.html', {'version':version, 'resume_url':resume.url}, RequestContext(request))
+			return render_to_response('CareerFairs/UCBerkeley/StartupCareerFairSpring2014.html', {'resume_url':resume.url}, RequestContext(request))
 		else:
 			# if user doesn't have a resume on file, boo :(
 			resume = None
-			return render_to_response('CareerFairs/UCBerkeley/StartupCareerFairSpring2014.html', {'version':version, 'resume_url':False}, RequestContext(request))
+			return render_to_response('CareerFairs/UCBerkeley/StartupCareerFairSpring2014.html', {'resume_url':False}, RequestContext(request))

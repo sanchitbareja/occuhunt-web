@@ -14,9 +14,6 @@ from resumes.models import Resume
 from notifications.models import Notification
 from applications.models import Application
 
-from social_auth import __version__ as version
-from social_auth.utils import setting
-
 @login_required
 def recommendation_main(request):
 	"""
@@ -33,7 +30,7 @@ def recommendation_main(request):
 		resume = None
 	# number of requests he has
 	requests_number = Request.objects.filter(request_to=request.user.linkedin_uid, replied=False).count()
-	return render_to_response('recommendation.html', {'version': version, 'requests_number':requests_number, 'recommendations_for_me':recommendations_for_me, 'user_linkedin_uid':request.user.linkedin_uid, 'resume':resume}, RequestContext(request))
+	return render_to_response('recommendation.html', {'requests_number':requests_number, 'recommendations_for_me':recommendations_for_me, 'user_linkedin_uid':request.user.linkedin_uid, 'resume':resume}, RequestContext(request))
 
 @login_required
 def recommendation_new(request, linkedin_uid):
@@ -41,7 +38,7 @@ def recommendation_new(request, linkedin_uid):
 	Create a new recommendation 
 	"""
 	requests_number = Request.objects.filter(request_to=request.user.linkedin_uid, replied=False).count()
-	return render_to_response('recommendation_new.html', {'version': version, 'requests_number':requests_number, 'recommendation_for':linkedin_uid, 'recommendation_by':request.user.linkedin_uid}, RequestContext(request))
+	return render_to_response('recommendation_new.html', {'requests_number':requests_number, 'recommendation_for':linkedin_uid, 'recommendation_by':request.user.linkedin_uid}, RequestContext(request))
 
 @login_required
 def recommendation_new_with_request(request, linkedin_uid, request_id):
@@ -53,7 +50,7 @@ def recommendation_new_with_request(request, linkedin_uid, request_id):
 	if len(response_to):
 		# number of requests he has
 		requests_number = Request.objects.filter(request_to=request.user.linkedin_uid, replied=False).count()
-		return render_to_response('recommendation_new.html', {'version': version, 'requests_number':requests_number, 'recommendation_for':linkedin_uid, 'recommendation_by':request.user.linkedin_uid, 'request_id':response_to[0].id}, RequestContext(request))
+		return render_to_response('recommendation_new.html', {'requests_number':requests_number, 'recommendation_for':linkedin_uid, 'recommendation_by':request.user.linkedin_uid, 'request_id':response_to[0].id}, RequestContext(request))
 	else:
 		return redirect('recommendation_new', linkedin_uid)
 
@@ -68,7 +65,7 @@ def recommendation_requests(request):
 	# get requests for this person
 	# number of requests he has
 	requests_number = Request.objects.filter(request_to=request.user.linkedin_uid, replied=False).count()
-	return render_to_response('recommendation_requests.html', {'version': version, 'requests_number':requests_number, 'recommendation_requests':recommendation_requests}, RequestContext(request))
+	return render_to_response('recommendation_requests.html', {'requests_number':requests_number, 'recommendation_requests':recommendation_requests}, RequestContext(request))
 
 @login_required
 def recommendation_requests_new(request):
@@ -77,7 +74,7 @@ def recommendation_requests_new(request):
 	"""
 	# number of requests he has
 	requests_number = Request.objects.filter(request_to=request.user.linkedin_uid, replied=False).count()
-	return render_to_response('recommendation_requests_new.html', {'version': version, 'requests_number':requests_number}, RequestContext(request))
+	return render_to_response('recommendation_requests_new.html', {'requests_number':requests_number}, RequestContext(request))
 
 @login_required
 def showcase_notifications(request):

@@ -25,11 +25,8 @@ from applications.models import Application
 from fairs.models import Fair
 from notifications.models import Notification
 
-from social_auth import __version__ as version
-from social_auth.utils import setting
-
 def recruiter_splash(request):
-    return render_to_response('recruiter/recruiter_splash.html', {'version': version}, RequestContext(request))
+    return render_to_response('recruiter/recruiter_splash.html', {}, RequestContext(request))
 
 def recruiter_login(request):
     print request.POST
@@ -43,10 +40,10 @@ def recruiter_login(request):
             return redirect('/recruiter/hire/')
         else:
             # Return a 'disabled account' error message
-            return render_to_response('recruiter/recruiter_splash.html', {'version': version, 'error_loggin_in':True}, RequestContext(request))
+            return render_to_response('recruiter/recruiter_splash.html', {'error_loggin_in':True}, RequestContext(request))
     else:
         # Return an 'invalid login' error message.
-        return render_to_response('recruiter/recruiter_splash.html', {'version': version, 'error_loggin_in':True}, RequestContext(request))
+        return render_to_response('recruiter/recruiter_splash.html', {'error_loggin_in':True}, RequestContext(request))
 
 @csrf_exempt
 def recruiter_login_third_party(request):
@@ -76,7 +73,7 @@ def check_if_recruiter(user):
 def recruiter_hire(request):
     """Recruiter interface for hiring candidates"""
     recruiter_id = request.user.recruiter_for.id
-    return render_to_response('recruiter/recruiter_hire.html', {'version': version, 'recruiter_id':recruiter_id}, RequestContext(request))
+    return render_to_response('recruiter/recruiter_hire.html', {'recruiter_id':recruiter_id}, RequestContext(request))
 
 @login_required
 @user_passes_test(check_if_recruiter, redirect_field_name='')
@@ -120,7 +117,7 @@ def recruiter_analytics(request):
         return HttpResponse(json_results, mimetype='application/json')
     else:
         recruiter_id = request.user.recruiter_for.id
-        return render_to_response('recruiter/recruiter_analytics.html', {'version': version, 'recruiter_id':recruiter_id}, RequestContext(request))
+        return render_to_response('recruiter/recruiter_analytics.html', {'recruiter_id':recruiter_id}, RequestContext(request))
 
 @login_required
 @user_passes_test(check_if_recruiter, redirect_field_name='')
@@ -129,14 +126,14 @@ def recruiter_market(request):
     company = Company.objects.get(id=request.user.recruiter_for.id)
     jobs = Job.objects.filter(company=company, deactivate=False)
     recruiter_id = request.user.recruiter_for.id
-    return render_to_response('recruiter/recruiter_market.html', {'version': version, 'company':company, 'jobs':jobs, 'recruiter_id':recruiter_id}, RequestContext(request))
+    return render_to_response('recruiter/recruiter_market.html', {'company':company, 'jobs':jobs, 'recruiter_id':recruiter_id}, RequestContext(request))
 
 @login_required
 @user_passes_test(check_if_recruiter, redirect_field_name='')
 def recruiter_sell(request):
     """Recruiter interface for sponsoring events"""
     recruiter_id = request.user.recruiter_for.id
-    return render_to_response('recruiter/recruiter_sell.html', {'version': version, 'recruiter_id':recruiter_id}, RequestContext(request))
+    return render_to_response('recruiter/recruiter_sell.html', {'recruiter_id':recruiter_id}, RequestContext(request))
 
 def recruiter_sponsorship_request(request):
     """post sponsorship request form and send email"""
