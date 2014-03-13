@@ -79,6 +79,7 @@ urlpatterns = patterns('',
     url(r'^fair/UCBerkeley/Early-Bird-Internship-Fair-Fall-2013/$', TemplateView.as_view(template_name="CareerFairs/UCBerkeley/EarlyBirdInternshipFairFall2013.html")),
     url(r'^fair/UCBerkeley/Startup-Fair-Fall-2013/$', TemplateView.as_view(template_name="CareerFairs/UCBerkeley/StartupCareerFairFall2013.html")),
     url(r'^fair/UCBerkeley/EECS-Fair-Fall-2013/$', TemplateView.as_view(template_name="CareerFairs/UCBerkeley/EECSCareerFairFall2013.html")),
+    url(r'^fair/UCBerkeley/InfoCamp-iSchool-Spring-2014/$', TemplateView.as_view(template_name="CareerFairs/UCBerkeley/InfoCampSpring2014.html")),
 
     url(r'^static/faircoords/1_1.json', RedirectView.as_view(url='https://occuhuntstatic.s3.amazonaws.com/faircoords/1_1.json')),
     url(r'^static/faircoords/2_2.json', RedirectView.as_view(url='https://occuhuntstatic.s3.amazonaws.com/faircoords/2_2.json')),
