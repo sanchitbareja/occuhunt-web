@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% load static from staticfiles %}
+{% load i18n %}
+{% load url from future %}
+
+{% block extra_style %}
+<!-- Add css here -->
+<style type="text/css">
+	body {
+		background-color: white;	
+		-webkit-font-smoothing: antialiased;
+		font-smoothing: antialiased;
+		font-smooth: always;
+	}
+</style>
+
+{% endblock %}
+
+{% block extra_script %}
+<!-- Add javascript here -->
+{% endblock %}
+
+{% block content %}
+
+<div class="row">
+	<div class="col-lg-8 col-lg-offset-2">
+	  	<h1 id="company_title" style="color:#035d67;">Privacy Policy</h1>
+	</div>
+</div>
+<div class="row">
+	<div class="col-lg-8 col-lg-offset-2 no-space">
+		<img id="company_banner" src="{{ company.banner_image }}">
+	</div>
+</div>
+<div class="row">
+	<div class="col-lg-8 col-lg-offset-2" id="company_description_container">
+	</div>
+</div>
+<div class="row">
+	<div class="col-lg-8 col-lg-offset-2" id="job_description_container">
+		<div class="row">
+			<div class="col-lg-offset-1 col-lg-10">
+					<h4 id="company_header">Information we collect</h4>
+					<p style="color:white">When you join Occuhunt, you agree that information you provide on your profile can be used by us as described in this Privacy Policy. We collect information from the devices and platforms that you use to access Occuhunt. This information helps us to improve the services that we provide you. This privacy policy also includes LinkedIn’s since we currently use their platform to log users in.
+
+					When you use our services to view content, we may automatically collect and store certain information in server logs. This may include: details of how you used our service, such as your search queries, length of stay, Internet protocol address, device event information such as crashes, system activity, hardware settings, browser type, browser language, the date and time of your request and referral URL, and cookies that may uniquely identify your browser or your Occuhunt Account.
+					</h5>
+					<br />
+					<br />
+
+					<h4 id="company_header">How we use information we collect</h4>
+					<p style="color:white">Your non-public information may be shared with third parties that are relevant to you. These include companies at the events you attend, info sessions you visit and profiles that you check out. Your information will not, however, be shared with other users of the student platform.
+
+					We keep your information for as long as your account is active or as needed. For example, we may keep certain information even after you close your account if it is necessary to comply with our legal obligations or meet regulatory requirements.
+					</h5>
+					<br />
+					<br />
+
+					<h4 id="company_header">Changes</h4>
+					<p style="color:white">This Privacy Policy may change from time to time. We will post any privacy policy changes on this page and, if the changes are significant, we will provide a more prominent notice (including, for certain services, email notification of privacy policy changes).
+					</h5>
+					<br />
+					<br />
+
+				<br />
+				<br />
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<!-- hard code everything for design -->
+{% endblock %}

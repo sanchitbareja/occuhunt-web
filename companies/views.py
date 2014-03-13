@@ -28,6 +28,10 @@ def splash(request):
     return render_to_response('splash.html', {'version': version},
                                   RequestContext(request))
 
+def privacy_policy(request):
+    """Privacy Policy view"""
+    return render_to_response('privacy_policy.html', {'version': version},
+                                  RequestContext(request))
 
 def companies(request):
     """Companies view"""
