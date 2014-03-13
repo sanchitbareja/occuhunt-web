@@ -6,6 +6,7 @@
 {% block head_title_base %}Upcoming Fairs{% endblock %}
 
 
+
 {% block extra_style %}
 <link href="{% static 'occuhunt/css/index.css' %}" rel="stylesheet">
 <style type="text/css">
@@ -42,10 +43,17 @@
 </style>
 {% endblock %}
 
+
 {% block extra_script %}
 <script type="text/javascript">
   mixpanel.track_links("#mp-viewjobs", "Clicked on view jobs from modal in fair page", {'referrer': document.referrer });
   $(document).ready(function(){
+    // enable tooltip for all the resume drops
+    $(".resume_drop").tooltip();
+
+    // check which companies user had already applied to and markk them as applied accordingly
+    getApplications();
+
     getCompanies();
     $('*[data-poload]').on("click", function() {
       var e = $(this);
@@ -61,15 +69,154 @@
               trigger: 'click',
               container: $(this).attr('id'),
               title:"<a class='btn-link pull-left' onclick='closeModal("+data['id']+")'><b>X</b></a><h3 class='text-center'>"+data["name"]+"</h3><a class='btn-link' id='modal-plus' onclick='favoriteCompanyWithId("+data['id']+",this, null);' style='right:17px; top:10px;position:absolute; float:right; '><span class='glyphicon glyphicon-plus'></span></a>",
-              content:"<div class='popover-company-info'><img id='background_banner' src='"+data["banner_image"]+"'/><img id='foreground_banner' src='"+data['logo']+"'><p>"+data["company_description"].slice(0,140)+"...</p><a class='btn btn-done' id='mp-viewjobs' href='/company/"+data['id']+" /'>VIEW JOBS</a></div>"
+              content:"<div class='popover-company-info'><img id='background_banner' src='"+data["banner_image"]+"'/><img id='foreground_banner' src='"+data['logo']+"'><p>"+data["company_description"].slice(0,140)+"...</p><div><a class='btn btn-done' style='display:inline-block; margin-right:10px;' id='mp-viewjobs' href='/company/"+data['id']+" /'>VIEW JOBS</a><a class='btn btn-danger' id='resume_drop_"+data['id']+"' style='display:inline-block;' value='"+data['id']+"' name='"+data['name']+"'>DROP RESUME</a></div></div>"
             }).popover("show");
+
+            $('#resume_drop_'+data['id']+'').on("click", function() {
+              var e = $(this);
+              var company_id = $(this).attr("value");
+              var user_id = $("#user_id").val();
+              var fair_id = $("#fair_id").val();
+              var company_name = $(this).attr("name")
+              $("#company_id").attr('value',company_id);
+              
+              // show the modal with appropriate text
+              $(".companyTitle").text(company_name);
+              $("#resumeDropModal").modal("show");
+
+            });
+
           },
       });
     });
+
+    $('.resume_drop').on("click", function() {
+      var e = $(this);
+      var company_id = $(this).attr("value");
+      var user_id = $("#user_id").val();
+      var fair_id = $("#fair_id").val();
+      var company_name = $(this).attr("name")
+      $("#company_id").attr('value',company_id);
+      
+      // show the modal with appropriate text
+      $(".companyTitle").text(company_name);
+      $("#resumeDropModal").modal("show");
+
+    });
+
+    $('#resume_drop_btn').on("click", function() {
+      var e = $(this);
+      var company_id = $(this).attr("value");
+      var user_id = $("#user_id").val();
+      var fair_id = $("#fair_id").val();
+      var company_name = $(this).attr("name")
+      $("#company_id").attr('value',company_id);
+      
+      // show the modal with appropriate text
+      $(".companyTitle").text(company_name);
+      $("#resumeDropModal").modal("show");
+
+    });
+
+    $("#submitResumeDrop").on("click", function() {      
+      var user_id = $("#user_id").val();
+      var fair_id = $("#fair_id").val();
+      var company_id = $("#company_id").val();
+      var position = $("#companyPosition").val().join();
+      console.log(position);
+
+      // hide modal
+      $("#resumeDropModal").modal("hide");
+
+      // submit resume
+      if($("#resume_enabled").val() == 'False'){
+        $("#messages").append('<div class="alert alert-danger alert-dismissable">'+
+                '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'+
+                'Oops! You need to be logged in or have your resume uploaded to drop your resume with the employers!'+
+              '</div>');
+      } else {
+        resumeDrop(user_id, company_id, fair_id, position); 
+      }
+    });
+
   });
 
   function closeModal(id){
     $('[data-poload='+id+']').click();
+  }
+
+  function resumeDrop(user_id, company_id, fair_id, position){
+    console.log("CONFIRMED");
+    // $("#messages").append('<div class="alert alert-danger alert-dismissable">'+
+    //             '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'+
+    //             'Resume drop is now over! Please contact the recruiter individually if you met them at the event.</div>');
+    $.ajax({
+          url: '/api/v1/applications/',
+          type:'POST',
+          dataType: 'json',
+          data: JSON.stringify({
+            'user_id': user_id, 
+            'company_id': company_id,
+            'fair_id': fair_id,
+            'position': position,
+            'status': 1
+          }),
+          contentType: 'application/json',
+          statusCode : {
+            201: function(data, textStatus, jsXHR){
+              console.log("successfully dropped resume!");
+              console.log(data);
+              console.log(textStatus);
+              console.log(jsXHR);
+              console.log($(this));
+              // feedback on the small dot that the resume has been submitted
+              $(".resume_drop[value="+company_id+"]").addClass("resume_dropped");
+
+              // give confirmation message about successful resume submission
+              $("#messages").append('<div class="alert alert-success alert-dismissable">'+
+                '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'+
+                'Good job! You <strong>successfully</strong> dropped off your resume at '+data['company']['name']+'!'+
+              '</div>');
+            },
+            500: function(data, textStatus, jsXHR){
+              console.log(data);
+              console.log(textStatus);
+              console.log(jsXHR);
+              // give confirmation message about successful resume submission
+              $("#messages").append('<div class="alert alert-danger alert-dismissable">'+
+                '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'+
+                'Oops! You need to be logged in or have your resume uploaded to drop your resume with the employers!'+
+              '</div>');
+            }
+          }
+        });
+  }
+
+  function getApplications(){
+    user_id = $("#user_id").val();
+    fair_id = $("#fair_id").val();
+    console.log("get applications");
+    $.ajax({
+      url: '/api/v1/applications/?user='+String(user_id)+'&fair='+String(fair_id),
+      type: 'GET',
+      contentType: 'application/json',
+      dataType: 'json',
+      processData: false,
+      success: function(data, textStatus, jqXHR) {
+        console.log(data);
+        console.log(textStatus);
+        console.log(jqXHR);
+        for (var i = data['response']['applications'].length - 1; i >= 0; i--) {
+          // need to check if need to display favorite or unfavorite icon
+          console.log($("a.resume_drop[value="+data['response']['applications'][i]['company']['id']+"]"));
+          $("a.resume_drop[value="+data['response']['applications'][i]['company']['id']+"]").addClass("resume_dropped");
+
+          // disable clicking
+          $("a.resume_drop[value="+data['response']['applications'][i]['company']['id']+"]").css({"pointer-events":"none","cursor":"default"});
+        }
+      },
+      dataType: 'json',
+    });
   }
 
   $(window).bind('scroll resize', function() {
@@ -81,27 +228,27 @@
 
 {% block content %}
 
-  <!-- Main content - Civil and Environmental Engineering Career Fair -->
+  <!-- Main content - InfoCamp Career Fair -->
   <div class="row">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-      <!-- Information about the Civil and Environmental Engineering fair -->
+      <!-- Information about the InfoCamp fair -->
       <div class="row visible-lg">
         <div class="col-lg-4">
-          <h4 align="left">October 30th, 4 - 7pm</h4>
+          <h4 align="left">March 15th, 9am - 5pm</h4>
         </div>
         <div class="col-lg-4">
-          <h4 class="text-center venue-center">Civil and Environmental Engineering Fair</h4>
+          <h4 class="text-center venue-center">InfoCamp</h4>
         </div>
         <div class="col-lg-4">
-          <h4 class="text-right">International House</h4>
+          <h4 class="text-right">Berkeley iSchool</h4>
         </div>
       </div>
       <div class="row hidden-lg">
-          <h4 align="left">Civil and Environmental Engineering Fair, Oct 30, 4-7pm, International House</h4>
+          <h4 align="left">InfoCamp, March 15th, 9am - 5pm, Berkeley iSchool</h4>
       </div>
       <div class="row">
         <div class="col-lg-12">
-          <p class="text-center room-top">Chevron Auditorium</p>
+          <p class="text-center room-top">Berkeley iSchool</p>
           <table>
             <tbody><tr>
               <td id="career_fair_map"></td>
@@ -110,11 +257,11 @@
               <td id="career_fair_map"></td>
               <td id="career_fair_map"></td>
               <td id="career_fair_map"></td>
-              <td id="career_fair_map"><a class="btn btn-engineering fair-table vcenter" data-poload="231" value="company_231">Twitter</a></td>
+              <td id="career_fair_map"><a class="btn btn-engineering fair-table vcenter" data-poload="231" value="company_231">Twitter</a><a class="resume_drop" value="231" name="Twitter" data-toggle="tooltip" data-placement="top" title="Click to drop resume"></a></td>
               <td id="career_fair_map"></td>
-              <td id="career_fair_map"><a class="btn btn-other fair-table vcenter" data-poload="265" value="company_265">Google</a></td>
+              <td id="career_fair_map"><a class="btn btn-other fair-table vcenter" data-poload="265" value="company_265">Google</a><a class="resume_drop" value="265" name="Google" data-toggle="tooltip" data-placement="top" title="Click to drop resume"></a></td>
               <td id="career_fair_map"></td>
-              <td id="career_fair_map"><a class="btn btn-engineering fair-table vcenter" data-poload="284" value="company_284">Mozilla</a></td>
+              <td id="career_fair_map"><a class="btn btn-engineering fair-table vcenter" data-poload="284" value="company_284">Mozilla</a><a class="resume_drop" value="284" name="Mozilla" data-toggle="tooltip" data-placement="top" title="Click to drop resume"></a></td>
             </tr>
           </tbody></table>
         </div>
