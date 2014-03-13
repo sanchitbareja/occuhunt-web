@@ -37,7 +37,7 @@ def StartupCareerFairSpring2014View(request):
 			return render_to_response('CareerFairs/UCBerkeley/StartupCareerFairSpring2014.html', {'version':version, 'resume_url':False}, RequestContext(request))
 
 
-def ISchoolInfoCamp(request):
+def ISchoolInfoCampView(request):
 	"""View to ISchoolInfoCamp """
 	print request.user
 	if request.user.is_anonymous():
