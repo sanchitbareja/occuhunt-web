@@ -3,7 +3,7 @@ from companies.views import home, splash, companies, company, search, privacy_po
 from resumes.views import resume_feed, sign_s3_upload, submit_resume, individual_resume
 from jobs.views import favorites, apply_jobs, match_jobs
 from recommendations.views import recommendation_main, recommendation_new, recommendation_new_with_request, recommendation_requests, recommendation_requests_new, showcase_notifications, showcase_applications
-from fairs.views import create_fair, StartupCareerFairSpring2014View
+from fairs.views import create_fair, StartupCareerFairSpring2014View, ISchoolInfoCampView
 from recruiters.views import recruiter_splash, recruiter_hire, recruiter_market, recruiter_sell, recruiter_sponsorship_request, download_pdf, recruiter_login, recruiter_login_third_party, recruiter_analytics, download_excel_to_export
 from django.conf import settings
 from django.conf.urls.static import static
@@ -71,6 +71,7 @@ urlpatterns = patterns('',
     url(r'^login-error/$', login_error, name='login-error'),
 
     # Career Fairs
+    url(r'^fair/UCBerkeley/InfoCamp-iSchool-Spring-2014/$', ISchoolInfoCampView, name='ISchoolInfoCamp'),
     url(r'^fair/UCBerkeley/Energy-Environment-Natural-Resources-Career-Fair-Spring-2014/$', TemplateView.as_view(template_name="CareerFairs/UCBerkeley/EnergyEnvironmentNaturalResourcesCareerFairSpring2014.html")),
     url(r'^fair/UCBerkeley/Startup-Fair-Spring-2014/$', StartupCareerFairSpring2014View, name='Startup-Fair-Spring-2014'),
     url(r'^fair/UCBerkeley/Internship-Summer-Fair-Spring-2014/$', TemplateView.as_view(template_name="CareerFairs/UCBerkeley/InternshipSummerFairSpring2014.html")),
@@ -80,7 +81,6 @@ urlpatterns = patterns('',
     url(r'^fair/UCBerkeley/Early-Bird-Internship-Fair-Fall-2013/$', TemplateView.as_view(template_name="CareerFairs/UCBerkeley/EarlyBirdInternshipFairFall2013.html")),
     url(r'^fair/UCBerkeley/Startup-Fair-Fall-2013/$', TemplateView.as_view(template_name="CareerFairs/UCBerkeley/StartupCareerFairFall2013.html")),
     url(r'^fair/UCBerkeley/EECS-Fair-Fall-2013/$', TemplateView.as_view(template_name="CareerFairs/UCBerkeley/EECSCareerFairFall2013.html")),
-    url(r'^fair/UCBerkeley/InfoCamp-iSchool-Spring-2014/$', TemplateView.as_view(template_name="CareerFairs/UCBerkeley/InfoCampSpring2014.html")),
 
     url(r'^static/faircoords/1_1.json', RedirectView.as_view(url='https://occuhuntstatic.s3.amazonaws.com/faircoords/1_1.json')),
     url(r'^static/faircoords/2_2.json', RedirectView.as_view(url='https://occuhuntstatic.s3.amazonaws.com/faircoords/2_2.json')),

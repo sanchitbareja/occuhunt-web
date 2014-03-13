@@ -35,3 +35,21 @@ def StartupCareerFairSpring2014View(request):
 			# if user doesn't have a resume on file, boo :(
 			resume = None
 			return render_to_response('CareerFairs/UCBerkeley/StartupCareerFairSpring2014.html', {'version':version, 'resume_url':False}, RequestContext(request))
+
+
+def ISchoolInfoCamp(request):
+	"""View to ISchoolInfoCamp """
+	print request.user
+	if request.user.is_anonymous():
+		# if it's anonymous user
+		return render_to_response('CareerFairs/UCBerkeley/InfoCampSpring2014.html', {'version':version, 'resume_url':False}, RequestContext(request))
+	else:
+		resume = Resume.objects.filter(user=request.user, showcase=True, original=False).order_by('-timestamp')
+		if len(resume) > 0:
+			# if user has a resume - yay!
+			resume = resume[0]
+			return render_to_response('CareerFairs/UCBerkeley/InfoCampSpring2014.html', {'version':version, 'resume_url':resume.url}, RequestContext(request))
+		else:
+			# if user doesn't have a resume on file, boo :(
+			resume = None
+			return render_to_response('CareerFairs/UCBerkeley/InfoCampSpring2014.html', {'version':version, 'resume_url':False}, RequestContext(request))
