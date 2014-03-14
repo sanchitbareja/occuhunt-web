@@ -104,6 +104,8 @@ urlpatterns = patterns('',
     url(r'^static/faircoords/9_1.json', RedirectView.as_view(url='https://occuhuntstatic.s3.amazonaws.com/faircoords/9_1.json')),
     url(r'^static/faircoords/10_1.json', RedirectView.as_view(url='https://occuhuntstatic.s3.amazonaws.com/faircoords/10_1.json')),
     url(r'^static/faircoords/11_5.json', RedirectView.as_view(url='https://occuhuntstatic.s3.amazonaws.com/faircoords/11_5.json')),
+    url(r'^static/faircoords/12_6.json', RedirectView.as_view(url='https://occuhuntstatic.s3.amazonaws.com/faircoords/12_6.json')),
+    url(r'^static/faircoords/13_2.json', RedirectView.as_view(url='https://occuhuntstatic.s3.amazonaws.com/faircoords/13_2.json')),
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
