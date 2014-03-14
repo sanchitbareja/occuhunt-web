@@ -71,6 +71,7 @@ urlpatterns = patterns('',
     url(r'^login-error/$', login_error, name='login-error'),
 
     # Career Fairs
+    url(r'^fair/UCBerkeley/CED-Career-Fair-Spring-2014/$', TemplateView.as_view(template_name="CareerFairs/UCBerkeley/CEDFairSpring2014.html")),
     url(r'^fair/UCBerkeley/InfoCamp-iSchool-Spring-2014/$', ISchoolInfoCampView, name='ISchool-InfoCamp'),
     url(r'^fair/UCBerkeley/Energy-Environment-Natural-Resources-Career-Fair-Spring-2014/$', TemplateView.as_view(template_name="CareerFairs/UCBerkeley/EnergyEnvironmentNaturalResourcesCareerFairSpring2014.html")),
     url(r'^fair/UCBerkeley/Startup-Fair-Spring-2014/$', StartupCareerFairSpring2014View, name='Startup-Fair-Spring-2014'),
