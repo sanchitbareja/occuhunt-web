@@ -79,6 +79,26 @@
             </div>
           </div>
         </div>
+        {% for group in request.user.groups.all %}
+          {% if group.name == 'UC Berkeley ISchool' %}
+            <div class="media">
+              <a class="pull-left" href="#">
+                <img class="media-object event-image" src="{% static 'images/berkeley.gif' %}" alt="UC Berkeley">
+              </a>
+              <div class="media-body" style="display:inline-block;">
+                <h4 class="media-heading"><a href="/fair/UCBerkeley/InfoCamp-iSchool-Spring-2014/" class="event-header">InfoCamp</a></h4>
+                March 15th, 9am - 5pm<br />
+                South Hall
+              </div>
+              <div style="float:right">
+                <div class="event-stats text-center" style="float:none;">
+                  <h3 class="event-stats-number">110</h3>
+                  <p class="event-stats-word">going</p>
+                </div>
+              </div>
+            </div>
+          {% endif %}
+        {% endfor %}
         <div class="media">
           <a class="pull-left" href="#">
             <img class="media-object event-image" src="{% static 'images/berkeley.gif' %}" alt="UC Berkeley">
