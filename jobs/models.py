@@ -1,7 +1,6 @@
 from django.db import models
 from companies.models import Company
 from django.contrib.auth.models import Group
-from fairs.models import Fair
 from users.models import User
 
 import datetime
@@ -29,6 +28,11 @@ JOB_TYPES_LIST = (
 	('Other','Other'),
 	)
 
+JOB_CONTRACT_TYPES = (
+	(1, 'Internship'),
+	(2, 'Full Time'),
+	(3, 'Part Time'),
+	)
 
 class Job(models.Model):
 	name = models.CharField(max_length=512)
@@ -37,8 +41,10 @@ class Job(models.Model):
 	location = models.CharField(max_length=512, null=True, blank=True)
 	company = models.ForeignKey(Company)
 	network = models.ForeignKey(Group, null=True, blank=True)
-	fair = models.ForeignKey(Fair, null=True, blank=True)
 	deactivate = models.BooleanField(default=False)
+	contract_type = models.CharField(max_length=512, null=True, blank=True, choices=JOB_CONTRACT_TYPES)
+	qualifications = models.TextField(blank=True, null=True)
+	timestamp = models.DateTimeField(auto_now=False, auto_now_add=True)
 
 	def __unicode__(self):
 		return self.name

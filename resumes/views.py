@@ -13,12 +13,9 @@ from django.core import serializers
 
 from resumes.models import Resume, Comment
 
-from social_auth import __version__ as version
-from social_auth.utils import setting
-
 def resume_feed(request):
     """Resume feed view"""
-    return render_to_response('resume_feed.html', {'version': version}, RequestContext(request))
+    return render_to_response('resume_feed.html', {}, RequestContext(request))
 
 def individual_resume(request, hashstr):
     """Get individual resumes for sharing
@@ -39,10 +36,10 @@ def individual_resume(request, hashstr):
             serialized_comments.append({'comment':comment.comment, 'id':comment.id, 'x':comment.x, 'y':comment.y})
         print serialized_comments
         print simplejson.dumps(serialized_comments)
-        return render_to_response('individual_resume.html', {'version':version, 'resume':unique_resume, 'resume_comments':simplejson.dumps(serialized_comments), 'resume_exists':True}, RequestContext(request))
+        return render_to_response('individual_resume.html', {'resume':unique_resume, 'resume_comments':simplejson.dumps(serialized_comments), 'resume_exists':True}, RequestContext(request))
     except Exception as e:
         print e
-        return render_to_response('individual_resume.html', {'version':version, 'resume_exists':False}, RequestContext(request))
+        return render_to_response('individual_resume.html', {'resume_exists':False}, RequestContext(request))
 
 def sign_s3_upload(request):
     AWS_ACCESS_KEY = 'AKIAJMUV3JF5IGAOPF3A'

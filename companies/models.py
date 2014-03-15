@@ -63,6 +63,7 @@ class Company(models.Model):
 	avg_salary = models.CharField(max_length=64, null=True, blank=True)
 	location = models.CharField(max_length=512, null=True, blank=True)
 	intro_video = models.TextField(null=True, blank=True)
+	timestamp = models.DateTimeField(auto_now=False, auto_now_add=True)
 
 	def __unicode__(self):
 		return self.name

@@ -11,21 +11,18 @@ from datetime import datetime, timedelta, time
 from django.http import Http404
 from itertools import chain
 
-from social_auth import __version__ as version
-from social_auth.utils import setting
-
 from companies.models import Company
 from favorites.models import Favorite
 from jobs.models import Job
 
 def home(request):
     """Home view"""
-    return render_to_response('index.html', {'version': version, "fairs_link":True},
+    return render_to_response('index.html', {"fairs_link":True},
                                   RequestContext(request))
 
 def splash(request):
     """Splash view"""
-    return render_to_response('splash.html', {'version': version},
+    return render_to_response('splash.html', {},
                                   RequestContext(request))
 
 def privacy_policy(request):
@@ -35,13 +32,13 @@ def privacy_policy(request):
 
 def companies(request):
     """Companies view"""
-    return render_to_response('companies.html', {'version': version, "companies_link":True},
+    return render_to_response('companies.html', {"companies_link":True},
                                   RequestContext(request))
 
 
 def search(request):
     """Search companies view"""
-    return render_to_response('search.html', {'version': version, "search_link":True},
+    return render_to_response('search.html', {"search_link":True},
                                   RequestContext(request))
 
 
@@ -51,7 +48,7 @@ def company(request, companyID):
         company = Company.objects.get(id=companyID)
         public_jobs = Job.objects.filter(network__isnull=True,company=company)
         if not request.user.is_authenticated():
-            return render_to_response('company.html', {'version': version, 'company': company, 'jobs':public_jobs},
+            return render_to_response('company.html', {'company': company, 'jobs':public_jobs},
                                   RequestContext(request))
         else:
             favorite = Favorite.objects.filter(company=company, user__id=request.user.id)
@@ -62,7 +59,7 @@ def company(request, companyID):
             if len(request.user.groups.filter(name="UC Berkeley")) > 0:
                 filtered_jobs = Job.objects.filter(network__name="UC Berkeley").filter(company=company)
             all_jobs = list(chain(filtered_jobs, public_jobs))
-            return render_to_response('company.html', {'version': version, 'company': company, 'is_favorited':is_favorited, 'jobs':all_jobs},
+            return render_to_response('company.html', {'company': company, 'is_favorited':is_favorited, 'jobs':all_jobs},
                                   RequestContext(request))
     except Exception as e:
       print e

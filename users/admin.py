@@ -5,7 +5,7 @@ from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.utils.translation import ugettext, ugettext_lazy as _
 
-from users.models import User
+from users.models import User, Recruiter, Student
 
 
 class UserCreationForm(forms.ModelForm):
@@ -19,7 +19,7 @@ class UserCreationForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ['groups','user_permissions','username','email', 'is_admin','first_name','last_name','thumbnail_profile_pic','profile_pic','recruiter_for']
+        fields = ['groups','user_permissions','username','email', 'is_admin','first_name','last_name','thumbnail_profile_pic','profile_pic']
 
     def clean_password2(self):
         # Check that the two password entries match
@@ -50,7 +50,7 @@ class UserChangeForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ['groups','user_permissions','username','email', 'is_admin','first_name','last_name', 'thumbnail_profile_pic','profile_pic','recruiter_for']
+        fields = ['groups','user_permissions','username','email', 'is_admin','first_name','last_name', 'thumbnail_profile_pic','profile_pic']
         
     def clean_password(self):
         # Regardless of what the user provides, return the initial value.
@@ -67,22 +67,43 @@ class UserAdmin(UserAdmin):
     # The fields to be used in displaying the User model.
     # These override the definitions on the base UserAdmin
     # that reference specific fields on auth.User.
-    list_display = ('username','email', 'is_admin','first_name','last_name','thumbnail_profile_pic','profile_pic','linkedin_uid','recruiter_for','time_created')
-    list_filter = ('is_admin','recruiter_for')
-    fieldsets = (
+    list_display = ('username','email', 'is_admin','first_name','last_name','thumbnail_profile_pic','profile_pic','linkedin_uid','time_created','last_login')
+    list_filter = ('is_admin',)
+    fieldsets = [
         (None, {'fields': ('username', 'password')}),
         ('Personal Info', {'fields': ('email', 'first_name','last_name','thumbnail_profile_pic','profile_pic')}),
-        ('Permissions', {'fields': ('is_admin','groups','user_permissions','recruiter_for')}),
-    )
+        ('Permissions', {'fields': ('is_admin','groups','user_permissions')}),
+    ]
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('username','email', 'password1', 'password2','first_name','last_name','thumbnail_profile_pic','profile_pic','recruiter_for')}
+            'fields': ('username','email', 'password1', 'password2','first_name','last_name','thumbnail_profile_pic','profile_pic')}
         ),
     )
     search_fields = ('username','email',)
     ordering = ('username','email',)
     filter_horizontal = ()
 
+
+class RecruiterAdmin(UserAdmin):
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('username','email', 'password1', 'password2','first_name','last_name','thumbnail_profile_pic','profile_pic','company'),
+        }),
+    )
+    list_display = UserAdmin.list_display + ('company',)
+
+class StudentAdmin(UserAdmin):
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('username','email', 'password1', 'password2','first_name','last_name','thumbnail_profile_pic','profile_pic','verified_email','graduation_year'),
+        })
+    )
+    list_display = UserAdmin.list_display + ('verified_email', 'graduation_year')
+
 # Now register the new UserAdmin...
 admin.site.register(User, UserAdmin)
+admin.site.register(Recruiter, RecruiterAdmin)
+admin.site.register(Student, StudentAdmin)
