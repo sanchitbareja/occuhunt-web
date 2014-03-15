@@ -86,9 +86,21 @@ class UserAdmin(UserAdmin):
 
 
 class RecruiterAdmin(UserAdmin):
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('username','email', 'password1', 'password2','first_name','last_name','thumbnail_profile_pic','profile_pic','company'),
+        }),
+    )
     list_display = UserAdmin.list_display + ('company',)
 
 class StudentAdmin(UserAdmin):
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('username','email', 'password1', 'password2','first_name','last_name','thumbnail_profile_pic','profile_pic','verified_email','graduation_year'),
+        })
+    )
     list_display = UserAdmin.list_display + ('verified_email', 'graduation_year')
 
 # Now register the new UserAdmin...

@@ -53,9 +53,9 @@ def recruiter_login_third_party(request):
     results = {'success':False}
     if user is not None:
         if user.is_active:
-            if user.recruiter_for:
+            if user.recruiter.company:
                 results['success'] = True
-                results['company_id'] = user.recruiter_for.id
+                results['company_id'] = user.recruiter.company.id
                 json_results = simplejson.dumps(results)
                 return HttpResponse(json_results, mimetype='application/json')
     # Return an 'invalid login' error message.
@@ -63,7 +63,7 @@ def recruiter_login_third_party(request):
     return HttpResponse(json_results, mimetype='application/json')
 
 def check_if_recruiter(user):
-    if user.recruiter_for:
+    if user.recruiter.company:
         return True
     else:
         return False
@@ -72,7 +72,7 @@ def check_if_recruiter(user):
 @user_passes_test(check_if_recruiter, redirect_field_name='')
 def recruiter_hire(request):
     """Recruiter interface for hiring candidates"""
-    recruiter_id = request.user.recruiter_for.id
+    recruiter_id = request.user.recruiter.company.id
     return render_to_response('recruiter/recruiter_hire.html', {'recruiter_id':recruiter_id}, RequestContext(request))
 
 @login_required
@@ -116,23 +116,23 @@ def recruiter_analytics(request):
         json_results = simplejson.dumps(results)
         return HttpResponse(json_results, mimetype='application/json')
     else:
-        recruiter_id = request.user.recruiter_for.id
+        recruiter_id = request.user.recruiter.company.id
         return render_to_response('recruiter/recruiter_analytics.html', {'recruiter_id':recruiter_id}, RequestContext(request))
 
 @login_required
 @user_passes_test(check_if_recruiter, redirect_field_name='')
 def recruiter_market(request):
     """Recruiter interface for editting their profile"""
-    company = Company.objects.get(id=request.user.recruiter_for.id)
+    company = Company.objects.get(id=request.user.recruiter.company.id)
     jobs = Job.objects.filter(company=company, deactivate=False)
-    recruiter_id = request.user.recruiter_for.id
+    recruiter_id = request.user.recruiter.company.id
     return render_to_response('recruiter/recruiter_market.html', {'company':company, 'jobs':jobs, 'recruiter_id':recruiter_id}, RequestContext(request))
 
 @login_required
 @user_passes_test(check_if_recruiter, redirect_field_name='')
 def recruiter_sell(request):
     """Recruiter interface for sponsoring events"""
-    recruiter_id = request.user.recruiter_for.id
+    recruiter_id = request.user.recruiter.company.id
     return render_to_response('recruiter/recruiter_sell.html', {'recruiter_id':recruiter_id}, RequestContext(request))
 
 def recruiter_sponsorship_request(request):
