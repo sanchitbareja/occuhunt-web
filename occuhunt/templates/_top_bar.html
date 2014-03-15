@@ -33,15 +33,15 @@
       </ul>
       <ul class="nav navbar-nav navbar-right">
         {% if user.is_authenticated %}
-        <li><a href="/home/" id="mp-viewdiscover">DISCOVER</a></li>
-        <li class="dropdown">
+        <li><a href="/home/" id="mp-viewdiscover">EVENTS</a></li>
+       <!--  <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">PLAN<b class="caret"></b></a>
           <ul class="dropdown-menu">
             <li><a href="/plan/resume-feed/" id="mp-viewresumefeed">Resume Feed</a></li>
             <li><a href="/plan/companies/" id="mp-vieworganize">Organize Applications</a></li>
           </ul>
-        </li>
-        <li><a href="/showcase/">SHOWCASE</a></li>
+        </li> -->
+        <li><a href="/showcase/">PROFILE</a></li>
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{user.first_name | upper}}
             <b class="caret"></b></a>

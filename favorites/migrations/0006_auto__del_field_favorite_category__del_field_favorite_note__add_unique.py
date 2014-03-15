@@ -15,6 +15,16 @@ class Migration(SchemaMigration):
         db.delete_column(u'favorites_favorite', 'note')
 
         # Adding unique constraint on 'Favorite', fields ['user', 'company']
+        to_delete = []
+        distinct_favs = orm.Favorite.objects.values().distinct('user','company')
+        all_favs = orm.Favorite.objects.values()
+        for fav in all_favs:
+            if fav not in distinct_favs:
+                to_delete.append(fav)
+        for dels in to_delete:
+            print dels['id']
+            print str(dels['user_id'])+":"+str(dels['company_id'])
+            orm.Favorite.objects.get(id=dels['id']).delete()
         db.create_unique(u'favorites_favorite', ['user_id', 'company_id'])
 
 
