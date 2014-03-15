@@ -79,8 +79,7 @@
             </div>
           </div>
         </div>
-        {% for group in request.user.groups.all %}
-          {% if group.name == 'UC Berkeley ISchool' %}
+
             <div class="media">
               <a class="pull-left" href="#">
                 <img class="media-object event-image" src="{% static 'images/berkeley.gif' %}" alt="UC Berkeley">
@@ -97,8 +96,7 @@
                 </div>
               </div>
             </div>
-          {% endif %}
-        {% endfor %}
+
         <div class="media">
           <a class="pull-left" href="#">
             <img class="media-object event-image" src="{% static 'images/berkeley.gif' %}" alt="UC Berkeley">
