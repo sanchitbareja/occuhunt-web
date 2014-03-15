@@ -159,7 +159,8 @@ INSTALLED_APPS = (
     'hunts',
     'applications',
     'recruiters',
-    'notifications'
+    'notifications',
+    'hunting'
 )
 
 # A sample logging configuration. The only tangible logging
@@ -282,6 +283,9 @@ HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
 # Parse database configuration from $DATABASE_URL
 import dj_database_url
 DATABASES = {'default': dj_database_url.config()}
+
+# base root url
+BASE_URL = "http://www.occuhunt.com/"
 
 try:
     from occuhunt.settings_local import DATABASES

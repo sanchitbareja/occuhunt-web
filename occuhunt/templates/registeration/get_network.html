@@ -22,41 +22,73 @@
 
 {% block content %}
 
-<h1>Verify your network!</h1>
+<h1>Verify your network</h1>
 <h4>This is the last step before you can access Occuhunt!</h4>
-
+<br />
 <div class="row">
 	<div class="col-lg-12">
 	  	<form class="form-inline" role="form" method="post" action="/confirm-network/">
 	  		{% csrf_token %}
 	  		<div class="row">
-	  			<div class="col-lg-3">
+	  			<div class="col-lg-2">
 			  		<div class="form-group">
 			  			<label>School</label>
 			  			<select class="form-control input-lg" id="network_school" name="verified_network">
 					      	<option value="1">UC Berkeley</option>
+					      	<option value="2">UC Berkeley Information School</option>
 					    </select>
 			  		</div>
 			  	</div>
-			  	<div class="col-lg-5">
+			  	<div class="col-lg-2">
 				  	<div class="form-group">
-				    	<label for="verified_email_address">Email address</label>
+				    	<label for="verified_email_address">Email</label>
 				    	<div class="input-group input-group-lg">
 						  	<input class="form-control" id="verified_email_address" placeholder="Enter email" name="verified_email_address">
-						  	<span class="input-group-addon">@berkeley.edu</span>
-						  	<input type="hidden" name="email_identifier" value="@berkeley.edu"> 
 						</div>
 				  	</div>
+				</div>
+				<div class="col-lg-3">
+					<div class="form-group">
+						<label for="email_identifier">Email Address</label>
+						<select class="form-control input-lg" name="email_identifier">
+						  	<option value="@berkeley.edu">@berkeley.edu</option>
+						  	<option value="@ischool.berkeley.edu">@ischool.berkeley.edu</option>
+						</select>
+					</div>
 				</div>
 			</div>
 		  	<br />
 		  	<br />
-		  	<input type="submit" class="btn btn-lg btn-inverted-default" value="Use Occuhunt!"></input>
+		  	<input type="submit" class="btn btn-lg btn-done" value="Use Occuhunt!"></input>
 		</form>
 	</div>
 </div>
 
-<h2>Show school logos here - make it look exclusive and very high profile</h2>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<!-- <h2>Show school logos here - make it look exclusive and very high profile</h2> -->
 
 <!-- hard code everything for design -->
 {% endblock %}

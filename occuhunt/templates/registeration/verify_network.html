@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% load static from staticfiles %}
+{% load i18n %}
+{% load url from future %}
+
+{% block extra_style %}
+<!-- Add css here -->
+<style type="text/css">
+	body {
+		background-color: white;	
+		-webkit-font-smoothing: antialiased;
+		font-smoothing: antialiased;
+		font-smooth: always;
+	}
+</style>
+
+{% endblock %}
+
+{% block extra_script %}
+<!-- Add javascript here -->
+{% endblock %}
+
+{% block content %}
+
+{% if verified %}
+	<h1>Congrats {{ user.first_name }} {{ user.last_name }}! Your account has been verified!</h1>
+{% else %}
+	<h1>Oops sorry! You're not in our records. </h1>
+	<p>Please sign up with us and click the link in the email you receive. Do send us an email at occuhunt@gmail.com if you think there's an error in our system.</p>
+{% endif %}
+
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<!-- <h2>Show school logos here - make it look exclusive and very high profile</h2> -->
+
+<!-- hard code everything for design -->
+{% endblock %}

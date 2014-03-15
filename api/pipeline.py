@@ -1,9 +1,12 @@
 from django.contrib.auth.models import Group
+from mailer import send_mail
 from django.shortcuts import redirect
 from users.models import User, Student
 from social.pipeline.partial import partial
+from occuhunt.settings import BASE_URL
 import oauth2 as oauth
-import time, json
+import time, json, hashlib, datetime
+import os
 
 @partial
 def create_password(request, backend, *args, **kwargs):
@@ -42,7 +45,21 @@ def create_password(request, backend, *args, **kwargs):
                     print 9
                     g = Group.objects.get(name='UC Berkeley')
                     user.student.groups.add(g)
+                if request.session['school_network'] == 2:
+                    print 9
+                    g = Group.objects.get(name='UC Berkeley ISchool')
+                    user.student.groups.add(g)
                 user.student.save()
+                # send user verification email
+                from_email = 'occuhunt@gmail.com'
+                to_email = user.student.verified_email
+                verification_token = hashlib.sha224(user.first_name+user.last_name+user.student.verified_email+request.session['school_network']+str(datetime.datetime.now())).hexdigest()
+                verification_url = BASE_URL+"verify/"+verification_token+"/"
+                user.verification_token = verification_token
+                user.is_verified = False
+                user.save()
+                send_mail('[Occuhunt] Verify your network.', 'Click on the following link to verify your network: '+verification_url, from_email, [to_email], fail_silently=False)
+                os.system('python manage.py send_mail')
             else:
                 return redirect('get-email-network')
     else:
@@ -57,7 +74,22 @@ def create_password(request, backend, *args, **kwargs):
                 print 9
                 g = Group.objects.get(name='UC Berkeley')
                 student_user.groups.add(g)
+            if request.session['school_network'] == 2:
+                print 9
+                g = Group.objects.get(name='UC Berkeley ISchool')
+                user.student.groups.add(g)
             student_user.save()
+            # send student verification email
+            from_email = 'occuhunt@gmail.com'
+            to_email = student_user.verified_email
+            verification_token = hashlib.sha224(student_user.first_name+student_user.last_name+student_user.verified_email+request.session['school_network']+str(datetime.datetime.now())).hexdigest()
+            verification_url = BASE_URL+"verify/"+verification_token+"/"
+            user.verification_token = verification_token
+            user.is_verified = False
+            user.save()
+            send_mail('[Occuhunt] Verify your network.', 'Click on the following link to verify your network: '+verification_url, from_email, [to_email], fail_silently=False)
+            os.system('python manage.py send_mail')
+            print "sent email"
         else:
             print 10
             # create user and password for student

@@ -115,7 +115,8 @@ urlpatterns = patterns('',
 
     # confirm network
     url(r'^confirm-network/$', get_user_network, name='get-email-network'),
-
+    url(r'^verify/(.+)/$', verify_user_network, name='verify-email-network'),
+    
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
 

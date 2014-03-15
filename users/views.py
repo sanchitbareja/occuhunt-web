@@ -10,6 +10,7 @@ import os, time, simplejson
 from datetime import datetime, timedelta, time
 from django.http import Http404
 from itertools import chain
+from users.models import User
 
 # Create your views here.
 def get_user_network(request):
@@ -26,10 +27,16 @@ def get_user_network(request):
 		return redirect('social:complete', backend=backend)
 	return render_to_response('registeration/get_network.html', {}, RequestContext(request))
 
-def verify_user_network(request):
+def verify_user_network(request, verification_token):
 	"""
-	1. decode token
-	2. get network, user_id, email
-	3. complete partial_pipeline
+	1. get user form verification_token
+	2. if user exists, change user.is_verified = True
 	"""
-	pass
+	user = User.objects.filter(verification_token=verification_token)
+	if len(user) == 1:
+		user = user[0]
+		user.is_verified = True
+		user.save()
+		return render_to_response('registeration/verify_network.html', {'verified':True, 'user':user}, RequestContext(request))
+	else:
+		return render_to_response('registeration/verify_network.html', {'verified':False}, RequestContext(request))
