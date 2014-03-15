@@ -90,7 +90,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         return self.is_admin
 
 class Student(User):
-    verified_email = models.EmailField(verbose_name="verified email", max_length=22, null=True, blank=True)
+    verified_email = models.EmailField(verbose_name="verified email", max_length=300, null=True, blank=True)
     graduation_year = models.DateField(auto_now=False, auto_now_add=False, null=True, blank=True)
 
 class Recruiter(User):
