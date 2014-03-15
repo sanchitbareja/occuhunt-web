@@ -62,9 +62,9 @@ class Fair(models.Model):
 	logo = models.URLField(max_length=512, null=True, blank=True)
 	event = models.ForeignKey(Event, blank=True, null=True)
 	resume_drop = models.BooleanField(default=False)
-	organizers = models.ManyToManyField(Company, related_name='organizers')
-	sponsors = models.ManyToManyField(Company, related_name='sponsors')
-	job = models.ManyToManyField(Job)
+	organizers = models.ManyToManyField(Company, related_name='organizers', null=True, blank=True)
+	sponsors = models.ManyToManyField(Company, related_name='sponsors', null=True, blank=True)
+	job = models.ManyToManyField(Job, null=True, blank=True)
 
 	def get_rooms(self):
 		return ", ".join([room.name for room in self.rooms.all()])

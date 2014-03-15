@@ -159,8 +159,7 @@ INSTALLED_APPS = (
     'hunts',
     'applications',
     'recruiters',
-    'notifications',
-    'hunting'
+    'notifications'
 )
 
 # A sample logging configuration. The only tangible logging
