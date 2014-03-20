@@ -18,6 +18,29 @@
 
 {% block extra_script %}
 <!-- Add javascript here -->
+
+<script type="text/javascript">
+	$(document).on("change","#network_school",function(e) {
+		console.log($(this).val());
+		if($(this).val() == "1"){
+			$("#verified_email_address_identifier").text("@berkeley.edu");
+			$("#email_identifier").val("@berkeley");
+		}
+		if($(this).val() == "2"){
+			$("#verified_email_address_identifier").text("@ischool.berkeley.edu");
+			$("#email_identifier").val("@ischool.berkeley");
+		}
+		if($(this).val() == "3"){
+			$("#verified_email_address_identifier").text("@ischool.sjsu.edu");
+			$("#email_identifier").val("@ischool.sjsu.edu");
+		}
+		if($(this).val() == "4"){
+			$("#verified_email_address_identifier").text("@academyart.edu");
+			$("#email_identifier").val("@academyart.edu");
+		}
+	});
+</script>
+
 {% endblock %}
 
 {% block content %}
@@ -30,31 +53,26 @@
 	  	<form class="form-inline" role="form" method="post" action="/confirm-network/">
 	  		{% csrf_token %}
 	  		<div class="row">
-	  			<div class="col-lg-2">
+	  			<div class="col-lg-3">
 			  		<div class="form-group">
 			  			<label>School</label>
 			  			<select class="form-control input-lg" id="network_school" name="verified_network">
 					      	<option value="1">UC Berkeley</option>
-					      	<option value="2">UC Berkeley Information School</option>
+					      	<option value="2">UC Berkeley School of Information</option>
+					      	<option value="3">San Jose State University - School of Library and Information Science</option>
+					      	<option value="4">Academy of Art</option>
 					    </select>
 			  		</div>
 			  	</div>
-			  	<div class="col-lg-2">
+			  	<div class="col-lg-4">
 				  	<div class="form-group">
 				    	<label for="verified_email_address">Email</label>
 				    	<div class="input-group input-group-lg">
 						  	<input class="form-control" id="verified_email_address" placeholder="Enter email" name="verified_email_address">
+						  	<span class="input-group-addon" id="verified_email_address_identifier">@berkeley.edu</span>
+						  	<input type="hidden" value="@berkeley.edu" name="email_identifier">
 						</div>
 				  	</div>
-				</div>
-				<div class="col-lg-3">
-					<div class="form-group">
-						<label for="email_identifier">Email Address</label>
-						<select class="form-control input-lg" name="email_identifier">
-						  	<option value="@berkeley.edu">@berkeley.edu</option>
-						  	<option value="@ischool.berkeley.edu">@ischool.berkeley.edu</option>
-						</select>
-					</div>
 				</div>
 			</div>
 		  	<br />
