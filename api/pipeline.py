@@ -49,6 +49,14 @@ def create_password(request, backend, *args, **kwargs):
                     print 9
                     g = Group.objects.get(name='UC Berkeley ISchool')
                     user.student.groups.add(g)
+                if request.session['school_network'] == 3:
+                    print 9
+                    g = Group.objects.get(name='San Jose State University School of Library and Information Science')
+                    user.student.groups.add(g)
+                if request.session['school_network'] == 4:
+                    print 9
+                    g = Group.objects.get(name='Academy of Art')
+                    user.student.groups.add(g)
                 user.student.save()
                 # send user verification email
                 from_email = 'occuhunt@gmail.com'
@@ -77,7 +85,15 @@ def create_password(request, backend, *args, **kwargs):
             if request.session['school_network'] == 2:
                 print 9
                 g = Group.objects.get(name='UC Berkeley ISchool')
-                user.student.groups.add(g)
+                student_user.groups.add(g)
+            if request.session['school_network'] == 3:
+                print 9
+                g = Group.objects.get(name='San Jose State University School of Library and Information Science')
+                student_user.groups.add(g)
+            if request.session['school_network'] == 4:
+                print 9
+                g = Group.objects.get(name='Academy of Art')
+                student_user.groups.add(g)
             student_user.save()
             # send student verification email
             from_email = 'occuhunt@gmail.com'
