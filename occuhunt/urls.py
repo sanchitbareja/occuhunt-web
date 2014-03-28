@@ -4,7 +4,7 @@ from companies.views import home, splash, companies, company, search, privacy_po
 from resumes.views import resume_feed, sign_s3_upload, submit_resume, individual_resume
 from jobs.views import favorites, apply_jobs, match_jobs
 from recommendations.views import recommendation_main, recommendation_new, recommendation_new_with_request, recommendation_requests, recommendation_requests_new, showcase_notifications, showcase_applications
-from fairs.views import create_fair, StartupCareerFairSpring2014View, ISchoolInfoCampView
+from fairs.views import create_fair, StartupCareerFairSpring2014View, ISchoolInfoCampView, BigHack2014View
 from recruiters.views import recruiter_splash, recruiter_hire, recruiter_market, recruiter_sell, recruiter_sponsorship_request, download_pdf, recruiter_login, recruiter_login_third_party, recruiter_analytics, download_excel_to_export
 from django.conf import settings
 from django.conf.urls.static import static
@@ -32,6 +32,24 @@ v1_api.register(FairResource())
 v1_api.register(HuntResource())
 v1_api.register(ApplicationResource())
 v1_api.register(JobResource())
+
+# API
+from tastypie.api import Api
+from api.apiv2 import CompanyResource, UserResource, EventResource, FairResource, FavoriteResource, HuntResource, JobResource, NotificationResource, CommentResource, ResumeResource, ApplicationResource
+from api.views import logout_view, login_error, feedback_form
+
+v2_api = Api(api_name='v2')
+v2_api.register(CompanyResource())
+v2_api.register(UserResource())
+v2_api.register(EventResource())
+v2_api.register(FairResource())
+v2_api.register(FavoriteResource())
+v2_api.register(HuntResource())
+v2_api.register(JobResource())
+v2_api.register(NotificationResource())
+v2_api.register(CommentResource())
+v2_api.register(ResumeResource())
+v2_api.register(ApplicationResource())
 
 urlpatterns = patterns('',
     url(r'^home/$', home, name='home'),
@@ -71,6 +89,7 @@ urlpatterns = patterns('',
     url(r'^login-error/$', login_error, name='login-error'),
 
     # Career Fairs
+    url(r'^fair/UCBerkeley/BigHack-2014/$', BigHack2014View, name='BigHack-2014'),
     url(r'^fair/UCBerkeley/CED-Career-Fair-Spring-2014/$', TemplateView.as_view(template_name="CareerFairs/UCBerkeley/CEDFairSpring2014.html")),
     url(r'^fair/UCBerkeley/InfoCamp-iSchool-Spring-2014/$', ISchoolInfoCampView, name='ISchool-InfoCamp'),
     url(r'^fair/UCBerkeley/Energy-Environment-Natural-Resources-Career-Fair-Spring-2014/$', TemplateView.as_view(template_name="CareerFairs/UCBerkeley/EnergyEnvironmentNaturalResourcesCareerFairSpring2014.html")),
@@ -125,6 +144,7 @@ urlpatterns = patterns('',
     # v1 API
 
     url(r'^api/', include(v1_api.urls)),
+    url(r'^api/', include(v2_api.urls)),
     url(r'^oauth2/', include('provider.oauth2.urls', namespace = 'oauth2')),
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

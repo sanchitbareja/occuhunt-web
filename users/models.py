@@ -89,6 +89,29 @@ class User(AbstractBaseUser, PermissionsMixin):
         # Simplest possible answer: All admins are staff
         return self.is_admin
 
+    @property
+    def is_student(self):
+        "Is the user a student?"
+        # is student if self.student is not null
+        try:
+            if self.student is not None:
+                return True
+            return False
+        except Exception, e:
+            return False
+        
+
+    @property
+    def is_recruiter(self):
+        "Is the user a recruiter?"
+        # is recruiter if self.recruiter is not null
+        try:
+            if self.recruiter is not None:
+                return True
+            return False
+        except Exception, e:
+            return False
+
 class Student(User):
     verified_email = models.EmailField(verbose_name="verified email", max_length=300, null=True, blank=True)
     graduation_year = models.DateField(auto_now=False, auto_now_add=False, null=True, blank=True)

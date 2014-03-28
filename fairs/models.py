@@ -28,9 +28,12 @@ class Fitting(models.Model):
 	y1 = models.PositiveIntegerField()
 	x2 = models.PositiveIntegerField()
 	y2 = models.PositiveIntegerField()
-	fn = models.CharField(max_length=512, null=True, blank=True, choices=FITTING_FUNCTION_CHOICES)
-	label = models.CharField(max_length=512, null=True, blank=True, choices=FITTING_LABEL_CHOICES)
+	fn = models.PositiveIntegerField(max_length=512, null=True, blank=True, choices=FITTING_FUNCTION_CHOICES)
+	label = models.PositiveIntegerField(max_length=512, null=True, blank=True, choices=FITTING_LABEL_CHOICES)
 	image = models.URLField(max_length=512, null=True, blank=True)
+
+	def __unicode__(self):
+		return FITTING_LABEL_CHOICES[self.label-1][1]
 
 class Table(models.Model):
 	x = models.PositiveIntegerField()
@@ -39,6 +42,9 @@ class Table(models.Model):
 	height = models.PositiveIntegerField()
 	rotation = models.PositiveIntegerField(default=90)
 	company = models.ForeignKey(Company)
+
+	def __unicode__(self):
+		return self.company.name
 
 class Map(models.Model):
 	tables = models.ManyToManyField(Table)
