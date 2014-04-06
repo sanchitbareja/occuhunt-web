@@ -577,8 +577,11 @@ class ApplicationResource(ModelResource):
         """
         try:
             user = User.objects.get(id=bundle.data['user_id'])
+            print user
             company = Company.objects.get(id=bundle.data['company_id'])
+            print company
             fair = Fair.objects.get(id=bundle.data['fair_id'])
+            print fair
             if 'position' in bundle.data.keys():
                 position = bundle.data['position']
             else:
