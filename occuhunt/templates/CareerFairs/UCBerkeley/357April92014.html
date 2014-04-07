@@ -8,11 +8,139 @@
 
 {% block extra_style %}
 <link href="{% static 'occuhunt/css/index.css' %}" rel="stylesheet">
-<link href="{% static 'occuhunt/css/svg-grid.css' %}" rel="stylesheet">
+<link href="{% static 'occuhunt/css/jquery.countdown.css' %}" rel="stylesheet" >
+<!-- <link href="{% static 'occuhunt/css/svg-grid.css' %}" rel="stylesheet"> -->
+<style type="text/css">
+/* jQuery Countdown styles 2.0.0. */
+.is-countdown {
+	border: 0px solid #ccc;
+	background-color: #fff;
+}
+.countdown-rtl {
+	direction: rtl;
+}
+.countdown-holding span {
+	color: #888;
+}
+.countdown-row {
+	clear: both;
+	width: 100%;
+	padding: 0px 2px;
+	text-align: center;
+}
+.countdown-show1 .countdown-section {
+	width: 98%;
+}
+.countdown-show2 .countdown-section {
+	width: 48%;
+}
+.countdown-show3 .countdown-section {
+	width: 32.5%;
+}
+.countdown-show4 .countdown-section {
+	width: 24.5%;
+}
+.countdown-show5 .countdown-section {
+	width: 19.5%;
+}
+.countdown-show6 .countdown-section {
+	width: 16.25%;
+}
+.countdown-show7 .countdown-section {
+	width: 14%;
+}
+.countdown-section {
+	display: block;
+	float: left;
+	font-size: 75%;
+	text-align: center;
+}
+.countdown-amount {
+    font-size: 200%;
+}
+.countdown-period {
+    display: block;
+}
+.countdown-descr {
+	display: block;
+	width: 100%;
+}
+
+.countdown-time {
+	display: block;
+	width: 100%;
+	color: rgb(170, 186, 204);
+	font-size: 35px;
+	font-family: "Proxima Nova";
+	font-weight: 300;
+	line-height: 1em;
+	margin-bottom: 60px;
+}
+
+.main-357 {
+	display: block;
+	color: rgb(51, 136, 144);
+	font-size: 85px;
+	font-family: "Proxima Nova";
+	font-weight: 400;
+	margin: 0px;
+	padding: 0px;
+	line-height: 1em;
+}
+
+.description-357 {
+	display: block;
+	width: 100%;
+	color: black;
+	font-size: 18px;
+	font-family: "Proxima Nova";
+	font-weight: 300;
+	line-height: 1em;
+	margin-bottom: 5px;
+}
+
+.company-block {
+	display: block;
+	width: 100%;
+	background: rgb(240, 247, 247);
+	border: 1px solid #e4e4e4;
+	padding: 10px;
+}
+
+.company-block > .company-logo {
+	width: 100%;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.company-block > h4 {
+	font-size: 15px;
+	font-family: "Proxima Nova";
+	font-weight: 500;
+	line-height: 1em;
+}
+
+.company-block > p {
+	font-size: 13px;
+}
+
+.squeeze-margin {
+	padding-left: 4px;
+	padding-right: 4px;
+}
+
+h3 {
+	font-weight: 400;
+}
+
+</style>
+
 {% endblock %}
 
 {% block extra_script %}
 <script src="{% static 'occuhunt/js/snap.svg-min.js' %}"></script>
+<script src="{% static 'occuhunt/js/jquery.plugin.js' %}"></script>
+<script src="{% static 'occuhunt/js/jquery.countdown.js' %}"></script>
 <script type="text/javascript">
   mixpanel.track_links("#mp-viewjobs", "Clicked on view jobs from modal in fair page", {'referrer': document.referrer });
   $(document).ready(function(){
@@ -22,7 +150,7 @@
     // check which companies user had already applied to and markk them as applied accordingly
     getApplications();
 
-    getCompanies();
+    // getCompanies();
     $('*[data-poload]').on("click", function() {
       var e = $(this);
       mixpanel.track('Viewed company popup from Fair Page');
@@ -59,6 +187,7 @@
     });
 
     $('#resume_drop').on("click", function() {
+    	console.log("hello");
       var e = $(this);
       var company_id = $(this).attr("value");
       var user_id = $("#user_id").val();
@@ -72,7 +201,7 @@
 
     });
 
-    $('#resume_drop_btn').on("click", function() {
+    $('.resume_drop_btn').on("click", function() {
       var e = $(this);
       var company_id = $(this).attr("value");
       var user_id = $("#user_id").val();
@@ -106,6 +235,12 @@
         resumeDrop(user_id, company_id, fair_id, position); 
       }
     });
+
+    // enable countdown
+	// var austDay = new Date();
+	// austDay = new Date(2014, 4-1, 10);
+	// $('#defaultCountdown').countdown({until: austDay, format: 'HMS', compact:true, description:'Countdown', layout: '<p class="countdown-time">{hnn}{sep}{mnn}{sep}{snn} </p> '});
+	// $('#year').text(austDay.getFullYear());
 
   });
 
@@ -193,35 +328,6 @@
 
 </script>
 
-<script>
-      (function() {
-  
-        function init() {
-          var speed = 250,
-            easing = mina.easeinout;
-
-          [].slice.call ( document.querySelectorAll( '#grid > a' ) ).forEach( function( el ) {
-            var s = Snap( el.querySelector( 'svg' ) ), path = s.select( 'path' ),
-              pathConfig = {
-                from : path.attr( 'd' ),
-                to : el.getAttribute( 'data-path-hover' )
-              };
-
-            el.addEventListener( 'mouseenter', function() {
-              path.animate( { 'path' : pathConfig.to }, speed, easing );
-            } );
-
-            el.addEventListener( 'mouseleave', function() {
-              path.animate( { 'path' : pathConfig.from }, speed, easing );
-            } );
-          } );
-        }
-
-        init();
-
-      })();
-    </script>
-
 {% endblock %}
 
 {% block content %}
@@ -232,76 +338,123 @@
 
 
 
-  <!-- Main content - STARTUP CAREER FAIR -->
-  <div id="messages">
-    <div class="alert alert-success alert-dismissable">
-      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-      Drop your resume with specific employers!
-    </div>
+  <!-- Main content - 357 -->
+  <div class="row">
+  	<div class="col-lg-5">
+  		<p class="main-357 text-right">357</p>
+  	</div>
+  	<div class="col-lg-5">
+  		<p class="description-357" style="margin-top:8px;"><b>3</b> days to drop your resumes</p>
+  		<p class="description-357"><b>5</b> stellar companies</p>
+  		<p class="description-357"><b>7</b> guranteed response time from the company</p>
+  	</div>
+  	<div class="col-lg-2">
+  		<div id="defaultCountdown"></div>
+  	</div>
   </div>
   <div class="row">
-    <div class="col-lg-12">
-      <section id="grid" class="grid clearfix">
-        <a href="#" data-path-hover="m 180,34.57627 -180,0 L 0,0 180,0 z">
-          <figure>
-            <img src="http://tympanus.net/Tutorials/ShapeHoverEffectSVG/img/1.png" />
-            <svg viewBox="0 0 180 320" preserveAspectRatio="none"><path d="M 180,160 0,218 0,0 180,0 z"/></svg>
-            <figcaption>
-              <h2>Crystalline</h2>
-              <p>Soko radicchio bunya nuts gram dulse.</p>
-              <button>View</button>
-            </figcaption>
-          </figure>
-        </a>
-        <a href="#" data-path-hover="m 180,34.57627 -180,0 L 0,0 180,0 z">
-          <figure>
-            <img src="http://tympanus.net/Tutorials/ShapeHoverEffectSVG/img/3.png" />
-            <svg viewBox="0 0 180 320" preserveAspectRatio="none"><path d="M 180,160 0,218 0,0 180,0 z"/></svg>
-            <figcaption>
-              <h2>Cacophony</h2>
-              <p>Two greens tigernut soybean radish.</p>
-              <button>View</button>
-            </figcaption>
-          </figure>
-        </a>
-        <a href="#" data-path-hover="m 180,34.57627 -180,0 L 0,0 180,0 z">
-          <figure>
-            <img src="http://tympanus.net/Tutorials/ShapeHoverEffectSVG/img/5.png" />
-            <svg viewBox="0 0 180 320" preserveAspectRatio="none"><path d="M 180,160 0,218 0,0 180,0 z"/></svg>
-            <figcaption>
-              <h2>Languid</h2>
-              <p>Beetroot water spinach okra water.</p>
-              <button>View</button>
-            </figcaption>
-          </figure>
-        </a>
-        <a href="#" data-path-hover="m 180,34.57627 -180,0 L 0,0 180,0 z">
-          <figure>
-            <img src="http://tympanus.net/Tutorials/ShapeHoverEffectSVG/img/7.png" />
-            <svg viewBox="0 0 180 320" preserveAspectRatio="none"><path d="M 180,160 0,218 0,0 180,0 z"/></svg>
-            <figcaption>
-              <h2>Serene</h2>
-              <p>Water spinach arugula pea tatsoi.</p>
-              <button>View</button>
-            </figcaption>
-          </figure>
-        </a>
-        <a href="#" id="resume_drop" data-path-hover="m 180,34.57627 -180,0 L 0,0 180,0 z" value="344" name="SkyDeck" data-toggle="tooltip" data-placement="top" title="" data-original-title="Click to drop resume">
-          <figure>
-            <img src="http://tympanus.net/Tutorials/ShapeHoverEffectSVG/img/2.png" />
-            <svg viewBox="0 0 180 320" preserveAspectRatio="none"><path d="M 180,160 0,218 0,0 180,0 z"/></svg>
-            <figcaption>
-              <h2>Skydeck</h2>
-              <p>Pea horseradish azuki bean lettuce.</p>
-              <button>View</button>
-            </figcaption>
-          </figure>
-        </a>
-      </section>
+  	<div class="col-lg-1"></div>
+    <div class="col-lg-2 text-center squeeze-margin">
+    	<h3 class="text-center">SOASTA</h3>
+	    <div class="company-block">
+      		<img class="company-logo" src="http://appnationconference.com/an4/files/2012/12/soasta-logo-email.jpg">
+      		<h4>DESCRIPTION</h4>
+      		<p class="company-description">
+      			OASTA, Inc. (pronounced sō’-sta), is the leading provider of cloud-based testing solutions. SOASTA ensures that today’s Web applications and services perform in a high quality, scalable, and predictable manner. 
+      		</p>
+      		<a href='/company/726/' class="btn btn-md btn-done">More</a>
+      		<hr>
+      		<h4>LOOKING FOR</h4>
+      		<p class="company-positions">
+      			Software Engineers with bachelors or masters
+      		</p>
+      		<button class='btn btn-md btn-danger resume_drop_btn' value='726' name='SOASTA'>DROP RESUME</button>
+      	</div>
+    </div>
+    <div class="col-lg-2 text-center squeeze-margin">
+    	<h3 class="text-center">Generel Electric</h3>
+	    <div class="company-block">
+      		<img class="company-logo" src="http://s3.amazonaws.com/crunchbase_prod_assets/assets/images/resized/0001/0851/10851v1-max-250x250.png">
+      		<h4>DESCRIPTION</h4>
+      		<p class="company-description">
+      			GE is a diversified infrastructure, finance and media company taking on the world’s toughest challenges. From aircraft engines and power generation to financial services, medical imaging, and television programming, GE operates in more than 100 countries
+      		</p>
+      		<a href='/company/261/' class="btn btn-md btn-done">More</a>
+      		<hr>
+      		<h4>LOOKING FOR</h4>
+      		<p class="company-positions">
+      			UI/UX Engineers with a masters
+      		</p>
+      		<button class='btn btn-md btn-danger resume_drop_btn' value='261' name='General Electric'>DROP RESUME</button>
+      	</div>
+    </div>
+    <div class="col-lg-2 text-center squeeze-margin">
+    	<h3 class="text-center">TubeMogul</h3>
+	    <div class="company-block">
+      		<img class="company-logo" src="http://s3.amazonaws.com/crunchbase_prod_assets/assets/images/resized/0013/0637/130637v4-max-450x450.png">
+      		<h4>DESCRIPTION</h4>
+      		<p class="company-description">
+      			TubeMogul is the only video marketing company built for branding. By integrating real-time media buying, ad serving, targeting, optimization and brand measurement into its PlayTime platform, TubeMogul simplifies the delivery of video ads and maximizes the impact of every dollar spent by brand marketers. 
+      		</p>
+      		<a href='/company/304/' class="btn btn-md btn-done">More</a>
+      		<hr>
+      		<h4>LOOKING FOR</h4>
+      		<p class="company-positions">
+      			We are looking for various positions in both tech (in CS) and non-tech. Everyone is welcomed to apply!
+      		</p>
+      		<button class='btn btn-md btn-danger resume_drop_btn' value='304' name='TubeMogul'>DROP RESUME</button>
+      	</div>
+    </div>
+    <div class="col-lg-2 text-center squeeze-margin">
+    	<h3 class="text-center">Greylock</h3>
+	    <div class="company-block">
+      		<img class="company-logo" src="http://s3.amazonaws.com/crunchbase_prod_assets/assets/images/resized/0000/4363/4363v3-max-250x250.jpg">
+      		<h4>DESCRIPTION</h4>
+      		<p class="company-description">
+      			Greylock partners with entrepreneurs to help them build market-leading businesses. Over the past 45 years the firm has worked with hundreds of companies, 150 of which have gone on to IPOs and 100 of which have gone on to profitable M&A events.
+      		</p>
+      		<a href='/company/727/' class="btn btn-md btn-done">More</a>
+      		<hr>
+      		<h4>LOOKING FOR</h4>
+      		<p class="company-positions">
+      			Portfolio companies are looking for multiple positions in both tech and non-tech. Everyone is welcomed to apply!
+      		</p>
+      		<button class='btn btn-md btn-danger resume_drop_btn' value='727' name='Greylock Partners'>DROP RESUME</button>
+      	</div>
+    </div>
+    <div class="col-lg-2 text-center squeeze-margin">
+    	<h3 class="text-center">Via Analytics</h3>
+	    <div class="company-block">
+      		<img class="company-logo" src="http://skydeck.berkeley.edu/files/2013/07/Via-logo.jpg">
+      		<h4>DESCRIPTION</h4>
+      		<p class="company-description">
+      			Via Analytics provides a real-time synchronization service to improve transit operations.
+      		</p>
+      		<a href='/company/728/' class="btn btn-md btn-done">More</a>
+      		<hr>
+      		<h4>LOOKING FOR</h4>
+      		<p class="company-positions">
+      			Various technical positions in CS.
+      		</p>
+      		<button class='btn btn-md btn-danger resume_drop_btn' value='728' name='Via Analytics'>DROP RESUME</button>
+      	</div>
     </div>
   </div>
+  <br />
   <div class="row">
     <div class="col-lg-10">
+    	<h2>357 - a weekly event</h2>
+    	<p>
+    		Every Monday morning till Wednesday midnight (3 days), Occuhunt will showcase 5 companies that are serious about looking for interns/full-time employees. These companies will respond back within 7 days (before the following Wednesday).
+
+    		<br />
+
+    		If you like our 357s, feel free to contact us and host one by your organization. Or, if you're a company that wish to be featured, call us and we'll work something out for you!
+    	</p>
+    	<h2>Need feedback on your resume?</h2>
+    	<p>
+    		We've built something for you to get genuine feedback from your peers. Check out http://occuhunt.com/plan/resume-feed/
+    	</p>
     </div>
     <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 hidden-xs">
       {% if request.user.is_anonymous %}

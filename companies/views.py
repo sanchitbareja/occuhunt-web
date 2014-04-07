@@ -25,11 +25,6 @@ def splash(request):
     return render_to_response('splash.html', {},
                                   RequestContext(request))
 
-def privacy_policy(request):
-    """Privacy Policy view"""
-    return render_to_response('privacy_policy.html', {'version': version},
-                                  RequestContext(request))
-
 def companies(request):
     """Companies view"""
     return render_to_response('companies.html', {"companies_link":True},

@@ -189,7 +189,7 @@ function toggleTable(cssID){
   if(cssID == '.favorited-company'){
     console.log($(cssID).css('background-image'));
     if($(cssID).css('background-image') == "none"){
-      $(cssID).css('background-image', "url('/static/images/other/fold.png')");
+      $(cssID).css('background-image', "url('https://occuhuntstatic.s3.amazonaws.com/images/other/fold.png')");
       recolorTables('.btn-categorydisabled','#dcdcdc');
     } else {
       $(cssID).css('background-image','none');

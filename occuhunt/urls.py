@@ -1,6 +1,6 @@
 from django.conf.urls import patterns, include, url
 from users.views import verify_user_network, get_user_network
-from companies.views import home, splash, companies, company, search, privacy_policy
+from companies.views import home, splash, companies, company, search
 from resumes.views import resume_feed, sign_s3_upload, submit_resume, individual_resume
 from jobs.views import favorites, apply_jobs, match_jobs
 from recommendations.views import recommendation_main, recommendation_new, recommendation_new_with_request, recommendation_requests, recommendation_requests_new, showcase_notifications, showcase_applications
@@ -84,7 +84,7 @@ urlpatterns = patterns('',
     url(r'^recruiter/sell/$', recruiter_sell, name='recruiter_sell'),
     url(r'^recruiter/sponsorship-request/$', recruiter_sponsorship_request, name='recruiter_sponsorship_request'),
     url(r'^feedback/$',feedback_form),
-    url(r'^privacy/$',privacy_policy, name='privacy_policy'),
+    url(r'^privacy/$',TemplateView.as_view(template_name="privacy_policy.html")),
     url(r'^logout/$', logout_view, name='logout'),
     url(r'^login-error/$', login_error, name='login-error'),
 
