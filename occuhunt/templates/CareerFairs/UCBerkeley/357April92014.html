@@ -273,7 +273,9 @@ h3 {
               console.log(jsXHR);
               console.log($(this));
               // feedback on the small dot that the resume has been submitted
-              $(".resume_drop[value="+company_id+"]").addClass("resume_dropped");
+              // disable clicking
+          		$("button.resume_drop_btn[value="+data['response']['applications'][i]['company']['id']+"]").attr("disabled",true);
+          		$("button.resume_drop_btn[value="+data['response']['applications'][i]['company']['id']+"]").text('Applied');
 
               // give confirmation message about successful resume submission
               $("#messages").append('<div class="alert alert-success alert-dismissable">'+
@@ -320,12 +322,10 @@ h3 {
         console.log(textStatus);
         console.log(jqXHR);
         for (var i = data['response']['applications'].length - 1; i >= 0; i--) {
-          // need to check if need to display favorite or unfavorite icon
-          console.log($("a.resume_drop[value="+data['response']['applications'][i]['company']['id']+"]"));
-          $("a.resume_drop[value="+data['response']['applications'][i]['company']['id']+"]").addClass("resume_dropped");
 
           // disable clicking
-          $("a.resume_drop[value="+data['response']['applications'][i]['company']['id']+"]").css({"pointer-events":"none","cursor":"default"});
+          $("button.resume_drop_btn[value="+data['response']['applications'][i]['company']['id']+"]").attr("disabled",true);
+          $("button.resume_drop_btn[value="+data['response']['applications'][i]['company']['id']+"]").text('Applied');
         }
       },
       dataType: 'json',
@@ -362,6 +362,7 @@ h3 {
   	</div>
   	<div class="col-lg-2">
   		<div id="defaultCountdown"></div>
+  		<p style="top:-60px; color:rgb(40, 126, 144); display:block; position:relative;">COUNTDOWN</p>
   	</div>
   </div>
   <div class="row">
@@ -372,7 +373,7 @@ h3 {
       		<img class="company-logo" src="http://appnationconference.com/an4/files/2012/12/soasta-logo-email.jpg">
       		<h4>DESCRIPTION</h4>
       		<p class="company-description">
-      			OASTA, Inc. (pronounced sō’-sta), is the leading provider of cloud-based testing solutions. SOASTA ensures that today’s Web applications and services perform in a high quality, scalable, and predictable manner. 
+      			SOASTA, Inc. (pronounced sō’-sta), is the leading provider of cloud-based testing solutions. SOASTA ensures that today’s Web applications and services perform in a high quality, scalable, and predictable manner. 
       		</p>
       		<a href='/company/726/' class="btn btn-md btn-done">More</a>
       		<hr>
