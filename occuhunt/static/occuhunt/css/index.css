@@ -241,3 +241,39 @@ td#career_fair_map{
 #career_fair_map {
   border-spacing: 0px;
 }
+
+/* Map borders */
+.top-border{
+  border-top: 1px solid #acacac;
+}
+
+.left-border{
+  border-left: 1px solid #acacac;
+}
+
+.right-border{
+  border-right: 1px solid #acacac;
+}
+
+.bottom-border{
+  border-bottom: 1px solid #acacac;
+}
+
+.entrance {
+  background-image: url('{% static 'images/Entrance.jpg' %}');
+  background-repeat: no-repeat;
+  background-position: bottom;
+  background-size: 60px;
+}
+
+.exit {
+  background-image: url('{% static 'images/Entrance.jpg' %}');
+  background-repeat: no-repeat;
+  background-position: bottom;
+  background-size: 60px;
+}
+
+.border-all{
+  border: 1px solid #acacac;
+  height:300px;
+}
