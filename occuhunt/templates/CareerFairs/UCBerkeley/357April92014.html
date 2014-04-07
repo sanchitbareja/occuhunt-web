@@ -237,10 +237,10 @@ h3 {
     });
 
     // enable countdown
-	// var austDay = new Date();
-	// austDay = new Date(2014, 4-1, 10);
-	// $('#defaultCountdown').countdown({until: austDay, format: 'HMS', compact:true, description:'Countdown', layout: '<p class="countdown-time">{hnn}{sep}{mnn}{sep}{snn} </p> '});
-	// $('#year').text(austDay.getFullYear());
+	var austDay = new Date();
+	austDay = new Date(2014, 4-1, 10);
+	$('#defaultCountdown').countdown({until: austDay, format: 'HMS', compact:true, description:'Countdown', layout: '<p class="countdown-time">{hnn}{sep}{mnn}{sep}{snn} </p> '});
+	$('#year').text(austDay.getFullYear());
 
   });
 
@@ -282,6 +282,16 @@ h3 {
               '</div>');
             },
             500: function(data, textStatus, jsXHR){
+              console.log(data);
+              console.log(textStatus);
+              console.log(jsXHR);
+              // give confirmation message about successful resume submission
+              $("#messages").append('<div class="alert alert-danger alert-dismissable">'+
+                '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'+
+                'Oops! You need to be logged in or have your resume uploaded to drop your resume with the employers!'+
+              '</div>');
+            },
+            404: function(data, textStatus, jsXHR){
               console.log(data);
               console.log(textStatus);
               console.log(jsXHR);
@@ -339,6 +349,8 @@ h3 {
 
 
   <!-- Main content - 357 -->
+  <div id="messages">
+  </div>
   <div class="row">
   	<div class="col-lg-5">
   		<p class="main-357 text-right">357</p>
@@ -453,7 +465,7 @@ h3 {
     	</p>
     	<h2>Need feedback on your resume?</h2>
     	<p>
-    		We've built something for you to get genuine feedback from your peers. Check out http://occuhunt.com/plan/resume-feed/
+    		We've built something for you to get genuine feedback from your peers. Check out <a href='http://occuhunt.com/plan/resume-feed/'>http://occuhunt.com/plan/resume-feed/</a>
     	</p>
     </div>
     <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 hidden-xs">
