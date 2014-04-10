@@ -147,49 +147,49 @@
 
   function resumeDrop(user_id, company_id, fair_id, position){
     console.log("CONFIRMED");
-    // $("#messages").append('<div class="alert alert-danger alert-dismissable">'+
-    //             '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'+
-    //             'Resume drop is now over! Please contact the recruiter individually if you met them at the event.</div>');
-    $.ajax({
-          url: '/api/v1/applications/',
-          type:'POST',
-          dataType: 'json',
-          data: JSON.stringify({
-            'user_id': user_id, 
-            'company_id': company_id,
-            'fair_id': fair_id,
-            'position': position,
-            'status': 1
-          }),
-          contentType: 'application/json',
-          statusCode : {
-            201: function(data, textStatus, jsXHR){
-              console.log("successfully dropped resume!");
-              console.log(data);
-              console.log(textStatus);
-              console.log(jsXHR);
-              console.log($(this));
-              // feedback on the small dot that the resume has been submitted
-              $(".resume_drop[value="+company_id+"]").addClass("resume_dropped");
+    $("#messages").append('<div class="alert alert-danger alert-dismissable">'+
+                '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'+
+                'Resume drop is now over! Please contact the recruiter individually if you met them at the event.</div>');
+    // $.ajax({
+    //       url: '/api/v1/applications/',
+    //       type:'POST',
+    //       dataType: 'json',
+    //       data: JSON.stringify({
+    //         'user_id': user_id, 
+    //         'company_id': company_id,
+    //         'fair_id': fair_id,
+    //         'position': position,
+    //         'status': 1
+    //       }),
+    //       contentType: 'application/json',
+    //       statusCode : {
+    //         201: function(data, textStatus, jsXHR){
+    //           console.log("successfully dropped resume!");
+    //           console.log(data);
+    //           console.log(textStatus);
+    //           console.log(jsXHR);
+    //           console.log($(this));
+    //           // feedback on the small dot that the resume has been submitted
+    //           $(".resume_drop[value="+company_id+"]").addClass("resume_dropped");
 
-              // give confirmation message about successful resume submission
-              $("#messages").append('<div class="alert alert-success alert-dismissable">'+
-                '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'+
-                'Good job! You <strong>successfully</strong> dropped off your resume at '+data['company']['name']+'!'+
-              '</div>');
-            },
-            500: function(data, textStatus, jsXHR){
-              console.log(data);
-              console.log(textStatus);
-              console.log(jsXHR);
-              // give confirmation message about successful resume submission
-              $("#messages").append('<div class="alert alert-danger alert-dismissable">'+
-                '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'+
-                'Oops! You need to be logged in or have your resume uploaded to drop your resume with the employers!'+
-              '</div>');
-            }
-          }
-        });
+    //           // give confirmation message about successful resume submission
+    //           $("#messages").append('<div class="alert alert-success alert-dismissable">'+
+    //             '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'+
+    //             'Good job! You <strong>successfully</strong> dropped off your resume at '+data['company']['name']+'!'+
+    //           '</div>');
+    //         },
+    //         500: function(data, textStatus, jsXHR){
+    //           console.log(data);
+    //           console.log(textStatus);
+    //           console.log(jsXHR);
+    //           // give confirmation message about successful resume submission
+    //           $("#messages").append('<div class="alert alert-danger alert-dismissable">'+
+    //             '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'+
+    //             'Oops! You need to be logged in or have your resume uploaded to drop your resume with the employers!'+
+    //           '</div>');
+    //         }
+    //       }
+    //     });
   }
 
   function getApplications(){
@@ -236,7 +236,7 @@
   <div id="messages">
     <div class="alert alert-success alert-dismissable">
       <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-      Drop your resume with specific employers!
+      Resume drop is now closed!
     </div>
   </div>
 
