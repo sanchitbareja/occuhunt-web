@@ -1,0 +1,211 @@
+{% extends "recruiter/recruiter_base.html" %}
+{% load static from staticfiles %}
+{% load i18n %}
+{% load url from future %}
+
+{% block extra_style %}
+<!-- Add css here -->
+<link href="{% static 'occuhunt/css/recruiter_hire.css' %}" rel="stylesheet">
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="{% static 'occuhunt/js/custom-form-elements.js' %}"></script>
+<script src="{% static 'underscore/underscore-min.js' %}"></script>
+<style type="text/css">
+  body {
+    background-color: white;
+    -webkit-font-smoothing: antialiased;
+    font-smoothing: antialiased;
+    font-smooth: always;
+  }
+  .list-group-item {
+    border-radius: 0px;
+  }
+
+</style>
+
+{% endblock %}
+
+{% block extra_script %}
+<!-- Add javascript here -->
+<script type="text/javascript">
+
+var num_attendees = 0;
+var num_applied = 0;
+var num_accepted = 0;
+var num_rejected = 0;
+var avg_applied = 0;
+
+function get_events() {
+  $.ajax({
+    url: '/api/v1/fairs/',
+    data: { },
+    success: function(data, textStatus, jqXHR) {
+        console.log(data);
+        console.log(textStatus);
+        console.log(jqXHR);
+        for (var i = 0; i < data['objects'].length; i++) {
+          $("#filter_event").append('<option value="'+data['objects'][i]['id']+'">'+data['objects'][i]['name']+'</option>');
+        };
+        get_analytics();
+      },
+    dataType: 'json',
+  });
+}
+
+function get_analytics(){
+  $.ajax({
+    type: "POST",
+    url: "/recruiter/analytics/",
+    data: { company_id: $("#recruiter_id").val(), fair_id:$("#filter_event").val() ,csrfmiddlewaretoken: $('input[name="csrfmiddlewaretoken"]').val() }
+  }).done(function(data){
+    // update variables
+    num_attendees = data['num_attendees'];
+    num_applied = data['num_applicants'];
+    num_accepted = data['num_applicants_to_interview'];
+    num_rejected = data['num_applicants_rejected'];
+    avg_applied = data['avg_num_applications'];
+    console.log(data);
+    // call draw_analytics
+    var analytics_data = {
+      "Attendees": num_attendees,
+      "Applied": num_applied,
+      "To Interview": num_accepted,
+      "Rejected": num_rejected,
+      "Avg apps/company": avg_applied
+    };
+    draw_analytics(analytics_data);
+    // update calculator
+    calculate_costs();
+  })
+}
+
+function draw_analytics(data) {
+  // clear analytics first
+  $("#fair_analytics").empty();
+
+  // render analytics
+  var diameter = 640,
+      format = d3.format(",d"),
+      color = d3.scale.category20c();
+
+  var bubble = d3.layout.pack()
+      .sort(null)
+      .size([diameter, diameter])
+      .padding(1.5);
+
+  var svg = d3.select("#fair_analytics").append("svg")
+      .attr("width", diameter)
+      .attr("height", diameter)
+      .attr("class", "bubble");
+
+
+  var node = svg.selectAll(".node")
+      .data(bubble.nodes(classes(data))
+      .filter(function(d) { return !d.children; }))
+    .enter().append("g")
+      .attr("class", "node")
+      .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+
+  node.append("title")
+      .text(function(d) { return d.className + ": " + format(d.value); });
+
+  node.append("circle")
+      .attr("r", function(d) { return d.r; })
+      .style("fill", function(d) { return color(d.packageName); });
+
+  node.append("text")
+      .attr("dy", ".3em")
+      .style("text-anchor", "middle")
+      .text(function(d) { return d.className.substring(0, d.r / 3); });
+
+  // Returns a flattened hierarchy containing all leaf nodes under the root.
+  function classes(root) {
+    var classes = [];
+
+    _.map(_.pairs(root), function(tuple){ 
+      if(tuple[0] != "success"){
+        classes.push({packageName:tuple[0], className:tuple[0], value:tuple[1]})
+      }
+      return tuple;
+    })
+
+    return {children: classes};
+  }
+
+  d3.select(self.frameElement).style("height", diameter + "px");
+}
+
+function calculate_costs(){
+  // get total expenditure
+  var total_expenditure = parseFloat($("#event_cost").val());
+  // update costs
+  $("#cost_per_application").text(Math.round(total_expenditure/num_applied));
+  $("#cost_per_interview").text(Math.round(total_expenditure/num_accepted));
+}
+
+$(document).ready(function() {
+  get_events();
+
+  // on change of any of the filters
+  $("#filter_school").on("change",get_analytics);
+  $("#filter_event").on("change",get_analytics);
+
+  // on keyup of the 'total amount spent at event'
+  $("#event_cost").on("keyup",calculate_costs);
+});
+
+</script>
+
+{% endblock %}
+
+{% block content %}
+
+<div class="row">
+  <div class="col-lg-3 col-md-3 no-space">
+    <select class="form-control" id="filter_school">
+      <option value="1">UC Berkeley</option>
+    </select>
+  </div>
+  <div class="col-lg-3 col-md-3 no-space">
+    <select class="form-control" id="filter_event">
+    </select>
+  </div>
+</div>
+
+<br />
+
+<div class="row">
+  <div class="col-lg-8">
+    <div class="panel panel-default">
+      <!-- Default panel contents -->
+      <div class="panel-heading"><h4>Analytics</h4></div>
+      <div class="panel-body" id="fair_analytics">
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-4">
+    <div class="panel panel-default">
+      <!-- Default panel contents -->
+      <div class="panel-heading"><h4>Calculator</h4></div>
+      <div class="panel-body">
+        <div class="input-group">
+          <span class="input-group-addon input-lg">$</span>
+          <input type="number" class="form-control input-lg" placeholder="500" value="500" id="event_cost">
+        </div>
+        <span class="pull-right">total amount spent for the event</span>
+        <br />
+        <br />
+        <p class="lead">Cost/application<span class="pull-right" style="font-size:40px;">$<span id="cost_per_application">5.36</span>/-</span></p>
+        <br />
+        <p class="lead">Cost/interview<span class="pull-right" style="font-size:40px;">$<span id="cost_per_interview">11.73</span>/-</span></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  
+</script>
+
+<!-- hard code everything for design -->
+{% endblock %}
