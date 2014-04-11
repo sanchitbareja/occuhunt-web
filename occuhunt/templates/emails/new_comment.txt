@@ -1,0 +1,12 @@
+Hello {{name}},
+
+You just got some feedback on your resume!
+
+Comment: {{comment}}
+
+View all your feedback here: {{resume_feedback_url}}
+
+Feel free to share this url with your friends and family to get feedback collaboratively.
+
+Good luck!
+Occuhunt

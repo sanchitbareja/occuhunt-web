@@ -97,7 +97,12 @@ function get_candidates() {
         if(data['response']['applications'].length > 0) {
           applicants = data['response']['applications'];
           for (var i = 0; i < data['response']['applications'].length; i++) {
-            $("#candidate_list").append('<a id="applicant_list_id_'+data['response']['applications'][i]['id']+'" onclick="get_candidate('+data['response']['applications'][i]['id']+')" class="list-group-item">'+data['response']['applications'][i]['user']['first_name']+' '+data['response']['applications'][i]['user']['last_name']+'</a>');
+            positions_list = split_commas(data['response']['applications'][i]['position']);
+            positions = '';
+            for (var j = 0; j < positions_list.length; j++){
+              positions = positions.concat(' <span class="label label-success">'+positions_list[j]+'</span>');
+            }
+            $("#candidate_list").append('<a id="applicant_list_id_'+data['response']['applications'][i]['id']+'" onclick="get_candidate('+data['response']['applications'][i]['id']+')" class="list-group-item">'+data['response']['applications'][i]['user']['first_name']+' '+data['response']['applications'][i]['user']['last_name']+' '+positions+'</a>');
           };
           // auto-select the first candidate
           $("#applicant_list_id_"+data['response']['applications'][0]['id']).first().click();
@@ -111,6 +116,10 @@ function get_candidates() {
 
 function clear_candidates(){
   $("#candidate_list").empty();
+}
+
+function split_commas(str){
+  return str.split(',');
 }
 
 function get_candidate(application_id) {
@@ -322,15 +331,18 @@ $(document).ready(function() {
 
 <div class="row">
   <div class="col-lg-3 col-md-3 no-space">
+    <label>School</label>
     <select class="form-control" id="filter_school">
       <option value="1">UC Berkeley</option>
     </select>
   </div>
   <div class="col-lg-3 col-md-3 no-space">
+    <label>Event</label>
     <select class="form-control" id="filter_event">
     </select>
   </div>
   <div class="col-lg-3 col-md-3 no-space">
+    <label>Categories</label>
     <select class="form-control" id="filter_applicants">
       <option value="1">Applicants that are awaiting response</option>
       <option value="2">Applicants I've talked to</option>
