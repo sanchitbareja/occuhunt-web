@@ -429,7 +429,7 @@ function add_new_resume_html(resume_id,url,comments){
             comment_circles = comment_circles + "<a onclick='toggle_comment(event, "+comments[i]['id']+");' id='comment-circle-"+comments[i]['id']+"' class='circle' style='position: absolute;z-index: 10; top:"+comments[i]['y']+"px; left:"+comments[i]['x']+"px;'></a>";
         };
     };
-    $("#resume-feed").prepend(
+    $("#resume-feed").append(
     '<div class="row">'+
       '<div class="col-lg-1 col-sm-1"></div>'+
       '<div class="col-lg-8 col-sm-8">'+
