@@ -1,0 +1,541 @@
+[
+  {
+    "model": "users.major",
+    "pk": 1,
+    "fields": {
+      "major": "Accounting"
+    }
+  },
+  {
+    "model": "users.major",
+    "pk": 2,
+    "fields": {
+      "major": "Aerospace Engineering"
+    }
+  },
+  {
+    "model": "users.major",
+    "pk": 3,
+    "fields": {
+      "major": "Anthropology"
+    }
+  },
+  {
+    "model": "users.major",
+    "pk": 4,
+    "fields": {
+      "major": "Applied Mathematics"
+    }
+  },
+  {
+    "model": "users.major",
+    "pk": 5,
+    "fields": {
+      "major": "Architecture"
+    }
+  },
+  {
+    "model": "users.major",
+    "pk": 6,
+    "fields": {
+      "major": "Art"
+    }
+  },
+  {
+    "model": "users.major",
+    "pk": 7,
+    "fields": {
+      "major": "Art History"
+    }
+  },
+  {
+    "model": "users.major",
+    "pk": 8,
+    "fields": {
+      "major": "Artificial Intelligence"
+    }
+  },
+  {
+    "model": "users.major",
+    "pk": 9,
+    "fields": {
+      "major": "Biochemistry"
+    }
+  },
+  {
+    "model": "users.major",
+    "pk": 10,
+    "fields": {
+      "major": "Bioengineering"
+    }
+  },
+  {
+    "model": "users.major",
+    "pk": 11,
+    "fields": {
+      "major": "Biology"
+    }
+  },
+  {
+    "model": "users.major",
+    "pk": 12,
+    "fields": {
+      "major": "Business"
+    }
+  },
+  {
+    "model": "users.major",
+    "pk": 13,
+    "fields": {
+      "major": "Chemical Engineering"
+    }
+  },
+  {
+    "model": "users.major",
+    "pk": 14,
+    "fields": {
+      "major": "Chemistry"
+    }
+  },
+  {
+    "model": "users.major",
+    "pk": 15,
+    "fields": {
+      "major": "Chinese"
+    }
+  },
+  {
+    "model": "users.major",
+    "pk": 16,
+    "fields": {
+      "major": "Civil Engineering"
+    }
+  },
+  {
+    "model": "users.major",
+    "pk": 17,
+    "fields": {
+      "major": "Cognitive Science"
+    }
+  },
+  {
+    "model": "users.major",
+    "pk": 18,
+    "fields": {
+      "major": "Communications"
+    }
+  },
+  {
+    "model": "users.major",
+    "pk": 19,
+    "fields": {
+      "major": "Computer Engineering"
+    }
+  },
+  {
+    "model": "users.major",
+    "pk": 20,
+    "fields": {
+      "major": "Computer Science"
+    }
+  },
+  {
+    "model": "users.major",
+    "pk": 21,
+    "fields": {
+      "major": "Design"
+    }
+  },
+  {
+    "model": "users.major",
+    "pk": 22,
+    "fields": {
+      "major": "Economics"
+    }
+  },
+  {
+    "model": "users.major",
+    "pk": 23,
+    "fields": {
+      "major": "Education"
+    }
+  },
+  {
+    "model": "users.major",
+    "pk": 24,
+    "fields": {
+      "major": "Electrical Engineering"
+    }
+  },
+  {
+    "model": "users.major",
+    "pk": 25,
+    "fields": {
+      "major": "Embedded Systems"
+    }
+  },
+  {
+    "model": "users.major",
+    "pk": 26,
+    "fields": {
+      "major": "English"
+    }
+  },
+  {
+    "model": "users.major",
+    "pk": 27,
+    "fields": {
+      "major": "Entrepreneurship"
+    }
+  },
+  {
+    "model": "users.major",
+    "pk": 28,
+    "fields": {
+      "major": "Environmental Studies"
+    }
+  },
+  {
+    "model": "users.major",
+    "pk": 29,
+    "fields": {
+      "major": "Finance"
+    }
+  },
+  {
+    "model": "users.major",
+    "pk": 30,
+    "fields": {
+      "major": "Fine Arts"
+    }
+  },
+  {
+    "model": "users.major",
+    "pk": 31,
+    "fields": {
+      "major": "French"
+    }
+  },
+  {
+    "model": "users.major",
+    "pk": 32,
+    "fields": {
+      "major": "Government"
+    }
+  },
+  {
+    "model": "users.major",
+    "pk": 33,
+    "fields": {
+      "major": "Graphic Design"
+    }
+  },
+  {
+    "model": "users.major",
+    "pk": 34,
+    "fields": {
+      "major": "History"
+    }
+  },
+  {
+    "model": "users.major",
+    "pk": 35,
+    "fields": {
+      "major": "Human Computer Interaction"
+    }
+  },
+  {
+    "model": "users.major",
+    "pk": 36,
+    "fields": {
+      "major": "Industrial Engineering"
+    }
+  },
+  {
+    "model": "users.major",
+    "pk": 37,
+    "fields": {
+      "major": "Informatics"
+    }
+  },
+  {
+    "model": "users.major",
+    "pk": 38,
+    "fields": {
+      "major": "Information Security"
+    }
+  },
+  {
+    "model": "users.major",
+    "pk": 39,
+    "fields": {
+      "major": "Information Technology"
+    }
+  },
+  {
+    "model": "users.major",
+    "pk": 40,
+    "fields": {
+      "major": "International Relations"
+    }
+  },
+  {
+    "model": "users.major",
+    "pk": 41,
+    "fields": {
+      "major": "Japanese"
+    }
+  },
+  {
+    "model": "users.major",
+    "pk": 42,
+    "fields": {
+      "major": "Journalism"
+    }
+  },
+  {
+    "model": "users.major",
+    "pk": 43,
+    "fields": {
+      "major": "Law"
+    }
+  },
+  {
+    "model": "users.major",
+    "pk": 44,
+    "fields": {
+      "major": "Linguistics"
+    }
+  },
+  {
+    "model": "users.major",
+    "pk": 45,
+    "fields": {
+      "major": "Literature"
+    }
+  },
+  {
+    "model": "users.major",
+    "pk": 46,
+    "fields": {
+      "major": "Machine Learning"
+    }
+  },
+  {
+    "model": "users.major",
+    "pk": 47,
+    "fields": {
+      "major": "Marketing"
+    }
+  },
+  {
+    "model": "users.major",
+    "pk": 48,
+    "fields": {
+      "major": "Materials Science"
+    }
+  },
+  {
+    "model": "users.major",
+    "pk": 49,
+    "fields": {
+      "major": "Mathematics"
+    }
+  },
+  {
+    "model": "users.major",
+    "pk": 50,
+    "fields": {
+      "major": "Mechanical Engineering"
+    }
+  },
+  {
+    "model": "users.major",
+    "pk": 51,
+    "fields": {
+      "major": "Molecular Biology"
+    }
+  },
+  {
+    "model": "users.major",
+    "pk": 52,
+    "fields": {
+      "major": "Music"
+    }
+  },
+  {
+    "model": "users.major",
+    "pk": 53,
+    "fields": {
+      "major": "Nanotechnology"
+    }
+  },
+  {
+    "model": "users.major",
+    "pk": 54,
+    "fields": {
+      "major": "Neuroscience"
+    }
+  },
+  {
+    "model": "users.major",
+    "pk": 55,
+    "fields": {
+      "major": "Nuclear Engineering"
+    }
+  },
+  {
+    "model": "users.major",
+    "pk": 56,
+    "fields": {
+      "major": "Operations Research"
+    }
+  },
+  {
+    "model": "users.major",
+    "pk": 57,
+    "fields": {
+      "major": "Philosophy"
+    }
+  },
+  {
+    "model": "users.major",
+    "pk": 58,
+    "fields": {
+      "major": "Physics"
+    }
+  },
+  {
+    "model": "users.major",
+    "pk": 59,
+    "fields": {
+      "major": "Political Science"
+    }
+  },
+  {
+    "model": "users.major",
+    "pk": 60,
+    "fields": {
+      "major": "Project Management"
+    }
+  },
+  {
+    "model": "users.major",
+    "pk": 61,
+    "fields": {
+      "major": "Psychology"
+    }
+  },
+  {
+    "model": "users.major",
+    "pk": 62,
+    "fields": {
+      "major": "Robotics"
+    }
+  },
+  {
+    "model": "users.major",
+    "pk": 63,
+    "fields": {
+      "major": "Sociology"
+    }
+  },
+  {
+    "model": "users.major",
+    "pk": 64,
+    "fields": {
+      "major": "Software Engineering"
+    }
+  },
+  {
+    "model": "users.major",
+    "pk": 65,
+    "fields": {
+      "major": "Spanish"
+    }
+  },
+  {
+    "model": "users.major",
+    "pk": 66,
+    "fields": {
+      "major": "Statistics"
+    }
+  },
+  {
+    "model": "users.major",
+    "pk": 67,
+    "fields": {
+      "major": "Symbolic Systems"
+    }
+  },
+  {
+    "model": "users.major",
+    "pk": 68,
+    "fields": {
+      "major": "Systems Engineering"
+    }
+  },
+  {
+    "model": "users.major",
+    "pk": 69,
+    "fields": {
+      "major": "Telecommunications"
+    }
+  },
+  {
+    "model": "users.degree",
+    "pk": 1,
+    "fields": {
+      "degree": "BA"
+    }
+  },
+  {
+    "model": "users.degree",
+    "pk": 2,
+    "fields": {
+      "degree": "BS"
+    }
+  },
+  {
+    "model": "users.degree",
+    "pk": 3,
+    "fields": {
+      "degree": "MS"
+    }
+  },
+  {
+    "model": "users.degree",
+    "pk": 4,
+    "fields": {
+      "degree": "MA"
+    }
+  },
+  {
+    "model": "users.degree",
+    "pk": 5,
+    "fields": {
+      "degree": "MBA"
+    }
+  },
+  {
+    "model": "users.degree",
+    "pk": 6,
+    "fields": {
+      "degree": "JD"
+    }
+  },
+  {
+    "model": "users.degree",
+    "pk": 7,
+    "fields": {
+      "degree": "PhD"
+    }
+  },
+  {
+    "model": "users.degree",
+    "pk": 8,
+    "fields": {
+      "degree": "High School Diploma"
+    }
+  }
+]

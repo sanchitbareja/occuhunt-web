@@ -1,0 +1,605 @@
+{% extends "base.html" %}
+{% load static from staticfiles %}
+{% load i18n %}
+{% load url from future %}
+
+{% block head_title_base %}Upcoming Fairs{% endblock %}
+
+
+{% block extra_style %}
+<link href="{% static 'occuhunt/css/index.css' %}" rel="stylesheet">
+<link href="{% static 'occuhunt/css/jquery.countdown.css' %}" rel="stylesheet" >
+<link href="{% static 'occuhunt/css/apply.css' %}" rel="stylesheet">
+<!-- <link href="{% static 'occuhunt/css/svg-grid.css' %}" rel="stylesheet"> -->
+<style type="text/css">
+/* jQuery Countdown styles 2.0.0. */
+.is-countdown {
+	border: 0px solid #ccc;
+	background-color: #fff;
+}
+.countdown-rtl {
+	direction: rtl;
+}
+.countdown-holding span {
+	color: #888;
+}
+.countdown-row {
+	clear: both;
+	width: 100%;
+	padding: 0px 2px;
+	text-align: center;
+}
+.countdown-show1 .countdown-section {
+	width: 98%;
+}
+.countdown-show2 .countdown-section {
+	width: 48%;
+}
+.countdown-show3 .countdown-section {
+	width: 32.5%;
+}
+.countdown-show4 .countdown-section {
+	width: 24.5%;
+}
+.countdown-show5 .countdown-section {
+	width: 19.5%;
+}
+.countdown-show6 .countdown-section {
+	width: 16.25%;
+}
+.countdown-show7 .countdown-section {
+	width: 14%;
+}
+.countdown-section {
+	display: block;
+	float: left;
+	font-size: 75%;
+	text-align: center;
+}
+.countdown-amount {
+    font-size: 200%;
+}
+.countdown-period {
+    display: block;
+}
+.countdown-descr {
+	display: block;
+	width: 100%;
+}
+
+.countdown-time {
+	display: block;
+	width: 100%;
+	color: rgb(170, 186, 204);
+	font-size: 35px;
+	font-family: "Proxima Nova";
+	font-weight: 300;
+	line-height: 1em;
+	margin-bottom: 60px;
+}
+
+.main-357 {
+	display: block;
+	color: rgb(51, 136, 144);
+	font-size: 85px;
+	font-family: "Proxima Nova";
+	font-weight: 400;
+	margin: 0px;
+	padding: 0px;
+	line-height: 1em;
+}
+
+.description-357 {
+	display: block;
+	width: 100%;
+	color: black;
+	font-size: 18px;
+	font-family: "Proxima Nova";
+	font-weight: 300;
+	line-height: 1em;
+	margin-bottom: 5px;
+}
+
+.company-block {
+	display: block;
+	width: 100%;
+	background: rgb(240, 247, 247);
+	border: 1px solid #e4e4e4;
+	padding: 10px;
+}
+
+.company-block > .company-logo {
+	width: 100%;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.company-block > h4 {
+	font-size: 15px;
+	font-family: "Proxima Nova";
+	font-weight: 500;
+	line-height: 1em;
+}
+
+.company-block > p {
+	font-size: 13px;
+}
+
+.squeeze-margin {
+	padding-left: 4px;
+	padding-right: 4px;
+}
+
+h3 {
+	font-weight: 400;
+}
+
+.modal-lg {
+  width: 900px;
+}
+
+</style>
+
+{% endblock %}
+
+{% block extra_script %}
+<script src="{% static 'occuhunt/js/snap.svg-min.js' %}"></script>
+<script src="{% static 'occuhunt/js/jquery.plugin.js' %}"></script>
+<script src="{% static 'occuhunt/js/jquery.countdown.js' %}"></script>
+<script type="text/javascript">
+  mixpanel.track_links("#mp-viewjobs", "Clicked on view jobs from modal in fair page", {'referrer': document.referrer });
+  $(document).ready(function(){
+    // enable tooltip for all the resume drops
+    $(".resume_drop").tooltip();
+
+    // check which companies user had already applied to and markk them as applied accordingly
+    getApplications();
+
+    // getCompanies();
+    $('*[data-poload]').on("click", function() {
+      var e = $(this);
+      mixpanel.track('Viewed company popup from Fair Page');
+      $.ajax({
+          url: '/api/v1/companies/'+e.data('poload')+'/',
+          data: {},
+          dataType: 'json',
+          success: function(data, textStatus, jqXHR){
+            console.log(data);
+            e.unbind("click").popover({
+              html:true,
+              trigger: 'click',
+              container: $(this).attr('id'),
+              title:"<a class='btn-link pull-left' onclick='closeModal("+data['id']+")'><b>X</b></a><h3 class='text-center'>"+data["name"]+"</h3><a class='btn-link' id='modal-plus' onclick='favoriteCompanyWithId("+data['id']+",this, null);' style='right:17px; top:10px;position:absolute; float:right; '><span class='glyphicon glyphicon-plus'></span></a>",
+              content:"<div class='popover-company-info'><img id='background_banner' src='"+data["banner_image"]+"'/><img id='foreground_banner' src='"+data['logo']+"'><p>"+data["company_description"].slice(0,140)+"...</p><div><a class='btn btn-done' style='display:inline-block; margin-right:10px;' id='mp-viewjobs' href='/company/"+data['id']+" /'>VIEW JOBS</a><a class='btn btn-danger' id='resume_drop_"+data['id']+"' style='display:inline-block;' value='"+data['id']+"' name='"+data['name']+"'>DROP RESUME</a></div></div>"
+            }).popover("show");
+
+            $('#resume_drop_'+data['id']+'').on("click", function() {
+              var e = $(this);
+              var company_id = $(this).attr("value");
+              var user_id = $("#user_id").val();
+              var fair_id = $("#fair_id").val();
+              var company_name = $(this).attr("name")
+              $("#company_id").attr('value',company_id);
+              
+              // show the modal with appropriate text
+              $(".companyTitle").text(company_name);
+              $("#resumeDropModal").modal("show");
+
+            });
+
+          },
+      });
+    });
+
+    $('#resume_drop').on("click", function() {
+    	console.log("hello");
+      var e = $(this);
+      var company_id = $(this).attr("value");
+      var user_id = $("#user_id").val();
+      var fair_id = $("#fair_id").val();
+      var company_name = $(this).attr("name")
+      $("#company_id").attr('value',company_id);
+      
+      // show the modal with appropriate text
+      $(".companyTitle").text(company_name);
+      $("#resumeDropModal").modal("show");
+
+    });
+
+    $('.resume_drop_btn').on("click", function() {
+      var e = $(this);
+      var company_id = $(this).attr("value");
+      var user_id = $("#user_id").val();
+      var fair_id = $("#fair_id").val();
+      var company_name = $(this).attr("name")
+      $("#company_id").attr('value',company_id);
+      
+      // show the modal with appropriate text
+      $(".companyTitle").text(company_name);
+      $("#resumeDropModal").modal("show");
+
+    });
+
+    $("#submitResumeDrop").on("click", function() {      
+      var user_id = $("#user_id").val();
+      var fair_id = $("#fair_id").val();
+      var company_id = $("#company_id").val();
+      var position = $("#companyPosition").val().join();
+      console.log(position);
+
+      // hide modal
+      $("#resumeDropModal").modal("hide");
+
+      // submit resume
+      if($("#resume_enabled").val() == 'False'){
+        $("#messages").append('<div class="alert alert-danger alert-dismissable">'+
+                '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'+
+                'Oops! You need to be logged in or have your resume uploaded to drop your resume with the employers!'+
+              '</div>');
+      } else {
+        resumeDrop(user_id, company_id, fair_id, position); 
+      }
+    });
+
+    // enable countdown
+	var austDay = new Date();
+	austDay = new Date(2014, 4-1, 10);
+	$('#defaultCountdown').countdown({until: austDay, format: 'HMS', compact:true, description:'Countdown', layout: '<p class="countdown-time">{hnn}{sep}{mnn}{sep}{snn} </p> '});
+	$('#year').text(austDay.getFullYear());
+
+  });
+
+  function closeModal(id){
+    $('[data-poload='+id+']').click();
+  }
+
+  function resumeDrop(user_id, company_id, fair_id, position){
+    console.log("CONFIRMED");
+    // $("#messages").append('<div class="alert alert-danger alert-dismissable">'+
+    //             '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'+
+    //             'Resume drop is now over! Please contact the recruiter individually if you met them at the event.</div>');
+    $.ajax({
+          url: '/api/v1/applications/',
+          type:'POST',
+          dataType: 'json',
+          data: JSON.stringify({
+            'user_id': user_id, 
+            'company_id': company_id,
+            'fair_id': fair_id,
+            'position': position,
+            'status': 1
+          }),
+          contentType: 'application/json',
+          statusCode : {
+            201: function(data, textStatus, jsXHR){
+              console.log("successfully dropped resume!");
+              console.log(data);
+              console.log(textStatus);
+              console.log(jsXHR);
+              console.log($(this));
+              // feedback on the small dot that the resume has been submitted
+              // disable clicking
+          		$("button.resume_drop_btn[value="+data['response']['applications'][i]['company']['id']+"]").attr("disabled",true);
+          		$("button.resume_drop_btn[value="+data['response']['applications'][i]['company']['id']+"]").text('Applied');
+
+              // give confirmation message about successful resume submission
+              $("#messages").append('<div class="alert alert-success alert-dismissable">'+
+                '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'+
+                'Good job! You <strong>successfully</strong> dropped off your resume at '+data['company']['name']+'!'+
+              '</div>');
+            },
+            500: function(data, textStatus, jsXHR){
+              console.log(data);
+              console.log(textStatus);
+              console.log(jsXHR);
+              // give confirmation message about successful resume submission
+              $("#messages").append('<div class="alert alert-danger alert-dismissable">'+
+                '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'+
+                'Oops! You need to be logged in or have your resume uploaded to drop your resume with the employers!'+
+              '</div>');
+            },
+            404: function(data, textStatus, jsXHR){
+              console.log(data);
+              console.log(textStatus);
+              console.log(jsXHR);
+              // give confirmation message about successful resume submission
+              $("#messages").append('<div class="alert alert-danger alert-dismissable">'+
+                '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'+
+                'Oops! You need to be logged in or have your resume uploaded to drop your resume with the employers!'+
+              '</div>');
+            }
+          }
+        });
+  }
+
+  function getApplications(){
+    user_id = $("#user_id").val();
+    fair_id = $("#fair_id").val();
+    console.log("get applications");
+    $.ajax({
+      url: '/api/v1/applications/?user='+String(user_id)+'&fair='+String(fair_id),
+      type: 'GET',
+      contentType: 'application/json',
+      dataType: 'json',
+      processData: false,
+      success: function(data, textStatus, jqXHR) {
+        console.log(data);
+        console.log(textStatus);
+        console.log(jqXHR);
+        for (var i = data['response']['applications'].length - 1; i >= 0; i--) {
+
+          // disable clicking
+          $("button.resume_drop_btn[value="+data['response']['applications'][i]['company']['id']+"]").attr("disabled",true);
+          $("button.resume_drop_btn[value="+data['response']['applications'][i]['company']['id']+"]").text('Applied');
+        }
+      },
+      dataType: 'json',
+    });
+  }
+
+  $(window).bind('scroll resize', function() {
+      $('#filter_bar').css('top', $(this).scrollTop());
+  });
+
+</script>
+
+{% endblock %}
+
+{% block content %}
+
+<input type="hidden" name="fair_id" value="15" id="fair_id">
+<input type="hidden" name="company_id" value="0" id="company_id">
+<input type="hidden" name="resume_enabled" value="{{resume_url}}" id="resume_enabled">
+
+
+
+  <!-- Main content - 357 -->
+  <div id="messages">
+    <div class="alert alert-success alert-dismissable">
+      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+      Resume drop is now closed!
+    </div>
+  </div>
+  
+  <div class="row">
+  	<div class="col-lg-5">
+  		<p class="main-357 text-right">357</p>
+  	</div>
+  	<div class="col-lg-5">
+  		<p class="description-357" style="margin-top:8px;"><b>3</b> days to drop your resumes</p>
+  		<p class="description-357"><b>5</b> stellar companies</p>
+  		<p class="description-357"><b>7</b> days guaranteed response time from the company</p>
+  	</div>
+  	<div class="col-lg-2">
+  		<div id="defaultCountdown"></div>
+  		<p style="top:-60px; color:rgb(40, 126, 144); display:block; position:relative;">COUNTDOWN</p>
+  	</div>
+  </div>
+  <div class="row">
+  	<div class="col-lg-1"></div>
+    <div class="col-lg-2 text-center squeeze-margin">
+    	<h3 class="text-center">SOASTA</h3>
+	    <div class="company-block">
+      		<img class="company-logo" src="http://appnationconference.com/an4/files/2012/12/soasta-logo-email.jpg">
+      		<h4>DESCRIPTION</h4>
+      		<p class="company-description">
+      			SOASTA, Inc. (pronounced sō’-sta), is the leading provider of cloud-based testing solutions. SOASTA ensures that today’s Web applications and services perform in a high quality, scalable, and predictable manner. 
+      		</p>
+      		<a href='/company/726/' class="btn btn-md btn-done">More</a>
+      		<hr>
+      		<h4>LOOKING FOR</h4>
+      		<p class="company-positions">
+      			Software Engineers with bachelors or masters
+      		</p>
+      		<button class='btn btn-md btn-danger resume_drop_btn' value='726' name='SOASTA'>DROP RESUME</button>
+      	</div>
+    </div>
+    <div class="col-lg-2 text-center squeeze-margin">
+    	<h3 class="text-center">General Electric</h3>
+	    <div class="company-block">
+      		<img class="company-logo" src="http://s3.amazonaws.com/crunchbase_prod_assets/assets/images/resized/0001/0851/10851v1-max-250x250.png">
+      		<h4>DESCRIPTION</h4>
+      		<p class="company-description">
+      			GE is a diversified infrastructure, finance and media company taking on the world’s toughest challenges. From aircraft engines and power generation to financial services, medical imaging, and television programming, GE operates in more than 100 countries
+      		</p>
+      		<a href='/company/261/' class="btn btn-md btn-done">More</a>
+      		<hr>
+      		<h4>LOOKING FOR</h4>
+      		<p class="company-positions">
+      			UI/UX Engineers with a masters
+      		</p>
+      		<button class='btn btn-md btn-danger resume_drop_btn' value='261' name='General Electric'>DROP RESUME</button>
+      	</div>
+    </div>
+    <div class="col-lg-2 text-center squeeze-margin">
+    	<h3 class="text-center">TubeMogul</h3>
+	    <div class="company-block">
+      		<img class="company-logo" src="http://s3.amazonaws.com/crunchbase_prod_assets/assets/images/resized/0013/0637/130637v4-max-450x450.png">
+      		<h4>DESCRIPTION</h4>
+      		<p class="company-description">
+      			TubeMogul is the only video marketing company built for branding. By integrating real-time media buying, ad serving, targeting, optimization and brand measurement into its PlayTime platform, TubeMogul simplifies the delivery of video ads and maximizes the impact of every dollar spent by brand marketers. 
+      		</p>
+      		<a href='/company/304/' class="btn btn-md btn-done">More</a>
+      		<hr>
+      		<h4>LOOKING FOR</h4>
+      		<p class="company-positions">
+      			We are looking for various positions in both tech (in CS) and non-tech. Everyone is welcomed to apply!
+      		</p>
+      		<button class='btn btn-md btn-danger resume_drop_btn' value='304' name='TubeMogul'>DROP RESUME</button>
+      	</div>
+    </div>
+    <div class="col-lg-2 text-center squeeze-margin">
+    	<h3 class="text-center">Greylock</h3>
+	    <div class="company-block">
+      		<img class="company-logo" src="http://s3.amazonaws.com/crunchbase_prod_assets/assets/images/resized/0000/4363/4363v3-max-250x250.jpg">
+      		<h4>DESCRIPTION</h4>
+      		<p class="company-description">
+      			Greylock partners with entrepreneurs to help them build market-leading businesses. Over the past 45 years the firm has worked with hundreds of companies, 150 of which have gone on to IPOs and 100 of which have gone on to profitable M&A events.
+      		</p>
+      		<a href='/company/727/' class="btn btn-md btn-done">More</a>
+      		<hr>
+      		<h4>LOOKING FOR</h4>
+      		<p class="company-positions">
+      			Portfolio companies are looking for multiple full-time positions in both tech and non-tech. Everyone is welcomed to apply!
+      		</p>
+      		<button class='btn btn-md btn-danger resume_drop_btn' value='727' name='Greylock Partners'>DROP RESUME</button>
+      	</div>
+    </div>
+    <div class="col-lg-2 text-center squeeze-margin">
+    	<h3 class="text-center">Via Analytics</h3>
+	    <div class="company-block">
+      		<img class="company-logo" src="http://skydeck.berkeley.edu/files/2013/07/Via-logo.jpg">
+      		<h4>DESCRIPTION</h4>
+      		<p class="company-description">
+      			Via Analytics provides a real-time synchronization service to improve transit operations.
+      		</p>
+      		<a href='/company/728/' class="btn btn-md btn-done">More</a>
+      		<hr>
+      		<h4>LOOKING FOR</h4>
+      		<p class="company-positions">
+      			Positions available in UI/UX and Business Development!
+      		</p>
+      		<button class='btn btn-md btn-danger resume_drop_btn' value='728' name='Via Analytics'>DROP RESUME</button>
+      	</div>
+    </div>
+  </div>
+  <br />
+  <div class="row">
+    <div class="col-lg-10">
+    	<h2>357 - a weekly event</h2>
+    	<p>
+    		Every Monday morning till Wednesday midnight (3 days), Occuhunt will showcase 5 companies that are serious about looking for interns/full-time employees. These companies will respond back within 7 days (before the following Wednesday).
+
+    		<br />
+
+    		If you like our 357s, feel free to contact us and host one by your organization. Or, if you're a company that wish to be featured, contact us and we'll work something out for you!
+    	</p>
+    	<h2>Need feedback on your resume?</h2>
+    	<p>
+    		We've built something for you to get genuine feedback from your peers. Check out <a href='http://occuhunt.com/plan/resume-feed/'>http://occuhunt.com/plan/resume-feed/</a>
+    	</p>
+    </div>
+    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 hidden-xs">
+      {% if request.user.is_anonymous %}
+        <div class="thumbnail">
+          <img src="{% static 'images/example-resume.png' %}">
+          <div class="caption text-center">
+            <p><a href="/login/linkedin/?next={{request.path}}" class="btn btn-login" style="font-weight:500;">LOG IN</a></p>
+            <p>Login to activate Resume Drop</p>
+          </div>
+        </div>
+      {% else %}
+        {% if resume_url %}
+          <div class="thumbnail">
+            <img src="{{resume_url}}" alt="Resume">
+            <div class="caption text-center">
+              <p><a href="/showcase/" class="btn btn-done" role="button">Edit Profile</a></p>
+            </div>
+          </div>
+        {% else %}
+          <div class="thumbnail">
+            <img src="{% static 'images/example-resume.png' %}" alt="Resume">
+            <div class="caption text-center">
+              <p><a href="/showcase/" class="btn btn-done" role="button">Add Resume</a></p>
+              <p>We don't have your resume on file. Upload it to be able to drop them off at the various recruiters</p>
+            </div>
+          </div>
+        {% endif %}
+      {% endif %}
+    </div>
+  </div>
+    
+
+<!-- Modal -->
+<div class="modal fade" id="resumeDropModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel"></h4>
+
+        <h4 class="modal-title" id="category_header">Resme Drop to <span class="companyTitle"></span></h4>
+        <h5 id="category_subheader">This is your final step. Be sure to check it before submitting!</h5>
+        <button class="btn btn-lg btn-done" style="position:absolute; top:10px; right:10px;" id="apply_job">Resume Drop</button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-lg-4">
+            <input class="input-text" type="text" placeholder="First Name" value="Sanchit">
+          </div>
+          <div class="col-lg-4">
+            <input type="text" class="input-text" placeholder="Last Name" value="Bareja">
+          </div>
+          <div class="col-lg-4">
+            <input type="text" class="input-text" placeholder="Major" value="EECS">
+          </div>
+        </div>
+        <br />
+        <div class="row">
+          <div class="col-lg-4">
+            <input type="text" class="input-text" placeholder="Email" value="sanchit@berkeley.edu">
+          </div>
+          <div class="col-lg-4">
+            <input type="text" class="input-text" placeholder="Phone" value="+1 (510) 612-7328">
+          </div>
+          <div class="col-lg-4">
+            <input type="text" class="input-text" placeholder="Graduation Year" value="2015">
+          </div>
+        </div>
+        <br />
+        <div class="row">
+          <div class="col-lg-12">
+            <h4>Which positions are you interested in with <span class="companyTitle"></span>?</h4>
+            <select multiple size="8" class="form-control" id="companyPosition" style="width:100%;">
+              <option>Software Engineering</option>
+              <option>Product Manager</option>
+              <option>UI/UX Engineering</option>
+              <option>Marketing</option>
+              <option>Business Development</option>
+              <option>Growth Hacker</option>
+              <option>Accountant</option>
+              <option>Other</option>
+            </select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-12">
+            <h4>Resume</h4>
+            {% if request.user.is_anonymous %}
+              <div class="thumbnail">
+                <img src="{% static 'images/example-resume.png' %}">
+                <div class="caption text-center">
+                  <p><a href="/login/linkedin/?next={{request.path}}" class="btn btn-login" style="font-weight:500;">LOG IN</a></p>
+                  <p>Login to activate Resume Drop</p>
+                </div>
+              </div>
+            {% else %}
+              {% if resume_url %}
+                <div class="thumbnail">
+                  <img style="border:1px solid #acacac" src="{{resume_url}}" alt="Resume">
+                  <div class="caption text-center">
+                    <p><a href="/showcase/" class="btn btn-done" role="button">Edit Profile</a></p>
+                  </div>
+                </div>
+              {% else %}
+                <div class="thumbnail">
+                  <img src="{% static 'images/example-resume.png' %}" alt="Resume">
+                  <div class="caption text-center">
+                    <p><a href="/showcase/" class="btn btn-done" role="button">Add Resume</a></p>
+                    <p>We don't have your resume on file. Upload it to be able to drop them off at the various recruiters</p>
+                  </div>
+                </div>
+              {% endif %}
+            {% endif %}          
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-done" id="submitResumeDrop">Resume Drop</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

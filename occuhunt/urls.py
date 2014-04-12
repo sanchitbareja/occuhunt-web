@@ -4,7 +4,7 @@ from companies.views import home, splash, companies, company, search
 from resumes.views import resume_feed, sign_s3_upload, submit_resume, individual_resume
 from jobs.views import favorites, apply_jobs, match_jobs
 from recommendations.views import recommendation_main, recommendation_new, recommendation_new_with_request, recommendation_requests, recommendation_requests_new, showcase_notifications, showcase_applications
-from fairs.views import create_fair, StartupCareerFairSpring2014View, ISchoolInfoCampView, PBLCareerFairSpring2014View, Dropin357View
+from fairs.views import create_fair, StartupCareerFairSpring2014View, ISchoolInfoCampView, PBLCareerFairSpring2014View, Dropin357View, Dropin3572View
 from recruiters.views import recruiter_splash, recruiter_hire, recruiter_market, recruiter_sell, recruiter_sponsorship_request, download_pdf, recruiter_login, recruiter_login_third_party, recruiter_analytics, download_excel_to_export
 from django.conf import settings
 from django.conf.urls.static import static
@@ -104,6 +104,7 @@ urlpatterns = patterns('',
 
     # Dropins
     url(r'^fair/UCBerkeley/357-Dropin-April-9-2014/$', Dropin357View, name='357-Dropin-April-9-2014'),
+    url(r'^fair/UCBerkeley/357-Dropin-April-16-2014/$', Dropin3572View, name='357-Dropin-April-16-2014'),
 
     url(r'^static/faircoords/1_1.json', RedirectView.as_view(url='https://occuhuntstatic.s3.amazonaws.com/faircoords/1_1.json')),
     url(r'^static/faircoords/2_2.json', RedirectView.as_view(url='https://occuhuntstatic.s3.amazonaws.com/faircoords/2_2.json')),

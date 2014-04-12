@@ -5,7 +5,7 @@ from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.utils.translation import ugettext, ugettext_lazy as _
 
-from users.models import User, Recruiter, Student
+from users.models import User, Recruiter, Student, Major, Degree
 
 
 class UserCreationForm(forms.ModelForm):
@@ -103,7 +103,15 @@ class StudentAdmin(UserAdmin):
     )
     list_display = UserAdmin.list_display + ('verified_email', 'graduation_year')
 
+class MajorAdmin(admin.ModelAdmin):
+    list_display = ('major',)
+
+class DegreeAdmin(admin.ModelAdmin):
+    list_display = ('degree',)
+
 # Now register the new UserAdmin...
 admin.site.register(User, UserAdmin)
 admin.site.register(Recruiter, RecruiterAdmin)
 admin.site.register(Student, StudentAdmin)
+admin.site.register(Major, MajorAdmin)
+admin.site.register(Degree, DegreeAdmin)
