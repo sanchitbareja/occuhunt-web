@@ -57,22 +57,22 @@ def inform_user_of_comment(sender, instance, **kwargs):
 		current_resume = instance.resume
 		resume_feedback_url = 'http://occuhunt.com/plan/resume-feed/'+current_resume.url[36:]
 		# get email
-		resume_owner = resume.user
+		resume_owner = current_resume.user
 
 		# contruct email
-		template_html = 'email/new_comment.html'
-		template_text = 'email/new_comment.txt'
+		template_html = 'emails/new_comment.html'
+		template_text = 'emails/new_comment.txt'
 
-		subject = "[Occuhunt] Feedback on resume: "+comment.comment+""
+		subject = "[Occuhunt] Feedback on resume: "+current_comment.comment+""
 		from_email = 'occuhunt@gmail.com'
 		to_email = resume_owner.email
 
-		text_content = render_to_string(template_text, {'name':resume_owner.user.first_name+' '+resume_owner.user.last_name, 'comment':current_comment.comment ,'resume_feedback_url':resume_feedback_url})
-		html_content = render_to_string(template_html, {'name':resume_owner.user.first_name+' '+resume_owner.user.last_name, 'comment':current_comment.comment ,'resume_feedback_url':resume_feedback_url})
+		text_content = render_to_string(template_text, {'name':resume_owner.first_name+' '+resume_owner.last_name, 'comment':current_comment.comment ,'resume_feedback_url':resume_feedback_url})
+		html_content = render_to_string(template_html, {'name':resume_owner.first_name+' '+resume_owner.last_name, 'comment':current_comment.comment ,'resume_feedback_url':resume_feedback_url})
 
 		# send email
 		send_html_mail(subject, text_content, html_content, from_email, [to_email])
 	except Exception, e:
 		print e
 
-pre_save.connect(inform_user_of_comment, sender=Comment)
+post_save.connect(inform_user_of_comment, sender=Comment)
