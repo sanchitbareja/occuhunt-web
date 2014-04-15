@@ -74,13 +74,13 @@
   font-family: "Proxima Nova";
   font-weight: 300;
   line-height: 1em;
-  margin-bottom: 60px;
+  margin-bottom: 10px;
 }
 
-.main-357 {
+.main-infosession {
   display: block;
   color: rgb(51, 136, 144);
-  font-size: 85px;
+  font-size: 50px;
   font-family: "Proxima Nova";
   font-weight: 400;
   margin: 0px;
@@ -238,7 +238,7 @@ h3 {
 
     // enable countdown
   var austDay = new Date();
-  austDay = new Date(2014, 4-1, 18);
+  austDay = new Date(2014, 4-1, 16);
   $('#defaultCountdown').countdown({until: austDay, format: 'HMS', compact:true, description:'Countdown', layout: '<p class="countdown-time">{hnn}{sep}{mnn}{sep}{snn} </p> '});
   $('#year').text(austDay.getFullYear());
 
@@ -342,148 +342,40 @@ h3 {
 
 {% block content %}
 
-<input type="hidden" name="fair_id" value="16" id="fair_id">
+<input type="hidden" name="fair_id" value="17" id="fair_id">
 <input type="hidden" name="company_id" value="0" id="company_id">
 <input type="hidden" name="resume_enabled" value="{{resume_url}}" id="resume_enabled">
 
   <!-- Main content - 357 -->
   <div id="messages">
-    <div class="alert alert-success alert-dismissable">
-      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-      Apply to these companies directly and get a response in 7 days!
-    </div>
   </div>
   
   <div class="row">
-    <div class="col-lg-5">
-      <p class="main-357 text-right">357</p>
-    </div>
-    <div class="col-lg-5">
-      <p class="description-357" style="margin-top:8px;"><b>3</b> days to drop your resumes</p>
-      <p class="description-357"><b>5</b> stellar companies</p>
-      <p class="description-357"><b>7</b> days guaranteed response time from the company</p>
-    </div>
-    <div class="col-lg-2">
-      <div id="defaultCountdown"></div>
-      <p style="top:-60px; color:rgb(40, 126, 144); display:block; position:relative;">COUNTDOWN</p>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-lg-1"></div>
-    <div class="col-lg-2 text-center squeeze-margin">
-      <h3 class="text-center">Mobileworks</h3>
-      <div class="company-block">
-          <img class="company-logo" src="http://s3.amazonaws.com/crunchbase_prod_assets/assets/images/resized/0014/9253/149253v4-max-250x250.png">
-          <h4>DESCRIPTION</h4>
-          <p class="company-description">
-            MobileWorks is a crowdsourcing platform for businesses and developers that is more accurate, faster and easier to use than existing solutions. Whether doing complex web research, tagging images or converting physical paper documents into digital files, MobileWorks lets you automate jobs that cannot easily be done using computers.
-          </p>
-          <a href='/company/482/' class="btn btn-md btn-done">More</a>
-          <hr>
-          <h4>LOOKING FOR</h4>
-          <p class="company-positions">
-            - Frontend Engineer<br />
-            - Sales Executive<br />
-            - Sales Intern<br />
-            - Marketing Intern<br />
-            - UX Designer - Internship<br />
-            <br />
-          </p>
-          <button class='btn btn-md btn-danger resume_drop_btn' value='482' name='Mobileworks'>DROP RESUME</button>
-        </div>
-    </div>
-    <div class="col-lg-2 text-center squeeze-margin">
-      <h3 class="text-center">Lumosity</h3>
-      <div class="company-block">
-          <img class="company-logo" src="http://s3.amazonaws.com/crunchbase_prod_assets/assets/images/resized/0001/7322/17322v7-max-450x450.png">
-          <h4>DESCRIPTION</h4>
-          <p class="company-description">
-            Lumosity's mission is to pioneer the understanding and enhancement of the human brain, giving each person the power to unlock their full potential. Lumosity's web and mobile programs are designed to train core cognitive abilities such as memory and attention. Launched in 2007, Lumosity has over 45 million members, and is one of the fastest growing online consumer subscription sites. 
-          </p>
-          <a href='/company/317/' class="btn btn-md btn-done">More</a>
-          <hr>
-          <h4>LOOKING FOR</h4>
-          <p class="company-positions">
-            - iOS Engineering Interns<br />
-            - Android Engineering Interns<br />
-            <br />
-          </p>
-          <button class='btn btn-md btn-danger resume_drop_btn' value='317' name='Lumosity'>DROP RESUME</button>
-        </div>
-    </div>
-    <div class="col-lg-2 text-center squeeze-margin">
-      <h3 class="text-center">Yahoo!</h3>
-      <div class="company-block">
-          <img class="company-logo" src="http://s3.amazonaws.com/crunchbase_prod_assets/assets/images/resized/0001/0836/10836v12-max-450x450.png">
-          <h4>DESCRIPTION</h4>
-          <p class="company-description">
-            Yahoo was founded in 1994 by Stanford Ph.D. students David Filo and Jerry Yang. It has since evolved into a major internet brand with search, content verticals, and other web services. Yahoo! Inc. (Yahoo!), incorporated in 1995, is a global Internet brand.
-          </p>
-          <a href='/company/226/' class="btn btn-md btn-done">More</a>
-          <hr>
-          <h4>LOOKING FOR</h4>
-          <p class="company-positions">
-            - Software Development Engineer Interns<br />
-            - Software Development Engineer New College Graduates<br />
-            <br />
-          </p>
-          <button class='btn btn-md btn-danger resume_drop_btn' value='226' name='Yahoo!'>DROP RESUME</button>
-        </div>
-    </div>
-    <div class="col-lg-2 text-center squeeze-margin">
-      <h3 class="text-center">TEKSystems</h3>
-      <div class="company-block">
-          <img class="company-logo" src="http://www.teksystems.com/~/media/Images/Branding/TEKsystems-logo.ashx">
-          <h4>DESCRIPTION</h4>
-          <p class="company-description">
-            TEKSYSTEMS is a subsidiary of Allegis Group, the largest private talent management firm in the world. Our longstanding history and industry-leading position speak to our success in providing the IT staffing solutions, IT services and talent management insight required for you to actualize ROI and sustain a truly competitive advantage in a fast-changing market.
-          </p>
-          <a href='/company/725/' class="btn btn-md btn-done">More</a>
-          <hr>
-          <h4>LOOKING FOR</h4>
-          <p class="company-positions">
-            Everyone is welcomed to apply!<br />
-            <br />
-          </p>
-          <button class='btn btn-md btn-danger resume_drop_btn' value='725' name='TEKSystems'>DROP RESUME</button>
-        </div>
-    </div>
-    <div class="col-lg-2 text-center squeeze-margin">
-      <h3 class="text-center">Docsend</h3>
-      <div class="company-block">
-          <img class="company-logo" src="http://docsend-prod.s3.amazonaws.com/marketing/occuhunt/DocSend_logo.png">
-          <h4>DESCRIPTION</h4>
-          <p class="company-description">
-            DocSend is changing the way people communicate with documents by enabling you to know what happens after you send them to people. Just as Google Analytics made it possible to track and measure website traffic, we’re doing the same for documents. We’re based in San Francisco and co-founded by three CS grads from your favorite rival school across the bay.
-          </p>
-          <a href='/company/567/' class="btn btn-md btn-done">More</a>
-          <hr>
-          <h4>LOOKING FOR</h4>
-          <p class="company-positions">
-            - Full-time Software Engineers<br />
-            <br />
-          </p>
-          <button class='btn btn-md btn-danger resume_drop_btn' value='567' name='Docsend'>DROP RESUME</button>
-        </div>
+    <div class="col-lg-12">
+      <p class="main-infosession text-center">GestureKit Infosession</p>
     </div>
   </div>
   <br />
   <div class="row">
+    <div class="col-lg-12 text-center">
+      <a href='/company/820/' class="btn btn-md btn-done">More about GestureKit</a>
+      <button class='btn btn-md btn-danger resume_drop_btn' value='820' name='GestureKit'>DROP RESUME</button>
+    </div>
+  </div>
+  <br />
+  <div class="row">
+    <div class="col-lg-12 text-center">
+      <div id="defaultCountdown"></div>
+      <p style="top:-10px; color:rgb(40, 126, 144); display:block; position:relative;">COUNTDOWN</p>
+    </div>
+  </div>
+
+  <div class="row">
     <div class="col-lg-10">
-      <h2>357 - a weekly event</h2>
-      <p>
-        Every week (Mon-Wed or Tues-Thurs - 3 days), Occuhunt will showcase 5 companies that are serious about looking for interns/full-time employees. These companies will respond back within 7 days (before the following Wed/Thurs).
-
-        <br />
-
-        If you like our 357s, feel free to contact us and host one by your organization. Or, if you're a company that wish to be featured, contact us and we'll work something out for you!
-      </p>
-      <h2>Need feedback on your resume?</h2>
-      <p>
-        We've built something for you to get genuine feedback from your peers. Check out <a href='http://occuhunt.com/plan/resume-feed/'>http://occuhunt.com/plan/resume-feed/</a>
+      <img src="https://scontent-b-sjc.xx.fbcdn.net/hphotos-ash3/t1.0-9/10155485_691532564218289_4562106936338624429_n.jpg" style="width:100%;">
       </p>
     </div>
-    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 hidden-xs">
+    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 hidden-xs text-center">
       {% if request.user.is_anonymous %}
         <div class="thumbnail">
           <img src="{% static 'images/example-resume.png' %}">
@@ -512,7 +404,19 @@ h3 {
       {% endif %}
     </div>
   </div>
-    
+
+<br />
+<br />
+<br />
+<br />
+<br />    
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />    
+<br />
 
 <!-- Modal -->
 <div class="modal fade" id="resumeDropModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
