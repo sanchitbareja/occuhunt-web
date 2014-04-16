@@ -611,7 +611,7 @@ class ApplicationResource(ModelResource):
                 user.student.save()
             except Exception, e:
                 print e
-                raise e
+                # raise e
             try:
                 majors = bundle.data['majors']
                 for major in majors:
@@ -620,14 +620,14 @@ class ApplicationResource(ModelResource):
                 user.student.save()
             except Exception, e:
                 print e
-                raise e
+                # raise e
             try:
                 degree = Degree.objects.get(id=bundle.data['degree_type'])
                 user.student.degree = degree
                 user.student.save()
             except Exception, e:
                 print e
-                raise e
+                # raise e
 
             # notify user that application has been viewed by company
             try:
