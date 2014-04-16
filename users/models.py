@@ -115,15 +115,20 @@ class User(AbstractBaseUser, PermissionsMixin):
 class Major(models.Model):
     major = models.CharField(max_length=300)
 
+    def __unicode__(self):
+        return str(self.major)
+
 class Degree(models.Model):
     degree = models.CharField(max_length=300)
 
+    def __unicode__(self):
+        return str(self.degree)
 
 class Student(User):
     verified_email = models.EmailField(verbose_name="verified email", max_length=300, null=True, blank=True)
-    graduation_year = models.DateField(auto_now=False, auto_now_add=False, null=True, blank=True)
+    graduation_year = models.IntegerField(null=True, blank=True)
     major = models.ManyToManyField(Major)
-    degree = models.ManyToManyField(Degree)
+    degree = models.ForeignKey(Degree, null=True, blank=True)
 
 class Recruiter(User):
     company = models.ForeignKey(Company)

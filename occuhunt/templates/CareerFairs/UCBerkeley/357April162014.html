@@ -9,6 +9,7 @@
 {% block extra_style %}
 <link href="{% static 'occuhunt/css/index.css' %}" rel="stylesheet">
 <link href="{% static 'occuhunt/css/jquery.countdown.css' %}" rel="stylesheet" >
+<link href="{% static 'occuhunt/css/apply.css' %}" rel="stylesheet">
 <!-- <link href="{% static 'occuhunt/css/svg-grid.css' %}" rel="stylesheet"> -->
 <style type="text/css">
 /* jQuery Countdown styles 2.0.0. */
@@ -133,6 +134,7 @@ h3 {
   font-weight: 400;
 }
 
+
 </style>
 
 {% endblock %}
@@ -222,6 +224,18 @@ h3 {
       var position = $("#companyPosition").val().join();
       console.log(position);
 
+      // save user preferences
+      // get major
+      var majors = $("#studentMajor").val();
+      // get graduation year
+      var grad_year = $("#studentGradYear").val();
+      // get degree type
+      var degree_type = $("#studentDegree").val();
+      // save all of these preferences
+      console.log(majors);
+      console.log(grad_year);
+      console.log(degree_type);
+
       // hide modal
       $("#resumeDropModal").modal("hide");
 
@@ -232,13 +246,13 @@ h3 {
                 'Oops! You need to be logged in or have your resume uploaded to drop your resume with the employers!'+
               '</div>');
       } else {
-        resumeDrop(user_id, company_id, fair_id, position); 
+        resumeDrop(user_id, company_id, fair_id, position, majors, grad_year, degree_type); 
       }
     });
 
     // enable countdown
   var austDay = new Date();
-  austDay = new Date(2014, 4-1, 18);
+  austDay = new Date(2014, 4-1, 17);
   $('#defaultCountdown').countdown({until: austDay, format: 'HMS', compact:true, description:'Countdown', layout: '<p class="countdown-time">{hnn}{sep}{mnn}{sep}{snn} </p> '});
   $('#year').text(austDay.getFullYear());
 
@@ -248,7 +262,7 @@ h3 {
     $('[data-poload='+id+']').click();
   }
 
-  function resumeDrop(user_id, company_id, fair_id, position){
+  function resumeDrop(user_id, company_id, fair_id, position, majors, grad_year, degree_type){
     console.log("CONFIRMED");
     // $("#messages").append('<div class="alert alert-danger alert-dismissable">'+
     //             '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'+
@@ -262,7 +276,10 @@ h3 {
             'company_id': company_id,
             'fair_id': fair_id,
             'position': position,
-            'status': 1
+            'status': 1,
+            'majors':majors,
+            'grad_year': grad_year,
+            'degree_type': degree_type
           }),
           contentType: 'application/json',
           statusCode : {
@@ -274,8 +291,8 @@ h3 {
               console.log($(this));
               // feedback on the small dot that the resume has been submitted
               // disable clicking
-             $("button.resume_drop_btn[value="+data['company']['id']+"]").attr("disabled",true);
-             $("button.resume_drop_btn[value="+data['company']['id']+"]").text('Applied');
+              $("button.resume_drop_btn[value="+data['response']['applications'][i]['company']['id']+"]").attr("disabled",true);
+              $("button.resume_drop_btn[value="+data['response']['applications'][i]['company']['id']+"]").text('Applied');
 
               // give confirmation message about successful resume submission
               $("#messages").append('<div class="alert alert-success alert-dismissable">'+
@@ -341,7 +358,6 @@ h3 {
 {% endblock %}
 
 {% block content %}
-
 <input type="hidden" name="fair_id" value="16" id="fair_id">
 <input type="hidden" name="company_id" value="0" id="company_id">
 <input type="hidden" name="resume_enabled" value="{{resume_url}}" id="resume_enabled">
@@ -469,7 +485,7 @@ h3 {
   </div>
   <br />
   <div class="row">
-    <div class="col-lg-10">
+    <div class="col-lg-12">
       <h2>357 - a weekly event</h2>
       <p>
         Every week (Mon-Wed or Tues-Thurs - 3 days), Occuhunt will showcase 5 companies that are serious about looking for interns/full-time employees. These companies will respond back within 7 days (before the following Wed/Thurs).
@@ -483,57 +499,108 @@ h3 {
         We've built something for you to get genuine feedback from your peers. Check out <a href='http://occuhunt.com/plan/resume-feed/'>http://occuhunt.com/plan/resume-feed/</a>
       </p>
     </div>
-    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 hidden-xs">
-      {% if request.user.is_anonymous %}
-        <div class="thumbnail">
-          <img src="{% static 'images/example-resume.png' %}">
-          <div class="caption text-center">
-            <p><a href="/login/linkedin/?next={{request.path}}" class="btn btn-login" style="font-weight:500;">LOG IN</a></p>
-            <p>Login to activate Resume Drop</p>
-          </div>
-        </div>
-      {% else %}
-        {% if resume_url %}
-          <div class="thumbnail">
-            <img src="{{resume_url}}" alt="Resume">
-            <div class="caption text-center">
-              <p><a href="/showcase/" class="btn btn-done" role="button">Edit Profile</a></p>
-            </div>
-          </div>
-        {% else %}
-          <div class="thumbnail">
-            <img src="{% static 'images/example-resume.png' %}" alt="Resume">
-            <div class="caption text-center">
-              <p><a href="/showcase/" class="btn btn-done" role="button">Add Resume</a></p>
-              <p>We don't have your resume on file. Upload it to be able to drop them off at the various recruiters</p>
-            </div>
-          </div>
-        {% endif %}
-      {% endif %}
-    </div>
   </div>
-    
 
-<!-- Modal -->
 <div class="modal fade" id="resumeDropModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title" id="myModalLabel">Resme Drop to <span class="companyTitle"></span></h4>
+        <h4 class="modal-title" id="myModalLabel"></h4>
+
+        <h4 class="modal-title" id="category_header">Resme Drop to <span class="companyTitle"></span></h4>
+        <h5 id="category_subheader">This is your final step. Be sure to check it before submitting!</h5>
       </div>
       <div class="modal-body">
-        <p>Which positions are you interested in with <span class="companyTitle"></span>?</p>
-        <select multiple size="8" class="form-control" id="companyPosition">
-          <option>Software Engineering</option>
-          <option>Product Manager</option>
-          <option>UI/UX Engineering</option>
-          <option>Marketing</option>
-          <option>Business Development</option>
-          <option>Growth Hacker</option>
-          <option>Accountant</option>
-          <option>Other</option>
-        </select>
+        {% if not request.user.is_anonymous %}
+        <div class="row">
+          <div class="col-lg-12">
+            <h4>Which positions are you interested in with <span class="companyTitle"></span>?</h4>
+            <div class="row">
+              <div class="col-lg-12">
+                <select multiple size="8" class="form-control" id="companyPosition" style="width:100%">
+                  <option>Software Engineering</option>
+                  <option>Product Manager</option>
+                  <option>UI/UX Engineering</option>
+                  <option>Marketing</option>
+                  <option>Business Development</option>
+                  <option>Growth Hacker</option>
+                  <option>Accountant</option>
+                  <option>Other</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <br />
+        <div class="row">
+          <div class="col-lg-5">
+            <label>Major</label>
+            <select multiple size="8" class="form-control" id="studentMajor" style="width:100%">
+              {% for major in majors %}
+                {% if major in request.user.student.major.all %}
+                  <option value="{{major.id}}" selected>{{major.major}}</option>
+                {% else %}
+                  <option value="{{major.id}}">{{major.major}}</option>
+                {% endif %}
+              {% endfor %}
+            </select>
+          </div>
+          <div class="col-lg-4">
+            <label>Degree Type</label>
+            <select class="form-control" id="studentDegree">
+              <option value=""></option>
+              {% for degree_type in degree_types %}
+                {% if request.user.student.degree.id == degree_type.id %}
+                  <option value="{{degree_type.id}}" selected>{{degree_type.degree}}</option>
+                {% else %}
+                  <option value="{{degree_type.id}}">{{degree_type.degree}}</option>
+                {% endif %}
+              {% endfor %}
+            </select>
+          </div>
+          <div class="col-lg-3">
+            <label>Graduation Year</label>
+            {% if request.user.student.graduation_year %}
+              <input type="text" class="input-text" placeholder="Graduation Year" id="studentGradYear" value="{{request.user.student.graduation_year}}">
+            {% else %}
+              <input type="text" class="input-text" placeholder="2015" id="studentGradYear" value="">
+            {% endif %}
+          </div>
+        </div>
+        <br />
+        {% endif %}
+        <div class="row">
+          <div class="col-lg-12">
+            <h4>Resume</h4>
+            {% if request.user.is_anonymous %}
+              <div class="thumbnail">
+                <img src="{% static 'images/example-resume.png' %}">
+                <div class="caption text-center">
+                  <p><a href="/login/linkedin/?next={{request.path}}" class="btn btn-login" style="font-weight:500;">LOG IN</a></p>
+                  <p>Login to activate Resume Drop</p>
+                </div>
+              </div>
+            {% else %}
+              {% if resume_url %}
+                <div class="thumbnail">
+                  <img src="{{resume_url}}" alt="Resume">
+                  <div class="caption text-center">
+                    <p><a href="/showcase/" class="btn btn-done" role="button">Edit Profile</a></p>
+                  </div>
+                </div>
+              {% else %}
+                <div class="thumbnail">
+                  <img src="{% static 'images/example-resume.png' %}" alt="Resume">
+                  <div class="caption text-center">
+                    <p><a href="/showcase/" class="btn btn-done" role="button">Add Resume</a></p>
+                    <p>We don't have your resume on file. Upload it to be able to drop them off at the various recruiters</p>
+                  </div>
+                </div>
+              {% endif %}
+            {% endif %}
+          </div>
+        </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

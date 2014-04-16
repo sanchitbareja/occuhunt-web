@@ -8,7 +8,7 @@ from django.core.mail import send_mail
 from django.contrib.auth.decorators import login_required
 import os, time, simplejson
 from datetime import datetime, timedelta, time
-from users.models import Major
+from users.models import Major, Degree
 
 from resumes.models import Resume
 
@@ -88,6 +88,7 @@ def Dropin357View(request):
 			resume = None
 			return render_to_response('CareerFairs/UCBerkeley/357April92014.html', {'resume_url':False}, RequestContext(request))
 
+
 def Dropin3572View(request):
 	"""View to ISchoolInfoCamp """
 	print request.user
@@ -97,14 +98,15 @@ def Dropin3572View(request):
 	else:
 		resume = Resume.objects.filter(user=request.user, showcase=True, original=False).order_by('-timestamp')
 		majors = Major.objects.all()
+		degree_types = Degree.objects.all()
 		if len(resume) > 0:
 			# if user has a resume - yay!
 			resume = resume[0]
-			return render_to_response('CareerFairs/UCBerkeley/357April162014.html', {'resume_url':resume.url, 'majors':majors}, RequestContext(request))
+			return render_to_response('CareerFairs/UCBerkeley/357April162014.html', {'resume_url':resume.url, 'majors':majors, 'degree_types':degree_types}, RequestContext(request))
 		else:
 			# if user doesn't have a resume on file, boo :(
 			resume = None
-			return render_to_response('CareerFairs/UCBerkeley/357April162014.html', {'resume_url':False, 'majors':majors}, RequestContext(request))
+			return render_to_response('CareerFairs/UCBerkeley/357April162014.html', {'resume_url':False, 'majors':majors, 'degree_types':degree_types}, RequestContext(request))
 
 def Dropin3573View(request):
 	"""View to ISchoolInfoCamp """
@@ -115,14 +117,15 @@ def Dropin3573View(request):
 	else:
 		resume = Resume.objects.filter(user=request.user, showcase=True, original=False).order_by('-timestamp')
 		majors = Major.objects.all()
+		degree_types = Degree.objects.all()
 		if len(resume) > 0:
 			# if user has a resume - yay!
 			resume = resume[0]
-			return render_to_response('CareerFairs/UCBerkeley/357April232014.html', {'resume_url':resume.url, 'majors':majors}, RequestContext(request))
+			return render_to_response('CareerFairs/UCBerkeley/357April232014.html', {'resume_url':resume.url, 'majors':majors, 'degree_types':degree_types}, RequestContext(request))
 		else:
 			# if user doesn't have a resume on file, boo :(
 			resume = None
-			return render_to_response('CareerFairs/UCBerkeley/357April232014.html', {'resume_url':False, 'majors':majors}, RequestContext(request))
+			return render_to_response('CareerFairs/UCBerkeley/357April232014.html', {'resume_url':False, 'majors':majors, 'degree_types':degree_types}, RequestContext(request))
 
 def GestureKitInfosession15April2014View(request):
 	"""View to ISchoolInfoCamp """

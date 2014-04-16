@@ -98,10 +98,13 @@ class StudentAdmin(UserAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('username','email', 'password1', 'password2','first_name','last_name','thumbnail_profile_pic','profile_pic','verified_email','graduation_year'),
-        })
+            'fields': ('username','email', 'password1', 'password2','first_name','last_name','thumbnail_profile_pic','profile_pic','graduation_year','verified_email','degree','major')
+        }),
     )
-    list_display = UserAdmin.list_display + ('verified_email', 'graduation_year')
+    list_display = UserAdmin.list_display + ('verified_email', 'graduation_year', 'degree', 'get_majors')
+
+    def get_majors(self, obj):
+        return "\n".join([m.major for m in obj.major.all()])
 
 class MajorAdmin(admin.ModelAdmin):
     list_display = ('major',)

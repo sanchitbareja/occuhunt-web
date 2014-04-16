@@ -21,7 +21,7 @@ from django.db.models import Q
 from companies.models import Company
 from favorites.models import Favorite
 from fairs.models import Fair, Room
-from users.models import User
+from users.models import User, Major, Degree
 from resumes.models import Resume, Comment
 from recommendations.models import Recommendation, Request
 from hunts.models import Hunt
@@ -603,8 +603,36 @@ class ApplicationResource(ModelResource):
                 new_application = Application(user=user, company=company, fair=fair, status=status, position=position)
                 new_application.save()
                 bundle.obj = new_application
+
+            # update user preferences for Graduation Date, Major, Degree
+            try:
+                grad_year = bundle.data['grad_year']
+                user.student.graduation_year = grad_year
+                user.student.save()
+            except Exception, e:
+                print e
+                raise e
+            try:
+                majors = bundle.data['majors']
+                for major in majors:
+                    major_obj = Major.objects.get(id=int(major))
+                    user.student.major.add(major_obj)
+                user.student.save()
+            except Exception, e:
+                print e
+                raise e
+            try:
+                degree = Degree.objects.get(id=bundle.data['degree_type'])
+                user.student.degree = degree
+                user.student.save()
+            except Exception, e:
+                print e
+                raise e
+
             # notify user that application has been viewed by company
             try:
+                # bug here as this is only true if the company added is on the iPad
+                # works out well for the user though as he feels wanted
                 new_notification = Notification(user=user, company=company, receiver=1, notification=1)
                 new_notification.save()
             except Exception, e:

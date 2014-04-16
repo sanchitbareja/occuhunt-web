@@ -134,9 +134,6 @@ h3 {
   font-weight: 400;
 }
 
-.modal-lg {
-  width: 900px;
-}
 
 </style>
 
@@ -229,10 +226,15 @@ h3 {
 
       // save user preferences
       // get major
+      var majors = $("#studentMajor").val();
       // get graduation year
-      // get verified email address
-      // get network
+      var grad_year = $("#studentGradYear").val();
+      // get degree type
+      var degree_type = $("#studentDegree").val();
       // save all of these preferences
+      console.log(majors);
+      console.log(grad_year);
+      console.log(degree_type);
 
       // hide modal
       $("#resumeDropModal").modal("hide");
@@ -244,7 +246,7 @@ h3 {
                 'Oops! You need to be logged in or have your resume uploaded to drop your resume with the employers!'+
               '</div>');
       } else {
-        resumeDrop(user_id, company_id, fair_id, position); 
+        resumeDrop(user_id, company_id, fair_id, position, majors, grad_year, degree_type); 
       }
     });
 
@@ -260,7 +262,7 @@ h3 {
     $('[data-poload='+id+']').click();
   }
 
-  function resumeDrop(user_id, company_id, fair_id, position){
+  function resumeDrop(user_id, company_id, fair_id, position, majors, grad_year, degree_type){
     console.log("CONFIRMED");
     // $("#messages").append('<div class="alert alert-danger alert-dismissable">'+
     //             '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'+
@@ -274,7 +276,10 @@ h3 {
             'company_id': company_id,
             'fair_id': fair_id,
             'position': position,
-            'status': 1
+            'status': 1,
+            'majors':majors,
+            'grad_year': grad_year,
+            'degree_type': degree_type
           }),
           contentType: 'application/json',
           statusCode : {
@@ -286,8 +291,8 @@ h3 {
               console.log($(this));
               // feedback on the small dot that the resume has been submitted
               // disable clicking
-              $("button.resume_drop_btn[value="+data['response']['applications'][i]['company']['id']+"]").attr("disabled",true);
-              $("button.resume_drop_btn[value="+data['response']['applications'][i]['company']['id']+"]").text('Applied');
+              $("button.resume_drop_btn[value="+data['company']['id']+"]").attr("disabled",true);
+              $("button.resume_drop_btn[value="+data['company']['id']+"]").text('Applied');
 
               // give confirmation message about successful resume submission
               $("#messages").append('<div class="alert alert-success alert-dismissable">'+
@@ -353,18 +358,15 @@ h3 {
 {% endblock %}
 
 {% block content %}
-
-<input type="hidden" name="fair_id" value="15" id="fair_id">
+<input type="hidden" name="fair_id" value="16" id="fair_id">
 <input type="hidden" name="company_id" value="0" id="company_id">
 <input type="hidden" name="resume_enabled" value="{{resume_url}}" id="resume_enabled">
-
-
 
   <!-- Main content - 357 -->
   <div id="messages">
     <div class="alert alert-success alert-dismissable">
       <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-      Resume drop is now closed!
+      Apply to these companies directly and get a response in 7 days!
     </div>
   </div>
   
@@ -385,97 +387,108 @@ h3 {
   <div class="row">
     <div class="col-lg-1"></div>
     <div class="col-lg-2 text-center squeeze-margin">
-      <h3 class="text-center">SOASTA</h3>
+      <h3 class="text-center">Mobileworks</h3>
       <div class="company-block">
-          <img class="company-logo" src="http://appnationconference.com/an4/files/2012/12/soasta-logo-email.jpg">
+          <img class="company-logo" src="http://s3.amazonaws.com/crunchbase_prod_assets/assets/images/resized/0014/9253/149253v4-max-250x250.png">
           <h4>DESCRIPTION</h4>
           <p class="company-description">
-            SOASTA, Inc. (pronounced sō’-sta), is the leading provider of cloud-based testing solutions. SOASTA ensures that today’s Web applications and services perform in a high quality, scalable, and predictable manner. 
+            MobileWorks is a crowdsourcing platform for businesses and developers that is more accurate, faster and easier to use than existing solutions. Whether doing complex web research, tagging images or converting physical paper documents into digital files, MobileWorks lets you automate jobs that cannot easily be done using computers.
           </p>
-          <a href='/company/726/' class="btn btn-md btn-done">More</a>
+          <a href='/company/482/' class="btn btn-md btn-done">More</a>
           <hr>
           <h4>LOOKING FOR</h4>
           <p class="company-positions">
-            Software Engineers with bachelors or masters
+            - Frontend Engineer<br />
+            - Sales Executive<br />
+            - Sales Intern<br />
+            - Marketing Intern<br />
+            - UX Designer - Internship<br />
+            <br />
           </p>
-          <button class='btn btn-md btn-danger resume_drop_btn' value='726' name='SOASTA'>DROP RESUME</button>
+          <button class='btn btn-md btn-danger resume_drop_btn' value='482' name='Mobileworks'>DROP RESUME</button>
         </div>
     </div>
     <div class="col-lg-2 text-center squeeze-margin">
-      <h3 class="text-center">General Electric</h3>
+      <h3 class="text-center">Lumosity</h3>
       <div class="company-block">
-          <img class="company-logo" src="http://s3.amazonaws.com/crunchbase_prod_assets/assets/images/resized/0001/0851/10851v1-max-250x250.png">
+          <img class="company-logo" src="http://s3.amazonaws.com/crunchbase_prod_assets/assets/images/resized/0001/7322/17322v7-max-450x450.png">
           <h4>DESCRIPTION</h4>
           <p class="company-description">
-            GE is a diversified infrastructure, finance and media company taking on the world’s toughest challenges. From aircraft engines and power generation to financial services, medical imaging, and television programming, GE operates in more than 100 countries
+            Lumosity's mission is to pioneer the understanding and enhancement of the human brain, giving each person the power to unlock their full potential. Lumosity's web and mobile programs are designed to train core cognitive abilities such as memory and attention. Launched in 2007, Lumosity has over 45 million members, and is one of the fastest growing online consumer subscription sites. 
           </p>
-          <a href='/company/261/' class="btn btn-md btn-done">More</a>
+          <a href='/company/317/' class="btn btn-md btn-done">More</a>
           <hr>
           <h4>LOOKING FOR</h4>
           <p class="company-positions">
-            UI/UX Engineers with a masters
+            - iOS Engineering Interns<br />
+            - Android Engineering Interns<br />
+            <br />
           </p>
-          <button class='btn btn-md btn-danger resume_drop_btn' value='261' name='General Electric'>DROP RESUME</button>
+          <button class='btn btn-md btn-danger resume_drop_btn' value='317' name='Lumosity'>DROP RESUME</button>
         </div>
     </div>
     <div class="col-lg-2 text-center squeeze-margin">
-      <h3 class="text-center">TubeMogul</h3>
+      <h3 class="text-center">Yahoo!</h3>
       <div class="company-block">
-          <img class="company-logo" src="http://s3.amazonaws.com/crunchbase_prod_assets/assets/images/resized/0013/0637/130637v4-max-450x450.png">
+          <img class="company-logo" src="http://s3.amazonaws.com/crunchbase_prod_assets/assets/images/resized/0001/0836/10836v12-max-450x450.png">
           <h4>DESCRIPTION</h4>
           <p class="company-description">
-            TubeMogul is the only video marketing company built for branding. By integrating real-time media buying, ad serving, targeting, optimization and brand measurement into its PlayTime platform, TubeMogul simplifies the delivery of video ads and maximizes the impact of every dollar spent by brand marketers. 
+            Yahoo was founded in 1994 by Stanford Ph.D. students David Filo and Jerry Yang. It has since evolved into a major internet brand with search, content verticals, and other web services. Yahoo! Inc. (Yahoo!), incorporated in 1995, is a global Internet brand.
           </p>
-          <a href='/company/304/' class="btn btn-md btn-done">More</a>
+          <a href='/company/226/' class="btn btn-md btn-done">More</a>
           <hr>
           <h4>LOOKING FOR</h4>
           <p class="company-positions">
-            We are looking for various positions in both tech (in CS) and non-tech. Everyone is welcomed to apply!
+            - Software Development Engineer Interns<br />
+            - Software Development Engineer New College Graduates<br />
+            <br />
           </p>
-          <button class='btn btn-md btn-danger resume_drop_btn' value='304' name='TubeMogul'>DROP RESUME</button>
+          <button class='btn btn-md btn-danger resume_drop_btn' value='226' name='Yahoo!'>DROP RESUME</button>
         </div>
     </div>
     <div class="col-lg-2 text-center squeeze-margin">
-      <h3 class="text-center">Greylock</h3>
+      <h3 class="text-center">TEKSystems</h3>
       <div class="company-block">
-          <img class="company-logo" src="http://s3.amazonaws.com/crunchbase_prod_assets/assets/images/resized/0000/4363/4363v3-max-250x250.jpg">
+          <img class="company-logo" src="http://www.teksystems.com/~/media/Images/Branding/TEKsystems-logo.ashx">
           <h4>DESCRIPTION</h4>
           <p class="company-description">
-            Greylock partners with entrepreneurs to help them build market-leading businesses. Over the past 45 years the firm has worked with hundreds of companies, 150 of which have gone on to IPOs and 100 of which have gone on to profitable M&A events.
+            TEKSYSTEMS is a subsidiary of Allegis Group, the largest private talent management firm in the world. Our longstanding history and industry-leading position speak to our success in providing the IT staffing solutions, IT services and talent management insight required for you to actualize ROI and sustain a truly competitive advantage in a fast-changing market.
           </p>
-          <a href='/company/727/' class="btn btn-md btn-done">More</a>
+          <a href='/company/725/' class="btn btn-md btn-done">More</a>
           <hr>
           <h4>LOOKING FOR</h4>
           <p class="company-positions">
-            Portfolio companies are looking for multiple full-time positions in both tech and non-tech. Everyone is welcomed to apply!
+            Everyone is welcomed to apply!<br />
+            <br />
           </p>
-          <button class='btn btn-md btn-danger resume_drop_btn' value='727' name='Greylock Partners'>DROP RESUME</button>
+          <button class='btn btn-md btn-danger resume_drop_btn' value='725' name='TEKSystems'>DROP RESUME</button>
         </div>
     </div>
     <div class="col-lg-2 text-center squeeze-margin">
-      <h3 class="text-center">Via Analytics</h3>
+      <h3 class="text-center">DocSend</h3>
       <div class="company-block">
-          <img class="company-logo" src="http://skydeck.berkeley.edu/files/2013/07/Via-logo.jpg">
+          <img class="company-logo" src="http://docsend-prod.s3.amazonaws.com/marketing/occuhunt/DocSend_logo.png">
           <h4>DESCRIPTION</h4>
           <p class="company-description">
-            Via Analytics provides a real-time synchronization service to improve transit operations.
+            DocSend is changing the way people communicate with documents by enabling you to know what happens after you send them to people. Just as Google Analytics made it possible to track and measure website traffic, we’re doing the same for documents. We’re based in San Francisco and co-founded by three CS grads from your favorite rival school across the bay.
           </p>
-          <a href='/company/728/' class="btn btn-md btn-done">More</a>
+          <a href='/company/567/' class="btn btn-md btn-done">More</a>
           <hr>
           <h4>LOOKING FOR</h4>
           <p class="company-positions">
-            Positions available in UI/UX and Business Development!
+            - Full-time Software Engineers<br />
+            <br />
           </p>
-          <button class='btn btn-md btn-danger resume_drop_btn' value='728' name='Via Analytics'>DROP RESUME</button>
+          <button class='btn btn-md btn-danger resume_drop_btn' value='567' name='Docsend'>DROP RESUME</button>
         </div>
     </div>
   </div>
   <br />
   <div class="row">
-    <div class="col-lg-10">
+    <div class="col-lg-12">
       <h2>357 - a weekly event</h2>
       <p>
-        Every Monday morning till Wednesday midnight (3 days), Occuhunt will showcase 5 companies that are serious about looking for interns/full-time employees. These companies will respond back within 7 days (before the following Wednesday).
+        Every week (Mon-Wed or Tues-Thurs - 3 days), Occuhunt will showcase 5 companies that are serious about looking for interns/full-time employees. These companies will respond back within 7 days (before the following Wed/Thurs).
 
         <br />
 
@@ -487,9 +500,7 @@ h3 {
       </p>
     </div>
   </div>
-    
 
-<!-- Modal -->
 <div class="modal fade" id="resumeDropModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
@@ -499,41 +510,14 @@ h3 {
 
         <h4 class="modal-title" id="category_header">Resme Drop to <span class="companyTitle"></span></h4>
         <h5 id="category_subheader">This is your final step. Be sure to check it before submitting!</h5>
-        <button class="btn btn-lg btn-done" style="position:absolute; top:10px; right:10px;" id="apply_job">Resume Drop</button>
       </div>
       <div class="modal-body">
         {% if not request.user.is_anonymous %}
         <div class="row">
-          <div class="col-lg-4">
-            <input class="input-text" type="text" placeholder="First Name" value="{{request.user.first_name}}">
-          </div>
-          <div class="col-lg-4">
-            <input type="text" class="input-text" placeholder="Last Name" value="{{request.user.last_name}}">
-          </div>
-          <div class="col-lg-4">
-            <!-- <input type="text" class="input-text" placeholder="Major" value="{{request.user.student.major.major}}"> -->
-            <select class="form-control">
-              {% for major in majors %}
-                <option>{{major.major}}</option>
-              {% endfor %}
-            </select>
-          </div>
-        </div>
-        <br />
-        <div class="row">
-          <div class="col-lg-4">
-            <input type="text" class="input-text" placeholder="Email" value="{{request.user.email}}">
-          </div>
-          <div class="col-lg-4">
-            <input type="text" class="input-text" placeholder="Graduation Year" value="{{request.user.student.graduation_year}}">
-          </div>
-        </div>
-        <br />
-        <div class="row">
           <div class="col-lg-12">
             <h4>Which positions are you interested in with <span class="companyTitle"></span>?</h4>
             <div class="row">
-              <div class="col-lg-6">
+              <div class="col-lg-12">
                 <select multiple size="8" class="form-control" id="companyPosition" style="width:100%">
                   <option>Software Engineering</option>
                   <option>Product Manager</option>
@@ -545,13 +529,46 @@ h3 {
                   <option>Other</option>
                 </select>
               </div>
-              <div class="col-lg-6">
-                  Job Description goes here in detail, can be a ton of stuff haha
-                  Job Description goes here in detail, can be a ton of stuff hahaJob Description goes here in detail, can be a ton of stuff hahaJob Description goes here in detail, can be a ton of stuff haha
-              </div>
             </div>
           </div>
         </div>
+        <br />
+        <div class="row">
+          <div class="col-lg-5">
+            <label>Major</label>
+            <select multiple size="8" class="form-control" id="studentMajor" style="width:100%">
+              {% for major in majors %}
+                {% if major in request.user.student.major.all %}
+                  <option value="{{major.id}}" selected>{{major.major}}</option>
+                {% else %}
+                  <option value="{{major.id}}">{{major.major}}</option>
+                {% endif %}
+              {% endfor %}
+            </select>
+          </div>
+          <div class="col-lg-4">
+            <label>Degree Type</label>
+            <select class="form-control" id="studentDegree">
+              <option value=""></option>
+              {% for degree_type in degree_types %}
+                {% if request.user.student.degree.id == degree_type.id %}
+                  <option value="{{degree_type.id}}" selected>{{degree_type.degree}}</option>
+                {% else %}
+                  <option value="{{degree_type.id}}">{{degree_type.degree}}</option>
+                {% endif %}
+              {% endfor %}
+            </select>
+          </div>
+          <div class="col-lg-3">
+            <label>Graduation Year</label>
+            {% if request.user.student.graduation_year %}
+              <input type="text" class="input-text" placeholder="Graduation Year" id="studentGradYear" value="{{request.user.student.graduation_year}}">
+            {% else %}
+              <input type="text" class="input-text" placeholder="2015" id="studentGradYear" value="">
+            {% endif %}
+          </div>
+        </div>
+        <br />
         {% endif %}
         <div class="row">
           <div class="col-lg-12">
@@ -567,7 +584,7 @@ h3 {
             {% else %}
               {% if resume_url %}
                 <div class="thumbnail">
-                  <img style="border:1px solid #acacac" src="{{resume_url}}" alt="Resume">
+                  <img src="{{resume_url}}" alt="Resume">
                   <div class="caption text-center">
                     <p><a href="/showcase/" class="btn btn-done" role="button">Edit Profile</a></p>
                   </div>
