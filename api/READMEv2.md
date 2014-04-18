@@ -2,7 +2,7 @@
 
 1. [Applications](#application)
 2. [Companies](#company)
-3. [Events](#event)
+3. [Fairs](#fair)
 4. [Favorites](#favorite)
 5. [Hunts](#hunt)
 6. [Jobs](#job)
@@ -47,17 +47,9 @@
 * intro_video
 * timestamp
 
-##<a id="event"></a>Event
+##<a id="fair"></a>Fair
 
 	GET, POST in the future
-
-###Event
-* id
-* name
-* timestamp
-* time_start
-* time_end
-* logo
 
 ###Fair
 * id
@@ -67,7 +59,6 @@
 * venue
 * rooms (full info)
 * logo
-* event (full info)
 * resume_drop
 * organizers (full info)
 * sponsors (full info)

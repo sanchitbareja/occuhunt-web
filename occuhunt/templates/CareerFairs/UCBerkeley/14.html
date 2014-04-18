@@ -1,0 +1,412 @@
+{% extends "base.html" %}
+{% load static from staticfiles %}
+{% load i18n %}
+{% load url from future %}
+
+{% block head_title_base %}Upcoming Fairs{% endblock %}
+
+
+{% block extra_style %}
+<link href="{% static 'occuhunt/css/index.css' %}" rel="stylesheet">
+<style type="text/css">
+.top-border{
+  border-top: 1px solid #acacac;
+}
+
+.left-border{
+  border-left: 1px solid #acacac;
+}
+
+.right-border{
+  border-right: 1px solid #acacac;
+}
+
+.bottom-border{
+  border-bottom: 1px solid #acacac;
+}
+
+.entrance {
+  background-image: url('{% static 'images/Entrance.jpg' %}');
+  background-repeat: no-repeat;
+  background-position: bottom;
+  background-size: 60px;
+}
+
+.exit {
+  background-image: url('{% static 'images/Entrance.jpg' %}');
+  background-repeat: no-repeat;
+  background-position: bottom;
+  background-size: 60px;
+}
+
+</style>
+{% endblock %}
+
+{% block extra_script %}
+<script type="text/javascript">
+  mixpanel.track_links("#mp-viewjobs", "Clicked on view jobs from modal in fair page", {'referrer': document.referrer });
+  $(document).ready(function(){
+    // enable tooltip for all the resume drops
+    $(".resume_drop").tooltip();
+
+    // check which companies user had already applied to and markk them as applied accordingly
+    getApplications();
+
+    getCompanies();
+    $('*[data-poload]').on("click", function() {
+      var e = $(this);
+      mixpanel.track('Viewed company popup from Fair Page');
+      $.ajax({
+          url: '/api/v1/companies/'+e.data('poload')+'/',
+          data: {},
+          dataType: 'json',
+          success: function(data, textStatus, jqXHR){
+            console.log(data);
+            e.unbind("click").popover({
+              html:true,
+              trigger: 'click',
+              container: $(this).attr('id'),
+              title:"<a class='btn-link pull-left' onclick='closeModal("+data['id']+")'><b>X</b></a><h3 class='text-center'>"+data["name"]+"</h3><a class='btn-link' id='modal-plus' onclick='favoriteCompanyWithId("+data['id']+",this, null);' style='right:17px; top:10px;position:absolute; float:right; '><span class='glyphicon glyphicon-plus'></span></a>",
+              content:"<div class='popover-company-info'><img id='background_banner' src='"+data["banner_image"]+"'/><img id='foreground_banner' src='"+data['logo']+"'><p>"+data["company_description"].slice(0,140)+"...</p><a class='btn btn-done' id='mp-viewjobs' href='/company/"+data['id']+"/'>VIEW JOBS</a></div>"
+            }).popover("show");
+          },
+      });
+    });
+
+    $('.resume_drop').on("click", function() {
+      var e = $(this);
+      var company_id = $(this).attr("value");
+      var user_id = $("#user_id").val();
+      var fair_id = $("#fair_id").val();
+      var company_name = $(this).attr("name")
+      $("#company_id").attr('value',company_id);
+      
+      // show the modal with appropriate text
+      $(".companyTitle").text(company_name);
+      $("#resumeDropModal").modal("show");
+
+    });
+
+    $('#resume_drop_btn').on("click", function() {
+      var e = $(this);
+      var company_id = $(this).attr("value");
+      var user_id = $("#user_id").val();
+      var fair_id = $("#fair_id").val();
+      var company_name = $(this).attr("name")
+      $("#company_id").attr('value',company_id);
+      
+      // show the modal with appropriate text
+      $(".companyTitle").text(company_name);
+      $("#resumeDropModal").modal("show");
+
+    });
+
+    $("#submitResumeDrop").on("click", function() {      
+      var user_id = $("#user_id").val();
+      var fair_id = $("#fair_id").val();
+      var company_id = $("#company_id").val();
+      var position = $("#companyPosition").val().join();
+      console.log(position);
+
+      // hide modal
+      $("#resumeDropModal").modal("hide");
+
+      // submit resume
+      if($("#resume_enabled").val() == 'False'){
+        $("#messages").append('<div class="alert alert-danger alert-dismissable">'+
+                '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'+
+                'Oops! You need to be logged in or have your resume uploaded to drop your resume with the employers!'+
+              '</div>');
+      } else {
+        resumeDrop(user_id, company_id, fair_id, position); 
+      }
+    });
+  });
+
+  function closeModal(id){
+    $('[data-poload='+id+']').click();
+  }
+
+  function resumeDrop(user_id, company_id, fair_id, position){
+    console.log("CONFIRMED");
+    $("#messages").append('<div class="alert alert-danger alert-dismissable">'+
+                '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'+
+                'Resume drop is now over! Please contact the recruiter individually if you met them at the event.</div>');
+    // $.ajax({
+    //       url: '/api/v1/applications/',
+    //       type:'POST',
+    //       dataType: 'json',
+    //       data: JSON.stringify({
+    //         'user_id': user_id, 
+    //         'company_id': company_id,
+    //         'fair_id': fair_id,
+    //         'position': position,
+    //         'status': 1
+    //       }),
+    //       contentType: 'application/json',
+    //       statusCode : {
+    //         201: function(data, textStatus, jsXHR){
+    //           console.log("successfully dropped resume!");
+    //           console.log(data);
+    //           console.log(textStatus);
+    //           console.log(jsXHR);
+    //           console.log($(this));
+    //           // feedback on the small dot that the resume has been submitted
+    //           $(".resume_drop[value="+company_id+"]").addClass("resume_dropped");
+
+    //           // give confirmation message about successful resume submission
+    //           $("#messages").append('<div class="alert alert-success alert-dismissable">'+
+    //             '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'+
+    //             'Good job! You <strong>successfully</strong> dropped off your resume at '+data['company']['name']+'!'+
+    //           '</div>');
+    //         },
+    //         500: function(data, textStatus, jsXHR){
+    //           console.log(data);
+    //           console.log(textStatus);
+    //           console.log(jsXHR);
+    //           // give confirmation message about successful resume submission
+    //           $("#messages").append('<div class="alert alert-danger alert-dismissable">'+
+    //             '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'+
+    //             'Oops! You need to be logged in or have your resume uploaded to drop your resume with the employers!'+
+    //           '</div>');
+    //         }
+    //       }
+    //     });
+  }
+
+  function getApplications(){
+    user_id = $("#user_id").val();
+    fair_id = $("#fair_id").val();
+    console.log("get applications");
+    $.ajax({
+      url: '/api/v1/applications/?user='+String(user_id)+'&fair='+String(fair_id),
+      type: 'GET',
+      contentType: 'application/json',
+      dataType: 'json',
+      processData: false,
+      success: function(data, textStatus, jqXHR) {
+        console.log(data);
+        console.log(textStatus);
+        console.log(jqXHR);
+        for (var i = data['response']['applications'].length - 1; i >= 0; i--) {
+          // need to check if need to display favorite or unfavorite icon
+          console.log($("a.resume_drop[value="+data['response']['applications'][i]['company']['id']+"]"));
+          $("a.resume_drop[value="+data['response']['applications'][i]['company']['id']+"]").addClass("resume_dropped");
+
+          // disable clicking
+          $("a.resume_drop[value="+data['response']['applications'][i]['company']['id']+"]").css({"pointer-events":"none","cursor":"default"});
+        }
+      },
+      dataType: 'json',
+    });
+  }
+
+  $(window).bind('scroll resize', function() {
+      $('#filter_bar').css('top', $(this).scrollTop());
+  });
+
+</script>
+{% endblock %}
+
+{% block content %}
+
+<input type="hidden" name="fair_id" value="14" id="fair_id">
+<input type="hidden" name="company_id" value="0" id="company_id">
+<input type="hidden" name="resume_enabled" value="{{resume_url}}" id="resume_enabled">
+
+  <!-- Main content - PBL Career Fair -->
+  <div id="messages">
+    <div class="alert alert-success alert-dismissable">
+      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+      Resume Drop is now over.
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
+      <!-- Information about the pbl career fair -->
+      <div class="row visible-lg">
+        <div class="col-lg-4">
+          <h4 align="left">April 7th, 6 - 8.30pm</h4>
+        </div>
+        <div class="col-lg-4">
+          <h4 class="text-center venue-center">PBL Career Fair</h4>
+        </div>
+        <div class="col-lg-4">
+          <h4 class="text-right">Alumni House</h4>
+        </div>
+      </div>
+      <div class="row hidden-lg">
+          <h4 align="left">April 7th, 6 - 8.30pm, PBL Career Fair, Alumni House</h4>
+      </div>
+      <div class="row">
+        <div class="col-lg-12">
+          <p class="text-center room-top">Alumni House</p>
+          <table>
+            <tbody><tr>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map" class="top-border left-border"></td>
+              <td id="career_fair_map" class="top-border"><a class="btn btn-other fair-table vcenter" data-poload="720" value="company_720">Asian&nbsp;American&nbsp;Donor&nbsp;Program&nbsp;</a><a class="resume_drop" value="720" name="AADP" data-toggle="tooltip" data-placement="top" title="Click to drop resume"></a></td>
+              <td id="career_fair_map" class="top-border"></td>
+              <td id="career_fair_map" class="top-border"><a class="btn btn-other fair-table vcenter" data-poload="207" value="company_207">&nbsp;Accenture&nbsp;&nbsp;</a><a class="resume_drop" value="207" name="Accenture" data-toggle="tooltip" data-placement="top" title="Click to drop resume"></a></td>
+              <td id="career_fair_map" class="top-border"><a class="btn btn-other fair-table vcenter" data-poload="547" value="company_547">&nbsp;&nbsp;&nbsp;&nbsp;Target&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a><a class="resume_drop" value="547" name="Target" data-toggle="tooltip" data-placement="top" title="Click to drop resume"></a></td>
+              <td id="career_fair_map" class="top-border"><a class="btn btn-other fair-table vcenter" data-poload="546" value="company_546">&nbsp;Prudential&nbsp;Financial&nbsp;</a><a class="resume_drop" value="546" name="Prudential Financial" data-toggle="tooltip" data-placement="top" title="Click to drop resume"></a></td>
+              <td id="career_fair_map" class="top-border right-border"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+            </tr><tr>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map" class="left-border"><a class="btn btn-other fair-table vcenter" data-poload="510" value="company_510">Fisher Investments</a><a class="resume_drop" value="510" name="Fisher Investments" data-toggle="tooltip" data-placement="top" title="Click to drop resume"></a></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map" class="right-border"><a class="btn btn-other fair-table vcenter" data-poload="721" value="company_721">&nbsp;&nbsp;&nbsp;&nbsp;Mounza&nbsp;&nbsp;&nbsp;&nbsp;</a><a class="resume_drop" value="721" name="Mounza" data-toggle="tooltip" data-placement="top" title="Click to drop resume"></a></td>
+              <td id="career_fair_map"></td>
+            </tr><tr>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map" class="left-border"><a class="btn btn-other fair-table vcenter" data-poload="718" value="company_718">BVOH Finance & Accounting</a><a class="resume_drop" value="718" name="BVOH Finance & Accounting" data-toggle="tooltip" data-placement="top" title="Click to drop resume"></a></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map" class="right-border"><a class="btn btn-other fair-table vcenter" data-poload="722" value="company_722">&nbsp;&nbsp;ClearSlide&nbsp;&nbsp;&nbsp;&nbsp;</a><a class="resume_drop" value="722" name="ClearSlide" data-toggle="tooltip" data-placement="top" title="Click to drop resume"></a></td>
+              
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+            </tr><tr>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map" class="left-border"><a class="btn btn-other fair-table vcenter" data-poload="723" value="company_723">Go Beyond U</a><a class="resume_drop" value="723" name="Go Beyond U" data-toggle="tooltip" data-placement="top" title="Click to drop resume"></a></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map" class="right-border"><a class="btn btn-other fair-table vcenter" data-poload="719" value="company_719">&nbsp;&nbsp;Morgan&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Stanley&nbsp;&nbsp;&nbsp;&nbsp;</a><a class="resume_drop" value="719" name="Morgan Stanley" data-toggle="tooltip" data-placement="top" title="Click to drop resume"></a></td>
+              <td id="career_fair_map"></td>
+              
+              <td id="career_fair_map"></td>
+            </tr><tr>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map" class="left-border"><a class="btn btn-other fair-table vcenter" data-poload="372" value="company_372">Northwestern Mutual</a><a class="resume_drop" value="372" name="Northwestern Mutual" data-toggle="tooltip" data-placement="top" title="Click to drop resume"></a></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map" class="right-border"><a class="btn btn-other fair-table vcenter" data-poload="724" value="company_724">Stem Compass</a><a class="resume_drop" value="724" name="Stem Compass" data-toggle="tooltip" data-placement="top" title="Click to drop resume"></a></td>              
+              <td id="career_fair_map"></td>
+            </tr><tr>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map" class="left-border"><a class="btn btn-other fair-table vcenter" data-poload="725" value="company_725">TEKSystems</a><a class="resume_drop" value="725" name="TEKSystems" data-toggle="tooltip" data-placement="top" title="Click to drop resume"></a></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map" class="entrance"></td>
+              <td id="career_fair_map" class="entrance"></td>
+              <td id="career_fair_map" class="right-border bottom-border"></td>
+              
+              <td id="career_fair_map"></td>
+            </tr><tr>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map" class="bottom-border left-border"></td>
+              <td id="career_fair_map" class="bottom-border"></td>
+              <td id="career_fair_map" class="bottom-border"></td>
+              <td id="career_fair_map" class="bottom-border right-border"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"><a class="btn btn-other fair-table vcenter">Register!</a></td>
+              <td id="career_fair_map"></td>
+            </tr>
+          </tbody></table>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 hidden-xs">
+      {% if request.user.is_anonymous %}
+        <div class="thumbnail">
+          <img src="{% static 'images/example-resume.png' %}">
+          <div class="caption text-center">
+            <p><a href="/login/linkedin/?next={{request.path}}" class="btn btn-login" style="font-weight:500;">LOG IN</a></p>
+            <p>Login to activate Resume Drop</p>
+          </div>
+        </div>
+      {% else %}
+        {% if resume_url %}
+          <div class="thumbnail">
+            <img src="{{resume_url}}" alt="Resume">
+            <div class="caption text-center">
+              <p><a href="/showcase/" class="btn btn-done" role="button">Edit Profile</a></p>
+            </div>
+          </div>
+        {% else %}
+          <div class="thumbnail">
+            <img src="{% static 'images/example-resume.png' %}" alt="Resume">
+            <div class="caption text-center">
+              <p><a href="/showcase/" class="btn btn-done" role="button">Add Resume</a></p>
+              <p>We don't have your resume on file. Upload it to be able to drop them off at the various recruiters</p>
+            </div>
+          </div>
+        {% endif %}
+      {% endif %}
+      <br />
+      <div class="thumbnail">
+        <p class="text-center">Sponsored by</p>
+        <a href="http://www.berkeleypbl.com/"><img src="http://static.wixstatic.com/media/c72ae3_d1e2165ad74442d49ef14d3370883410.png_srz_p_139_115_75_22_0.50_1.20_0.00_png_srz" alt="PBL"></a>
+      </div>
+    </div>
+  </div>
+    
+<!-- Modal -->
+<div class="modal fade" id="resumeDropModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Resme Drop to <span class="companyTitle"></span></h4>
+      </div>
+      <div class="modal-body">
+        <p>Which positions are you interested in with <span class="companyTitle"></span>?</p>
+        <select multiple class="form-control" id="companyPosition">
+          <option>Software Engineering</option>
+          <option>Product Manager</option>
+          <option>UI/UX Engineering</option>
+          <option>Marketing</option>
+          <option>Business Development</option>
+          <option>Growth Hacker</option>
+          <option>Accountant</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-done" id="submitResumeDrop">Resume Drop</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

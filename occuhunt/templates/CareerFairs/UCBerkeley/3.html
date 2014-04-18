@@ -1,0 +1,295 @@
+{% extends "base.html" %}
+{% load static from staticfiles %}
+{% load i18n %}
+{% load url from future %}
+
+{% block head_title_base %}Upcoming Fairs{% endblock %}
+
+
+{% block extra_style %}
+<link href="{% static 'occuhunt/css/index.css' %}" rel="stylesheet">
+<style type="text/css">
+.top-border{
+  border-top: 1px solid #acacac;
+}
+
+.left-border{
+  border-left: 1px solid #acacac;
+}
+
+.right-border{
+  border-right: 1px solid #acacac;
+}
+
+.bottom-border{
+  border-bottom: 1px solid #acacac;
+}
+
+.entrance {
+  background-image: url('{% static 'images/Entrance.jpg' %}');
+  background-repeat: no-repeat;
+  background-position: bottom;
+  background-size: 60px;
+}
+
+.exit {
+  background-image: url('{% static 'images/Entrance.jpg' %}');
+  background-repeat: no-repeat;
+  background-position: bottom;
+  background-size: 60px;
+}
+
+</style>
+{% endblock %}
+
+{% block extra_script %}
+<script type="text/javascript">
+  mixpanel.track_links("#mp-viewjobs", "Clicked on view jobs from modal in fair page", {'referrer': document.referrer });
+  $(document).ready(function(){
+    getCompanies();
+    $('*[data-poload]').on("click", function() {
+      var e = $(this);
+      mixpanel.track('Viewed company popup from Fair Page');
+      $.ajax({
+          url: '/api/v1/companies/'+e.data('poload')+'/',
+          data: {},
+          dataType: 'json',
+          success: function(data, textStatus, jqXHR){
+            console.log(data);
+            e.unbind("click").popover({
+              html:true,
+              trigger: 'click',
+              container: $(this).attr('id'),
+              title:"<a class='btn-link pull-left' onclick='closeModal("+data['id']+")'><b>X</b></a><h3 class='text-center'>"+data["name"]+"</h3><a class='btn-link' id='modal-plus' onclick='favoriteCompanyWithId("+data['id']+",this, null);' style='right:17px; top:10px;position:absolute; float:right; '><span class='glyphicon glyphicon-plus'></span></a>",
+              content:"<div class='popover-company-info'><img id='background_banner' src='"+data["banner_image"]+"'/><img id='foreground_banner' src='"+data['logo']+"'><p>"+data["company_description"].slice(0,140)+"...</p><a class='btn btn-done' id='mp-viewjobs' href='/company/"+data['id']+" /'>VIEW JOBS</a></div>"
+            }).popover("show");
+          },
+      });
+    });
+  });
+
+  function closeModal(id){
+    $('[data-poload='+id+']').click();
+  }
+
+  $(window).bind('scroll resize', function() {
+      $('#filter_bar').css('top', $(this).scrollTop());
+  });
+
+</script>
+{% endblock %}
+
+{% block content %}
+  <div class="col-lg-1 visible-lg" style="left:20px;padding-top:42px;position:absolute;">
+    <div class="btn-group-vertical" id="filter_bar" data-toggle="buttons" style="top: 0px;">
+      <button type="button" class="btn btn-categorydisabled favorited-company btn-sm simplebox" onclick="toggleTable('.favorited-company');" style="background-image:url('{% static 'images/other/fold.png' %}');">Favorites</button>
+      <button type="button" class="btn btn-engineering btn-sm simplebox" onclick="toggleTable('.btn-engineering');">Engineering</button>
+      <button type="button" class="btn btn-finance btn-sm simplebox" onclick="toggleTable('.btn-finance');">Finance</button>
+      <button type="button" class="btn btn-government btn-sm simplebox" onclick="toggleTable('.btn-government');">Government</button>
+      <button type="button" class="btn btn-health btn-sm simplebox" onclick="toggleTable('.btn-health');">Health</button>
+      <button type="button" class="btn btn-technology btn-sm simplebox" onclick="toggleTable('.btn-technology');">Technology</button>
+      <button type="button" class="btn btn-other btn-sm simplebox" onclick="toggleTable('.btn-other');">Other</button>
+    </div>
+  </div>
+
+  <!-- Main content - Early Bird Internship Open House -->
+  <div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+      <!-- Information about the early bird internship career fair -->
+      <div class="row visible-lg">
+        <div class="col-lg-4">
+          <h4 align="left">October 17th, 11am - 3pm</h4>
+        </div>
+        <div class="col-lg-4">
+          <h4 class="text-center venue-center">Early Bird Internship Fair</h4>
+        </div>
+        <div class="col-lg-4">
+          <h4 class="text-right">Recreational Sports Facility</h4>
+        </div>
+      </div>
+      <div class="row hidden-lg">
+          <h4 align="left">Oct 17, 11am-3pm, Early Bird Internship Fair, RSF - Field House Gym</h4>
+      </div>
+      <div class="row">
+        <div class="col-lg-12">
+          <p class="text-center room-top">Field House Gym</p>
+          <table>
+            <tbody><tr>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"><a class="btn btn-engineering fair-table vcenter" data-poload="357" value="company_357">Dell</a></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"><a class="btn btn-government fair-table vcenter" data-poload="386" value="company_386">USDA-NRCS</a></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"><a class="btn btn-other fair-table vcenter" data-poload="352" value="company_352">Berkeley Study Abroad</a></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"><a class="btn btn-government fair-table vcenter" data-poload="383" value="company_383">U.S. Department of State</a></td>
+              <td id="career_fair_map"></td>
+            </tr><tr>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="353" value="company_353">BMC Software</a></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+            </tr><tr>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="373" value="company_373">Ooyala</a></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"><a class="btn btn-government fair-table vcenter" data-poload="384" value="company_384">United States Marine Corps</a></td>
+              <td id="career_fair_map"><a class="btn btn-government fair-table vcenter" data-poload="364" value="company_364">JusticeCorps</a></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"><a class="btn btn-government fair-table vcenter" data-poload="374" value="company_374">Matsui Ctr for Politics & Public Service</a></td>
+              <td id="career_fair_map"><a class="btn btn-other fair-table vcenter">UCB Washington</a></td>
+            </tr><tr>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"><a class="btn btn-other fair-table vcenter">Logitech</a></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"><a class="btn btn-finance fair-table vcenter" data-poload="381" value="company_381">The Climate Corporation</a></td>
+              <td id="career_fair_map"><a class="btn btn-other fair-table vcenter">Peace Corps</a></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"><a class="btn btn-government fair-table vcenter" data-poload="356" value="company_356">Consumer Financial Protection Bureau</a></td>
+              <td id="career_fair_map"><a class="btn btn-government fair-table vcenter" data-poload="385" value="company_385">U.C. Center Sacramento</a></td>
+            </tr><tr>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"><a class="btn btn-other fair-table vcenter">Nook</a></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="363" value="company_363">imo.im</a></td>
+              <td id="career_fair_map"><a class="btn btn-other fair-table vcenter" data-poload="366" value="company_366">KQED Inc.</a></td>
+            </tr><tr>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="263" value="company_263">GoDaddy.com</a></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"><a class="btn btn-other fair-table vcenter" data-poload="350" value="company_350">Acumen, LLC</a></td>
+              <td id="career_fair_map"><a class="btn btn-health fair-table vcenter" data-poload="365" value="company_365">Kaiser Permanente</a></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"><a class="btn btn-finance fair-table vcenter" data-poload="390" value="company_390">ZS Associates</a></td>
+              <td id="career_fair_map"><a class="btn btn-finance fair-table vcenter" data-poload="372" value="company_372">Northwestern Mutual</a></td>
+            </tr><tr>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="302" value="company_302">Salesforce.com</a></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"><a class="btn btn-health fair-table vcenter" data-poload="367" value="company_367">Life Technologies</a></td>
+              <td id="career_fair_map"><a class="btn btn-health fair-table vcenter" data-poload="368" value="company_368">Maximus</a></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"><a class="btn btn-health fair-table vcenter" data-poload="380" value="company_380">Stryker</a></td>
+              <td id="career_fair_map"><a class="btn btn-other fair-table vcenter">Target</a></td>
+            </tr><tr>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"><a class="btn btn-engineering fair-table vcenter" data-poload="377" value="company_377">Smith &amp; Associates</a></td>
+            </tr><tr>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"><a class="btn btn-finance fair-table vcenter" data-poload="371" value="company_371">Nielsen</a></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="376" value="company_376">SAP Americas</a></td>
+              <td id="career_fair_map"><a class="btn btn-health fair-table vcenter" data-poload="369" value="company_369">McKesson </a></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"><a class="btn btn-other fair-table vcenter" data-poload="375" value="company_375">Ross Stores, Inc</a></td>
+              <td id="career_fair_map"><a class="btn btn-other fair-table vcenter">Safeway</a></td>
+            </tr><tr>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"><a class="btn btn-finance fair-table vcenter" data-poload="359" value="company_359">EDF Trading North America</a></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="342" value="company_342">LiveRamp</a></td>
+              <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="389" value="company_389">Zendesk</a></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"><a class="btn btn-finance fair-table vcenter" data-poload="388" value="company_388">WTAS LLC</a></td>
+              <td id="career_fair_map"><a class="btn btn-other fair-table vcenter" data-poload="361" value="company_361">Fine Arts Museums of SF</a></td>
+            </tr><tr>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="289" value="company_289">Palantir Technologies</a></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="222" value="company_222">Box</a></td>
+              <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="382" value="company_382">Turn Inc</a></td>
+              <td id="career_fair_map"></td>                    
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"><a class="btn btn-finance fair-table vcenter" data-poload="379" value="company_379">Stifel Financial Corporation</a></td>
+              <td id="career_fair_map"><a class="btn btn-health fair-table vcenter" data-poload="387" value="company_387">Walgreens</a></td>
+            </tr><tr>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>                    
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td> 
+              <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="279" value="company_279">Macys.com</a></td>
+              <td id="career_fair_map"><a class="btn btn-finance fair-table vcenter" data-poload="378" value="company_378">State Street Corporation</a></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>                    
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"><a class="btn btn-other fair-table vcenter" data-poload="370" value="company_370">NBCUniversal</a></td>
+              <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="358" value="company_358">DigitasLBi</a></td>
+            </tr><tr>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="318" value="company_318">IXL Learning</a></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"><a class="btn btn-other fair-table vcenter" data-poload="279" value="company_279">Macy's Inc.</a></td>
+              <td id="career_fair_map"><a class="btn btn-technology fair-table vcenter" data-poload="281" value="company_281">Microsoft</a></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"><a class="btn btn-finance fair-table vcenter" data-poload="245" value="company_245">Chevron Corporation (Finance)</a></td>
+              <td id="career_fair_map"><a class="btn btn-other fair-table vcenter" data-poload="360" value="company_360">Enterprise Holdings</a></td>
+            </tr><tr>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"></td>
+              <td id="career_fair_map"><a class="btn btn-other fair-table vcenter" data-poload="351" value="company_351">Altria Group</a></td>
+            </tr>
+          </tbody></table>
+        </div>
+      </div>
+    </div>
+  </div>
+    
+
+{% endblock %}

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from fairs.models import Event, Fair, Room, Map, Table, Fitting
+from fairs.models import Location, Infosession, ThreeFiveSeven, Fair, Room, Map, Table, Fitting
 
 #register the admin site
 class FittingAdmin(admin.ModelAdmin):
@@ -22,6 +22,14 @@ class FairAdmin(admin.ModelAdmin):
 	list_display = ['id','time_start','time_end','name','logo','venue','get_rooms']
 admin.site.register(Fair, FairAdmin)
 
-class EventAdmin(admin.ModelAdmin):
-	list_display = ['id','time_start','time_end','name']
-admin.site.register(Event,EventAdmin)
+class LocationAdmin(admin.ModelAdmin):
+	list_display = ['id', 'name', 'lat', 'lng']
+admin.site.register(Location, LocationAdmin)
+
+class InfosessionAdmin(admin.ModelAdmin):
+	list_display = ['id', 'name', 'company', 'fair']
+admin.site.register(Infosession, InfosessionAdmin)
+
+class ThreeFiveSevenAdmin(admin.ModelAdmin):
+	list_display = ['id', 'name', 'fair']
+admin.site.register(ThreeFiveSeven, ThreeFiveSevenAdmin)

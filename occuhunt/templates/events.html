@@ -1,0 +1,160 @@
+{% extends "base.html" %}
+{% load static from staticfiles %}
+{% load i18n %}
+{% load url from future %}
+
+{% block head_title_base %}Upcoming Fairs{% endblock %}
+
+
+{% block extra_style %}
+
+<link href="{% static '/occuhunt/css/index.css' %}" rel="stylesheet">
+<style type="text/css">
+.media-body {
+  display: inline-block;
+}
+
+.event-stats {
+  float:right;
+  display: inline-block;
+  height: 64px;
+  background-color: #759fc7;
+  color: white;
+  padding-right: 10px;
+  padding-left: 10px;
+  border-radius:5px;
+}
+
+.event-stats-number {
+  margin-top: 10px;
+  margin-bottom: 0px;
+}
+
+.event-stats-number {
+
+}
+
+.event-feature {
+  display: inline-block;
+  vertical-align: top;
+  height: 64px;
+  background-color: #ff8700;
+  color: white;
+  padding-right: 10px;
+  padding-left: 10px;
+  border-radius: 32px;
+}
+
+</style>
+
+{% endblock %}
+
+{% block extra_script %}
+  <script type="text/javascript">
+    function initialize() {
+      var mapOptions = {
+        center: new google.maps.LatLng({{lat_avg}}, {{lng_avg}}),
+        zoom: 14
+      };
+      var map = new google.maps.Map(document.getElementById("map-canvas"),
+          mapOptions);
+
+      {% for event in events %}
+        {% if event.location.lat %}
+        var contentString_{{event.id}} = '<div>'+
+            '<div class="media">'+
+            '<a class="pull-left" href="#">'+
+            '<img class="media-object event-image" src="{{event.thumbnail}}" alt="UC Berkeley">'+
+            '</a>'+
+            '<div class="media-body">'+
+            '<h4 class="media-heading"><a href="/fair/UCBerkeley/Spring-Career-Fair-Spring-2014/" class="event-header">{{event.name}}</a></h4>'+
+            '{{event.time_start|date:"D, j N P"}} - {{event.time_end|date:"D, j N, P"}}<br />'+
+            '{{event.location.name}}'+
+            '</div>'+
+            '{% if event.resume_drop %}<div style="float:right"><div class="event-feature text-center"><h3 class="event-stats-number">DROP</h3><p class="event-stats-word">Resume</p></div></div>{% endif %}'+
+            '</div></div>';
+
+        var infowindow_{{event.id}} = new google.maps.InfoWindow({
+            content: contentString_{{event.id}}
+        });
+
+        var marker_{{event.id}} = new google.maps.Marker({
+            position: new google.maps.LatLng({{event.location.lat}}, {{event.location.lng}}),
+            map: map,
+            title: 'Uluru (Ayers Rock)'
+        });
+        google.maps.event.addListener(marker_{{event.id}}, 'click', function() {
+          infowindow_{{event.id}}.open(map,marker_{{event.id}});
+        });
+        {% endif %}
+      {% endfor %}
+    }
+
+    function loadScript() {
+      var script = document.createElement('script');
+      script.type = 'text/javascript';
+      script.src = 'https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&' +
+          'callback=initialize';
+      document.body.appendChild(script);
+    }
+
+
+
+    window.onload = loadScript;
+  </script>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-lg-12" style="margin:0px;padding:0px;">
+    <div style="height:300px;width:100%;" id="map-canvas"/>
+  </div>
+</div>
+<br />
+<div class="row">
+  <div class="col-lg-2 text-right">
+    <a href="/events/" id="mp-viewfair" class="btn btn-link active">Events</a><br />
+    <a href="/search/" id="mp-viewsearch" class="btn btn-link">Companies</a><br />
+  </div>
+  <div class="col-lg-10">
+    {% regroup events by time_start|date:"F" as events_by_month %}
+    {% for events_for_a_month in events_by_month %}
+      <div class="panel panel-event">
+        <div class="panel-heading">{{ events_for_a_month.grouper }}</div>
+        <div class="panel-body">
+          {% for event in events_for_a_month.list %}
+            <div class="media">
+              <a class="pull-left" href="#">
+                <img class="media-object event-image" src="{{event.logo}}" alt="UC Berkeley">
+              </a>
+              <div class="media-body">
+                {% if event.event_type == 1 %}
+                  {{event.infosession.all}}
+                  <h4 class="media-heading"><a href="/infosession/{{event.infosession.company.name}}/{{event.infosession.id}}/" class="event-header">{{event.name}}</a></h4>
+                {% endif %}
+                {% if event.event_type == 2 %}
+                  <h4 class="media-heading"><a href="/357/{{event.threeFiveSeven.id}}/" class="event-header">{{event.name}}</a></h4>
+                {% endif %}
+                {% if event.event_type == 3 %}
+                  <h4 class="media-heading"><a href="/event-fair/{{event.name|slugify}}/{{event.id}}/" class="event-header">{{event.name}}</a></h4>
+                {% endif %}
+                {{event.time_start|date:"D, j N P"}} - {{event.time_end|date:"D, j N, P"}}<br />
+                {{event.location.name}}
+              </div>
+              {% if event.resume_drop %}
+                <div style="float:right">
+                  <div class="event-feature text-center">
+                    <h3 class="event-stats-number">DROP</h3>
+                    <p class="event-stats-word">Resume</p>
+                  </div>
+                </div>
+              {% endif %}
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+{% endblock %}

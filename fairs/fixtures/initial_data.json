@@ -1,0 +1,11 @@
+[
+  {
+    "model": "fairs.location",
+    "pk": 1,
+    "fields": {
+      "name": "UC Berkeley",
+      "lat": 37.87,
+      "lng": -122.2705
+    }
+  }
+]

@@ -21,7 +21,7 @@ from haystack.query import SearchQuerySet
 from django.db.models import Q
 from companies.models import Company
 from favorites.models import Favorite
-from fairs.models import Event, Fair, Room, Map, Table, Fitting
+from fairs.models import Fair, Room, Map, Table, Fitting
 from users.models import User, Student, Recruiter
 from resumes.models import Resume, Comment
 from recommendations.models import Recommendation, Request
@@ -158,35 +158,7 @@ class UserResource(ModelResource):
     def determine_format(self, request):
         return 'application/json'
 
-class EventResource(ModelResource):
-    class Meta:
-        queryset = Event.objects.all()
-        resource_name = 'events'
-        authorization = DjangoAuthorization()
-        authentication = OAuth20Authentication()
-
-        allowed_methods = ['get']
-        filtering = {
-            "name": ("exact"), "time_start": ALL_WITH_RELATIONS, "time_end": ALL_WITH_RELATIONS
-        }
-
-    def dehydrate(self, bundle):
-        """
-        Return a list of events formatted according to what the developer expects
-        """
-        return bundle
-
-    def alter_list_data_to_serialize(self, request, data):
-        # rename "objects" to "response"
-        data['response'] = {"events":data['objects']}
-        del(data['objects'])
-        return data
-
-    def determine_format(self, request):
-        return 'application/json'
-
 class FairResource(ModelResource):
-    event = fields.OneToOneField(EventResource, 'event', full=True)
     organizers = fields.ManyToManyField(CompanyResource, 'organizers', full=True)
     sponsors = fields.ManyToManyField(CompanyResource, 'sponsors', full=True)
 

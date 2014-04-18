@@ -4,7 +4,7 @@ from companies.views import home, splash, companies, company, search
 from resumes.views import resume_feed, sign_s3_upload, submit_resume, individual_resume
 from jobs.views import favorites, apply_jobs, match_jobs
 from recommendations.views import recommendation_main, recommendation_new, recommendation_new_with_request, recommendation_requests, recommendation_requests_new, showcase_notifications, showcase_applications
-from fairs.views import create_fair, StartupCareerFairSpring2014View, ISchoolInfoCampView, PBLCareerFairSpring2014View, Dropin357View, Dropin3572View, Dropin3573View, GestureKitInfosession15April2014View
+from fairs.views import create_fair, all_events, career_fair_handler, infosession_handler, three_five_seven_handler, StartupCareerFairSpring2014View, ISchoolInfoCampView, PBLCareerFairSpring2014View, Dropin357View, Dropin3572View, Dropin3573View, GestureKitInfosession15April2014View
 from recruiters.views import recruiter_splash, recruiter_hire, recruiter_market, recruiter_sell, recruiter_sponsorship_request, download_pdf, recruiter_login, recruiter_login_third_party, recruiter_analytics, download_excel_to_export
 from django.conf import settings
 from django.conf.urls.static import static
@@ -35,13 +35,12 @@ v1_api.register(JobResource())
 
 # API
 from tastypie.api import Api
-from api.apiv2 import CompanyResource, UserResource, EventResource, FairResource, FavoriteResource, HuntResource, JobResource, NotificationResource, CommentResource, ResumeResource, ApplicationResource
+from api.apiv2 import CompanyResource, UserResource, FairResource, FavoriteResource, HuntResource, JobResource, NotificationResource, CommentResource, ResumeResource, ApplicationResource
 from api.views import logout_view, login_error, feedback_form
 
 v2_api = Api(api_name='v2')
 v2_api.register(CompanyResource())
 v2_api.register(UserResource())
-v2_api.register(EventResource())
 v2_api.register(FairResource())
 v2_api.register(FavoriteResource())
 v2_api.register(HuntResource())
@@ -134,6 +133,13 @@ urlpatterns = patterns('',
     url(r'^static/faircoords/11_5.json', RedirectView.as_view(url='https://occuhuntstatic.s3.amazonaws.com/faircoords/11_5.json')),
     url(r'^static/faircoords/12_6.json', RedirectView.as_view(url='https://occuhuntstatic.s3.amazonaws.com/faircoords/12_6.json')),
     url(r'^static/faircoords/13_2.json', RedirectView.as_view(url='https://occuhuntstatic.s3.amazonaws.com/faircoords/13_2.json')),
+
+    # Test urls
+    url(r'^events/$', all_events, name='events'),
+    url(r'^event-fair/([A-Za-z0-9_-]+)/([0-9]+)/', career_fair_handler, name="career_fair_handler"),
+    url(r'^infosession/([A-Za-z0-9_-]+)/([0-9]+)/', infosession_handler, name="infosession_handler"),
+    url(r'^357/([0-9]+)/', three_five_seven_handler, name="three_five_seven_handler"),
+
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
