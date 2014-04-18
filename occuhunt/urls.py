@@ -51,7 +51,6 @@ v2_api.register(ResumeResource())
 v2_api.register(ApplicationResource())
 
 urlpatterns = patterns('',
-    url(r'^home/$', home, name='home'),
     url(r'^$', splash, name='splash'),
     url(r'^company/(.+)/$', company, name='company'),
     url(r'^search/$', search, name='search'),

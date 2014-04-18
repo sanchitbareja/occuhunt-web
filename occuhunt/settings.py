@@ -215,7 +215,7 @@ AUTHENTICATION_BACKENDS = (
 )
 
 LOGIN_URL = '/login/linkedin/'
-LOGIN_REDIRECT_URL = '/home/'
+LOGIN_REDIRECT_URL = '/events/'
 LOGIN_ERROR_URL = '/login-error/'
 AUTH_USER_MODEL = 'users.User'
 SOCIAL_AUTH_USER_MODEL = AUTH_USER_MODEL

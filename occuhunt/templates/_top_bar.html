@@ -33,7 +33,7 @@
       </ul>
       <ul class="nav navbar-nav navbar-right">
         {% if user.is_authenticated %}
-        <li><a href="/home/" id="mp-viewdiscover">EVENTS</a></li>
+        <li><a href="/events/" id="mp-viewdiscover">EVENTS</a></li>
         <li><a href="/plan/resume-feed/" id="mp-viewresumefeed">RESUME FEEDBACK</a></li>
         <li><a href="/showcase/">PROFILE</a></li>
         <li class="dropdown">
@@ -46,7 +46,7 @@
         </li>
         {% else %}
           {% if request.path == '/' %}
-            <li><div style="height:24px;margin-top:7px;"><a href="/login/linkedin/?next=/home/" id="mp-loggedin" class="btn btn-login" style="font-weight:500;">LOG IN / SIGN UP</a></div></li>
+            <li><div style="height:24px;margin-top:7px;"><a href="/login/linkedin/?next=/events/" id="mp-loggedin" class="btn btn-login" style="font-weight:500;">LOG IN / SIGN UP</a></div></li>
           {% else %}
             <li><div style="height:24px;margin-top:7px;"><a href="/login/linkedin/?next={{request.path}}" id="mp-loggedin" class="btn btn-login" style="font-weight:500;">LOG IN / SIGN UP</a></div></li>
           {% endif %}
