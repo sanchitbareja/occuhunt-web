@@ -62,6 +62,9 @@ function get_candidates() {
   applicants = [];
   clear_candidates();
   fair_id = $("#filter_event").val();
+  degree_id = $("#degree_type").val();
+  major_id = $("#major_type").val();
+  grad_year = $("#grad_year").val();
   set_fair_id();
   // <option value="1">Applicants that are awaiting response</option>
   // <option value="2">Applicants I've talked to</option>
@@ -85,6 +88,15 @@ function get_candidates() {
   } else {
     url = '/api/v1/applications/?fair_id='+fair_id+'&unique_students=true';
     data_to_send = {'fair_id':fair_id, 'unique_students':true};
+  }
+  if(degree_id){
+    url = url+'&degree_type='+degree_id;
+  }
+  if(major_id){
+    url = url+'&major='+major_id;
+  }
+  if(grad_year){
+    url = url+'&grad_year='+grad_year;
   }
   $.ajax({
     url: url,
@@ -205,7 +217,6 @@ function accept_candidate(application_id){
       $("#applicant_list_id_"+String(application_id)).next().click();
       $("#applicant_list_id_"+String(application_id)).remove();
 
-      alert("changes saved!");
     }
   });
 }
@@ -224,7 +235,6 @@ function reject_candidate(application_id){
       // remove person from list dom and send it to 
       $("#applicant_list_id_"+String(application_id)).next().click();
       $("#applicant_list_id_"+String(application_id)).remove();
-      alert("changes saved!");
     }
   });
 }
@@ -285,7 +295,8 @@ function search_applicants(){
     // get applicants by first_name, last_name and email
     applicants_sh = _.map(applicants,function(applicant){ 
       app_id = String(applicant['id']);
-      search_text = applicant['user']["first_name"]+" "+applicant["user"]["last_name"]+" "+applicant["user"]["email"];
+      applicant_majors = applicant["user"]["majors"].join(" ");
+      search_text = applicant['user']["first_name"]+" "+applicant["user"]["last_name"]+" "+applicant["user"]["email"]+" "+applicant["user"]["graduation_year"]+" "+applicant["user"]["degree"]+" "+applicant_majors;
       dict = {};
       dict["app_id"] = app_id;
       dict["search_text"] = search_text;
@@ -293,7 +304,7 @@ function search_applicants(){
       dict["last_name"] = applicant['user']["last_name"];
       return dict;
     });
-    // search in all 3
+    // search in all fields
     matched_applicants = _.filter(applicants_sh, function(applicant){ 
       return (applicant["search_text"].toLowerCase().indexOf(query.toLowerCase()) > -1); 
     });
@@ -320,6 +331,9 @@ $(document).ready(function() {
   $("#filter_school").on("change",get_candidates);
   $("#filter_event").on("change",get_candidates);
   $("#filter_applicants").on("change",get_candidates);
+  $("#degree_type").on("change",get_candidates);
+  $("#major_type").on("change",get_candidates);
+  $("#grad_year").on("change",get_candidates);
   $("#application_note").on("keyup",enable_save_note);
 });
 
@@ -330,18 +344,18 @@ $(document).ready(function() {
 {% block content %}
 
 <div class="row">
-  <div class="col-lg-3 col-md-3 no-space">
+  <div class="col-lg-2 col-md-2 no-space">
     <label>School</label>
     <select class="form-control" id="filter_school">
       <option value="1">UC Berkeley</option>
     </select>
   </div>
-  <div class="col-lg-3 col-md-3 no-space">
+  <div class="col-lg-2 col-md-2 no-space">
     <label>Event</label>
     <select class="form-control" id="filter_event">
     </select>
   </div>
-  <div class="col-lg-3 col-md-3 no-space">
+  <div class="col-lg-2 col-md-2 no-space">
     <label>Categories</label>
     <select class="form-control" id="filter_applicants">
       <option value="1">Applicants that are awaiting response</option>
@@ -351,7 +365,111 @@ $(document).ready(function() {
       <option value="5">All event attendees</option>
     </select>
   </div>
-  <div class="col-lg-3 col-md-3 no-space">
+  <div class="col-lg-2 col-md-2 no-space">
+    <label>Majors</label>
+    <select class="form-control" id="major_type">
+      <option value=""></option>
+      <option value="1">Accounting</option>
+      <option value="2">Aerospace Engineering</option>
+      <option value="3">Anthropology</option>
+      <option value="4">Applied Mathematics</option>
+      <option value="5">Architecture</option>
+      <option value="6">Art</option>
+      <option value="7">Art History</option>
+      <option value="8">Artificial Intelligence</option>
+      <option value="9">Biochemistry</option>
+      <option value="10">Bioengineering</option>
+      <option value="11">Biology</option>
+      <option value="12">Business</option>
+      <option value="13">Chemical Engineering</option>
+      <option value="14">Chemistry</option>
+      <option value="15">Chinese</option>
+      <option value="16">Civil Engineering</option>
+      <option value="17">Cognitive Science</option>
+      <option value="18">Communications</option>
+      <option value="19">Computer Engineering</option>
+      <option value="20">Computer Science</option>
+      <option value="21">Design</option>
+      <option value="22">Economics</option>
+      <option value="23">Education</option>
+      <option value="24">Electrical Engineering</option>
+      <option value="25">Embedded Systems</option>
+      <option value="26">English</option>
+      <option value="27">Entrepreneurship</option>
+      <option value="28">Environmental Studies</option>
+      <option value="29">Finance</option>
+      <option value="30">Fine Arts</option>
+      <option value="31">French</option>
+      <option value="32">Government</option>
+      <option value="33">Graphic Design</option>
+      <option value="34">History</option>
+      <option value="35">Human Computer Interaction</option>
+      <option value="36">Industrial Engineering</option>
+      <option value="37">Informatics</option>
+      <option value="38">Information Security</option>
+      <option value="39">Information Technology</option>
+      <option value="40">International Relations</option>
+      <option value="41">Japanese</option>
+      <option value="42">Journalism</option>
+      <option value="43">Law</option>
+      <option value="44">Linguistics</option>
+      <option value="45">Literature</option>
+      <option value="46">Machine Learning</option>
+      <option value="47">Marketing</option>
+      <option value="48">Materials Science</option>
+      <option value="49">Mathematics</option>
+      <option value="50">Mechanical Engineering</option>
+      <option value="51">Molecular Biology</option>
+      <option value="52">Music</option>
+      <option value="53">Nanotechnology</option>
+      <option value="54">Neuroscience</option>
+      <option value="55">Nuclear Engineering</option>
+      <option value="56">Operations Research</option>
+      <option value="57">Philosophy</option>
+      <option value="58">Physics</option>
+      <option value="59">Political Science</option>
+      <option value="60">Project Management</option>
+      <option value="61">Psychology</option>
+      <option value="62">Robotics</option>
+      <option value="63">Sociology</option>
+      <option value="64">Software Engineering</option>
+      <option value="65">Spanish</option>
+      <option value="66">Statistics</option>
+      <option value="67">Symbolic Systems</option>
+      <option value="68">Systems Engineering</option>
+      <option value="69">Telecommunications</option>
+    </select>
+  </div>
+  <div class="col-lg-1 col-md-1 no-space">
+    <label>Degree</label>
+    <select class="form-control" id="degree_type">
+      <option value=""></option>
+      <option value="1">BA</option>
+      <option value="2">BS</option>
+      <option value="3">MS</option>
+      <option value="4">MA</option>
+      <option value="5">MBA</option>
+      <option value="6">JS</option>
+      <option value="7">PhD</option>
+      <option value="8">High School Diploma</option>
+    </select>
+  </div>
+  <div class="col-lg-1 col-md-1 no-space">
+    <label>Grad Date</label>
+    <select class="form-control" id="grad_year">
+      <option value=""></option>
+      <option value="2010">2010</option>
+      <option value="2011">2011</option>
+      <option value="2012">2012</option>
+      <option value="2013">2013</option>
+      <option value="2014">2014</option>
+      <option value="2015">2015</option>
+      <option value="2016">2016</option>
+      <option value="2017">2017</option>
+      <option value="2018">2018</option>
+    </select>
+  </div>
+  <div class="col-lg-2 col-md-2 no-space">
     <form action="/recruiter/hire/download_excel_to_export/" method="post">
       <input type="hidden" name="fair_id" value="" id="fair_id_input">
       <input type="hidden" name="company_id" value="{{request.user.recruiter.company.id}}" id="company_id_input">

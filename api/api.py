@@ -21,14 +21,14 @@ from django.db.models import Q
 from companies.models import Company
 from favorites.models import Favorite
 from fairs.models import Fair, Room
-from users.models import User, Major, Degree
+from users.models import User, Major, Degree, Student, Recruiter
 from resumes.models import Resume, Comment
 from recommendations.models import Recommendation, Request
 from hunts.models import Hunt
 from applications.models import Application
 from jobs.models import Job
 from notifications.models import Notification
-import datetime
+import datetime,json
 
 
 
@@ -97,8 +97,50 @@ class CompanyResource(ModelResource):
     def determine_format(self, request):
         return 'application/json'
 
+class StudentResource(ModelResource):
+    class Meta:
+        queryset = Student.objects.all()
+        resource_name = 'users'
+        # Add it here.
+        # authentication = BasicAuthentication()
+        authorization = DjangoAuthorization()
+
+        allowed_methods = ['get']
+        filtering = {
+            "first_name": ("exact"), "linkedin_uid": ("exact"),
+        }
+        excludes = ['password','last_login','is_active','is_admin','time_created']
+
+    def dehydrate(self, bundle):
+        """
+        Return a list of clubs formatted according to what the developer expects
+        """
+        # get resume
+        resume = Resume.objects.filter(user__id=bundle.data['id'], showcase=True, original=False).order_by('-timestamp')
+        if len(resume) > 0:
+            resume = resume[0]
+            bundle.data['resume'] = resume.url
+        else:
+            resume = None
+            bundle.data['resume'] = None
+
+        # get school
+        bundle.data['school'] = [name for name in bundle.obj.groups.values('name')]
+
+        return bundle
+
+    def alter_list_data_to_serialize(self, request, data):
+        # rename "objects" to "response"
+        data['response'] = {"users":data['objects']}
+        del(data['objects'])
+        return data
+
+    def determine_format(self, request):
+        return 'application/json'
+
 class UserResource(ModelResource):
-    recruiter_for = fields.OneToOneField(CompanyResource, 'recruiter_for', full=True, null=True)
+    recruiter_for = fields.OneToOneField(CompanyResource, 'recruiter.company', full=True, null=True)
+    graduation_year = fields.IntegerField(attribute='student.graduation_year', null=True)
     class Meta:
         queryset = User.objects.all()
         resource_name = 'users'
@@ -128,6 +170,13 @@ class UserResource(ModelResource):
         # get school
         bundle.data['school'] = [name for name in bundle.obj.groups.values('name')]
 
+        # get graduation_year, major, degree
+        # check if student
+        if bundle.obj.is_student:
+            bundle.data['graduation_year'] = bundle.obj.student.graduation_year
+            bundle.data['degree'] = bundle.obj.student.degree
+            bundle.data['majors'] = [major["major"] for major in bundle.obj.student.major.values('major')]
+            
         return bundle
 
     def alter_list_data_to_serialize(self, request, data):
@@ -553,6 +602,15 @@ class ApplicationResource(ModelResource):
                 fair_id = filters['fair_id']
                 fair = Fair.objects.get(id=fair_id)
                 sqs = sqs.filter(fair=fair)
+            if "grad_year" in filters:
+                grad_year = filters['grad_year']
+                sqs = sqs.filter(user__student__graduation_year=grad_year)
+            if "degree_type" in filters:
+                degree_type = filters['degree_type']
+                sqs = sqs.filter(user__student__degree__id=degree_type)
+            if "major" in filters:
+                degree_type = filters['major']
+                sqs = sqs.filter(user__student__major__id=degree_type)
             if "unique_students" in filters:
                 if filters['unique_students']:
                     sqs = sqs.distinct('user')
