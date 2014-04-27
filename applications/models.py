@@ -121,7 +121,10 @@ def auto_update_response_time(sender, instance, **kwargs):
 			text_content = render_to_string(template_text, {'name':current_app.user.first_name+' '+current_app.user.last_name, 'company':current_app.company.name, 'old_status':current_app.status, 'updated_status':instance.status, 'recruiter_message':recruiter_message})
 			html_content = render_to_string(template_html, {'name':current_app.user.first_name+' '+current_app.user.last_name, 'company':current_app.company.name, 'old_status':current_app.status, 'updated_status':instance.status, 'recruiter_message':recruiter_message})
 
-			send_html_mail(subject, text_content, html_content, from_email, [to_email, recruiter_email])
+			if recruiter_email:
+				send_html_mail(subject, text_content, html_content, from_email, [to_email, recruiter_email])
+			else:
+				send_html_mail(subject, text_content, html_content, from_email, [to_email])
 	except Exception, e:
 		print e
 		
