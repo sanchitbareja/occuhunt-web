@@ -54,6 +54,8 @@ class Application(models.Model):
 	timestamp = models.DateTimeField(auto_now_add=True)
 	response_timestamp = models.DateTimeField(blank=True, null=True)
 	job = models.ForeignKey(Job, blank=True, null=True)
+	recruiter_email = models.EmailField(max_length=200, blank=True, null=True)
+	recruiter_message = models.TextField(default='', blank=True)
 
 	def get_resume(self):
 		resume = Resume.objects.filter(user=self.user, showcase=True, original=True).order_by('-timestamp')
@@ -112,12 +114,14 @@ def auto_update_response_time(sender, instance, **kwargs):
 
 			subject = "[Occuhunt] "+current_app.company.name+" Application Update"
 			from_email = 'occuhunt@gmail.com'
+			recruiter_email = instance.recruiter_email
+			recruiter_message = instance.recruiter_message
 			to_email = current_app.user.email
 
-			text_content = render_to_string(template_text, {'name':current_app.user.first_name+' '+current_app.user.last_name, 'company':current_app.company.name, 'old_status':current_app.status, 'updated_status':instance.status})
-			html_content = render_to_string(template_html, {'name':current_app.user.first_name+' '+current_app.user.last_name, 'company':current_app.company.name, 'old_status':current_app.status, 'updated_status':instance.status})
+			text_content = render_to_string(template_text, {'name':current_app.user.first_name+' '+current_app.user.last_name, 'company':current_app.company.name, 'old_status':current_app.status, 'updated_status':instance.status, 'recruiter_message':recruiter_message})
+			html_content = render_to_string(template_html, {'name':current_app.user.first_name+' '+current_app.user.last_name, 'company':current_app.company.name, 'old_status':current_app.status, 'updated_status':instance.status, 'recruiter_message':recruiter_message})
 
-			send_html_mail(subject, text_content, html_content, from_email, [to_email])
+			send_html_mail(subject, text_content, html_content, from_email, [to_email, recruiter_email])
 	except Exception, e:
 		print e
 		

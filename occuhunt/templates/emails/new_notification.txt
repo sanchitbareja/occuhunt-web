@@ -15,20 +15,22 @@ Occuhunt
 
 {% endif %}
 
-<!-- If accepted, congratualte them and ask them to follow up with the recruiter immedietely if they have their contact -->
 {% if updated_status == 4 %}
 
 Hello {{name}},
 
-Congrats! We're happy to inform you that {{company}} has expressed interest in interviewing you.
+{{company}} has indicated an interest in interviewing you. We've CC'ed the contact person in this email. Please connect with them to find a common time.
 
-We encourage you to reach out to the recruiter you've been in touch with and schedule an interview (the recruiter will be really happy you saved him some work!). Send them your free times for the next two weeks.
+{{recruiter_message}}
 
 Keep up the good work!
 
 Visit http://occuhunt.com/showcase/applications/ to stay up-to-date with your applications.
 
 Good luck!
-Occuhunt
+{{company}}
+via Occuhunt
+
+P.S. If the recruiter is not CC'ed in this email, please be patient and wait for them to contact you. Or if you have their contact info, please feel free to reach out to them!
 
 {% endif %}

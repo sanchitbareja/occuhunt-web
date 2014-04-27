@@ -27,6 +27,10 @@
     font-style: normal;
   }
 
+  .popover {
+    max-width: 400px;
+  }
+
 </style>
 
 {% endblock %}
@@ -153,7 +157,7 @@ function get_candidate(application_id) {
         $("#application_resume_img").attr({'src': data['user']['resume']});
         if($("#filter_applicants").val() == "1" || $("#filter_applicants").val() == "2"){
           // configure accept and reject buttons
-          $("#accept_applicant_btn").attr({'onclick':'accept_candidate('+application_id+');'});
+          $("#accept_applicant_btn").attr({'onclick':'show_acceptance_message('+application_id+',"'+data['user']['first_name']+'","'+data['user']['last_name']+'","'+data['company']['name']+'");'});
           $("#reject_applicant_btn").attr({'onclick':'reject_candidate('+application_id+');'});
           $("#reject_applicant_btn").show();
           $("#accept_applicant_btn").show();
@@ -201,24 +205,70 @@ function get_candidate(application_id) {
   });
 }
 
+function show_acceptance_message(application_id, first_name, last_name, company_name) {
+  console.log("show show_acceptance_message");
+  console.log(application_id);
+  console.log(first_name);
+  console.log(last_name);
+  var html_content = "<label>Your email</label><br /><input class='form-control input-sm' type='text' id='recruiter_email' placeholder='Email'/><br /><label>Email Body</label><br /><div id='application_message'>Hello <span id='msg_first_name'>"+String(first_name)+"</span> <span id='msg_last_name'>"+String(last_name)+"</span>, <br /><br />"+
+    ""+String(company_name)+" has indicated an interest in interviewing you. We've CC'ed the contact person in this email. Please connect with them to find a common time.<br /><br />"+
+    "<textarea style='width:350px;height:100px;' id='recruiter_message'>Here are some times suggested by the recruiter:\n\n</textarea><br /><br />"+
+    "Keep up the good work!<br /><br />"+
+    "Visit Occuhunt to stay up-to-date with your applications.<br /><br />"+
+    "Good luck!<br />"+
+    ""+String(company_name)+"<br />"+
+    "via Occuhunt</div><br />"+
+    "<button class='btn btn-md btn-success' id='send_application_email' onclick='accept_candidate("+application_id+")'>Send Message</button>";
+
+  $("#accept_applicant_btn").popover({
+    animation: 'true', 
+    html:'true', 
+    trigger:'click',
+    title:"Message applicant",
+    content:html_content,
+    placement:'bottom',
+    container:'body'
+  });
+
+  $("#msg_first_name").text(first_name);
+  $("#msg_last_name").text(last_name);
+  $("#msg_company_name").text(company_name);
+  $("#send_application_email").attr({'onclick':'accept_candidate('+application_id+');'});
+  console.log($("#send_application_email"));
+}
 
 function accept_candidate(application_id){
-  $.ajax({
-    url: '/api/v1/applications/'+String(application_id)+'/',
-    type: 'PUT',
-    data: JSON.stringify({
-      'status': 4,
-    }),
-    dataType: 'json',
-    contentType: 'application/json',
-    success: function(data, textStatus, jsXHR){
-      console.log(data);
-      // remove person from list dom - never need to show again
-      $("#applicant_list_id_"+String(application_id)).next().click();
-      $("#applicant_list_id_"+String(application_id)).remove();
+  // check if recruiter email has been input
+  // if not, show error
+  // else, send msg
+    // get msg content
 
-    }
-  });
+  if($("#recruiter_email").val()){
+    var recruiter_email = $("#recruiter_email").val();
+    var recruiter_message = $("#recruiter_message").val()+"";
+
+    $.ajax({
+      url: '/api/v1/applications/'+String(application_id)+'/',
+      type: 'PUT',
+      data: JSON.stringify({
+        'status': 4,
+        'recruiter_email': recruiter_email,
+        'recruiter_message': recruiter_message
+      }),
+      dataType: 'json',
+      contentType: 'application/json',
+      success: function(data, textStatus, jsXHR){
+        console.log(data);
+        // remove person from list dom - never need to show again
+        $("#applicant_list_id_"+String(application_id)).next().click();
+        $("#applicant_list_id_"+String(application_id)).remove();
+        // hide popover as well
+        $("#accept_applicant_btn").popover('hide');
+      }
+    });
+  } else {
+    alert("Please input your email address!");
+  }
 }
 
 function reject_candidate(application_id){

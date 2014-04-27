@@ -718,8 +718,17 @@ class ApplicationResource(ModelResource):
                     print e
                     raise e
             if 'status' in bundle.data.keys():
+                # update application status
                 existing_application.status = bundle.data['status']
+                if 'recruiter_email' in bundle.data.keys():
+                    # update recruiter_email - email address
+                    existing_application.recruiter_email = bundle.data['recruiter_email']
+                if 'recruiter_message' in bundle.data.keys():
+                    # update recruiter_message
+                    existing_application.recruiter_message = bundle.data['recruiter_message']
+
                 existing_application.save()
+
                 # send notification to student that his status has been updated
                 try:
                     if bundle.data['status'] == 1 or bundle.data['status'] == 2:
