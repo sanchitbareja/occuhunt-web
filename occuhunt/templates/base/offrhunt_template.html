@@ -396,144 +396,154 @@ $(document).ready(function(){
 </div>
 
 {% else %}
-<!-- multistep form -->
-<form id="msform">
-  <!-- progressbar -->
-  <ul id="progressbar">
-    <li class="active">Current Offer</li>
-    <li>Companies Of Interest</li>
-    <li>Final Check</li>
-  </ul>
-  <!-- fieldsets -->
-  <fieldset>
-    <h2 class="fs-title">Current Offer</h2>
-    <h3 class="fs-subtitle">This is completely private and confidential</h3>
-    <label>Company</label>
-    <input type="text" name="companyOffer" id="companyFromText" placeholder="Company" />
-    <br />
-    <label>Offer Range</label>
-    <select class="form-control input-lg" style="width:100%;" id="currentOfferSalaryRange">
-      <option value="1">20k-30k</option>
-      <option value="2">30k-40k</option>
-      <option value="3">40k-50k</option>
-      <option value="4">50k-60k</option>
-      <option value="5">60k-70k</option>
-      <option value="6">70k-80k</option>
-      <option value="7">80k-100k</option>
-      <option value="8">100k-120k</option>
-      <option value="9">120k-140k</option>
-      <option value="10">140k-160k</option>
-      <option value="11">160k-180k</option>
-      <option value="12">180k-200k</option>
-      <option value="13">200k-250k</option>
-      <option value="14">250k+</option>
-      <option value="15">I do not wish to disclose</option>
-    </select>
-    <br />
-    <label>Deadline to reply by?</label>
-    <select class="form-control input-lg" style="width:100%;" id="currentOfferDeadline">
-      <option value="1">In 3 days</option>
-      <option value="2">In 7 days</option>
-      <option value="3">In 14 days</option>
-      <option value="4">In 28 days</option>
-      <option value="5">I have time </option>
-    </select>
-    <br />
-    <input type="button" name="next" class="next action-button" value="Next" />
-  </fieldset>
-  <fieldset>
-    <h2 class="fs-title">Companies Of Interest</h2>
-    <h3 class="fs-subtitle">Which companies do you want to consider applying to? Seperate them by commas (,). We've partnered with companies like Greylock, Dropbox, TubeMogul and etc. Name any company you are interested in and we'll make the connection for you!</h3>
-    <textarea class="form-control" id="companiesInterestedIn">
-    </textarea>
-    <input type="button" name="previous" class="previous action-button" value="Previous" />
-    <input type="button" name="next" class="next action-button" value="Next" />
-  </fieldset>
-  <fieldset>
-    <h2 class="fs-title">Final Check</h2>
-    <h3 class="fs-subtitle">Check your resume and details!</h3>
-    <label>Major</label>
-    <select multiple size="8" class="form-control" id="studentMajor" style="width:100%">
-      {% for major in majors %}
-        {% if major in request.user.student.major.all %}
-          <option value="{{major.id}}" selected>{{major.major}}</option>
-        {% else %}
-          <option value="{{major.id}}">{{major.major}}</option>
-        {% endif %}
-      {% endfor %}
-    </select>
+  {% if request.user.is_anonymous %}
+  <div class="row">
+    <div class="col-lg-2"></div>
+    <div class="col-lg-8 text-center">
+      <p class="quote-statement">You need to be logged-in to view this page.</p>
+    </div>
+    <div class="col-lg-2"></div>
+  </div>
+  {% else %}
+  <!-- multistep form -->
+  <form id="msform">
+    <!-- progressbar -->
+    <ul id="progressbar">
+      <li class="active">Current Offer</li>
+      <li>Companies Of Interest</li>
+      <li>Final Check</li>
+    </ul>
+    <!-- fieldsets -->
+    <fieldset>
+      <h2 class="fs-title">Current Offer</h2>
+      <h3 class="fs-subtitle">This is completely private and confidential</h3>
+      <label>Company</label>
+      <input type="text" name="companyOffer" id="companyFromText" placeholder="Company" />
+      <br />
+      <label>Offer Range</label>
+      <select class="form-control input-lg" style="width:100%;" id="currentOfferSalaryRange">
+        <option value="1">20k-30k</option>
+        <option value="2">30k-40k</option>
+        <option value="3">40k-50k</option>
+        <option value="4">50k-60k</option>
+        <option value="5">60k-70k</option>
+        <option value="6">70k-80k</option>
+        <option value="7">80k-100k</option>
+        <option value="8">100k-120k</option>
+        <option value="9">120k-140k</option>
+        <option value="10">140k-160k</option>
+        <option value="11">160k-180k</option>
+        <option value="12">180k-200k</option>
+        <option value="13">200k-250k</option>
+        <option value="14">250k+</option>
+        <option value="15">I do not wish to disclose</option>
+      </select>
+      <br />
+      <label>Deadline to reply by?</label>
+      <select class="form-control input-lg" style="width:100%;" id="currentOfferDeadline">
+        <option value="1">In 3 days</option>
+        <option value="2">In 7 days</option>
+        <option value="3">In 14 days</option>
+        <option value="4">In 28 days</option>
+        <option value="5">I have time </option>
+      </select>
+      <br />
+      <input type="button" name="next" class="next action-button" value="Next" />
+    </fieldset>
+    <fieldset>
+      <h2 class="fs-title">Companies Of Interest</h2>
+      <h3 class="fs-subtitle">Which companies do you want to consider applying to? Seperate them by commas (,). We've partnered with companies like Greylock, Dropbox, TubeMogul and etc. Name any company you are interested in and we'll make the connection for you!</h3>
+      <textarea class="form-control" id="companiesInterestedIn">
+      </textarea>
+      <input type="button" name="previous" class="previous action-button" value="Previous" />
+      <input type="button" name="next" class="next action-button" value="Next" />
+    </fieldset>
+    <fieldset>
+      <h2 class="fs-title">Final Check</h2>
+      <h3 class="fs-subtitle">Check your resume and details!</h3>
+      <label>Major</label>
+      <select multiple size="8" class="form-control" id="studentMajor" style="width:100%">
+        {% for major in majors %}
+          {% if major in request.user.student.major.all %}
+            <option value="{{major.id}}" selected>{{major.major}}</option>
+          {% else %}
+            <option value="{{major.id}}">{{major.major}}</option>
+          {% endif %}
+        {% endfor %}
+      </select>
 
-    <br />
-    <label>Job Interest</label>
-    <select multiple size="8" class="form-control" id="companyPosition" style="width:100%">
-      <option>Software Engineering</option>
-      <option>Product Manager</option>
-      <option>UI/UX Engineering</option>
-      <option>Marketing</option>
-      <option>Business Development</option>
-      <option>Growth Hacker</option>
-      <option>Accountant</option>
-      <option>Other</option>
-    </select>
+      <br />
+      <label>Job Interest</label>
+      <select multiple size="8" class="form-control" id="companyPosition" style="width:100%">
+        <option>Software Engineering</option>
+        <option>Product Manager</option>
+        <option>UI/UX Engineering</option>
+        <option>Marketing</option>
+        <option>Business Development</option>
+        <option>Growth Hacker</option>
+        <option>Accountant</option>
+        <option>Other</option>
+      </select>
 
-    <br />
-    <label>Degree Type</label>
-    <select class="form-control" style="width:100%;" id="studentDegree">
-      <option value=""></option>
-      {% for degree_type in degree_types %}
-        {% if request.user.student.degree.id == degree_type.id %}
-          <option value="{{degree_type.id}}" selected>{{degree_type.degree}}</option>
-        {% else %}
-          <option value="{{degree_type.id}}">{{degree_type.degree}}</option>
-        {% endif %}
-      {% endfor %}
-    </select>
+      <br />
+      <label>Degree Type</label>
+      <select class="form-control" style="width:100%;" id="studentDegree">
+        <option value=""></option>
+        {% for degree_type in degree_types %}
+          {% if request.user.student.degree.id == degree_type.id %}
+            <option value="{{degree_type.id}}" selected>{{degree_type.degree}}</option>
+          {% else %}
+            <option value="{{degree_type.id}}">{{degree_type.degree}}</option>
+          {% endif %}
+        {% endfor %}
+      </select>
 
-    <br />
-    <label>Graduation Year</label>
-    {% if request.user.student.graduation_year %}
-      <input type="text" class="input-text" style="width:100%;" placeholder="Graduation Year" id="studentGradYear" value="{{request.user.student.graduation_year}}">
-    {% else %}
-      <input type="text" class="input-text" placeholder="2015" id="studentGradYear" value="">
-    {% endif %}
+      <br />
+      <label>Graduation Year</label>
+      {% if request.user.student.graduation_year %}
+        <input type="text" class="input-text" style="width:100%;" placeholder="Graduation Year" id="studentGradYear" value="{{request.user.student.graduation_year}}">
+      {% else %}
+        <input type="text" class="input-text" placeholder="2015" id="studentGradYear" value="">
+      {% endif %}
 
-    <label>Resume</label>
-    {% if request.user.is_anonymous %}
-      <div class="thumbnail">
-        <img src="{% static 'images/example-resume.png' %}">
-        <div class="caption text-center">
-          <p><a href="/login/linkedin/?next={{request.path}}" class="btn btn-login" style="font-weight:500;">LOG IN</a></p>
-          <p>Login to activate Resume Drop</p>
-        </div>
-      </div>
-    {% else %}
-      {% if resume_url %}
+      <label>Resume</label>
+      {% if request.user.is_anonymous %}
         <div class="thumbnail">
-          <img src="{{resume_url}}" alt="Resume">
+          <img src="{% static 'images/example-resume.png' %}">
           <div class="caption text-center">
-            <p><a href="/showcase/" class="btn btn-done" role="button">Edit Profile</a></p>
+            <p><a href="/login/linkedin/?next={{request.path}}" class="btn btn-login" style="font-weight:500;">LOG IN</a></p>
+            <p>Login to activate Resume Drop</p>
           </div>
         </div>
       {% else %}
-        <div class="thumbnail">
-          <img src="{% static 'images/example-resume.png' %}" alt="Resume">
-          <div class="caption text-center">
-            <p><a href="/showcase/" class="btn btn-done" role="button">Add Resume</a></p>
-            <p>We don't have your resume on file. Upload it to particapte in OffrHunt</p>
+        {% if resume_url %}
+          <div class="thumbnail">
+            <img src="{{resume_url}}" alt="Resume">
+            <div class="caption text-center">
+              <p><a href="/showcase/" class="btn btn-done" role="button">Edit Profile</a></p>
+            </div>
           </div>
-        </div>
+        {% else %}
+          <div class="thumbnail">
+            <img src="{% static 'images/example-resume.png' %}" alt="Resume">
+            <div class="caption text-center">
+              <p><a href="/showcase/" class="btn btn-done" role="button">Add Resume</a></p>
+              <p>We don't have your resume on file. Upload it to particapte in OffrHunt</p>
+            </div>
+          </div>
+        {% endif %}
       {% endif %}
-    {% endif %}
 
-    <input type="button" name="previous" class="previous action-button" value="Previous" />
-    {% if request.user.is_anonymous %}
-    {% else %}
-      {% if resume_url %}
-        <input type="submit" name="submit" class="submit action-button" value="Submit" />
+      <input type="button" name="previous" class="previous action-button" value="Previous" />
+      {% if request.user.is_anonymous %}
+      {% else %}
+        {% if resume_url %}
+          <input type="submit" name="submit" class="submit action-button" value="Submit" />
+        {% endif %}
       {% endif %}
-    {% endif %}
-  </fieldset>
-</form>
+    </fieldset>
+  </form>
+  {% endif %}
 
 {% endif %}
 
