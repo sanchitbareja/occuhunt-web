@@ -817,13 +817,13 @@ class JobResource(ModelResource):
 
 class OfferResource(ModelResource):
     user = fields.OneToOneField(UserResource, 'user', full=True)
-    company_from = fields.OneToOneField(FairResource, 'fair', full=True)
+    company_from = fields.OneToOneField(CompanyResource, 'company_from', full=True)
     class Meta:
         queryset = Offer.objects.all()
         resource_name = 'offers'
         authorization = DjangoAuthorization()
         limit = 100
-        always_return_data = True
+        always_return_data = False
         allowed_methods = ['get','post']
         filtering = {
             "user": ("exact"), "company_from": ("exact")

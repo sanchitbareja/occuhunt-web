@@ -341,13 +341,10 @@ h3 {
         contentType: 'application/json',
         statusCode: {
           201: function(data, textStatus, jsXHR) {
-            alert("success!");
           },
           500: function(data, textStatus, jsXHR) {
-            alert("failure!");
           },
           404: function(data, textStatus, jsXHR) {
-            aler("failure 404!");
           }
         }
       });
@@ -477,7 +474,7 @@ h3 {
       </div>
       <div class="modal-body">
         {% if not request.user.is_anonymous %}
-        <label>Tell us about your current offer!</label>
+        <label>Tell us about your current offer! (optional)</label>
         <div class="row">
           <div class="col-lg-5">
             <input class="form-control" type="text" placeholder="Company" id="companyFromText">
