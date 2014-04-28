@@ -16,7 +16,7 @@ admin.autodiscover()
 
 # API
 from tastypie.api import Api
-from api.api import FairResource, RoomResource, CompanyResource, FavoriteResource, UserResource, ResumeResource, CommentResource, RecommendationRequestResource, RecommendationResource, HuntResource, ApplicationResource, JobResource
+from api.api import FairResource, RoomResource, CompanyResource, FavoriteResource, UserResource, ResumeResource, CommentResource, RecommendationRequestResource, RecommendationResource, HuntResource, ApplicationResource, JobResource, OfferResource
 from api.views import logout_view, login_error, feedback_form
 
 v1_api = Api(api_name='v1')
@@ -32,6 +32,7 @@ v1_api.register(FairResource())
 v1_api.register(HuntResource())
 v1_api.register(ApplicationResource())
 v1_api.register(JobResource())
+v1_api.register(OfferResource())
 
 # API
 from tastypie.api import Api

@@ -264,68 +264,95 @@ h3 {
 
   function resumeDrop(user_id, company_id, fair_id, position, majors, grad_year, degree_type){
     console.log("CONFIRMED");
-    {% if event.fair.time_end < time_now or event.fair.time_start > time_now %}
-    $("#messages").append('<div class="alert alert-danger alert-dismissable">'+
-                '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'+
-                'Resume drop is now over! Please contact the recruiter individually if you met them at the event.</div>');
-    {% endif %}
-    {% if event.fair.time_end > time_now and event.fair.time_start < time_now %}
+    
+    // new applications
     $.ajax({
-          url: '/api/v1/applications/',
-          type:'POST',
-          dataType: 'json',
-          data: JSON.stringify({
-            'user_id': user_id, 
-            'company_id': company_id,
-            'fair_id': fair_id,
-            'position': position,
-            'status': 1,
-            'majors':majors,
-            'grad_year': grad_year,
-            'degree_type': degree_type
-          }),
-          contentType: 'application/json',
-          statusCode : {
-            201: function(data, textStatus, jsXHR){
-              console.log("successfully dropped resume!");
-              console.log(data);
-              console.log(textStatus);
-              console.log(jsXHR);
-              console.log($(this));
-              // feedback on the small dot that the resume has been submitted
-              // disable clicking
-              $("button.resume_drop_btn[value="+data['company']['id']+"]").attr("disabled",true);
-              $("button.resume_drop_btn[value="+data['company']['id']+"]").text('Applied');
+        url: '/api/v1/applications/',
+        type:'POST',
+        dataType: 'json',
+        data: JSON.stringify({
+          'user_id': user_id, 
+          'company_id': company_id,
+          'fair_id': fair_id,
+          'position': position,
+          'status': 1,
+          'majors':majors,
+          'grad_year': grad_year,
+          'degree_type': degree_type
+        }),
+        contentType: 'application/json',
+        statusCode : {
+          201: function(data, textStatus, jsXHR){
+            console.log("successfully dropped resume!");
+            console.log(data);
+            console.log(textStatus);
+            console.log(jsXHR);
+            console.log($(this));
+            // feedback on the small dot that the resume has been submitted
+            // disable clicking
+            $("button.resume_drop_btn[value="+data['company']['id']+"]").attr("disabled",true);
+            $("button.resume_drop_btn[value="+data['company']['id']+"]").text('Applied');
 
-              // give confirmation message about successful resume submission
-              $("#messages").append('<div class="alert alert-success alert-dismissable">'+
-                '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'+
-                'Good job! You <strong>successfully</strong> dropped off your resume at '+data['company']['name']+'!'+
-              '</div>');
-            },
-            500: function(data, textStatus, jsXHR){
-              console.log(data);
-              console.log(textStatus);
-              console.log(jsXHR);
-              // give confirmation message about successful resume submission
-              $("#messages").append('<div class="alert alert-danger alert-dismissable">'+
-                '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'+
-                'Oops! You need to be logged in or have your resume uploaded to drop your resume with the employers!'+
-              '</div>');
-            },
-            404: function(data, textStatus, jsXHR){
-              console.log(data);
-              console.log(textStatus);
-              console.log(jsXHR);
-              // give confirmation message about successful resume submission
-              $("#messages").append('<div class="alert alert-danger alert-dismissable">'+
-                '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'+
-                'Oops! You need to be logged in or have your resume uploaded to drop your resume with the employers!'+
-              '</div>');
-            }
+            // give confirmation message about successful resume submission
+            $("#messages").append('<div class="alert alert-success alert-dismissable">'+
+              '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'+
+              'Good job! You <strong>successfully</strong> dropped off your resume at '+data['company']['name']+'!'+
+            '</div>');
+          },
+          500: function(data, textStatus, jsXHR){
+            console.log(data);
+            console.log(textStatus);
+            console.log(jsXHR);
+            // give confirmation message about successful resume submission
+            $("#messages").append('<div class="alert alert-danger alert-dismissable">'+
+              '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'+
+              'Oops! You need to be logged in or have your resume uploaded to drop your resume with the employers!'+
+            '</div>');
+          },
+          404: function(data, textStatus, jsXHR){
+            console.log(data);
+            console.log(textStatus);
+            console.log(jsXHR);
+            // give confirmation message about successful resume submission
+            $("#messages").append('<div class="alert alert-danger alert-dismissable">'+
+              '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'+
+              'Oops! You need to be logged in or have your resume uploaded to drop your resume with the employers!'+
+            '</div>');
           }
-        });
-    {% endif %}
+        }
+      });
+    
+    // if the student has offers
+    var company_from_text_val = $("#companyFromText").val();
+    var salary_range_val = $("#currentOfferSalaryRange").val();
+    var offer_deadline_val = $("#currentOfferDeadline").val();
+    if(company_from_text_val && salary_range_val && offer_deadline_val){
+      $.ajax({
+        url: '/api/v1/offers/',
+        type: 'POST',
+        dataType: 'json',
+        data: JSON.stringify({
+          'user_id': user_id,
+          'company_from_text': company_from_text_val,
+          'salary_range': salary_range_val,
+          'offer_deadline': offer_deadline_val,
+          'companies_interested_in': company_id
+        }),
+        contentType: 'application/json',
+        statusCode: {
+          201: function(data, textStatus, jsXHR) {
+            alert("success!");
+          },
+          500: function(data, textStatus, jsXHR) {
+            alert("failure!");
+          },
+          404: function(data, textStatus, jsXHR) {
+            aler("failure 404!");
+          }
+        }
+      });
+    }
+
   }
 
   function getApplications(){
@@ -410,7 +437,7 @@ h3 {
           <hr>
           <h4>LOOKING FOR</h4>
           <p class="company-positions">
-            {% for job in company.jobs %}
+            {% for job in company.job_set.all %}
             - {{job.name}}<br />
             {% endfor %}
             <br />
@@ -450,6 +477,41 @@ h3 {
       </div>
       <div class="modal-body">
         {% if not request.user.is_anonymous %}
+        <label>Tell us about your current offer!</label>
+        <div class="row">
+          <div class="col-lg-5">
+            <input class="form-control" type="text" placeholder="Company" id="companyFromText">
+          </div>
+          <div class="col-lg-4">
+            <select class="form-control" id="currentOfferSalaryRange">
+              <option value="1">20k-30k</option>
+              <option value="2">30k-40k</option>
+              <option value="3">40k-50k</option>
+              <option value="4">50k-60k</option>
+              <option value="5">60k-70k</option>
+              <option value="6">70k-80k</option>
+              <option value="7">80k-100k</option>
+              <option value="8">100k-120k</option>
+              <option value="9">120k-140k</option>
+              <option value="10">140k-160k</option>
+              <option value="11">160k-180k</option>
+              <option value="12">180k-200k</option>
+              <option value="13">200k-250k</option>
+              <option value="14">250k+</option>
+              <option value="15">I do not wish to disclose</option>
+            </select>
+          </div>
+          <div class="col-lg-3">
+            <select class="form-control" id="currentOfferDeadline">
+              <option value="1">In 3 days</option>
+              <option value="2">In 7 days</option>
+              <option value="3">In 14 days</option>
+              <option value="4">In 28 days</option>
+              <option value="5">I have time </option>
+            </select>
+          </div>
+        </div>
+        <span class="help-block">This will not be shared with employers or anyone. It's strictly private and not read by anyone.</span>
         <div class="row">
           <div class="col-lg-12">
             <h4>Which positions are you interested in with <span class="companyTitle"></span>?</h4>

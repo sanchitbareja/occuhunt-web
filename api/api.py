@@ -28,8 +28,8 @@ from hunts.models import Hunt
 from applications.models import Application
 from jobs.models import Job
 from notifications.models import Notification
+from offers.models import Offer
 import datetime,json
-
 
 
 class CompanyResource(ModelResource):
@@ -811,6 +811,69 @@ class JobResource(ModelResource):
             print e
             raise e
         return bundle
+
+    def determine_format(self, request):
+        return 'application/json'
+
+class OfferResource(ModelResource):
+    user = fields.OneToOneField(UserResource, 'user', full=True)
+    company_from = fields.OneToOneField(FairResource, 'fair', full=True)
+    class Meta:
+        queryset = Offer.objects.all()
+        resource_name = 'offers'
+        authorization = DjangoAuthorization()
+        limit = 100
+        always_return_data = True
+        allowed_methods = ['get','post']
+        filtering = {
+            "user": ("exact"), "company_from": ("exact")
+        }
+
+    def dehydrate(self, bundle):
+        """
+        Return a list of offers
+        """
+        return bundle
+
+    def obj_create(self, bundle, **kwargs):
+        """
+        Creates a new offer
+        """
+        try:
+            print 1
+            # need to have user, salary_range, company and offer_deadline at minimum
+            user = User.objects.get(id=bundle.data['user_id'])
+            company_from_text = bundle.data['company_from_text']
+            salary_range = bundle.data['salary_range']
+            offer_deadline = bundle.data['offer_deadline']
+
+            print 2
+            # check if have multiple offers
+            number_of_offers = 1
+            # check if have interested_in_startups
+            interested_in_startups = True
+            # check if have interested_in_corps
+            interested_in_corps = True
+            # check if have companies_interested_in
+            companies_interested_in = bundle.data['companies_interested_in']
+
+            print 3
+
+            new_offer = Offer(user=user, company_from_text=company_from_text, number_of_offers=number_of_offers, salary_range=salary_range, offer_deadline=offer_deadline, interested_in_startups=interested_in_startups, interested_in_corps=interested_in_corps, companies_considering=companies_interested_in)
+            print new_offer
+            new_offer.save()
+            print 4
+            bundle.obj = new_offer
+        except Exception, e:
+            print e
+            raise e
+        return bundle
+
+    def alter_list_data_to_serialize(self, request, data):
+        # rename "objects" to "hunts"
+        data['response'] = {"hunts":data["objects"]}
+        del(data["objects"])
+        return data
 
     def determine_format(self, request):
         return 'application/json'
