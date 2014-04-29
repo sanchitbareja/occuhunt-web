@@ -42,7 +42,7 @@ class Job(models.Model):
 	company = models.ForeignKey(Company)
 	network = models.ForeignKey(Group, null=True, blank=True)
 	deactivate = models.BooleanField(default=False)
-	contract_type = models.CharField(max_length=512, null=True, blank=True, choices=JOB_CONTRACT_TYPES)
+	contract_type = models.SmallIntegerField(null=True, blank=True, choices=JOB_CONTRACT_TYPES)
 	qualifications = models.TextField(blank=True, null=True)
 	timestamp = models.DateTimeField(auto_now=False, auto_now_add=True)
 
