@@ -8,12 +8,12 @@
 <nav class="navbar navbar-default" role="navigation" style="margin-bottom:0px;padding-bottom:0px;">
   <div class="container">
     <ul class="nav navbar-nav navbar-left">
-      <li><a href="https://itunes.apple.com/us/app/occuhunt/id819142884?mt=8"><img src="{% static 'images/app-store-badge.png' %}" style="height:25px;"></a></li>
-      <li><a href="https://play.google.com/store/apps/details?id=com.occuhunt.student&hl=en"><img src="{% static 'images/google-play-badge.png' %}" style="height:25px;"></a></li>
+      <li><a href="/faq/"><strong>FAQ</strong></a></li>
+      <li><a data-toggle="modal" href="#feedbackModal" onclick="mixpanel.track('Clicked on Feedback'); return true;">FEEDBACK</a></li>
+      <li><a href="/privacy/"><strong>PRIVACY</strong></a></li>
       <li><a href="/recruiter/"><strong>RECRUITER</strong></a></li>
       <li><a data-toggle="modal" href="#aboutModal"><strong>ABOUT</strong></a></li>
-      <li><a href="/privacy/"><strong>PRIVACY</strong></a></li>
-      <li><a data-toggle="modal" href="#feedbackModal" onclick="mixpanel.track('Clicked on Feedback'); return true;">FEEDBACK</a></li>
+      <li><a data-toggle="modal" href="#aboutModal"><strong>CONTACT</strong></a></li>
     </ul>
     <ul class="nav navbar-nav navbar-right">
       <li><div class="fb-like" data-href="https://www.facebook.com/occuhunt" data-layout="button_count" data-action="like" data-show-faces="false" data-share="true" style="top:13px;"></div></li>

@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+{% load static from staticfiles %}
+{% load i18n %}
+{% load url from future %}
+
+{% block extra_style %}
+
+<style type="text/css">
+
+.documents {
+	margin: 0px;
+	padding: 0px;
+}
+
+.document {
+	width: 190px;
+	height: 260px;
+	display: inline-block;
+	position: relative;
+	clear: none;
+	border: 1px solid #dddddd;
+	margin-bottom: 30px;
+	list-style-type: none;
+}
+
+.actions {
+	display: block;
+	float: left;
+	font-family: Arial,"sans-serif";
+	font-size: 1.1em;
+	position: absolute;
+	white-space: nowrap;
+	list-style: none;
+	margin-top: 3px;
+}
+
+.actions > li {
+	display: inline;
+	margin:10px;
+	list-style-type: none;
+}
+
+.document:hover {
+	border: 1px solid #005469;
+}
+
+.document:hover > .actions > li {
+	opacity: 1;
+}
+
+</style>
+
+{% endblock %}
+
+{% block extra_script %}
+
+<script type="text/javascript">
+
+</script>
+
+{% endblock %}
+
+{% block content %}
+<script type="text/javascript" src="{% static 'zeroclipboard/ZeroClipboard.js' %}"></script>
+
+<div class="col-lg-2">
+    <h4>Links</h4>
+    <p><a class="copyToClipboard" data-clipboard-text="http://www.occuhunt.com/resume/sanchit/ae291m/" data-toggle="tooltip" data-placement="top"><span class="glyphicon glyphicon-link"></span></a>&nbsp;<a href="http://github.com" target="_blank">Github</a></p>
+    <p><a class="copyToClipboard" data-clipboard-text="http://www.occuhunt.com/resume/sanchit/ae291m/" data-toggle="tooltip" data-placement="top"><span class="glyphicon glyphicon-link"></span></a>&nbsp;<a href="http://dribble.com" target="_blank">Dribble</a></p>
+    <p><a class="copyToClipboard" data-clipboard-text="http://www.occuhunt.com/resume/sanchit/ae291m/" data-toggle="tooltip" data-placement="top"><span class="glyphicon glyphicon-link"></span></a>&nbsp;<a href="http://personal.com" target="_blank">Personal</a></p>
+    <p><a class="copyToClipboard" data-clipboard-text="http://www.occuhunt.com/resume/sanchit/ae291m/" data-toggle="tooltip" data-placement="top"><span class="glyphicon glyphicon-link"></span></a>&nbsp;<a href="http://other.com" target="_blank">Other</a></p>
+</div>
+
+<div class="col-lg-8">
+	<input type="hidden" name="user_linkedin_uid" value="{{user_linkedin_uid}}">
+    
+    <div>
+        <h4 style="float:left;">Resume</h4>
+        <a class="btn btn-sm btn-done" style="float:right;">Download .pdf</a>
+    </div>
+
+    <img style="width:100%; height:100%; border:1px solid #dddddd;" src="https://resumefeed.s3.amazonaws.com/sanchit-barejapdflUXW4bOsdAGYoQ4DEkgeHpUESXzPcP">
+
+</div>
+
+<div class="col-lg-2">
+
+    <h4>Recruiter?</h4>
+    <a class="btn btn-sm btn-inverted-default" >Interview student</a>
+
+</div>
+
+
+{% endblock %}
+
+
+{% block extra_script_end %}
+
+<script type="text/javascript">
+
+    $(document).ready(function() {
+
+    	// copying to clipboard
+        var client = new ZeroClipboard($('.copyToClipboard'), {
+            moviePath : '/static/zeroclipboard/ZeroClipboard.swf'
+        });
+
+        client.on( 'mouseover', function ( event ) {
+		  	$(this).attr('title', 'Click to copy').tooltip('fixTitle').tooltip("show");
+		});
+
+		client.on( 'mouseout', function ( event ) {
+		  	$(this).tooltip("hide");
+		});
+
+		client.on( 'mousedown', function(event) {
+			var newTitle = 'Copied!';
+			$(this).attr('title', newTitle).tooltip('fixTitle').tooltip("show");
+		});
+
+    });
+
+</script>
+
+{% endblock %}

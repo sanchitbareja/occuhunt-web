@@ -54,7 +54,7 @@ MEDIA_URL = "/media/"
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/var/www/example.com/static/"
-STATIC_ROOT = 'staticfiles'
+STATIC_ROOT = 'static/'
 
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"
@@ -62,10 +62,10 @@ STATIC_ROOT = 'staticfiles'
 AWS_ACCESS_KEY_ID = 'AKIAJMUV3JF5IGAOPF3A'
 AWS_SECRET_ACCESS_KEY = 'BwhrrDs7srYGyk9ZHfvn/V1/1dLLx30yg4mFu+Af'
 AWS_STORAGE_BUCKET_NAME = 'occuhuntstatic'
-STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
+DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
 S3_URL = 'http://%s.s3.amazonaws.com/' % AWS_STORAGE_BUCKET_NAME
-STATIC_URL = S3_URL
+STATIC_URL = '/static/'
 
 # from S3 import CallingFormat
 # AWS_CALLING_FORMAT = CallingFormat.SUBDOMAIN

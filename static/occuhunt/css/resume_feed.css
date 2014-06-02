@@ -1,0 +1,186 @@
+textarea, input { outline: none; }
+#the-canvas {
+	cursor: url(/static/images/EraseCursor.png), default !important;
+	border:1px solid black;
+	display: none;
+}
+
+#file_upload {
+	position:absolute;
+	z-index:500;
+	top:0;
+	left:0;
+	filter: alpha(opacity=0);
+	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+	opacity:0;
+	background-color:transparent;
+	color:black;
+}
+
+#upload_button {
+	display: none;
+}
+
+#canvas_div {
+	overflow-x: scroll;
+}
+
+#resume-action-header {
+	text-align: center;
+
+}
+
+#resume-menu {
+	position: absolute;
+	text-align: right;
+	right:20px;
+}
+
+.resume-menu-button {
+	color: #348891;
+	font-weight: 400;
+}
+
+.active {
+	color: #13646e;
+	font-weight: 500;
+}
+
+#resume-menu-bounty {
+	color: #88b9be;
+	font-weight: 400;
+}
+
+/* Progress button */
+.progress-button.in-progress,
+.progress-button.finished{
+    color:transparent !important;
+}
+
+.progress-button.in-progress:after,
+.progress-button.finished:after{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    top: 0;
+    padding-top: inherit;
+    color: #fff !important;
+    left: 0;
+}
+
+/* If the .in-progress class is set on the button, show the
+   contents of the data-loading attribute on the butotn */
+
+.progress-button.in-progress:after{
+    content:attr(data-loading);
+}
+
+/* The same goes for the .finished class */
+
+.progress-button.finished:after{
+    content:attr(data-finished);
+}
+
+/* The colorful bar that grows depending on the progress */
+
+.progress-button .tz-bar{
+    background-color:#fc0041;
+    height:3px;
+    bottom:0;
+    left:0;
+    width:0;
+    position:absolute;
+
+    border-radius:0 0 2px 2px;
+
+    -webkit-transition: width 0.5s, height 0.5s;
+    -moz-transition: width 0.5s, height 0.5s;
+    transition: width 0.5s, height 0.5s;
+}
+
+/* The bar can be either horizontal, or vertical */
+
+a {
+	cursor: pointer;
+}
+
+.progress-button .tz-bar.background-horizontal{
+	top:0;
+    height:5px;
+    border-radius:2px;
+}
+
+.progress-button .tz-bar.background-vertical{
+    height:0;
+    top:0;
+    width:100%;
+    border-radius:2px;
+}
+
+/* Feed css */
+.resume-image {
+	border: 1px solid black;
+	width: 780px;
+	border-radius: 2px;
+}
+
+.circle {
+	height:20px;
+	width:20px;
+	border-radius: 10px;
+	background-color: rgba(102,159,164,0.9);
+	text-align: center;
+	z-index: 20;
+}
+
+.circle:hover {
+	background-color: rgba(102,159,164,0.5);
+}
+
+.toggleCircle {
+	background-color: rgba(102,159,164,0.3);
+}
+
+.comment-box {
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	border: 1px solid #B6B6B6;
+	border-radius: 5px;
+	width: 93%;
+	background-color: white;
+	outline-style: none;
+	outline-color: transparent;
+}
+
+.comment-input {
+	width:100% !important;
+	outline: none;
+}
+.comment-input:focus {
+	outline: none;
+}
+
+.comments-container{
+	border-left: 10px solid #B6B6B6;
+	height: 100%;
+	outline: none;
+}
+
+#file_select_button {
+	font-weight: 500;
+}
+
+#toggle-comments {
+	/*background-color: rgb(255,255,255);*/
+}
+
+.toggleCommentsButton {
+	/*background-color: rgb(200,200,200) !important;*/
+}
+
+.tooltip {
+	width:600px;
+}

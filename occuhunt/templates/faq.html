@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% load static from staticfiles %}
+{% load i18n %}
+{% load url from future %}
+
+{% block extra_style %}
+<!-- Add css here -->
+<style type="text/css">
+	body {
+		background-color: white;	
+		-webkit-font-smoothing: antialiased;
+		font-smoothing: antialiased;
+		font-smooth: always;
+	}
+
+	.question {
+		padding-top: 30px;
+		text-align: left;
+		font-weight: 700;
+		font-family: "Proxima Nova";
+		font-size: 22px;
+		margin-bottom: 22px;
+		color: white;
+		line-height: 0.9em;
+	}
+</style>
+
+{% endblock %}
+
+{% block extra_script %}
+<!-- Add javascript here -->
+{% endblock %}
+
+{% block content %}
+
+<div class="row">
+	<div class="col-lg-8 col-lg-offset-2">
+	  	<h1 id="company_title" style="color:#035d67;">FAQ</h1>
+	</div>
+</div>
+<div class="row">
+	<div class="col-lg-8 col-lg-offset-2 no-space">
+		<img id="company_banner" src="{{ company.banner_image }}">
+	</div>
+</div>
+<div class="row">
+	<div class="col-lg-8 col-lg-offset-2" id="company_description_container">
+	</div>
+</div>
+<div class="row">
+	<div class="col-lg-8 col-lg-offset-2" id="job_description_container">
+		<div class="row">
+			<div class="col-lg-offset-1 col-lg-10">
+				<br />
+				<h4 class="question">Any question?</h4>
+				<p style="color:white">Feel free to send us feedback or contact us directly! Email us at founders@occuhunt.com 
+				</p>				
+				<br />
+				<br />
+				<br />
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<!-- hard code everything for design -->
+{% endblock %}

@@ -1,0 +1,253 @@
+{% extends "base.html" %}
+{% load static from staticfiles %}
+{% load i18n %}
+{% load url from future %}
+
+{% block extra_style %}
+
+<style type="text/css">
+
+.documents {
+	margin: 0px;
+	padding: 0px;
+}
+
+.document {
+	width: 190px;
+	height: 260px;
+	display: inline-block;
+	position: relative;
+	clear: none;
+	border: 1px solid #dddddd;
+	margin-bottom: 30px;
+	list-style-type: none;
+}
+
+.actions {
+	display: block;
+	float: left;
+	font-family: Arial,"sans-serif";
+	font-size: 1.1em;
+	position: absolute;
+	white-space: nowrap;
+	list-style: none;
+	margin-top: 3px;
+}
+
+.actions > li {
+	display: inline;
+	margin:10px;
+	list-style-type: none;
+}
+
+.document:hover {
+	border: 1px solid #005469;
+}
+
+.document:hover > .actions > li {
+	opacity: 1;
+}
+
+</style>
+
+{% endblock %}
+
+{% block extra_script %}
+
+<script type="text/javascript">
+    function initialize() {
+      	var mapOptions = {
+        	center: new google.maps.LatLng(37.87, -122.27),
+        	zoom: 14
+      	};
+      	var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+    }
+
+    function loadScript() {
+      	var script = document.createElement('script');
+      	script.type = 'text/javascript';
+      	script.src = 'https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&' +
+          'callback=initialize';
+      	document.body.appendChild(script);
+    }
+
+    window.onload = loadScript;
+</script>
+
+{% endblock %}
+
+{% block content %}
+<script type="text/javascript" src="{% static 'zeroclipboard/ZeroClipboard.js' %}"></script>
+
+<div class="col-lg-2">
+	<div class="text-right">
+		<a href="/profile/resumes/" style="border-right: 2px solid #005f69; font-weight:bold;" class="btn btn-link">Resumes and Profile</a><br />
+		<a href="/profile/resumes/" class="btn btn-link">Notifications</a>
+	</div>
+</div>
+<div class="col-lg-7">
+	<input type="hidden" name="user_linkedin_uid" value="{{user_linkedin_uid}}">
+    
+    <h4 style="margin-bottom:2px; padding-bottom:2px;">Resumes<br /><span style="font-size:0.6em;"><i>Only companies you apply to can view your resume and CV</i></span></h4>
+    
+    <ul class="documents">
+    	<li class="document">
+    		<a href="/add/"><img style="width:100%; height:100%;" src="http://img.bhs4.com/b7/b/b7b76402439268b532e3429b3f1d1db0b28651d5_large.jpg"></a>
+    	</li>
+    	<li class="document">
+    		<a href="/preview/"><img style="width:100%; height:100%;" src="https://resumefeed.s3.amazonaws.com/sanchit-barejapdflUXW4bOsdAGYoQ4DEkgeHpUESXzPcP"></a>
+    		<ul class="actions">
+    			<li><a class="viewAnalytics" data-toggle="tooltip" data-placement="top"><span class="glyphicon glyphicon-eye-open"></span></a></li>
+    			<li><a class="copyToClipboard" data-clipboard-text="http://www.occuhunt.com/resume/sanchit/ae291m/" data-toggle="tooltip" data-placement="top"><span class="glyphicon glyphicon-link"></span></a></li>
+    			<li><a class="deleteResume" data-toggle="tooltip" data-placement="top"><span class="glyphicon glyphicon-trash"></span></a></li>
+    		</ul>
+    	</li>
+    	<li class="document">
+    		<a href="/preview/"><img style="width:100%; height:100%;" src="https://resumefeed.s3.amazonaws.com/sanchit-barejapdflUXW4bOsdAGYoQ4DEkgeHpUESXzPcP"></a>
+    		<ul class="actions">
+    			<li><a class="viewAnalytics" data-toggle="tooltip" data-placement="top"><span class="glyphicon glyphicon-eye-open"></span></a></li>
+    			<li><a class="copyToClipboard" data-clipboard-text="http://www.occuhunt.com/resume/sanchit/ae291m/" data-toggle="tooltip" data-placement="top"><span class="glyphicon glyphicon-link"></span></a></li>
+    			<li><a class="deleteResume" data-toggle="tooltip" data-placement="top"><span class="glyphicon glyphicon-trash"></span></a></li>
+    		</ul>
+    	</li>
+    	<li class="document">
+    		<a href="/preview/"><img style="width:100%; height:100%;" src="https://resumefeed.s3.amazonaws.com/sanchit-barejapdflUXW4bOsdAGYoQ4DEkgeHpUESXzPcP"></a>
+    		<ul class="actions">
+    			<li><a class="viewAnalytics" data-toggle="tooltip" data-placement="top"><span class="glyphicon glyphicon-eye-open"></span></a></li>
+    			<li><a class="copyToClipboard" data-clipboard-text="http://www.occuhunt.com/resume/sanchit/ae291m/" data-toggle="tooltip" data-placement="top"><span class="glyphicon glyphicon-link"></span></a></li>
+    			<li><a class="deleteResume" data-toggle="tooltip" data-placement="top"><span class="glyphicon glyphicon-trash"></span></a></li>
+    		</ul>
+    	</li>
+    	<li class="document">
+    		<a href="/preview/"><img style="width:100%; height:100%;" src="https://resumefeed.s3.amazonaws.com/sanchit-barejapdflUXW4bOsdAGYoQ4DEkgeHpUESXzPcP"></a>
+    		<ul class="actions">
+    			<li><a class="viewAnalytics" data-toggle="tooltip" data-placement="top"><span class="glyphicon glyphicon-eye-open"></span></a></li>
+    			<li><a class="copyToClipboard" data-clipboard-text="http://www.occuhunt.com/resume/sanchit/ae291m/" data-toggle="tooltip" data-placement="top"><span class="glyphicon glyphicon-link"></span></a></li>
+    			<li><a class="deleteResume" data-toggle="tooltip" data-placement="top"><span class="glyphicon glyphicon-trash"></span></a></li>
+    		</ul>
+    	</li>
+    	<li class="document">
+    		<a href="/preview/"><img style="width:100%; height:100%;" src="https://resumefeed.s3.amazonaws.com/sanchit-barejapdflUXW4bOsdAGYoQ4DEkgeHpUESXzPcP"></a>
+    		<ul class="actions">
+    			<li><a class="viewAnalytics" data-toggle="tooltip" data-placement="top"><span class="glyphicon glyphicon-eye-open"></span></a></li>
+    			<li><a class="copyToClipboard" data-clipboard-text="http://www.occuhunt.com/resume/sanchit/ae291m/" data-toggle="tooltip" data-placement="top"><span class="glyphicon glyphicon-link"></span></a></li>
+    			<li><a class="deleteResume" data-toggle="tooltip" data-placement="top"><span class="glyphicon glyphicon-trash"></span></a></li>
+    		</ul>
+    	</li>
+    	<li class="document">
+    		<a href="/preview/"><img style="width:100%; height:100%;" src="https://resumefeed.s3.amazonaws.com/sanchit-barejapdflUXW4bOsdAGYoQ4DEkgeHpUESXzPcP"></a>
+    		<ul class="actions">
+    			<li><a class="viewAnalytics" data-toggle="tooltip" data-placement="top"><span class="glyphicon glyphicon-eye-open"></span></a></li>
+    			<li><a class="copyToClipboard" data-clipboard-text="http://www.occuhunt.com/resume/sanchit/ae291m/" data-toggle="tooltip" data-placement="top"><span class="glyphicon glyphicon-link"></span></a></li>
+    			<li><a class="deleteResume" data-toggle="tooltip" data-placement="top"><span class="glyphicon glyphicon-trash"></span></a></li>
+    		</ul>
+    	</li>
+    </ul>
+    
+    <h4>CVs</h4>
+    <ul class="documents">
+    	<li class="document">
+    		<a href="/add/"><img style="width:100%; height:100%;" src="http://img.bhs4.com/b7/b/b7b76402439268b532e3429b3f1d1db0b28651d5_large.jpg"></a>
+    	</li>
+    	<li class="document">
+    		<a href="/preview/"><img style="width:100%; height:100%;" src="https://resumefeed.s3.amazonaws.com/sanchit-barejapdflUXW4bOsdAGYoQ4DEkgeHpUESXzPcP"></a>
+    		<ul class="actions">
+    			<li><a class="viewAnalytics" data-toggle="tooltip" data-placement="top"><span class="glyphicon glyphicon-eye-open"></span></a></li>
+    			<li><a class="copyToClipboard" data-clipboard-text="http://www.occuhunt.com/resume/sanchit/ae291m/" data-toggle="tooltip" data-placement="top"><span class="glyphicon glyphicon-link"></span></a></li>
+    			<li><a class="deleteResume" data-toggle="tooltip" data-placement="top"><span class="glyphicon glyphicon-trash"></span></a></li>
+    		</ul>
+    	</li>
+    </ul>
+
+    <h4>Portfolio</h4>
+    <ul class="documents">
+    	<li class="document">
+    		<a href="/add/"><img style="width:100%; height:100%;" src="http://img.bhs4.com/b7/b/b7b76402439268b532e3429b3f1d1db0b28651d5_large.jpg"></a>
+    	</li>
+    </ul>
+
+</div>
+
+<div class="col-lg-3">
+	<h4>Links</h4>
+	<div class="input-group">
+	  	<span class="input-group-addon">Github</span>
+	  	<input type="text" class="form-control" placeholder="Github Link">
+	</div>
+	<div class="input-group">
+	  	<span class="input-group-addon">Dribble</span>
+	  	<input type="text" class="form-control" placeholder="Dribble Link">
+	</div>
+	<div class="input-group">
+	  	<span class="input-group-addon">Personal</span>
+	  	<input type="text" class="form-control" placeholder="Personal Link">
+	</div>
+	<div class="input-group">
+	  	<span class="input-group-addon">Other</span>
+	  	<input type="text" class="form-control" placeholder="Other Link">
+	</div>
+
+	<br />
+	<h4>Analytics</h4>
+	<div style="height:250px;width:100%;" id="map-canvas"></div>
+	<div class="list-group" id="tips">
+		<div class="list-group-item" style="color:grey;">			
+			<p>Anonymous1 viewed at 5.22pm on May 30th 2014 from San Francisco, CA</p>
+		</div>
+		<div class="list-group-item" style="color:grey;">			
+			<p>Anonymous2 downloaded at 5.22pm on May 30th 2014 from San Francisco, CA</p>
+		</div>
+		<div class="list-group-item" style="color:grey;">			
+			<p>Anonymous2 downloaded at 5.22pm on May 30th 2014 from San Francisco, CA</p>
+		</div>
+	</div>
+	
+</div>
+
+{% endblock %}
+
+
+{% block extra_script_end %}
+
+<script type="text/javascript">
+
+    $(document).ready(function() {
+
+    	// copying to clipboard
+        var client = new ZeroClipboard($('.copyToClipboard'), {
+            moviePath : '/static/zeroclipboard/ZeroClipboard.swf'
+        });
+
+        client.on( 'mouseover', function ( event ) {
+		  	$(this).attr('title', 'Click to copy and share').tooltip('fixTitle').tooltip("show");
+		});
+
+		client.on( 'mouseout', function ( event ) {
+		  	$(this).tooltip("hide");
+		});
+
+		client.on( 'mousedown', function(event) {
+			var newTitle = 'Copied!';
+			$(this).attr('title', newTitle).tooltip('fixTitle').tooltip("show");
+		});
+
+		// view analytics
+		$(".viewAnalytics").attr("title",'View Analytics').tooltip('fixTitle').tooltip();
+		$(".viewAnalytics").click(function(){
+			console.log("Design analytics page la!");
+		});
+
+		// delete resume
+		$(".deleteResume").attr("title",'Delete Resume').tooltip('fixTitle').tooltip();
+		$(".deleteResume").click(function(event){
+			// on successful delete - remove document from view
+			console.log(event);
+			$(this).parent().parent().parent().remove();
+			console.log("Delete resume leh.");
+		});
+
+    });
+
+</script>
+
+{% endblock %}

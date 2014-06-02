@@ -84,6 +84,7 @@ urlpatterns = patterns('',
     url(r'^recruiter/sell/$', recruiter_sell, name='recruiter_sell'),
     url(r'^recruiter/sponsorship-request/$', recruiter_sponsorship_request, name='recruiter_sponsorship_request'),
     url(r'^feedback/$',feedback_form),
+    url(r'^faq/$',TemplateView.as_view(template_name="faq.html")),
     url(r'^privacy/$',TemplateView.as_view(template_name="privacy_policy.html")),
     url(r'^logout/$', logout_view, name='logout'),
     url(r'^login-error/$', login_error, name='login-error'),
@@ -141,6 +142,8 @@ urlpatterns = patterns('',
     url(r'^infosession/([A-Za-z0-9_-]+)/([0-9]+)/', infosession_handler, name="infosession_handler"),
     url(r'^357/([0-9]+)/', three_five_seven_handler, name="three_five_seven_handler"),
     url(r'^offrhunt/$', offrhunt_handler, name='offrhunt'),
+    url(r'^profile/resumes/$',TemplateView.as_view(template_name="profile/resumes.html")),
+    url(r'^profile/preview/$',TemplateView.as_view(template_name="profile/preview.html")),
 
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
@@ -163,5 +166,5 @@ urlpatterns = patterns('',
     url(r'^api/', include(v1_api.urls)),
     url(r'^api/', include(v2_api.urls)),
     url(r'^oauth2/', include('provider.oauth2.urls', namespace = 'oauth2')),
-) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
