@@ -14,3 +14,4 @@ class VisitAdmin(admin.ModelAdmin):
 
 admin.site.register(Document, DocumentAdmin)
 admin.site.register(Link, LinkAdmin)
+admin.site.register(Visit, VisitAdmin)
