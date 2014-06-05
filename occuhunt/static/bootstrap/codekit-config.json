@@ -1,6 +1,6 @@
 {
   "CodeKitInfo" : "This is a CodeKit project configuration file. It is designed to sync project settings across multiple machines. Modifying the contents of this file can be a poor life decision if you don't know what you're doing. This file is not useful unless accompanied by the project that created it in CodeKit. For more information, see: http:\/\/incident57.com\/codekit",
-  "creatorBuild" : "8403",
+  "creatorBuild" : "8376",
   "files" : {
     "\/dist\/css\/bootstrap-theme.css" : {
       "ignoreWasSetByUser" : 0,
@@ -10,15 +10,6 @@
       "inputAbbreviatedPath" : "\/dist\/css\/bootstrap-theme.css",
       "outputAbbreviatedPath" : "No Output Path",
       "fileType" : 16
-    },
-    "\/js\/tests\/index.html" : {
-      "ignoreWasSetByUser" : 0,
-      "ignore" : 0,
-      "hidden" : 0,
-      "outputPathIsSetByUser" : 0,
-      "inputAbbreviatedPath" : "\/js\/tests\/index.html",
-      "outputAbbreviatedPath" : "No Output Path",
-      "fileType" : 2048
     },
     "\/js\/tests\/vendor\/qunit.css" : {
       "ignoreWasSetByUser" : 0,
@@ -46,22 +37,25 @@
       "fileType" : 1,
       "debugStyle" : 0
     },
-    "\/less\/alerts.less" : {
-      "ieCompatibility" : 1,
-      "inputAbbreviatedPath" : "\/less\/alerts.less",
-      "outputAbbreviatedPath" : "\/dist\/css\/alerts.css",
-      "outputPathIsSetByUser" : 0,
-      "strictUnits" : 0,
-      "relativeURLS" : 0,
-      "ignore" : 1,
-      "strictImports" : 0,
+    "\/js\/tests\/index.html" : {
       "ignoreWasSetByUser" : 0,
-      "shouldRunBless" : 0,
+      "ignore" : 0,
       "hidden" : 0,
-      "strictMath" : 0,
-      "outputStyle" : 0,
-      "fileType" : 1,
-      "debugStyle" : 0
+      "outputPathIsSetByUser" : 0,
+      "inputAbbreviatedPath" : "\/js\/tests\/index.html",
+      "outputAbbreviatedPath" : "No Output Path",
+      "fileType" : 2048
+    },
+    "\/assets\/js\/filesaver.js" : {
+      "ignoreWasSetByUser" : 0,
+      "ignore" : 0,
+      "hidden" : 0,
+      "outputPathIsSetByUser" : 0,
+      "inputAbbreviatedPath" : "\/assets\/js\/filesaver.js",
+      "outputStyle" : 1,
+      "syntaxCheckerStyle" : 1,
+      "outputAbbreviatedPath" : "\/assets\/js\/filesaver-ck.js",
+      "fileType" : 64
     },
     "\/less\/labels.less" : {
       "ieCompatibility" : 1,
@@ -114,16 +108,22 @@
       "fileType" : 1,
       "debugStyle" : 0
     },
-    "\/assets\/js\/filesaver.js" : {
-      "ignoreWasSetByUser" : 0,
-      "ignore" : 0,
-      "hidden" : 0,
+    "\/less\/utilities.less" : {
+      "ieCompatibility" : 1,
+      "inputAbbreviatedPath" : "\/less\/utilities.less",
+      "outputAbbreviatedPath" : "\/dist\/css\/utilities.css",
       "outputPathIsSetByUser" : 0,
-      "inputAbbreviatedPath" : "\/assets\/js\/filesaver.js",
-      "outputStyle" : 1,
-      "syntaxCheckerStyle" : 1,
-      "outputAbbreviatedPath" : "\/assets\/js\/filesaver-ck.js",
-      "fileType" : 64
+      "strictUnits" : 0,
+      "relativeURLS" : 0,
+      "ignore" : 1,
+      "strictImports" : 0,
+      "ignoreWasSetByUser" : 0,
+      "shouldRunBless" : 0,
+      "hidden" : 0,
+      "strictMath" : 0,
+      "outputStyle" : 0,
+      "fileType" : 1,
+      "debugStyle" : 0
     },
     "\/js\/tests\/unit\/phantom.js" : {
       "ignoreWasSetByUser" : 0,
@@ -136,10 +136,10 @@
       "outputAbbreviatedPath" : "\/js\/tests\/unit\/phantom-ck.js",
       "fileType" : 64
     },
-    "\/less\/utilities.less" : {
+    "\/less\/alerts.less" : {
       "ieCompatibility" : 1,
-      "inputAbbreviatedPath" : "\/less\/utilities.less",
-      "outputAbbreviatedPath" : "\/dist\/css\/utilities.css",
+      "inputAbbreviatedPath" : "\/less\/alerts.less",
+      "outputAbbreviatedPath" : "\/dist\/css\/alerts.css",
       "outputPathIsSetByUser" : 0,
       "strictUnits" : 0,
       "relativeURLS" : 0,
@@ -203,7 +203,7 @@
       "hidden" : 0,
       "outputPathIsSetByUser" : 0,
       "inputAbbreviatedPath" : "\/dist\/css\/print.css",
-      "outputAbbreviatedPath" : "\/No Output Path",
+      "outputAbbreviatedPath" : "No Output Path",
       "fileType" : 16
     },
     "\/less\/component-animations.less" : {
@@ -402,7 +402,7 @@
       "hidden" : 0,
       "outputPathIsSetByUser" : 0,
       "inputAbbreviatedPath" : "\/dist\/css\/bootstrap.css",
-      "outputAbbreviatedPath" : "\/No Output Path",
+      "outputAbbreviatedPath" : "No Output Path",
       "fileType" : 16
     },
     "\/assets\/ico\/apple-touch-icon-144-precomposed.png" : {
@@ -415,17 +415,6 @@
       "outputAbbreviatedPath" : "\/assets\/ico\/apple-touch-icon-144-precomposed.png",
       "initialSize" : 3614,
       "fileType" : 8192
-    },
-    "\/js\/tests\/phantom.js" : {
-      "ignoreWasSetByUser" : 0,
-      "ignore" : 0,
-      "hidden" : 0,
-      "outputPathIsSetByUser" : 0,
-      "inputAbbreviatedPath" : "\/js\/tests\/phantom.js",
-      "outputStyle" : 1,
-      "syntaxCheckerStyle" : 1,
-      "outputAbbreviatedPath" : "\/js\/tests\/phantom-ck.js",
-      "fileType" : 64
     },
     "\/less\/navbar.less" : {
       "ieCompatibility" : 1,
@@ -444,6 +433,17 @@
       "fileType" : 1,
       "debugStyle" : 0
     },
+    "\/js\/tests\/phantom.js" : {
+      "ignoreWasSetByUser" : 0,
+      "ignore" : 0,
+      "hidden" : 0,
+      "outputPathIsSetByUser" : 0,
+      "inputAbbreviatedPath" : "\/js\/tests\/phantom.js",
+      "outputStyle" : 1,
+      "syntaxCheckerStyle" : 1,
+      "outputAbbreviatedPath" : "\/js\/tests\/phantom-ck.js",
+      "fileType" : 64
+    },
     "\/js\/tests\/unit\/transition.js" : {
       "ignoreWasSetByUser" : 0,
       "ignore" : 0,
@@ -461,7 +461,7 @@
       "hidden" : 0,
       "outputPathIsSetByUser" : 0,
       "inputAbbreviatedPath" : "\/dist\/css\/normalize.css",
-      "outputAbbreviatedPath" : "\/No Output Path",
+      "outputAbbreviatedPath" : "No Output Path",
       "fileType" : 16
     },
     "\/less\/media.less" : {
@@ -492,17 +492,6 @@
       "outputAbbreviatedPath" : "\/js\/affix-ck.js",
       "fileType" : 64
     },
-    "\/assets\/js\/uglify.js" : {
-      "ignoreWasSetByUser" : 0,
-      "ignore" : 0,
-      "hidden" : 0,
-      "outputPathIsSetByUser" : 0,
-      "inputAbbreviatedPath" : "\/assets\/js\/uglify.js",
-      "outputStyle" : 1,
-      "syntaxCheckerStyle" : 1,
-      "outputAbbreviatedPath" : "\/assets\/js\/uglify-ck.js",
-      "fileType" : 64
-    },
     "\/js\/transition.js" : {
       "ignoreWasSetByUser" : 0,
       "ignore" : 0,
@@ -530,6 +519,17 @@
       "outputStyle" : 0,
       "fileType" : 1,
       "debugStyle" : 0
+    },
+    "\/assets\/js\/uglify.js" : {
+      "ignoreWasSetByUser" : 0,
+      "ignore" : 0,
+      "hidden" : 0,
+      "outputPathIsSetByUser" : 0,
+      "inputAbbreviatedPath" : "\/assets\/js\/uglify.js",
+      "outputStyle" : 1,
+      "syntaxCheckerStyle" : 1,
+      "outputAbbreviatedPath" : "\/assets\/js\/uglify-ck.js",
+      "fileType" : 64
     },
     "\/less\/normalize.less" : {
       "ieCompatibility" : 1,
@@ -705,17 +705,6 @@
       "outputAbbreviatedPath" : "\/js\/tests\/unit\/modal-ck.js",
       "fileType" : 64
     },
-    "\/js\/popover.js" : {
-      "ignoreWasSetByUser" : 0,
-      "ignore" : 0,
-      "hidden" : 0,
-      "outputPathIsSetByUser" : 0,
-      "inputAbbreviatedPath" : "\/js\/popover.js",
-      "outputStyle" : 1,
-      "syntaxCheckerStyle" : 1,
-      "outputAbbreviatedPath" : "\/js\/popover-ck.js",
-      "fileType" : 64
-    },
     "\/js\/tests\/unit\/tooltip.js" : {
       "ignoreWasSetByUser" : 0,
       "ignore" : 0,
@@ -727,13 +716,24 @@
       "outputAbbreviatedPath" : "\/js\/tests\/unit\/tooltip-ck.js",
       "fileType" : 64
     },
-    "\/dist\/css\/theme.css" : {
+    "\/js\/popover.js" : {
+      "ignoreWasSetByUser" : 0,
+      "ignore" : 0,
+      "hidden" : 0,
+      "outputPathIsSetByUser" : 0,
+      "inputAbbreviatedPath" : "\/js\/popover.js",
+      "outputStyle" : 1,
+      "syntaxCheckerStyle" : 1,
+      "outputAbbreviatedPath" : "\/js\/popover-ck.js",
+      "fileType" : 64
+    },
+    "\/dist\/css\/mixins.css" : {
       "ignoreWasSetByUser" : 0,
       "ignore" : 1,
       "hidden" : 0,
       "outputPathIsSetByUser" : 0,
-      "inputAbbreviatedPath" : "\/dist\/css\/theme.css",
-      "outputAbbreviatedPath" : "\/No Output Path",
+      "inputAbbreviatedPath" : "\/dist\/css\/mixins.css",
+      "outputAbbreviatedPath" : "No Output Path",
       "fileType" : 16
     },
     "\/assets\/js\/holder.js" : {
@@ -784,13 +784,13 @@
       "fileType" : 1,
       "debugStyle" : 0
     },
-    "\/dist\/css\/mixins.css" : {
+    "\/dist\/css\/theme.css" : {
       "ignoreWasSetByUser" : 0,
       "ignore" : 1,
       "hidden" : 0,
       "outputPathIsSetByUser" : 0,
-      "inputAbbreviatedPath" : "\/dist\/css\/mixins.css",
-      "outputAbbreviatedPath" : "\/No Output Path",
+      "inputAbbreviatedPath" : "\/dist\/css\/theme.css",
+      "outputAbbreviatedPath" : "No Output Path",
       "fileType" : 16
     },
     "\/dist\/css\/bootstrap-theme.min.css" : {
@@ -802,10 +802,10 @@
       "outputAbbreviatedPath" : "No Output Path",
       "fileType" : 16
     },
-    "\/less\/pager.less" : {
+    "\/less\/responsive-utilities.less" : {
       "ieCompatibility" : 1,
-      "inputAbbreviatedPath" : "\/less\/pager.less",
-      "outputAbbreviatedPath" : "\/dist\/css\/pager.css",
+      "inputAbbreviatedPath" : "\/less\/responsive-utilities.less",
+      "outputAbbreviatedPath" : "\/dist\/css\/responsive-utilities.css",
       "outputPathIsSetByUser" : 0,
       "strictUnits" : 0,
       "relativeURLS" : 0,
@@ -819,10 +819,10 @@
       "fileType" : 1,
       "debugStyle" : 0
     },
-    "\/less\/pagination.less" : {
+    "\/less\/pager.less" : {
       "ieCompatibility" : 1,
-      "inputAbbreviatedPath" : "\/less\/pagination.less",
-      "outputAbbreviatedPath" : "\/dist\/css\/pagination.css",
+      "inputAbbreviatedPath" : "\/less\/pager.less",
+      "outputAbbreviatedPath" : "\/dist\/css\/pager.css",
       "outputPathIsSetByUser" : 0,
       "strictUnits" : 0,
       "relativeURLS" : 0,
@@ -856,10 +856,10 @@
       "outputAbbreviatedPath" : "\/js\/tests\/vendor\/jquery-ck.js",
       "fileType" : 64
     },
-    "\/less\/responsive-utilities.less" : {
+    "\/less\/pagination.less" : {
       "ieCompatibility" : 1,
-      "inputAbbreviatedPath" : "\/less\/responsive-utilities.less",
-      "outputAbbreviatedPath" : "\/dist\/css\/responsive-utilities.css",
+      "inputAbbreviatedPath" : "\/less\/pagination.less",
+      "outputAbbreviatedPath" : "\/dist\/css\/pagination.css",
       "outputPathIsSetByUser" : 0,
       "strictUnits" : 0,
       "relativeURLS" : 0,
@@ -889,17 +889,6 @@
       "outputStyle" : 0,
       "fileType" : 1,
       "debugStyle" : 0
-    },
-    "\/js\/modal.js" : {
-      "ignoreWasSetByUser" : 0,
-      "ignore" : 0,
-      "hidden" : 0,
-      "outputPathIsSetByUser" : 0,
-      "inputAbbreviatedPath" : "\/js\/modal.js",
-      "outputStyle" : 1,
-      "syntaxCheckerStyle" : 1,
-      "outputAbbreviatedPath" : "\/js\/modal-ck.js",
-      "fileType" : 64
     },
     "\/less\/wells.less" : {
       "ieCompatibility" : 1,
@@ -934,6 +923,17 @@
       "outputStyle" : 0,
       "fileType" : 1,
       "debugStyle" : 0
+    },
+    "\/js\/modal.js" : {
+      "ignoreWasSetByUser" : 0,
+      "ignore" : 0,
+      "hidden" : 0,
+      "outputPathIsSetByUser" : 0,
+      "inputAbbreviatedPath" : "\/js\/modal.js",
+      "outputStyle" : 1,
+      "syntaxCheckerStyle" : 1,
+      "outputAbbreviatedPath" : "\/js\/modal-ck.js",
+      "fileType" : 64
     },
     "\/less\/panels.less" : {
       "ieCompatibility" : 1,
@@ -1003,26 +1003,6 @@
       "fileType" : 1,
       "debugStyle" : 0
     },
-    "\/dist\/css\/variables.css" : {
-      "ignoreWasSetByUser" : 0,
-      "ignore" : 1,
-      "hidden" : 0,
-      "outputPathIsSetByUser" : 0,
-      "inputAbbreviatedPath" : "\/dist\/css\/variables.css",
-      "outputAbbreviatedPath" : "\/No Output Path",
-      "fileType" : 16
-    },
-    "\/js\/tab.js" : {
-      "ignoreWasSetByUser" : 0,
-      "ignore" : 0,
-      "hidden" : 0,
-      "outputPathIsSetByUser" : 0,
-      "inputAbbreviatedPath" : "\/js\/tab.js",
-      "outputStyle" : 1,
-      "syntaxCheckerStyle" : 1,
-      "outputAbbreviatedPath" : "\/js\/tab-ck.js",
-      "fileType" : 64
-    },
     "\/less\/grid.less" : {
       "ieCompatibility" : 1,
       "inputAbbreviatedPath" : "\/less\/grid.less",
@@ -1039,6 +1019,26 @@
       "outputStyle" : 0,
       "fileType" : 1,
       "debugStyle" : 0
+    },
+    "\/js\/tab.js" : {
+      "ignoreWasSetByUser" : 0,
+      "ignore" : 0,
+      "hidden" : 0,
+      "outputPathIsSetByUser" : 0,
+      "inputAbbreviatedPath" : "\/js\/tab.js",
+      "outputStyle" : 1,
+      "syntaxCheckerStyle" : 1,
+      "outputAbbreviatedPath" : "\/js\/tab-ck.js",
+      "fileType" : 64
+    },
+    "\/dist\/css\/variables.css" : {
+      "ignoreWasSetByUser" : 0,
+      "ignore" : 1,
+      "hidden" : 0,
+      "outputPathIsSetByUser" : 0,
+      "inputAbbreviatedPath" : "\/dist\/css\/variables.css",
+      "outputAbbreviatedPath" : "No Output Path",
+      "fileType" : 16
     },
     "\/js\/dropdown.js" : {
       "ignoreWasSetByUser" : 0,
@@ -1113,22 +1113,16 @@
       "outputAbbreviatedPath" : "\/dist\/js\/bootstrap-ck.js",
       "fileType" : 64
     },
-    "\/less\/modals.less" : {
-      "ieCompatibility" : 1,
-      "inputAbbreviatedPath" : "\/less\/modals.less",
-      "outputAbbreviatedPath" : "\/dist\/css\/modals.css",
-      "outputPathIsSetByUser" : 0,
-      "strictUnits" : 0,
-      "relativeURLS" : 0,
-      "ignore" : 1,
-      "strictImports" : 0,
+    "\/assets\/ico\/apple-touch-icon-72-precomposed.png" : {
       "ignoreWasSetByUser" : 0,
-      "shouldRunBless" : 0,
+      "ignore" : 0,
       "hidden" : 0,
-      "strictMath" : 0,
-      "outputStyle" : 0,
-      "fileType" : 1,
-      "debugStyle" : 0
+      "outputPathIsSetByUser" : 0,
+      "inputAbbreviatedPath" : "\/assets\/ico\/apple-touch-icon-72-precomposed.png",
+      "processed" : 0,
+      "outputAbbreviatedPath" : "\/assets\/ico\/apple-touch-icon-72-precomposed.png",
+      "initialSize" : 1932,
+      "fileType" : 8192
     },
     "\/less\/print.less" : {
       "ieCompatibility" : 1,
@@ -1147,16 +1141,22 @@
       "fileType" : 1,
       "debugStyle" : 0
     },
-    "\/assets\/ico\/apple-touch-icon-72-precomposed.png" : {
-      "ignoreWasSetByUser" : 0,
-      "ignore" : 0,
-      "hidden" : 0,
+    "\/less\/modals.less" : {
+      "ieCompatibility" : 1,
+      "inputAbbreviatedPath" : "\/less\/modals.less",
+      "outputAbbreviatedPath" : "\/dist\/css\/modals.css",
       "outputPathIsSetByUser" : 0,
-      "inputAbbreviatedPath" : "\/assets\/ico\/apple-touch-icon-72-precomposed.png",
-      "processed" : 0,
-      "outputAbbreviatedPath" : "\/assets\/ico\/apple-touch-icon-72-precomposed.png",
-      "initialSize" : 1932,
-      "fileType" : 8192
+      "strictUnits" : 0,
+      "relativeURLS" : 0,
+      "ignore" : 1,
+      "strictImports" : 0,
+      "ignoreWasSetByUser" : 0,
+      "shouldRunBless" : 0,
+      "hidden" : 0,
+      "strictMath" : 0,
+      "outputStyle" : 0,
+      "fileType" : 1,
+      "debugStyle" : 0
     },
     "\/dist\/css\/media.css" : {
       "ignoreWasSetByUser" : 0,
@@ -1164,7 +1164,7 @@
       "hidden" : 0,
       "outputPathIsSetByUser" : 0,
       "inputAbbreviatedPath" : "\/dist\/css\/media.css",
-      "outputAbbreviatedPath" : "\/No Output Path",
+      "outputAbbreviatedPath" : "No Output Path",
       "fileType" : 16
     },
     "\/less\/theme.less" : {
@@ -1429,7 +1429,7 @@
       "trailing" : 1,
       "nonew" : 1,
       "es3" : 0,
-      "freeze" : 1,
+      "freeze" : true,
       "yui" : 0,
       "mootools" : 0,
       "proto" : 0,
@@ -1465,7 +1465,7 @@
       "unused" : 1,
       "debug" : 0,
       "bitwise" : 1,
-      "notypeof" : 1,
+      "notypeof" : true,
       "white" : 0,
       "browser" : 1,
       "worker" : 0,

@@ -65,21 +65,19 @@
 
 <div class="col-lg-2">
     <h4>Links</h4>
-    <p><a class="copyToClipboard" data-clipboard-text="http://www.occuhunt.com/resume/sanchit/ae291m/" data-toggle="tooltip" data-placement="top"><span class="glyphicon glyphicon-link"></span></a>&nbsp;<a href="http://github.com" target="_blank">Github</a></p>
-    <p><a class="copyToClipboard" data-clipboard-text="http://www.occuhunt.com/resume/sanchit/ae291m/" data-toggle="tooltip" data-placement="top"><span class="glyphicon glyphicon-link"></span></a>&nbsp;<a href="http://dribble.com" target="_blank">Dribble</a></p>
-    <p><a class="copyToClipboard" data-clipboard-text="http://www.occuhunt.com/resume/sanchit/ae291m/" data-toggle="tooltip" data-placement="top"><span class="glyphicon glyphicon-link"></span></a>&nbsp;<a href="http://personal.com" target="_blank">Personal</a></p>
-    <p><a class="copyToClipboard" data-clipboard-text="http://www.occuhunt.com/resume/sanchit/ae291m/" data-toggle="tooltip" data-placement="top"><span class="glyphicon glyphicon-link"></span></a>&nbsp;<a href="http://other.com" target="_blank">Other</a></p>
+    {% for link in links %}
+        <p><a class="copyToClipboard" data-clipboard-text="{{link.url}}" data-toggle="tooltip" data-placement="top"><span class="glyphicon glyphicon-link"></span></a>&nbsp;<a href="{{link.url}}" target="_blank">{{link.link_name}}</a></p>
+    {% endfor %}
 </div>
 
 <div class="col-lg-8">
 	<input type="hidden" name="user_linkedin_uid" value="{{user_linkedin_uid}}">
     
     <div>
-        <h4 style="float:left;">Resume</h4>
+        <h4 style="float:left;">Document</h4>
         <a class="btn btn-sm btn-done" style="float:right;">Download .pdf</a>
     </div>
-
-    <img style="width:100%; height:100%; border:1px solid #dddddd;" src="https://resumefeed.s3.amazonaws.com/sanchit-barejapdflUXW4bOsdAGYoQ4DEkgeHpUESXzPcP">
+    <img style="width:100%; height:100%; border:1px solid #dddddd;" src="{{document.image_url}}">
 
 </div>
 

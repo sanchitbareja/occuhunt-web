@@ -29,7 +29,8 @@ from hunts.models import Hunt
 from applications.models import Application
 from jobs.models import Job
 from notifications.models import Notification
-import datetime, json
+from documents.models import Document, Link, Visit
+import datetime, json, random, string
 
 class CompanyResource(ModelResource):
     class Meta:
@@ -747,3 +748,174 @@ class ApplicationResource(ModelResource):
 
     def determine_format(self, request):
         return 'application/json'
+
+
+class DocumentResource(ModelResource):
+    user = fields.OneToOneField(UserResource, 'user', full=True)
+    class Meta:
+        queryset = Document.objects.all().order_by('-timestamp')
+        resource_name = 'documents'
+        authorization = DjangoAuthorization()
+        authentication = OAuth20Authentication()
+        limit = 20
+        always_return_data = True
+        allowed_methods = ['get','post','delete']
+        filtering = {}
+
+    def dehydrate(self, bundle):
+        """
+        Return a list of documents formatted according to what the developer expects
+        """
+        return bundle
+
+    def obj_create(self, bundle, **kwargs):
+        """
+        Creates a new document
+        """
+        try:
+            document_type = bundle.data['document_type']
+            image_url = bundle.data['image_url']
+            pdf_url = bundle.data['pdf_url']
+            delete = False
+            s=string.lowercase+string.digits
+            unique_hash = ''.join(random.sample(s,10))
+            # check if hash is indeed unique
+            while Document.objects.filter(user=bundle.request.user, unique_hash=unique_hash).count() > 0:
+                unique_hash = ''.join(random.sample(s,10))
+            # need to check if document_url, image_url, pdf_url and delete exists
+            new_doc = Document(user=bundle.request.user, document_type=document_type, image_url=image_url, url=pdf_url, unique_hash=unique_hash, delete=delete)
+            new_doc.save()
+            bundle.obj = new_doc
+        except Exception, e:
+            print e
+        return bundle
+
+    def obj_delete(self, bundle, **kwargs):
+        """
+        Marks a document as deleted
+        """
+        try:
+            document = Document.objects.get(id=kwargs['pk'])
+            if document.user == bundle.request.user:
+                document.delete = True
+                document.save()
+        except Exception, e:
+            print e
+        return bundle
+
+    def alter_list_data_to_serialize(self, request, data):
+        # rename "objects" to "documents"
+        data['response'] = {"documents":data["objects"]}
+        del(data["objects"])
+        return data
+
+    def determine_format(self, request):
+        return 'application/json'
+
+
+class LinkResource(ModelResource):
+    user = fields.OneToOneField(UserResource, 'user', full=True)
+    class Meta:
+        queryset = Link.objects.all().order_by('-timestamp')
+        resource_name = 'links'
+        authorization = DjangoAuthorization()
+        authentication = OAuth20Authentication()
+        limit = 20
+        always_return_data = True
+        allowed_methods = ['get','post','delete']
+        filtering = {}
+
+    def dehydrate(self, bundle):
+        """
+        Return a list of links formatted according to what the developer expects
+        """
+        return bundle
+
+    def obj_create(self, bundle, **kwargs):
+        """
+        Creates a new link
+        """
+        try:
+            link_label = bundle.data["label"]
+            link_url = bundle.data["url"]
+            delete = False
+            # need to check if document_url, image_url, pdf_url and delete exists
+            new_link = Link(user=bundle.request.user, link_name=link_label, url=link_url, delete=delete)
+            new_link.save()
+            bundle.obj = new_link
+        except Exception, e:
+            print e
+        return bundle
+
+    def obj_delete(self, bundle, **kwargs):
+        """
+        Marks a link as deleted
+        """
+        try:
+            link = Link.objects.get(id=kwargs['pk'])
+            if link.user == bundle.request.user:
+                link.delete = True
+                link.save()
+        except Exception, e:
+            print e
+        return bundle
+
+    def alter_list_data_to_serialize(self, request, data):
+        # rename "objects" to "links"
+        data['response'] = {"links":data["objects"]}
+        del(data["objects"])
+        return data
+
+    def determine_format(self, request):
+        return 'application/json'
+
+class VisitResource(ModelResource):
+    class Meta:
+        queryset = Visit.objects.all().order_by('-timestamp')
+        resource_name = 'visits'
+        authorization = DjangoAuthorization()
+        authentication = OAuth20Authentication()
+        limit = 20
+        always_return_data = True
+        allowed_methods = ['get','post']
+        filtering = {}
+
+    def dehydrate(self, bundle):
+        """
+        Return a list of Visits formatted according to what the developer expects
+        """
+        return bundle
+
+    def obj_create(self, bundle, **kwargs):
+        """
+        Creates a new visit
+        """
+        try:
+            user = User.objects.get(id=bundle.data["user"])
+            document_type = bundle.data['document_type']
+            image_url = bundle.data['image_url']
+            pdf_url = bundle.data['pdf_url']
+            delete = False
+            s=string.lowercase+string.digits
+            unique_hash = ''.join(random.sample(s,10))
+            # check if hash is indeed unique
+            while Document.objects.filter(user=user, unique_hash=unique_hash).count() > 0:
+                unique_hash = ''.join(random.sample(s,10))
+            # need to check if document_url, image_url, pdf_url and delete exists
+            new_doc = Document(user=user, document_type=document_type, image_url=image_url, url=pdf_url, delete=delete)
+            new_doc.save()
+            bundle.obj = new_doc
+        except Exception, e:
+            print e
+        return bundle
+
+    def alter_list_data_to_serialize(self, request, data):
+        # rename "objects" to "visits"
+        data['response'] = {"visits":data["objects"]}
+        del(data["objects"])
+        return data
+
+    def determine_format(self, request):
+        return 'application/json'
+
+

@@ -7,6 +7,7 @@ from recommendations.views import recommendation_main, recommendation_new, recom
 from fairs.views import create_fair, all_events, career_fair_handler, infosession_handler, three_five_seven_handler, StartupCareerFairSpring2014View, ISchoolInfoCampView, PBLCareerFairSpring2014View, Dropin357View, Dropin3572View, Dropin3573View, GestureKitInfosession15April2014View
 from recruiters.views import recruiter_splash, recruiter_hire, recruiter_market, recruiter_sell, recruiter_sponsorship_request, download_pdf, recruiter_login, recruiter_login_third_party, recruiter_analytics, download_excel_to_export
 from offers.views import offrhunt_handler
+from documents.views import profile_view, preview_document
 from django.conf import settings
 from django.conf.urls.static import static
 from django.views.generic import TemplateView, RedirectView
@@ -37,7 +38,7 @@ v1_api.register(OfferResource())
 
 # API
 from tastypie.api import Api
-from api.apiv2 import CompanyResource, UserResource, FairResource, FavoriteResource, HuntResource, JobResource, NotificationResource, CommentResource, ResumeResource, ApplicationResource
+from api.apiv2 import CompanyResource, UserResource, FairResource, FavoriteResource, HuntResource, JobResource, NotificationResource, CommentResource, ResumeResource, ApplicationResource, DocumentResource, LinkResource, VisitResource
 from api.views import logout_view, login_error, feedback_form
 
 v2_api = Api(api_name='v2')
@@ -51,6 +52,9 @@ v2_api.register(NotificationResource())
 v2_api.register(CommentResource())
 v2_api.register(ResumeResource())
 v2_api.register(ApplicationResource())
+v2_api.register(DocumentResource())
+v2_api.register(LinkResource())
+v2_api.register(VisitResource())
 
 urlpatterns = patterns('',
     url(r'^$', splash, name='splash'),
@@ -142,8 +146,8 @@ urlpatterns = patterns('',
     url(r'^infosession/([A-Za-z0-9_-]+)/([0-9]+)/', infosession_handler, name="infosession_handler"),
     url(r'^357/([0-9]+)/', three_five_seven_handler, name="three_five_seven_handler"),
     url(r'^offrhunt/$', offrhunt_handler, name='offrhunt'),
-    url(r'^profile/resumes/$',TemplateView.as_view(template_name="profile/resumes.html")),
-    url(r'^profile/preview/$',TemplateView.as_view(template_name="profile/preview.html")),
+    url(r'^profile/resumes/$', profile_view, name='profile_view'),
+    url(r'^document/([A-Za-z0-9_-]+)/([A-Za-z0-9_-]+)/$', preview_document, name='preview_document'),
 
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
