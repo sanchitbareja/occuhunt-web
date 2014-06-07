@@ -93,9 +93,6 @@ def preview_document(request, username, document_hash):
 			'document': doc,
 			'links': links
 		}
-		# add analytics
-		new_visit = Visit(ip_address=client_ip, visit_type=1)
-		new_visit.save()
 		return render_to_response('profile/preview.html', data_to_send, RequestContext(request))
 	else:
 		return render_to_response('profile/preview.html', data_to_send, RequestContext(request))

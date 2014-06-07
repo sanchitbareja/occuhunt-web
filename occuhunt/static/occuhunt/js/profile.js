@@ -286,7 +286,8 @@ function delete_document(document_id, html_handle) {
 };
 
 // view analytics for link
-function get_visits(user_id, document_id) {
+function get_visits(document_id) {
+    console.log("hellereadsf1");
     $.ajax({
         url: '/api/v2/visits/',
         type: 'GET',
@@ -295,13 +296,15 @@ function get_visits(user_id, document_id) {
         headers: {
             "Authorization": 'OAuth 6f9dd960cb005f85b5ba81c158829fe11c3541d9'
         },
-        data: JSON.stringify({
-            'user':1,
-            'document':1
-        }),
+        data: {
+            'document':document_id
+        },
         statusCode: {
-            201: function(){
+            200: function(data, status, xhr){
                 console.log(1);
+                // update the map and notification
+                console.log(data);
+                update_map_and_notifications(data['response']['visits']);
             },
             404: function(){
                 console.log(3);
@@ -418,25 +421,66 @@ function add_link_pill(link_id, label, url){
 }
 
 
-// onload
-
-function initialize() {
+function update_map_and_notifications(data_points){
     var mapOptions = {
         center: new google.maps.LatLng(37.87, -122.27),
         zoom: 14
     };
     var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+    var latlngbounds = new google.maps.LatLngBounds();
+
+    var visit_notifs = $("#visit_notifications");
+    visit_notifs.empty();
+    // check for data_points that have null values and empty strings. display them differently
+    // 1 city could be null, empty
+    // 2 region_code could be null, empty
+    // 3 lat,lng could be null, empty
+    // any one of the above could fail and in that case, can't show location at all.
+    for (var i = data_points.length - 1; i >= 0; i--) {
+        if(data_points[i]['city']){
+            // add notification
+            visit_notifs.append('<div class="list-group-item" style="color:grey;">'+
+                '<p>'+data_points[i]['ip_address']+' viewed at '+moment(data_points[i]['timestamp']).toString()+' from '+data_points[i]['city']+', '+data_points[i]['region_code']+'</p>'+
+            '</div>');
+            // add map
+            if(data_points[i]['visit_type'] == 1){
+                var myLatlng = new google.maps.LatLng(data_points[i]['lat'], data_points[i]['lng']);
+                var marker = new google.maps.Marker({
+                    position: myLatlng,
+                    map: map,
+                    title:"Visit"
+                });
+                latlngbounds.extend(myLatlng);
+            }
+            if(data_points[i]['visit_type'] == 2){
+                var myLatlng = new google.maps.LatLng(data_points[i]['lat'], data_points[i]['lng']);
+                var marker = new google.maps.Marker({
+                    position: myLatlng,
+                    map: map,
+                    title:"Download"
+                });
+                latlngbounds.extend(myLatlng);
+            }
+            if(data_points[i]['visit_type'] == 3){
+                var myLatlng = new google.maps.LatLng(data_points[i]['lat'], data_points[i]['lng']);
+                var marker = new google.maps.Marker({
+                    position: myLatlng,
+                    map: map,
+                    title:"Click"
+                });
+                latlngbounds.extend(myLatlng);
+            }
+        } else {
+            visit_notifs.append('<div class="list-group-item" style="color:grey;">'+
+                '<p>'+data_points[i]['ip_address']+' viewed at '+moment(data_points[i]['timestamp']).toString()+'</p>'+
+            '</div>');
+        }
+    };
+
+    map.fitBounds(latlngbounds);
 }
 
-function loadScript() {
-    var script = document.createElement('script');
-    script.type = 'text/javascript';
-    script.src = 'https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&' +
-      'callback=initialize';
-    document.body.appendChild(script);
-}
-
-window.onload = loadScript;
+// onload and ready
 
 $(document).ready(function() {
     var csrftoken = $("input[name=csrfmiddlewaretoken]").val();
@@ -461,18 +505,26 @@ $(document).ready(function() {
 
     // view analytics for resume
     $(".viewAnalytics").attr("title",'View Analytics').tooltip('fixTitle').tooltip();
-    $(".viewAnalytics").click(function(){
-        console.log("Design analytics page la!");
-    });
-
 
     // delete resume/cv/portfolio
     $(".deleteResume").attr("title",'Delete Resume').tooltip('fixTitle').tooltip();
-    // $(".deleteResume").click(function(event){
-    //  // on successful delete - remove document from view
-    //  console.log(event);
-    //  $(this).parent().parent().parent().remove();
-    //  console.log("Delete resume leh.");
-    // });
 
 });
+
+function initialize() {
+    var mapOptions = {
+        center: new google.maps.LatLng(37.87, -122.27),
+        zoom: 14
+    };
+    var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+}
+
+function loadScript() {
+    var script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = 'https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&' +
+      'callback=initialize';
+    document.body.appendChild(script);
+}
+
+window.onload = loadScript;

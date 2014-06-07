@@ -880,6 +880,24 @@ class VisitResource(ModelResource):
         allowed_methods = ['get','post']
         filtering = {}
 
+    def build_filters(self, filters=None):
+        if filters is None:
+            filters = {}
+
+        orm_filters = super(VisitResource, self).build_filters(filters)
+
+        if "document" in filters:
+            try:
+                sqs = Visit.objects.filter(document__id=filters['document']).order_by('-timestamp')
+                print sqs
+            except:
+                sqs = []
+            if "pk__in" not in orm_filters.keys():
+                orm_filters["pk__in"] = []
+            orm_filters["pk__in"] = orm_filters["pk__in"] + [i.pk for i in sqs]
+
+        return orm_filters
+
     def dehydrate(self, bundle):
         """
         Return a list of Visits formatted according to what the developer expects
@@ -891,20 +909,14 @@ class VisitResource(ModelResource):
         Creates a new visit
         """
         try:
-            user = User.objects.get(id=bundle.data["user"])
-            document_type = bundle.data['document_type']
-            image_url = bundle.data['image_url']
-            pdf_url = bundle.data['pdf_url']
-            delete = False
-            s=string.lowercase+string.digits
-            unique_hash = ''.join(random.sample(s,10))
-            # check if hash is indeed unique
-            while Document.objects.filter(user=user, unique_hash=unique_hash).count() > 0:
-                unique_hash = ''.join(random.sample(s,10))
-            # need to check if document_url, image_url, pdf_url and delete exists
-            new_doc = Document(user=user, document_type=document_type, image_url=image_url, url=pdf_url, delete=delete)
-            new_doc.save()
-            bundle.obj = new_doc
+            document = Document.objects.get(id=bundle.data['document'])
+            visit_type = bundle.data['visit_type']
+            new_visit = Visit(ip_address=get_client_ip(bundle.request), visit_type=visit_type, document=document)
+            if visit_type == 3:
+                link = Link.objects.get(id=bundle.data['link'])
+                new_visit.link = link
+            new_visit.save()
+            bundle.obj = new_visit
         except Exception, e:
             print e
         return bundle
@@ -918,4 +930,10 @@ class VisitResource(ModelResource):
     def determine_format(self, request):
         return 'application/json'
 
-
+def get_client_ip(request):
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[-1].strip()
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+    return ip

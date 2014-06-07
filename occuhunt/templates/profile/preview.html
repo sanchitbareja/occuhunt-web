@@ -56,6 +56,91 @@
 
 <script type="text/javascript">
 
+// download document
+function download_document(document_id){
+    $.ajax({
+        url: '/api/v2/visits/',
+        type: 'POST',
+        dataType: 'json',
+        contentType: 'application/json',
+        headers: {
+            "Authorization": 'OAuth 6f9dd960cb005f85b5ba81c158829fe11c3541d9'
+        },
+        data: JSON.stringify({
+            'document':document_id,
+            'visit_type':2 
+        }),
+        statusCode: {
+            201: function(data, status, xhr){
+                console.log(1);
+            },
+            404: function(){
+                console.log(3);
+            },
+            500: function(){
+                console.log(4);
+            }
+        }
+    });
+}
+
+// visit link
+function visit_link(document_id, link_id){
+    $.ajax({
+        url: '/api/v2/visits/',
+        type: 'POST',
+        dataType: 'json',
+        contentType: 'application/json',
+        headers: {
+            "Authorization": 'OAuth 6f9dd960cb005f85b5ba81c158829fe11c3541d9'
+        },
+        data: JSON.stringify({
+            'document':document_id,
+            'visit_type':3,
+            'link':link_id
+        }),
+        statusCode: {
+            201: function(data, status, xhr){
+                console.log(1);
+            },
+            404: function(){
+                console.log(3);
+            },
+            500: function(){
+                console.log(4);
+            }
+        }
+    });
+}
+
+// visited homepage
+function visit_document(document_id){
+    $.ajax({
+        url: '/api/v2/visits/',
+        type: 'POST',
+        dataType: 'json',
+        contentType: 'application/json',
+        headers: {
+            "Authorization": 'OAuth 6f9dd960cb005f85b5ba81c158829fe11c3541d9'
+        },
+        data: JSON.stringify({
+            'document':document_id,
+            'visit_type':1
+        }),
+        statusCode: {
+            201: function(data, status, xhr){
+                console.log(1);
+            },
+            404: function(){
+                console.log(3);
+            },
+            500: function(){
+                console.log(4);
+            }
+        }
+    });
+}
+
 </script>
 
 {% endblock %}
@@ -66,7 +151,7 @@
 <div class="col-lg-2">
     <h4>Links</h4>
     {% for link in links %}
-        <p><a class="copyToClipboard" data-clipboard-text="{{link.url}}" data-toggle="tooltip" data-placement="top"><span class="glyphicon glyphicon-link"></span></a>&nbsp;<a href="{{link.url}}" target="_blank">{{link.link_name}}</a></p>
+        <p><a class="copyToClipboard" data-clipboard-text="{{link.url}}" data-toggle="tooltip" data-placement="top"><span class="glyphicon glyphicon-link"></span></a>&nbsp;<a href="javascript:window.open('{{link.url}}','_blank');visit_link({{document.id}},{{link.id}});">{{link.link_name}}</a></p>
     {% endfor %}
 </div>
 
@@ -75,7 +160,7 @@
     
     <div>
         <h4 style="float:left;">Document</h4>
-        <a class="btn btn-sm btn-done" style="float:right;">Download .pdf</a>
+        <a href="javascript:window.open('{{document.url}}','_blank');download_document({{document.id}});" class="btn btn-sm btn-done" style="float:right;">Download .pdf</a>
     </div>
     <img style="width:100%; height:100%; border:1px solid #dddddd;" src="{{document.image_url}}">
 
@@ -115,6 +200,8 @@
 			var newTitle = 'Copied!';
 			$(this).attr('title', newTitle).tooltip('fixTitle').tooltip("show");
 		});
+
+        visit_document({{document.id}});
 
     });
 
