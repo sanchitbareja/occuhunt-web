@@ -24,7 +24,7 @@
   var _amdModuleId = null;
   var _cjsModuleId = null;
   var _swfPath = function() {
-    var i, jsDir, tmpJsPath, jsPath, swfPath = "/static/zeroclipboard/ZeroClipboard.swf";
+    var i, jsDir, tmpJsPath, jsPath, swfPath = "ZeroClipboard.swf";
     if (document.currentScript && (jsPath = document.currentScript.src)) {} else {
       var scripts = document.getElementsByTagName("script");
       if ("readyState" in scripts[0]) {
@@ -867,7 +867,7 @@
   _globalConfig.trustedOrigins = null;
   _globalConfig.allowScriptAccess = null;
   _globalConfig.useNoCache = true;
-  _globalConfig.moviePath = "/static/zeroclipboard/ZeroClipboard.swf";
+  _globalConfig.moviePath = "ZeroClipboard.swf";
   ZeroClipboard.detectFlashSupport = function() {
     _deprecationWarning("ZeroClipboard.detectFlashSupport", _globalConfig.debug);
     return _detectFlashSupport();

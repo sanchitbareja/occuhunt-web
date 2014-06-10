@@ -4,142 +4,16 @@
 {% load url from future %}
 
 {% block extra_style %}
-
-<style type="text/css">
-
-.documents {
-	margin: 0px;
-	padding: 0px;
-}
-
-.document {
-	width: 190px;
-	height: 260px;
-	display: inline-block;
-	position: relative;
-	clear: none;
-	border: 1px solid #dddddd;
-	margin-bottom: 30px;
-	list-style-type: none;
-}
-
-.actions {
-	display: block;
-	float: left;
-	font-family: Arial,"sans-serif";
-	font-size: 1.1em;
-	position: absolute;
-	white-space: nowrap;
-	list-style: none;
-	margin-top: 3px;
-}
-
-.actions > li {
-	display: inline;
-	margin:10px;
-	list-style-type: none;
-}
-
-.document:hover {
-	border: 1px solid #005469;
-}
-
-.document:hover > .actions > li {
-	opacity: 1;
-}
-
-</style>
-
+<link href="{% static 'occuhunt/css/profile_preview.css' %}" rel="stylesheet">
 {% endblock %}
 
 {% block extra_script %}
 
 <script type="text/javascript">
 
-// download document
-function download_document(document_id){
-    $.ajax({
-        url: '/api/v2/visits/',
-        type: 'POST',
-        dataType: 'json',
-        contentType: 'application/json',
-        headers: {
-            "Authorization": 'OAuth 6f9dd960cb005f85b5ba81c158829fe11c3541d9'
-        },
-        data: JSON.stringify({
-            'document':document_id,
-            'visit_type':2 
-        }),
-        statusCode: {
-            201: function(data, status, xhr){
-                console.log(1);
-            },
-            404: function(){
-                console.log(3);
-            },
-            500: function(){
-                console.log(4);
-            }
-        }
-    });
-}
-
-// visit link
-function visit_link(document_id, link_id){
-    $.ajax({
-        url: '/api/v2/visits/',
-        type: 'POST',
-        dataType: 'json',
-        contentType: 'application/json',
-        headers: {
-            "Authorization": 'OAuth 6f9dd960cb005f85b5ba81c158829fe11c3541d9'
-        },
-        data: JSON.stringify({
-            'document':document_id,
-            'visit_type':3,
-            'link':link_id
-        }),
-        statusCode: {
-            201: function(data, status, xhr){
-                console.log(1);
-            },
-            404: function(){
-                console.log(3);
-            },
-            500: function(){
-                console.log(4);
-            }
-        }
-    });
-}
-
-// visited homepage
-function visit_document(document_id){
-    $.ajax({
-        url: '/api/v2/visits/',
-        type: 'POST',
-        dataType: 'json',
-        contentType: 'application/json',
-        headers: {
-            "Authorization": 'OAuth 6f9dd960cb005f85b5ba81c158829fe11c3541d9'
-        },
-        data: JSON.stringify({
-            'document':document_id,
-            'visit_type':1
-        }),
-        statusCode: {
-            201: function(data, status, xhr){
-                console.log(1);
-            },
-            404: function(){
-                console.log(3);
-            },
-            500: function(){
-                console.log(4);
-            }
-        }
-    });
-}
+$(document).ready(function() {
+    visit_document({{document.id}});
+});
 
 </script>
 
@@ -147,12 +21,11 @@ function visit_document(document_id){
 
 {% block content %}
 <script type="text/javascript" src="{% static 'zeroclipboard/ZeroClipboard.js' %}"></script>
+<script src="{% static 'occuhunt/js/profile_preview.js' %}"></script>
 
 <div class="col-lg-2">
-    <h4>Links</h4>
-    {% for link in links %}
-        <p><a class="copyToClipboard" data-clipboard-text="{{link.url}}" data-toggle="tooltip" data-placement="top"><span class="glyphicon glyphicon-link"></span></a>&nbsp;<a href="javascript:window.open('{{link.url}}','_blank');visit_link({{document.id}},{{link.id}});">{{link.link_name}}</a></p>
-    {% endfor %}
+    <h4>About</h4>
+    <p>{{document.user.first_name}} {{document.user.last_name}}</p>
 </div>
 
 <div class="col-lg-8">
@@ -167,44 +40,12 @@ function visit_document(document_id){
 </div>
 
 <div class="col-lg-2">
-
-    <h4>Recruiter?</h4>
-    <a class="btn btn-sm btn-inverted-default" >Interview student</a>
-
+    <h4>Links</h4>
+    {% for link in links %}
+        <p><a class="copyToClipboard" data-clipboard-text="{{link.url}}" data-toggle="tooltip" data-placement="top"><span class="glyphicon glyphicon-link"></span></a>&nbsp;<a href="javascript:window.open('{{link.url}}','_blank');visit_link({{document.id}},{{link.id}});">{{link.link_name}}</a></p>
+    {% endfor %}
 </div>
 
 
 {% endblock %}
 
-
-{% block extra_script_end %}
-
-<script type="text/javascript">
-
-    $(document).ready(function() {
-
-    	// copying to clipboard
-        var client = new ZeroClipboard($('.copyToClipboard'), {
-            moviePath : '/static/zeroclipboard/ZeroClipboard.swf'
-        });
-
-        client.on( 'mouseover', function ( event ) {
-		  	$(this).attr('title', 'Click to copy').tooltip('fixTitle').tooltip("show");
-		});
-
-		client.on( 'mouseout', function ( event ) {
-		  	$(this).tooltip("hide");
-		});
-
-		client.on( 'mousedown', function(event) {
-			var newTitle = 'Copied!';
-			$(this).attr('title', newTitle).tooltip('fixTitle').tooltip("show");
-		});
-
-        visit_document({{document.id}});
-
-    });
-
-</script>
-
-{% endblock %}

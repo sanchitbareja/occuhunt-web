@@ -1,0 +1,41 @@
+
+.documents {
+	margin: 0px;
+	padding: 0px;
+}
+
+.document {
+	width: 190px;
+	height: 260px;
+	display: inline-block;
+	position: relative;
+	clear: none;
+	border: 1px solid #dddddd;
+	margin-bottom: 30px;
+	list-style-type: none;
+}
+
+.actions {
+	display: block;
+	float: left;
+	font-family: Arial,"sans-serif";
+	font-size: 1.1em;
+	position: absolute;
+	white-space: nowrap;
+	list-style: none;
+	margin-top: 3px;
+}
+
+.actions > li {
+	display: inline;
+	margin:10px;
+	list-style-type: none;
+}
+
+.document:hover {
+	border: 1px solid #005469;
+}
+
+.document:hover > .actions > li {
+	opacity: 1;
+}

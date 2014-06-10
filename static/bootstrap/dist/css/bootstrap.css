@@ -231,7 +231,7 @@ table {
   img {
     max-width: 100% !important;
   }
-  @page {
+  @page  {
     margin: 2cm .5cm;
   }
   p,
@@ -553,8 +553,10 @@ dd {
   .dl-horizontal dd:after {
     content: " ";
     /* 1 */
+  
     display: table;
     /* 2 */
+  
   }
   .dl-horizontal dd:after {
     clear: both;
@@ -563,8 +565,10 @@ dd {
   .dl-horizontal dd:after {
     content: " ";
     /* 1 */
+  
     display: table;
     /* 2 */
+  
   }
   .dl-horizontal dd:after {
     clear: both;
@@ -678,8 +682,10 @@ pre code {
 .container:after {
   content: " ";
   /* 1 */
+
   display: table;
   /* 2 */
+
 }
 .container:after {
   clear: both;
@@ -688,8 +694,10 @@ pre code {
 .container:after {
   content: " ";
   /* 1 */
+
   display: table;
   /* 2 */
+
 }
 .container:after {
   clear: both;
@@ -702,8 +710,10 @@ pre code {
 .row:after {
   content: " ";
   /* 1 */
+
   display: table;
   /* 2 */
+
 }
 .row:after {
   clear: both;
@@ -712,8 +722,10 @@ pre code {
 .row:after {
   content: " ";
   /* 1 */
+
   display: table;
   /* 2 */
+
 }
 .row:after {
   clear: both;
@@ -1537,6 +1549,7 @@ input[type="checkbox"] {
   margin: 4px 0 0;
   margin-top: 1px \9;
   /* IE8-9 */
+
   line-height: normal;
 }
 input[type="file"] {
@@ -1800,8 +1813,10 @@ textarea.input-lg {
 .form-horizontal .form-group:after {
   content: " ";
   /* 1 */
+
   display: table;
   /* 2 */
+
 }
 .form-horizontal .form-group:after {
   clear: both;
@@ -1810,8 +1825,10 @@ textarea.input-lg {
 .form-horizontal .form-group:after {
   content: " ";
   /* 1 */
+
   display: table;
   /* 2 */
+
 }
 .form-horizontal .form-group:after {
   clear: both;
@@ -3643,8 +3660,10 @@ input[type="button"].btn-block {
 .btn-toolbar:after {
   content: " ";
   /* 1 */
+
   display: table;
   /* 2 */
+
 }
 .btn-toolbar:after {
   clear: both;
@@ -3653,8 +3672,10 @@ input[type="button"].btn-block {
 .btn-toolbar:after {
   content: " ";
   /* 1 */
+
   display: table;
   /* 2 */
+
 }
 .btn-toolbar:after {
   clear: both;
@@ -3754,8 +3775,10 @@ input[type="button"].btn-block {
 .btn-group-vertical > .btn-group:after {
   content: " ";
   /* 1 */
+
   display: table;
   /* 2 */
+
 }
 .btn-group-vertical > .btn-group:after {
   clear: both;
@@ -3764,8 +3787,10 @@ input[type="button"].btn-block {
 .btn-group-vertical > .btn-group:after {
   content: " ";
   /* 1 */
+
   display: table;
   /* 2 */
+
 }
 .btn-group-vertical > .btn-group:after {
   clear: both;
@@ -3959,8 +3984,10 @@ textarea.input-group-sm > .input-group-btn > .btn {
 .nav:after {
   content: " ";
   /* 1 */
+
   display: table;
   /* 2 */
+
 }
 .nav:after {
   clear: both;
@@ -3969,8 +3996,10 @@ textarea.input-group-sm > .input-group-btn > .btn {
 .nav:after {
   content: " ";
   /* 1 */
+
   display: table;
   /* 2 */
+
 }
 .nav:after {
   clear: both;
@@ -4113,8 +4142,10 @@ textarea.input-group-sm > .input-group-btn > .btn {
 .tabbable:after {
   content: " ";
   /* 1 */
+
   display: table;
   /* 2 */
+
 }
 .tabbable:after {
   clear: both;
@@ -4123,8 +4154,10 @@ textarea.input-group-sm > .input-group-btn > .btn {
 .tabbable:after {
   content: " ";
   /* 1 */
+
   display: table;
   /* 2 */
+
 }
 .tabbable:after {
   clear: both;
@@ -4165,8 +4198,10 @@ textarea.input-group-sm > .input-group-btn > .btn {
 .navbar:after {
   content: " ";
   /* 1 */
+
   display: table;
   /* 2 */
+
 }
 .navbar:after {
   clear: both;
@@ -4175,8 +4210,10 @@ textarea.input-group-sm > .input-group-btn > .btn {
 .navbar:after {
   content: " ";
   /* 1 */
+
   display: table;
   /* 2 */
+
 }
 .navbar:after {
   clear: both;
@@ -4191,8 +4228,10 @@ textarea.input-group-sm > .input-group-btn > .btn {
   display: inline-block;
   *display: inline;
   /* ie7 fix */
+
   *zoom: 1;
   /* hasLayout ie7 trigger */
+
   vertical-align: top;
   text-align: center;
 }
@@ -4200,8 +4239,10 @@ textarea.input-group-sm > .input-group-btn > .btn {
 .navbar-header:after {
   content: " ";
   /* 1 */
+
   display: table;
   /* 2 */
+
 }
 .navbar-header:after {
   clear: both;
@@ -4210,8 +4251,10 @@ textarea.input-group-sm > .input-group-btn > .btn {
 .navbar-header:after {
   content: " ";
   /* 1 */
+
   display: table;
   /* 2 */
+
 }
 .navbar-header:after {
   clear: both;
@@ -4234,8 +4277,10 @@ textarea.input-group-sm > .input-group-btn > .btn {
 .navbar-collapse:after {
   content: " ";
   /* 1 */
+
   display: table;
   /* 2 */
+
 }
 .navbar-collapse:after {
   clear: both;
@@ -4244,8 +4289,10 @@ textarea.input-group-sm > .input-group-btn > .btn {
 .navbar-collapse:after {
   content: " ";
   /* 1 */
+
   display: table;
   /* 2 */
+
 }
 .navbar-collapse:after {
   clear: both;
@@ -4296,8 +4343,10 @@ textarea.input-group-sm > .input-group-btn > .btn {
   display: inline-block;
   *display: inline;
   /* ie7 fix */
+
   *zoom: 1;
   /* hasLayout ie7 trigger */
+
   vertical-align: top;
 }
 .center .navbar-inner {
@@ -4817,8 +4866,10 @@ textarea.input-group-sm > .input-group-btn > .btn {
 .pager:after {
   content: " ";
   /* 1 */
+
   display: table;
   /* 2 */
+
 }
 .pager:after {
   clear: both;
@@ -4827,8 +4878,10 @@ textarea.input-group-sm > .input-group-btn > .btn {
 .pager:after {
   content: " ";
   /* 1 */
+
   display: table;
   /* 2 */
+
 }
 .pager:after {
   clear: both;
@@ -4927,6 +4980,13 @@ textarea.input-group-sm > .input-group-btn > .btn {
 .label-danger[href]:hover,
 .label-danger[href]:focus {
   background-color: #c9302c;
+}
+.label-link {
+  background-color: #348891;
+}
+.label-link[href]:hover,
+.label-link[href]:focus {
+  background-color: #27656b;
 }
 .badge {
   display: inline-block;
@@ -5309,8 +5369,10 @@ a.list-group-item:focus {
 .panel-body:after {
   content: " ";
   /* 1 */
+
   display: table;
   /* 2 */
+
 }
 .panel-body:after {
   clear: both;
@@ -5319,8 +5381,10 @@ a.list-group-item:focus {
 .panel-body:after {
   content: " ";
   /* 1 */
+
   display: table;
   /* 2 */
+
 }
 .panel-body:after {
   clear: both;
@@ -5627,8 +5691,10 @@ body.modal-open,
 .modal-footer:after {
   content: " ";
   /* 1 */
+
   display: table;
   /* 2 */
+
 }
 .modal-footer:after {
   clear: both;
@@ -5637,8 +5703,10 @@ body.modal-open,
 .modal-footer:after {
   content: " ";
   /* 1 */
+
   display: table;
   /* 2 */
+
 }
 .modal-footer:after {
   clear: both;
@@ -6060,8 +6128,10 @@ body.modal-open,
 .clearfix:after {
   content: " ";
   /* 1 */
+
   display: table;
   /* 2 */
+
 }
 .clearfix:after {
   clear: both;

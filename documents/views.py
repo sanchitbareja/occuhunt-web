@@ -88,6 +88,7 @@ def preview_document(request, username, document_hash):
 	client_ip = get_client_ip(request)
 	doc = Document.objects.filter(unique_hash=document_hash, delete=False)[0]
 	links = Link.objects.filter(user__username=username, delete=False)
+	print doc.user.__dict__
 	if doc.user.username == username:
 		data_to_send = {
 			'document': doc,

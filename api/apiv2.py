@@ -888,7 +888,8 @@ class VisitResource(ModelResource):
 
         if "document" in filters:
             try:
-                sqs = Visit.objects.filter(document__id=filters['document']).order_by('-timestamp')
+                month_a_go = datetime.datetime.now() - datetime.timedelta(days=30)
+                sqs = Visit.objects.filter(document__id=filters['document'], timestamp__gt=month_a_go).order_by('-timestamp')
                 print sqs
             except:
                 sqs = []

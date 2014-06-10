@@ -51,7 +51,6 @@ function render_pdf(document_type){
     var reader = new FileReader();
     var files = file_element.files;
     console.log(files);
-    show_loading_state();
     reader.onload = function (event) {
         //converts pdf to canvas element and makes canvas element editable
         parse_pdf(convert_data_URI_to_binary(event.target.result), document_type);
@@ -248,7 +247,6 @@ function add_document(document_type, image_url, pdf_url) {
         statusCode: {
             201: function(data, status, xhr){
                 add_new_document(data['id'], data['document_type'], data['user']['username'], data['image_url'], data['unique_hash']);
-                hide_loading_state();
             },
             404: function(){
                 console.log(3);
@@ -289,6 +287,7 @@ function delete_document(document_id, html_handle) {
 
 // view analytics for link
 function get_visits(document_id) {
+    console.log("hellereadsf1");
     $.ajax({
         url: '/api/v2/visits/',
         type: 'GET',
@@ -305,7 +304,7 @@ function get_visits(document_id) {
                 console.log(1);
                 // update the map and notification
                 console.log(data);
-                update_map_and_notifications(data['response']['visits'], data['meta']['total_count']);
+                update_map_and_notifications(data['response']['visits']);
             },
             404: function(){
                 console.log(3);
@@ -394,10 +393,10 @@ function add_new_document(document_id, document_type, username, image_url, hash)
         documents_ul = $(".documents#portfolio");
     }
     documents_ul.append('<li class="document">'+
-        '<a href="/document/'+username+'/'+hash+'/" target="_blank"><img style="width:100%; height:100%;" src="'+image_url+'"></a>'+
+        '<a href="/preview/"><img style="width:100%; height:100%;" src="'+image_url+'"></a>'+
         '<ul class="actions">'+
-            '<li><a class="viewAnalytics" data-toggle="tooltip" data-placement="top" onclick="get_visits('+document_id+');"><span class="glyphicon glyphicon-eye-open"></span></a></li>'+
-            '<li><a class="copyToClipboard" data-clipboard-text="http://www.occuhunt.com/document/'+username+'/'+hash+'/" data-toggle="tooltip" data-placement="top"><span class="glyphicon glyphicon-link"></span></a></li>'+
+            '<li><a class="viewAnalytics" data-toggle="tooltip" data-placement="top"><span class="glyphicon glyphicon-eye-open"></span></a></li>'+
+            '<li><a class="copyToClipboard" data-clipboard-text="http://www.occuhunt.com/resume/'+username+'/'+hash+'/" data-toggle="tooltip" data-placement="top"><span class="glyphicon glyphicon-link"></span></a></li>'+
             '<li><a class="deleteResume" data-toggle="tooltip" data-placement="top" onclick="delete_document('+document_id+', this);"><span class="glyphicon glyphicon-trash"></span></a></li>'+
         '</ul>'+
     '</li>');
@@ -422,36 +421,28 @@ function add_link_pill(link_id, label, url){
 }
 
 
-function update_map_and_notifications(data_points, total_views){
+function update_map_and_notifications(data_points){
     var mapOptions = {
         center: new google.maps.LatLng(37.87, -122.27),
-        zoom: 14,
-        disableDefaultUI: true,
-        panControl: false,
-        zoomControl: true,
-        mapTypeControl: false,
-        scaleControl: false,
-        streetViewControl: false,
-        overviewMapControl: false
+        zoom: 14
     };
     var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
     var latlngbounds = new google.maps.LatLngBounds();
 
     var visit_notifs = $("#visit_notifications");
     visit_notifs.empty();
-    visit_notifs.prepend('<div class="list-group-item">'+
-        '<h4><b>'+total_views+'</b> views <span>the past month</span></h4>'+
-    '</div>');
     // check for data_points that have null values and empty strings. display them differently
     // 1 city could be null, empty
     // 2 region_code could be null, empty
     // 3 lat,lng could be null, empty
     // any one of the above could fail and in that case, can't show location at all.
-    for (var i = 0; i <= data_points.length + 1; i++) {
-        var time_obj = moment.utc(data_points[i]['timestamp']);
-        var time_string = time_obj.fromNow().toString();
+    for (var i = data_points.length - 1; i >= 0; i--) {
         if(data_points[i]['city']){
-            // add marker to map and a notification
+            // add notification
+            visit_notifs.append('<div class="list-group-item" style="color:grey;">'+
+                '<p>'+data_points[i]['ip_address']+' viewed at '+moment(data_points[i]['timestamp']).toString()+' from '+data_points[i]['city']+', '+data_points[i]['region_code']+'</p>'+
+            '</div>');
+            // add map
             if(data_points[i]['visit_type'] == 1){
                 var myLatlng = new google.maps.LatLng(data_points[i]['lat'], data_points[i]['lng']);
                 var marker = new google.maps.Marker({
@@ -460,9 +451,6 @@ function update_map_and_notifications(data_points, total_views){
                     title:"Visit"
                 });
                 latlngbounds.extend(myLatlng);
-                visit_notifs.append('<div class="list-group-item">'+
-                    '<p>Viewed: <b>'+time_string+'</b> from '+data_points[i]['city']+', '+data_points[i]['region_code']+'</p>'+
-                '</div>');
             }
             if(data_points[i]['visit_type'] == 2){
                 var myLatlng = new google.maps.LatLng(data_points[i]['lat'], data_points[i]['lng']);
@@ -472,9 +460,6 @@ function update_map_and_notifications(data_points, total_views){
                     title:"Download"
                 });
                 latlngbounds.extend(myLatlng);
-                visit_notifs.append('<div class="list-group-item">'+
-                    '<p>Download document: <b>'+time_string+'</b> from '+data_points[i]['city']+', '+data_points[i]['region_code']+'</p>'+
-                '</div>');
             }
             if(data_points[i]['visit_type'] == 3){
                 var myLatlng = new google.maps.LatLng(data_points[i]['lat'], data_points[i]['lng']);
@@ -484,42 +469,22 @@ function update_map_and_notifications(data_points, total_views){
                     title:"Click"
                 });
                 latlngbounds.extend(myLatlng);
-                visit_notifs.append('<div class="list-group-item">'+
-                    '<p>Clicked link: <b>'+time_string+'<b> from '+data_points[i]['city']+', '+data_points[i]['region_code']+'</p>'+
-                '</div>');
             }
         } else {
-            if(data_points[i]['visit_type'] == 1){
-                visit_notifs.append('<div class="list-group-item">'+
-                    '<p>Viewed: <b>'+time_string+'</b></p>'+
-                '</div>');
-            }
-            if(data_points[i]['visit_type'] == 2){
-                visit_notifs.append('<div class="list-group-item">'+
-                    '<p>Downloaded document: <b>'+time_string+'</b></p>'+
-                '</div>');
-            }
-            if(data_points[i]['visit_type'] == 3){
-                visit_notifs.append('<div class="list-group-item">'+
-                    '<p>Clicked link: <b>'+time_string+'</b></p>'+
-                '</div>');
-            }
+            visit_notifs.append('<div class="list-group-item" style="color:grey;">'+
+                '<p>'+data_points[i]['ip_address']+' viewed at '+moment(data_points[i]['timestamp']).toString()+'</p>'+
+            '</div>');
         }
     };
 
     map.fitBounds(latlngbounds);
 }
 
-function show_loading_state(){
-    $('.loading-state').show();
-}
+// onload and ready
 
-function hide_loading_state(){
-    $('.loading-state').hide();
-    initialize_clipboard();
-}
+$(document).ready(function() {
+    var csrftoken = $("input[name=csrfmiddlewaretoken]").val();
 
-function initialize_clipboard(){
     // copying to clipboard
     var client = new ZeroClipboard($('.copyToClipboard'), {
         moviePath : '/static/zeroclipboard/ZeroClipboard.swf'
@@ -539,31 +504,17 @@ function initialize_clipboard(){
     });
 
     // view analytics for resume
-    $(".viewAnalytics").attr("title","Who's viewed your doc?").tooltip('fixTitle').tooltip();
+    $(".viewAnalytics").attr("title",'View Analytics').tooltip('fixTitle').tooltip();
 
     // delete resume/cv/portfolio
     $(".deleteResume").attr("title",'Delete Resume').tooltip('fixTitle').tooltip();
-}
 
-// onload and ready
-
-$(document).ready(function() {
-    var csrftoken = $("input[name=csrfmiddlewaretoken]").val();
-
-    initialize_clipboard();
 });
 
 function initialize() {
     var mapOptions = {
         center: new google.maps.LatLng(37.87, -122.27),
-        zoom: 14,
-        disableDefaultUI: true,
-        panControl: false,
-        zoomControl: true,
-        mapTypeControl: false,
-        scaleControl: false,
-        streetViewControl: false,
-        overviewMapControl: false
+        zoom: 14
     };
     var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
 }
