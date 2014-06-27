@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+{% load static from staticfiles %}
+{% load i18n %}
+{% load url from future %}
+
+{% block head_title %} - Get Ready for Your Next Job{% endblock %}
+
+{% block extra_style %}
+
+<link href="{% static "occuhunt/css/splash.css" %}" rel="stylesheet">
+
+<style type="text/css">
+
+body {
+  background: url('{% static "images/helpinghand2.jpg" %}');
+}
+
+.navbar {
+  background: transparent;
+}
+
+a {
+  color:white !important;
+}
+
+p.splash-text {
+  color: white !important;
+  font-size: 74px;
+  font-weight: 900;
+}
+
+p.subsplash-text {
+  color: white !important;
+  font-size: 40px;
+}
+
+</style>
+
+{% endblock %}
+
+{% block extra_script %}
+
+<script src="{% static "occuhunt/js/splash.js" %}"></script>
+<script type="text/javascript">
+mixpanel.track_links("#mp-signupsplash", "Signed up from splash", {'referrer': document.referrer });
+mixpanel.track_links("#mp-viewjobfairs", "Viewed job fair from splash", {'referrer': document.referrer });
+mixpanel.track_links("#mp-ccc", "Clicked cal career logo from splash", {'referrer': document.referrer });
+mixpanel.track_links("#mp-cet", "Clicked CET logo from splash", {'referrer': document.referrer });
+mixpanel.track_links("#mp-berk", "Clicked berkeley logo from splash", {'referrer': document.referrer });
+
+</script>
+{% endblock %}
+
+{% block full_content %}
+
+<div class="row">
+  <div class="col-lg-12 text-center">
+    <p class="splash-text">A new shop for jobs</p>
+    <p class="subsplash-text">3 day, 5 companies, 7 day response</p>
+    <p class="subsplash-text">Get your job.</p>
+  </div>
+</div>
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+<div class="row">
+  <div class="col-lg-12 text-center">
+    <a href="/events/" class="btn btn-xlg btn-done" onclick="mixpanel.track('Viewed fair from Splash'); return true;">SIGN UP WITH LINKEDIN</a>
+  </div>
+</div>
+
+
+<div class="row">
+  <div class="row">
+    <div class="col-lg-12">
+      <br>
+      <br>
+      <h3 class="text-center">Our Partners</h3>
+    </div>
+  </div>
+  <div class="row text-center">
+      <a href="https://career.berkeley.edu/" id="mp-ccc"><img src="{% static 'images/career-center-logo-gold_gs.png' %}" class="featured-partners"></a>
+      <a href="http://cet.berkeley.edu/" id="mp-cet"><img src="{% static 'images/incubated-at-CET.png' %}" class="featured-partners" style="height:180px;"></a>
+      <a href="http://berkeley.edu/index.html" id="mp-berk"><img src="{% static 'images/berkeley_gs.png' %}" class="featured-partners"></a>
+    <!-- </div> -->
+  </div>
+</div>
+
+<div class="row">
+  <div class="row">
+    <div class="col-lg-12">
+      <br>
+      <br>
+      <h3 class="text-center">Our Partners</h3>
+    </div>
+  </div>
+  <div class="row text-center">
+      <a href="https://career.berkeley.edu/" id="mp-ccc"><img src="{% static 'images/career-center-logo-gold_gs.png' %}" class="featured-partners"></a>
+      <a href="http://cet.berkeley.edu/" id="mp-cet"><img src="{% static 'images/incubated-at-CET.png' %}" class="featured-partners" style="height:180px;"></a>
+      <a href="http://berkeley.edu/index.html" id="mp-berk"><img src="{% static 'images/berkeley_gs.png' %}" class="featured-partners"></a>
+    <!-- </div> -->
+  </div>
+</div>
+
+<div class="row">
+  <div class="row">
+    <div class="col-lg-12">
+      <br>
+      <br>
+      <h3 class="text-center">Our Partners</h3>
+    </div>
+  </div>
+  <div class="row text-center">
+      <a href="https://career.berkeley.edu/" id="mp-ccc"><img src="{% static 'images/career-center-logo-gold_gs.png' %}" class="featured-partners"></a>
+      <a href="http://cet.berkeley.edu/" id="mp-cet"><img src="{% static 'images/incubated-at-CET.png' %}" class="featured-partners" style="height:180px;"></a>
+      <a href="http://berkeley.edu/index.html" id="mp-berk"><img src="{% static 'images/berkeley_gs.png' %}" class="featured-partners"></a>
+    <!-- </div> -->
+  </div>
+</div>
+
+
+{% endblock %}

@@ -3,7 +3,7 @@
 	height:1350px;
 	border-width: 1px;
 	border-color: #acacac;
-	border-radius: 5px;
+	border-radius: px;
 	overflow: scroll; 
 }
 
@@ -139,4 +139,12 @@ input[type="radio"]:checked + label span {
     background:url(/static/images/checkmark2.png) no-repeat;
     background-size:40px;
     
+}
+
+
+/* Navbar */
+
+.navbar-inverse {
+	background-color: #005f69;
+	margin-bottom: 0px;
 }

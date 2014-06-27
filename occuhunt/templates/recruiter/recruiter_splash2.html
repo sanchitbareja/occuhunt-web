@@ -1,0 +1,78 @@
+{% extends "recruiter/recruiter_base.html" %}
+{% load static from staticfiles %}
+{% load i18n %}
+{% load url from future %}
+
+{% block extra_style %}
+<link href="{% static "occuhunt/css/recruiter_splash.css" %}" rel="stylesheet">
+<style type="text/css">
+
+
+</style>
+{% endblock %}
+
+{% block extra_script %}
+
+<script type="text/javascript">
+
+$(document).ready(function() {
+  $('#contact_us').tooltip();
+});
+
+</script>
+
+
+{% endblock %}
+
+{% block content %}
+
+{% if error_loggin_in %}
+  <div class="alert alert-danger">Sorry! We weren't able to log you in. If this happens again, feel free to call us at 510 612-7328.</div>
+{% endif %}
+
+  <br>
+  <br>
+  <div class="row">
+    <div class="col-lg-8">
+      <p class="bold-statement">Hire qualified college students in half the time</p>
+    </div>
+    <div class="col-lg-4">
+      <div class="text-center">
+        <h5 class="light-green" data-toggle="tooltip" data-placement="bottom" title="Call us at (510) 612-7328 or email us at occuhunt@gmail.com" id="contact_us">Don't have an account? <u>Contact us!</u></h5>
+      </div>
+      <form role="form" action="/recruiter/login/" method="post">
+        <div class="form-group input-group-lg">
+          <input type="text" class="form-control" id="input_username" name="username" placeholder="Username">
+        </div>
+        <div class="form-group input-group-lg">
+          <input type="password" class="form-control" id="input_password" name="password" placeholder="Password">
+        </div>
+        {% csrf_token %}
+        <input type="submit" value="Sign In" class="btn btn-inverted-default btn-lg pull-right">
+      </form>
+    </div>
+  </div>
+  <div class="row text-center">
+    <div class="col-lg-4">
+      <h1><img src="{% static 'images/Recruit.png' %}" style="width:100%;"></h1>
+      <h3 class="section-title">HIRE</h3>
+      <h4 class="section-blurb">Get interested candidates through out 357s as well as get access to the top candidate pool.</h4>
+    </div>
+    <div class="col-lg-4">
+      <h1><img src="{% static 'images/Analyze.png' %}" style="width:100%;"></h1>
+      <h3 class="section-title">ANALYZE</h3>
+      <h4 class="section-blurb">View and analyze recruiting performance at specific events. Integrate directly with your Applicant Tracking system by exporting.</h4>
+    </div>
+    <div class="col-lg-4">
+      <h1><img src="{% static 'images/Publicize.png' %}" style="width:100%;"></h1>
+      <h3 class="section-title">PUBLICIZE</h3>
+      <h4 class="section-blurb">Customize your company's public-facing page to display to students on Occuhunt.</h4>
+    </div>
+  </div>
+
+  <div class="row text-center">
+    <h2 class="light-green">
+      Questions? Call us at (510) 612-7328!
+    </h2>
+  </div>
+{% endblock %}

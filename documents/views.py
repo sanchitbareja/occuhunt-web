@@ -9,11 +9,14 @@ from django.core.mail import send_mail
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 import os, time, simplejson, base64, urllib, hmac, sha, random, string
+from datetime import datetime, timedelta, time
+from django.db.models import Avg
 from string import strip
 from django.http import Http404
 from django.core import serializers
 
 from documents.models import Document, Link, Visit
+from fairs.models import Fair, ThreeFiveSeven
 
 # Views
 # 1. preview resume
@@ -40,7 +43,7 @@ from documents.models import Document, Link, Visit
 # 3. should not be easily guessable and find the resume
 
 @login_required
-def profile_view(request):
+def documents_view(request):
 	"""
 	The main overview for a user to view all his documents (resumes, CVs, portfolio), links and analytics
 
@@ -57,15 +60,14 @@ def profile_view(request):
 	5. Measure access times
 	6. 
 	"""
+	featured_documents = Document.objects.filter(delete=False)
 	resumes = Document.objects.filter(user=request.user, document_type=1, delete=False)
 	cvs = Document.objects.filter(user=request.user, document_type=2, delete=False)
 	portfolios = Document.objects.filter(user=request.user, document_type=3, delete=False)
 	links = Link.objects.filter(user=request.user, delete=False)
 
-	for resume in resumes:
-		print resume.delete
-		print resume.id
 	data_to_send = {
+		'featured_documents': featured_documents,
 		'resumes': resumes,
 		'cvs': cvs,
 		'portfolios': portfolios,
@@ -73,13 +75,39 @@ def profile_view(request):
 	}
 	return render_to_response('profile/documents.html', data_to_send, RequestContext(request))
 
+@login_required
+def dashboard_view(request):
+	"""
+	This is where the student gets a complete overview of status of his applications as well as upcoming events.
+	"""
+
+	today = datetime.today()
+	sixMonthsAgo = today - timedelta(days=178)
+	all_events = Fair.objects.filter(time_start__gt=sixMonthsAgo).order_by('-time_start')
+	upcoming_357 = Fair.objects.filter(event_type=2).order_by('-time_start')
+
+	# center of map coordinates
+	lat_avg = all_events.aggregate(Avg('location__lat'))
+	lng_avg = all_events.aggregate(Avg('location__lng'))
+	data_to_send = {
+		'upcoming_357s': upcoming_357,
+		'events':all_events,
+		'lat_avg':lat_avg['location__lat__avg'],
+		'lng_avg':lng_avg['location__lng__avg']
+	}
+
+	print lat_avg
+	print lng_avg
+
+	return render_to_response('profile/dashboard.html', data_to_send, RequestContext(request))
+
 def get_client_ip(request):
-    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
-    if x_forwarded_for:
-        ip = x_forwarded_for.split(',')[-1].strip()
-    else:
-        ip = request.META.get('REMOTE_ADDR')
-    return ip
+	x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+	if x_forwarded_for:
+		ip = x_forwarded_for.split(',')[-1].strip()
+	else:
+		ip = request.META.get('REMOTE_ADDR')
+	return ip
 
 def preview_document(request, username, document_hash):
 	"""
@@ -99,60 +127,60 @@ def preview_document(request, username, document_hash):
 		return render_to_response('profile/preview.html', data_to_send, RequestContext(request))
 
 def individual_resume(request, hashstr):
-    """Get individual resumes for sharing
-    if resume exists: it should return page with just that resume
-    else: it should give an error message saying that it does not exist.
+	"""Get individual resumes for sharing
+	if resume exists: it should return page with just that resume
+	else: it should give an error message saying that it does not exist.
 
-    """
-    print hashstr
-    try:
-        resume_url = "https://resumefeed.s3.amazonaws.com/"+str(hashstr)+""
-        print resume_url
-        unique_resume = Resume.objects.filter(url=resume_url)[0]
-        print unique_resume
-        print dir(unique_resume)
-        unique_resume_comments = unique_resume.comment_set.all()
-        serialized_comments = []
-        for comment in unique_resume_comments:
-            serialized_comments.append({'comment':comment.comment, 'id':comment.id, 'x':comment.x, 'y':comment.y})
-        print serialized_comments
-        print simplejson.dumps(serialized_comments)
-        return render_to_response('individual_resume.html', {'resume':unique_resume, 'resume_comments':simplejson.dumps(serialized_comments), 'resume_exists':True}, RequestContext(request))
-    except Exception as e:
-        print e
-        return render_to_response('individual_resume.html', {'resume_exists':False}, RequestContext(request))
+	"""
+	print hashstr
+	try:
+		resume_url = "https://resumefeed.s3.amazonaws.com/"+str(hashstr)+""
+		print resume_url
+		unique_resume = Resume.objects.filter(url=resume_url)[0]
+		print unique_resume
+		print dir(unique_resume)
+		unique_resume_comments = unique_resume.comment_set.all()
+		serialized_comments = []
+		for comment in unique_resume_comments:
+			serialized_comments.append({'comment':comment.comment, 'id':comment.id, 'x':comment.x, 'y':comment.y})
+		print serialized_comments
+		print simplejson.dumps(serialized_comments)
+		return render_to_response('individual_resume.html', {'resume':unique_resume, 'resume_comments':simplejson.dumps(serialized_comments), 'resume_exists':True}, RequestContext(request))
+	except Exception as e:
+		print e
+		return render_to_response('individual_resume.html', {'resume_exists':False}, RequestContext(request))
 
 def sign_s3_upload(request):
-    AWS_ACCESS_KEY = 'AKIAJMUV3JF5IGAOPF3A'
-    AWS_SECRET_KEY = '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'
-    S3_BUCKET = 'resumefeed'
+	AWS_ACCESS_KEY = 'AKIAJMUV3JF5IGAOPF3A'
+	AWS_SECRET_KEY = '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'
+	S3_BUCKET = 'resumefeed'
 
-    digest = '+'
-    json_results = ''
+	digest = '+'
+	json_results = ''
 
-    while '+' in digest:
-        lst = [random.choice(string.ascii_letters + string.digits) for n in xrange(30)]
-        object_name = request.GET['s3_object_name'] + "".join(lst) # creates a unique name 
-        mime_type = request.GET['s3_object_type']
+	while '+' in digest:
+		lst = [random.choice(string.ascii_letters + string.digits) for n in xrange(30)]
+		object_name = request.GET['s3_object_name'] + "".join(lst) # creates a unique name 
+		mime_type = request.GET['s3_object_type']
 
-        expires = int(time.time()+3600)
-        amz_headers = "x-amz-acl:public-read"
+		expires = int(time.time()+3600)
+		amz_headers = "x-amz-acl:public-read"
 
-        put_request = "PUT\n\n%s\n%d\n%s\n/%s/%s" % (mime_type, expires, amz_headers, S3_BUCKET, object_name)
+		put_request = "PUT\n\n%s\n%d\n%s\n/%s/%s" % (mime_type, expires, amz_headers, S3_BUCKET, object_name)
 
-        digest = base64.encodestring(hmac.new(AWS_SECRET_KEY,put_request.encode('utf-8'), sha).digest())
-        signature = urllib.quote_plus(digest.strip())
+		digest = base64.encodestring(hmac.new(AWS_SECRET_KEY,put_request.encode('utf-8'), sha).digest())
+		signature = urllib.quote_plus(digest.strip())
 
-        url = 'https://%s.s3.amazonaws.com/%s' % (S3_BUCKET, object_name)
-        signed_request = '%s?AWSAccessKeyId=%s&Expires=%d&Signature=%s' % (url, AWS_ACCESS_KEY, expires, signature)
+		url = 'https://%s.s3.amazonaws.com/%s' % (S3_BUCKET, object_name)
+		signed_request = '%s?AWSAccessKeyId=%s&Expires=%d&Signature=%s' % (url, AWS_ACCESS_KEY, expires, signature)
 
-        json_results = simplejson.dumps({
-            'signed_request': signed_request,
-            'url': url
-        })
+		json_results = simplejson.dumps({
+			'signed_request': signed_request,
+			'url': url
+		})
 
-    return HttpResponse(json_results, mimetype='application/json')
+	return HttpResponse(json_results, mimetype='application/json')
 
 def submit_resume(request):
-    resume_url = request.POST["resume_url"]
-    return simplejson.dumps({'success': True})
+	resume_url = request.POST["resume_url"]
+	return simplejson.dumps({'success': True})

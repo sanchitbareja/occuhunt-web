@@ -8,20 +8,14 @@
 {% endblock %}
 
 {% block extra_script %}
-
-<script type="text/javascript">
-
-$(document).ready(function() {
-    visit_document({{document.id}});
-});
-
-</script>
+<script type="text/javascript" src="{% static 'zeroclipboard/ZeroClipboard.js' %}"></script>
+<script src="{% static 'occuhunt/js/profile_preview.js' %}"></script>
 
 {% endblock %}
 
 {% block content %}
-<script type="text/javascript" src="{% static 'zeroclipboard/ZeroClipboard.js' %}"></script>
-<script src="{% static 'occuhunt/js/profile_preview.js' %}"></script>
+
+<input type="hidden" name="document_id" value="{{document.id}}">
 
 <div class="col-lg-2">
     <h4>About</h4>

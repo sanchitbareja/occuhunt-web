@@ -261,7 +261,7 @@ function add_document(document_type, image_url, pdf_url) {
 };
 
 // delete resume/cv/portfolio
-function delete_document(document_id, html_handle) {
+function delete_document(user_id ,document_id, html_handle) {
     $.ajax({
         url: '/api/v2/documents/'+document_id+'/',
         type: 'DELETE',
@@ -316,6 +316,98 @@ function get_visits(document_id) {
         }
     });
 };
+
+
+function update_map_and_notifications(data_points, total_views){
+    var mapOptions = {
+        center: new google.maps.LatLng(37.87, -122.27),
+        zoom: 14,
+        disableDefaultUI: true,
+        panControl: false,
+        zoomControl: true,
+        mapTypeControl: false,
+        scaleControl: false,
+        streetViewControl: false,
+        overviewMapControl: false
+    };
+    var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+    var latlngbounds = new google.maps.LatLngBounds();
+
+    var visit_notifs = $("#visit_notifications");
+    visit_notifs.empty();
+    visit_notifs.prepend('<div class="list-group-item">'+
+        '<h4><b>'+total_views+'</b> views <span>the past month</span></h4>'+
+    '</div>');
+    // check for data_points that have null values and empty strings. display them differently
+    // 1 city could be null, empty
+    // 2 region_code could be null, empty
+    // 3 lat,lng could be null, empty
+    // any one of the above could fail and in that case, can't show location at all.
+    for (var i = 0; i <= data_points.length + 1; i++) {
+        var time_obj = moment.utc(data_points[i]['timestamp']);
+        var time_string = time_obj.fromNow().toString();
+        if(data_points[i]['city']){
+            // add marker to map and a notification
+            if(data_points[i]['visit_type'] == 1){
+                var myLatlng = new google.maps.LatLng(data_points[i]['lat'], data_points[i]['lng']);
+                var marker = new google.maps.Marker({
+                    position: myLatlng,
+                    map: map,
+                    title:"Visit"
+                });
+                latlngbounds.extend(myLatlng);
+                visit_notifs.append('<div class="list-group-item">'+
+                    '<p>Viewed: <b>'+time_string+'</b> from '+data_points[i]['city']+', '+data_points[i]['region_code']+'</p>'+
+                '</div>');
+            }
+            if(data_points[i]['visit_type'] == 2){
+                var myLatlng = new google.maps.LatLng(data_points[i]['lat'], data_points[i]['lng']);
+                var marker = new google.maps.Marker({
+                    position: myLatlng,
+                    map: map,
+                    title:"Download"
+                });
+                latlngbounds.extend(myLatlng);
+                visit_notifs.append('<div class="list-group-item">'+
+                    '<p>Download document: <b>'+time_string+'</b> from '+data_points[i]['city']+', '+data_points[i]['region_code']+'</p>'+
+                '</div>');
+            }
+            if(data_points[i]['visit_type'] == 3){
+                var myLatlng = new google.maps.LatLng(data_points[i]['lat'], data_points[i]['lng']);
+                var marker = new google.maps.Marker({
+                    position: myLatlng,
+                    map: map,
+                    title:"Click"
+                });
+                latlngbounds.extend(myLatlng);
+                visit_notifs.append('<div class="list-group-item">'+
+                    '<p>Clicked link: <b>'+time_string+'<b> from '+data_points[i]['city']+', '+data_points[i]['region_code']+'</p>'+
+                '</div>');
+            }
+        } else {
+            if(data_points[i]['visit_type'] == 1){
+                visit_notifs.append('<div class="list-group-item">'+
+                    '<p>Viewed: <b>'+time_string+'</b></p>'+
+                '</div>');
+            }
+            if(data_points[i]['visit_type'] == 2){
+                visit_notifs.append('<div class="list-group-item">'+
+                    '<p>Downloaded document: <b>'+time_string+'</b></p>'+
+                '</div>');
+            }
+            if(data_points[i]['visit_type'] == 3){
+                visit_notifs.append('<div class="list-group-item">'+
+                    '<p>Clicked link: <b>'+time_string+'</b></p>'+
+                '</div>');
+            }
+        }
+    };
+
+    map.fitBounds(latlngbounds);
+}
+
+
+
 
 // Add a new link
 function save_new_link(dom_element) {
@@ -422,94 +514,6 @@ function add_link_pill(link_id, label, url){
 }
 
 
-function update_map_and_notifications(data_points, total_views){
-    var mapOptions = {
-        center: new google.maps.LatLng(37.87, -122.27),
-        zoom: 14,
-        disableDefaultUI: true,
-        panControl: false,
-        zoomControl: true,
-        mapTypeControl: false,
-        scaleControl: false,
-        streetViewControl: false,
-        overviewMapControl: false
-    };
-    var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
-    var latlngbounds = new google.maps.LatLngBounds();
-
-    var visit_notifs = $("#visit_notifications");
-    visit_notifs.empty();
-    visit_notifs.prepend('<div class="list-group-item">'+
-        '<h4><b>'+total_views+'</b> views <span>the past month</span></h4>'+
-    '</div>');
-    // check for data_points that have null values and empty strings. display them differently
-    // 1 city could be null, empty
-    // 2 region_code could be null, empty
-    // 3 lat,lng could be null, empty
-    // any one of the above could fail and in that case, can't show location at all.
-    for (var i = 0; i <= data_points.length + 1; i++) {
-        var time_obj = moment.utc(data_points[i]['timestamp']);
-        var time_string = time_obj.fromNow().toString();
-        if(data_points[i]['city']){
-            // add marker to map and a notification
-            if(data_points[i]['visit_type'] == 1){
-                var myLatlng = new google.maps.LatLng(data_points[i]['lat'], data_points[i]['lng']);
-                var marker = new google.maps.Marker({
-                    position: myLatlng,
-                    map: map,
-                    title:"Visit"
-                });
-                latlngbounds.extend(myLatlng);
-                visit_notifs.append('<div class="list-group-item">'+
-                    '<p>Viewed: <b>'+time_string+'</b> from '+data_points[i]['city']+', '+data_points[i]['region_code']+'</p>'+
-                '</div>');
-            }
-            if(data_points[i]['visit_type'] == 2){
-                var myLatlng = new google.maps.LatLng(data_points[i]['lat'], data_points[i]['lng']);
-                var marker = new google.maps.Marker({
-                    position: myLatlng,
-                    map: map,
-                    title:"Download"
-                });
-                latlngbounds.extend(myLatlng);
-                visit_notifs.append('<div class="list-group-item">'+
-                    '<p>Download document: <b>'+time_string+'</b> from '+data_points[i]['city']+', '+data_points[i]['region_code']+'</p>'+
-                '</div>');
-            }
-            if(data_points[i]['visit_type'] == 3){
-                var myLatlng = new google.maps.LatLng(data_points[i]['lat'], data_points[i]['lng']);
-                var marker = new google.maps.Marker({
-                    position: myLatlng,
-                    map: map,
-                    title:"Click"
-                });
-                latlngbounds.extend(myLatlng);
-                visit_notifs.append('<div class="list-group-item">'+
-                    '<p>Clicked link: <b>'+time_string+'<b> from '+data_points[i]['city']+', '+data_points[i]['region_code']+'</p>'+
-                '</div>');
-            }
-        } else {
-            if(data_points[i]['visit_type'] == 1){
-                visit_notifs.append('<div class="list-group-item">'+
-                    '<p>Viewed: <b>'+time_string+'</b></p>'+
-                '</div>');
-            }
-            if(data_points[i]['visit_type'] == 2){
-                visit_notifs.append('<div class="list-group-item">'+
-                    '<p>Downloaded document: <b>'+time_string+'</b></p>'+
-                '</div>');
-            }
-            if(data_points[i]['visit_type'] == 3){
-                visit_notifs.append('<div class="list-group-item">'+
-                    '<p>Clicked link: <b>'+time_string+'</b></p>'+
-                '</div>');
-            }
-        }
-    };
-
-    map.fitBounds(latlngbounds);
-}
-
 function show_loading_state(){
     $('.loading-state').show();
 }
@@ -547,23 +551,10 @@ function initialize_clipboard(){
 
 // onload and ready
 
-$(document).ready(function() {
-    var csrftoken = $("input[name=csrfmiddlewaretoken]").val();
-
-    initialize_clipboard();
-});
-
 function initialize() {
     var mapOptions = {
         center: new google.maps.LatLng(37.87, -122.27),
-        zoom: 14,
-        disableDefaultUI: true,
-        panControl: false,
-        zoomControl: true,
-        mapTypeControl: false,
-        scaleControl: false,
-        streetViewControl: false,
-        overviewMapControl: false
+        zoom: 14
     };
     var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
 }
@@ -576,4 +567,10 @@ function loadScript() {
     document.body.appendChild(script);
 }
 
+$(document).ready(function() {
+    var csrftoken = $("input[name=csrfmiddlewaretoken]").val();
+    initialize_clipboard();
+});
+
 window.onload = loadScript;
+

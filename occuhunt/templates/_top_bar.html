@@ -3,19 +3,7 @@
 {% load url from future %}
 
 {% csrf_token %}
-<script type="text/javascript">
-
-  mixpanel.track_links("#mp-logohome", "Clicked logo from top bar", {'referrer': document.referrer });
-  mixpanel.track_links("#mp-viewdiscover", "Viewed discover from top bar", {'referrer': document.referrer });
-  mixpanel.track_links("#mp-viewrecommendation", "Viewed recommendation from top bar", {'referrer': document.referrer });
-  mixpanel.track_links("#mp-viewfair", "Viewed fair from top bar", {'referrer': document.referrer });
-  mixpanel.track_links("#mp-viewsearch", "Viewed search from top bar", {'referrer': document.referrer });
-  mixpanel.track_links("#mp-viewresumefeed", "Viewed resume feed from top bar", {'referrer': document.referrer });
-  mixpanel.track_links("#mp-vieworganize", "Viewed organize from top bar", {'referrer': document.referrer });
-  mixpanel.track_links("#mp-loggedout", "Logged out from top bar", {'referrer': document.referrer });
-  mixpanel.track_links("#mp-loggedin", "Logged in from top bar", {'referrer': document.referrer });
-</script>
-
+<script type="text/javascript" src="{% static 'occuhunt/js/companies-search.js' %}"></script>
 
 <div class="navbar navbar-default" role="navigation">
   <div class="container">    
@@ -29,8 +17,11 @@
       <a href="/" id="mp-logohome"><img src="{% static "images/logo/OccuhuntLogo.png" %}" style="height:30px; margin-top:10px; margin-bottom:4px"></a>
     </div>
     <div class="collapse navbar-collapse navbar-ex1-collapse">
-      <ul class="nav navbar-nav nav">
-      </ul>
+      <form class="navbar-form navbar-left" role="search" action="/search-companies/" method="get">
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Search Companies" style="width:300px;" id="inputCompanySearch" name="q">
+        </div>
+      </form>
       <ul class="nav navbar-nav navbar-right">
         {% if user.is_authenticated %}
         <li><a href="/events/" id="mp-viewdiscover">EVENTS</a></li>

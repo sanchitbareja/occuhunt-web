@@ -438,7 +438,8 @@ h6 small,
 }
 h4,
 .h4 {
-  font-weight: 400;
+  color: #005469;
+  font-weight: 500;
 }
 h1,
 h2,
@@ -3500,7 +3501,7 @@ input[type="button"].btn-block {
   position: absolute;
   top: 100%;
   left: 0;
-  z-index: 1000;
+  z-index: 1060;
   display: none;
   float: left;
   min-width: 160px;
@@ -3539,7 +3540,7 @@ input[type="button"].btn-block {
 .dropdown-menu > li > a:focus {
   text-decoration: none;
   color: #005f69;
-  background-color: #555555;
+  background-color: #eeeeee;
 }
 .dropdown-menu > .active > a,
 .dropdown-menu > .active > a:hover,
@@ -3581,7 +3582,7 @@ input[type="button"].btn-block {
   right: 0;
   bottom: 0;
   top: 0;
-  z-index: 990;
+  z-index: 1050;
 }
 .pull-right > .dropdown-menu {
   right: 0;
@@ -4920,7 +4921,7 @@ textarea.input-group-sm > .input-group-btn > .btn {
 }
 .label {
   display: inline;
-  padding: .2em .6em .3em;
+  padding: .2em .6em .2em;
   font-size: 75%;
   font-weight: bold;
   line-height: 1;

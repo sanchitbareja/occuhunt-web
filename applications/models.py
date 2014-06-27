@@ -5,6 +5,7 @@ from companies.models import Company
 from hunts.models import Hunt
 from resumes.models import Resume
 from jobs.models import Job
+from documents.models import Document
 
 # signals
 from django.db.models.signals import pre_save, post_save
@@ -23,6 +24,8 @@ STATUS_CATEGORIES = (
 	(2,'Interacted With'),
 	(3,'Rejected'),
 	(4,'To Interview'),
+	(5,'Offered'),
+	(6,'Considering'),
 	)
 
 POSITION_CATEGORIES = (
@@ -36,24 +39,34 @@ POSITION_CATEGORIES = (
 	('Other','Other')
 	)
 
-WEIGHT_CHOICES = (
-	(1, 1),
-	(2, 2),
-	(3, 3),
-	(4, 4),
-	(5, 5)
-	)
+class ApplicationTracking(models.Model):
+	"""
+	added_by_user: some applications are self added by user for them to keep track of their own applications
+	"""
+	user = models.ForeignKey(User)
+	company = models.ForeignKey(Company)
+	status = models.SmallIntegerField(choices=STATUS_CATEGORIES, default=1)
+	note = models.TextField(default='', blank=True)
+	added_by_user = models.BooleanField(default=False)
+	timestamp = models.DateTimeField(auto_now_add=True)
 
 class Application(models.Model):
+	"""
+	recruiter_email: email of the recruiter
+	recruiter_message: email content sent by recruiter
+	
+	each application has multiple documents - related by ForeignKey
+	"""
+	application_status = models.ForeignKey(ApplicationTracking, blank=True, null=True)
 	user = models.ForeignKey(User)
 	company = models.ForeignKey(Company)
 	fair = models.ForeignKey(Fair)
 	status = models.SmallIntegerField(choices=STATUS_CATEGORIES, default=1)
 	position = models.CharField(max_length=512, default="Other")
-	note = models.TextField(default='', blank=True)
 	timestamp = models.DateTimeField(auto_now_add=True)
 	response_timestamp = models.DateTimeField(blank=True, null=True)
 	job = models.ForeignKey(Job, blank=True, null=True)
+	note = models.TextField(default='', blank=True)
 	recruiter_email = models.EmailField(max_length=200, blank=True, null=True)
 	recruiter_message = models.TextField(default='', blank=True)
 
@@ -66,16 +79,9 @@ class Application(models.Model):
 			resume = None
 			return None
 
-class Label(models.Model):
-	name = models.CharField(max_length=512)
-	company = models.ForeignKey(Company)
-	weight = models.IntegerField(choices=WEIGHT_CHOICES)
-
-class Rating(models.Model):
-	user = models.ForeignKey(User)
-	label = models.ForeignKey(Label)
+class ApplicationDocument(models.Model):
 	application = models.ForeignKey(Application)
-	timestamp = models.DateTimeField(auto_now=False, auto_now_add=True)
+	document = models.ForeignKey(Document)
 
 def auto_hunt(sender, instance, **kwargs):
 	"""

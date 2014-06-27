@@ -10,21 +10,21 @@
 <style type="text/css">
 
 .bold-statement {
-  font-size: 100px;
+  font-size: 70px;
   padding-top: 20px;
   padding-bottom: 0px;
-  font-weight: 500;
-  color: white;
+  font-weight: 300;
+  color: #035d67;
   line-height: 1;
   margin-bottom: 0px;
 }
 
 .quote-statement {
-  font-size: 27px;
+  font-size: 18px;
   padding-top: 0px;
   padding-bottom: 20px;
   font-weight: 400;
-  color: rgb(200,200,200);
+  color: #035d67;
   line-height: 1;
   margin-bottom: 0;
 }
@@ -41,8 +41,6 @@
 
 body {
   height:100%;
-  background: url('http://thecodeplayer.com/uploads/media/gs.png');
-  background: linear-gradient(rgba(196, 102, 0, 0.2), rgba(155, 89, 182, 0.2)), url('http://thecodeplayer.com/uploads/media/gs.png');
 }
 
 /*form styles*/
@@ -118,7 +116,7 @@ body {
 }
 #progressbar li {
   list-style-type: none;
-  color: white;
+  color: #035d67;
   text-transform: uppercase;
   font-size: 9px;
   width: 30%;
@@ -136,13 +134,14 @@ body {
   background: white;
   border-radius: 3px;
   margin: 0 auto 5px auto;
+  border: 1px solid #70aab0;
 }
 /*progressbar connectors*/
 #progressbar li:after {
   content: '';
   width: 100%;
   height: 2px;
-  background: white;
+  background: #035d67;
   position: absolute;
   left: -50%;
   top: 9px;
@@ -375,13 +374,15 @@ $(document).ready(function(){
 
 <div class="row">
   <div class="col-lg-2"></div>
-  <div class="col-lg-8 text-center">
+  <div class="col-lg-4 text-right">
     <p class="bold-statement">OffrHunt</p>
     <p class="quote-statement">Your leverage in job negotiation</p>
     <!-- <img style="width:400px;" src="{% static 'images/multiple_offers.png' %}"> -->
-    <p class="explanation-statement">Have you ever been forced to accept a job offer because of lack of choice? You were not sure if you could have gotten more (and possibly better) offers? OffrHunt uses your current offer as a leverage in getting recruiters to respond quickly. If a company is interested in you, they'll most likely call you for their final round of interview (as opposed to going through three or four rounds) before deciding to extend an offer to you. This program is currently in beta so things may break but we'll do our best to improve over time. Thanks!</p>
   </div>
-  <div class="col-lg-2"></div>
+  <div class="col-lg-6">
+    <p>Use your Offer</p>
+    <p>Hunt for more Offers</p>
+  </div>
 </div>
 
 <div id="messages"></div>

@@ -26,7 +26,7 @@ from users.models import User, Student, Recruiter
 from resumes.models import Resume, Comment
 from recommendations.models import Recommendation, Request
 from hunts.models import Hunt
-from applications.models import Application
+from applications.models import ApplicationTracking, Application, ApplicationDocument
 from jobs.models import Job
 from notifications.models import Notification
 from documents.models import Document, Link, Visit
@@ -221,175 +221,6 @@ class FairResource(ModelResource):
     def determine_format(self, request):
         return 'application/json'
 
-class FavoriteResource(ModelResource):
-    user = fields.OneToOneField(UserResource, 'user', full=True)
-    company = fields.OneToOneField(CompanyResource, 'company', full=True)
-    class Meta:
-        queryset = Favorite.objects.all()
-        resource_name = 'favorites'
-        # Add it here.
-        authorization = DjangoAuthorization()
-        authentication = OAuth20Authentication()
-        always_return_data = False
-        allowed_methods = ['get','post','put']
-        filtering = {
-            "user": ("exact")
-        }
-
-    def build_filters(self, filters=None):
-        if filters is None:
-            filters = {}
-
-        orm_filters = super(FavoriteResource, self).build_filters(filters)
-
-        if "user_id" in filters:
-            try:
-                user_id = filters['user_id']
-                user = User.objects.get(id=user_id)
-                sqs = Favorite.objects.filter(user=user)
-            except:
-                sqs = []
-            if "pk__in" not in orm_filters.keys():
-                orm_filters["pk__in"] = []
-            orm_filters["pk__in"] = orm_filters["pk__in"] + [i.pk for i in sqs]
-
-        return orm_filters
-
-    def dehydrate(self, bundle):
-        """
-        Return a list of clubs formatted according to what the developer expects
-        """
-
-        return bundle
-
-    def obj_create(self, bundle, **kwargs):
-        """
-        Posts a new favorite
-        """
-        try:
-            try:
-                user = User.objects.get(id=bundle.data["user_id"])
-                company = Company.objects.get(id=bundle.data["company_id"])
-            except:
-                user = User.objects.get(id=bundle.data["user"])
-                company = Company.objects.get(id=bundle.data["company"])
-            if bundle.data['unfavorite']:
-                a = Favorite.objects.filter(user=user).filter(company=company)
-                a.delete()
-            else:
-                old_favorite = Favorite.objects.filter(user=user, company=company)
-                if len(old_favorite) > 0:
-                    bundle.obj = old_favorite[0]
-                else:
-                    new_favorite = Favorite(user=user, company=company)
-                    new_favorite.save()
-                    bundle.obj = new_favorite
-            return bundle
-        except Exception, e:
-            print e
-
-    def obj_update(self, bundle, **kwargs):
-        """
-        Updates an existing favorite
-        """
-        favorite = Favorite.objects.get(id=bundle.data["favorite"])
-        if bundle.data['note']:
-            favorite.note = bundle.data['note']
-        if bundle.data['category']:
-            favorite.category = bundle.data['category']
-        favorite.save()
-        bundle.obj = favorite
-        return bundle
-
-    def alter_list_data_to_serialize(self, request, data):
-        # rename "objects" to "response"
-        data['response'] = {"favorites":data['objects']}
-        del(data['objects'])
-        return data
-
-    def determine_format(self, request):
-        return 'application/json'
-
-class HuntResource(ModelResource):
-    user = fields.OneToOneField(UserResource, 'user', full=True)
-    fair = fields.OneToOneField(FairResource, 'fair')
-    class Meta:
-        queryset = Hunt.objects.all()
-        resource_name = 'hunts'
-        authorization = DjangoAuthorization()
-        authentication = OAuth20Authentication()
-        limit = 20
-        always_return_data = True
-        allowed_methods = ['get','post']
-        filtering = {
-            "user": ("exact"), "fair": ("exact")
-        }
-
-    def dehydrate(self, bundle):
-        """
-        Return a list of hunts
-        """
-        bundle.data['fair'] = bundle.obj.fair.id
-        return bundle
-
-    def build_filters(self, filters=None):
-        if filters is None:
-            filters = {}
-
-        orm_filters = super(HuntResource, self).build_filters(filters)
-
-        if "user_id" in filters:
-            sqs = Hunt.objects.filter(user__id=filters['user_id'])
-
-            orm_filters["pk__in"] = [i.pk for i in sqs]
-
-        # build filters on user, company, fair and status
-        sqs = Hunt.objects.all()
-        try:
-            if "user_id" in filters:
-                user_id = filters['user_id']
-                user = User.objects.get(id=user_id)
-                sqs = sqs.filter(user=user)
-            if "fair_id" in filters:
-                fair_id = filters['fair_id']
-                fair = Fair.objects.get(id=fair_id)
-                sqs = sqs.filter(fair=fair)
-        except:
-            sqs = []
-
-        if "pk__in" not in orm_filters.keys():
-            orm_filters["pk__in"] = []
-            orm_filters["pk__in"] = orm_filters["pk__in"] + [i.pk for i in sqs]
-
-        return orm_filters
-
-    def obj_create(self, bundle, **kwargs):
-        """
-        Creates a new hunt
-        """
-        try:
-            user = User.objects.get(id=bundle.data['user_id'])
-            fair = Fair.objects.get(id=bundle.data['event_id'])
-            old_hunt = Hunt.objects.filter(user=user, fair=fair)
-            if len(old_hunt) > 0:
-                bundle.obj = old_hunt[0]
-            else:
-                new_hunt = Hunt(user=user, fair=fair)
-                new_hunt.save()
-                bundle.obj = new_hunt
-        except Exception, e:
-            raise e
-        return bundle
-
-    def alter_list_data_to_serialize(self, request, data):
-        # rename "objects" to "hunts"
-        data['response'] = {"hunts":data["objects"]}
-        del(data["objects"])
-        return data
-
-    def determine_format(self, request):
-        return 'application/json'
-
 class JobResource(ModelResource):
     company = fields.OneToOneField(CompanyResource, 'company', full=True)
     class Meta:
@@ -510,91 +341,102 @@ class NotificationResource(ModelResource):
     def determine_format(self, request):
         return 'application/json'
 
-class CommentResource(ModelResource):
+class ApplicationTrackingResource(ModelResource):
     user = fields.OneToOneField(UserResource, 'user', full=True)
+    company = fields.OneToOneField(CompanyResource, 'company', full=True)
     class Meta:
-        queryset = Comment.objects.all()
-        resource_name = 'comments'
-        # Add it here.
-        authorization = DjangoAuthorization()
-        authentication = OAuth20Authentication()
-        limit = 0
-        always_return_data = True
-        allowed_methods = ['post']
-
-    def dehydrate(self, bundle):
-        """
-        Return a list of comments for a given resume
-        """
-        return bundle
-
-    def obj_create(self, bundle, **kwargs):
-        """
-        Creates a new comment
-        """
-        user = User.objects.get(id=bundle.data["user"])
-        user.resume_points += 2
-        user.save()
-        resume = Resume.objects.get(id=bundle.data['resume'])
-        new_comment = Comment(user=user, resume=resume, x=bundle.data['x'], y=bundle.data['y'], comment=bundle.data['comment'])
-        new_comment.save()
-        bundle.obj = new_comment
-        return bundle
-
-    def alter_list_data_to_serialize(self, request, data):
-        # rename "objects" to "comments"
-        data['response'] = {"comments":data["objects"]}
-        del(data["objects"])
-        return data
-
-    def determine_format(self, request):
-        return 'application/json'
-
-class ResumeResource(ModelResource):
-    user = fields.OneToOneField(UserResource, 'user', full=True)
-    comments = fields.ManyToManyField('api.api.CommentResource', 'comment_set', full=True)
-    class Meta:
-        queryset = Resume.objects.filter(original=False).order_by('-timestamp')
-        resource_name = 'resumes'
+        queryset = ApplicationTracking.objects.all()
+        resource_name = 'application_status'
         authorization = DjangoAuthorization()
         authentication = OAuth20Authentication()
         limit = 20
         always_return_data = True
-        allowed_methods = ['get','post']
+        allowed_methods = ['get','post','put']
         filtering = {
-            "featured": ("exact"), "user": ("exact"), "showcase": ("exact"), "anonymous": ("exact")
+            "user": ("exact"), "company": ("exact"), "status":ALL
         }
+
+    def build_filters(self, filters=None):
+        if filters is None:
+            filters = {}
+
+        orm_filters = super(ApplicationTrackingResource, self).build_filters(filters)
+
+        # build filters on user, company, fair and status
+        sqs = ApplicationTracking.objects.all()
+        try:
+            if "user_id" in filters:
+                user_id = filters['user_id']
+                user = User.objects.get(id=user_id)
+                sqs = sqs.filter(user=user)
+            if "company_id" in filters:
+                company_id = filters['company_id']
+                company = Company.objects.get(id=company_id)
+                sqs = sqs.filter(company=company)
+            if "fair_id" in filters:
+                fair_id = filters['fair_id']
+                fair = Fair.objects.get(id=fair_id)
+                sqs = sqs.filter(fair=fair)
+            if "unique_students" in filters:
+                if filters['unique_students']:
+                    sqs = sqs.distinct('user')
+        except:
+            sqs = []
+
+        if "pk__in" not in orm_filters.keys():
+            orm_filters["pk__in"] = []
+            orm_filters["pk__in"] = orm_filters["pk__in"] + [i.pk for i in sqs]
+
+        return orm_filters
 
     def dehydrate(self, bundle):
         """
-        Return a list of resumes formatted according to what the developer expects
+        Return a list of applications-statuses
         """
-        # user will be anonymous if obj.anonymous = True
-        if bundle.obj.anonymous:
-            bundle.data['user'] = "anonymous"
 
         return bundle
 
     def obj_create(self, bundle, **kwargs):
         """
-        Creates a new resume
+        Creates a new application status
         """
         try:
-            user = User.objects.get(id=bundle.data["user"])
-            if bundle.data['featured']:
-                user.resume_points -= 20
-                user.save()
-            # need to check if url, anonymous, original supplied
-            new_resume = Resume(user=user, url=bundle.data['url'], anonymous=bundle.data['anonymous'], original=bundle.data['original'], featured=bundle.data['featured'], showcase=bundle.data['showcase'])
-            new_resume.save()
-            bundle.obj = new_resume
+            user = bundle.request.user
+            company = Company.objects.get(id=bundle.data['company_id'])
+            # check if an application already exists
+            old_application_status = ApplicationTracking.objects.filter(user=user, company=company)
+            if len(old_application_status) > 0:
+                bundle.obj = old_application_status[0]
+            else:
+                new_application = ApplicationTracking(user=user, company=company, status=6, added_by_user=True)
+                new_application.save()
+                bundle.obj = new_application
         except Exception, e:
             print e
+            raise e
+        return bundle
+
+    def obj_update(self, bundle, **kwargs):
+        """
+        Update application status and notes
+        """
+        try:
+            existing_application = ApplicationTracking.objects.get(id=int(kwargs['pk']))
+            if 'note' in bundle.data.keys():
+                existing_application.note = bundle.data['note']
+                existing_application.save()
+            if 'status' in bundle.data.keys():
+                existing_application.status = bundle.data['status']
+                existing_application.save()
+            bundle.obj = existing_application
+        except Exception, e:
+            print e
+            raise e
         return bundle
 
     def alter_list_data_to_serialize(self, request, data):
-        # rename "objects" to "resumes"
-        data['response'] = {"resumes":data["objects"]}
+        # rename "objects" to "applications"
+        data['response'] = {"application_status":data["objects"]}
         del(data["objects"])
         return data
 

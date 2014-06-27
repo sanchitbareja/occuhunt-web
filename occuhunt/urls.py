@@ -1,13 +1,13 @@
 from django.conf.urls import patterns, include, url
 from users.views import verify_user_network, get_user_network
-from companies.views import home, splash, companies, company, search
+from companies.views import home, splash, companies, company, search, search_query
 from resumes.views import resume_feed, sign_s3_upload, submit_resume, individual_resume
 from jobs.views import favorites, apply_jobs, match_jobs
 from recommendations.views import recommendation_main, recommendation_new, recommendation_new_with_request, recommendation_requests, recommendation_requests_new, showcase_notifications, showcase_applications
 from fairs.views import create_fair, all_events, career_fair_handler, infosession_handler, three_five_seven_handler, StartupCareerFairSpring2014View, ISchoolInfoCampView, PBLCareerFairSpring2014View, Dropin357View, Dropin3572View, Dropin3573View, GestureKitInfosession15April2014View
 from recruiters.views import recruiter_splash, recruiter_hire, recruiter_market, recruiter_sell, recruiter_sponsorship_request, download_pdf, recruiter_login, recruiter_login_third_party, recruiter_analytics, download_excel_to_export
 from offers.views import offrhunt_handler
-from documents.views import profile_view, preview_document
+from documents.views import dashboard_view, documents_view, preview_document
 from django.conf import settings
 from django.conf.urls.static import static
 from django.views.generic import TemplateView, RedirectView
@@ -38,7 +38,7 @@ v1_api.register(OfferResource())
 
 # API
 from tastypie.api import Api
-from api.apiv2 import CompanyResource, UserResource, FairResource, FavoriteResource, HuntResource, JobResource, NotificationResource, CommentResource, ResumeResource, ApplicationResource, DocumentResource, LinkResource, VisitResource
+from api.apiv2 import CompanyResource, UserResource, FairResource, JobResource, NotificationResource, ApplicationTrackingResource, ApplicationResource, DocumentResource, LinkResource, VisitResource
 from api.views import logout_view, login_error, feedback_form
 
 v2_api = Api(api_name='v2')
@@ -46,12 +46,10 @@ v2_api.register(CompanyResource())
 v2_api.register(UserResource())
 v2_api.register(FairResource())
 v2_api.register(FavoriteResource())
-v2_api.register(HuntResource())
 v2_api.register(JobResource())
 v2_api.register(NotificationResource())
-v2_api.register(CommentResource())
-v2_api.register(ResumeResource())
 v2_api.register(ApplicationResource())
+v2_api.register(ApplicationTrackingResource())
 v2_api.register(DocumentResource())
 v2_api.register(LinkResource())
 v2_api.register(VisitResource())
@@ -146,8 +144,13 @@ urlpatterns = patterns('',
     url(r'^infosession/([A-Za-z0-9_-]+)/([0-9]+)/', infosession_handler, name="infosession_handler"),
     url(r'^357/([0-9]+)/', three_five_seven_handler, name="three_five_seven_handler"),
     url(r'^offrhunt/$', offrhunt_handler, name='offrhunt'),
-    url(r'^profile/resumes/$', profile_view, name='profile_view'),
+    url(r'^profile/documents/$', documents_view, name='documents_view'),
+    url(r'^profile/dashboard/$', dashboard_view, name='dashboard_view'),
     url(r'^document/([A-Za-z0-9_-]+)/([A-Za-z0-9_-]+)/$', preview_document, name='preview_document'),
+    url(r'^357v2/$', TemplateView.as_view(template_name="base/357v2.html")),
+    url(r'^homepage/$', TemplateView.as_view(template_name="homepage2.html")),
+    url(r'^rhomepage/$', TemplateView.as_view(template_name="recruiter/recruiter_splash2.html")),
+    url(r'^search-companies/$', search_query, name='search_companies'),
 
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),

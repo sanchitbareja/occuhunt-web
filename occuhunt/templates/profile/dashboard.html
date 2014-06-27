@@ -1,0 +1,193 @@
+{% extends "base.html" %}
+{% load static from staticfiles %}
+{% load i18n %}
+{% load url from future %}
+
+{% block extra_style %}
+<link href="{% static 'occuhunt/css/sidebar.css' %}" rel="stylesheet">
+<link href="{% static 'occuhunt/css/companies-list.css' %}" rel="stylesheet">
+<link href="{% static 'occuhunt/css/companies-favoriting.css' %}" rel="stylesheet">
+
+<style type="text/css">
+.media-body {
+  display: inline-block;
+}
+
+.event-stats {
+  float:right;
+  display: inline-block;
+  height: 64px;
+  background-color: #759fc7;
+  color: white;
+  padding-right: 10px;
+  padding-left: 10px;
+  border-radius:5px;
+}
+
+.event-stats-number {
+  margin-top: 10px;
+  margin-bottom: 0px;
+}
+
+.event-stats-number {
+
+}
+
+.event-feature {
+  display: inline-block;
+  vertical-align: top;
+  height: 64px;
+  background-color: #ff8700;
+  color: white;
+  padding-right: 10px;
+  padding-left: 10px;
+  border-radius: 2px;
+}
+
+</style>
+
+{% endblock %}
+
+{% block extra_script %}
+<!-- Date formatting library -->
+<script src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.1.0/moment.min.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.2/underscore-min.js" type="text/javascript"></script>
+
+<!-- Drag and drop -->
+<script src="{% static "occuhunt/js/jquery-sortable.js" %}"></script>
+<script src="{% static "occuhunt/js/favoriting.js" %}"></script>
+
+<script type="text/javascript">
+
+  	// get all companies on launch
+  	$(document).ready(initialize);
+  
+</script>
+{% endblock %}
+
+{% block content %}
+
+<div class="row">
+	<div class="col-lg-9">
+		<!-- Application status -->
+		<h4>Application Status</h4>
+		<div class="row">
+		  	<div class="col-lg-3 no-margin">
+		    	<div class="list-group fixed-height-draggable" id="favorite-category-applied-considering">
+		      		<div class="list-group-header" id="category-applied">
+		        		<div class="row">
+		          			<div class="col-lg-12">
+		            			<div class="list-group-header-title">Applied/Considering (<div class="list-group-header-stats">0</div>)</div>
+		            			<input id="application_status" type="hidden" value="6"/>
+		          			</div>
+		        		</div>
+		      		</div>
+		      		<!-- add list-group-item here -->
+		    	</div>
+		  	</div>
+		  	<div class="col-lg-3 no-margin">
+		    	<div class="list-group fixed-height-draggable" id="favorite-category-interviewing">
+		      		<div class="list-group-header" id="category-interviewing">
+		        		<div class="row">
+		          			<div class="col-lg-12">
+		            			<div class="list-group-header-title">Interviewing (<div class="list-group-header-stats">0</div>)</div>
+		            			<input id="application_status" type="hidden" value="4"/>
+		          			</div>
+		        		</div>	        		
+		      		</div>
+		      		<!-- add list-group-item here -->
+		    	</div>
+		  	</div>
+		  	<div class="col-lg-3 no-margin">
+		    	<div class="list-group fixed-height-draggable" id="favorite-category-offered">
+		      		<div class="list-group-header" id="category-offered">
+		        		<div class="row">
+		          			<div class="col-lg-12">
+		            			<div class="list-group-header-title">Offered (<div class="list-group-header-stats">0</div>)</div>
+		            			<input id="application_status" type="hidden" value="5"/>
+		          			</div>
+		        		</div>
+		      		</div>
+		      		<!-- add list-group-item here -->
+		    	</div>
+		  	</div>
+		  	<div class="col-lg-3 no-margin">
+		    	<div class="list-group fixed-height-draggable" id="favorite-category-rejected">
+			      	<div class="list-group-header" id="category-rejected">
+			        	<div class="row">
+			          		<div class="col-lg-12">
+			            		<div class="list-group-header-title">Rejected (<div class="list-group-header-stats">0</div>)</div>
+			            		<input id="application_status" type="hidden" value="3"/>
+			          		</div>
+			        	</div>
+			      	</div>
+			      	<!-- add list-group-item here -->
+		    	</div>
+		  	</div>
+	  	</div>
+
+	  	<!-- Upcoming events -->
+	  	<h4>Events</h4>
+	  	{% regroup events by time_start|date:"F" as events_by_month %}
+	    {% for events_for_a_month in events_by_month %}
+	    <div class="row">
+	      	<div class="sidebar">
+	        	<div class="sidebar-heading"><h3 class="sidebar-title">{{ events_for_a_month.grouper }}</h3></div>
+	        	<div class="sidebar-body">
+	          		{% for event in events_for_a_month.list %}
+	            		<div class="media">
+	              			<a class="pull-left" href="#">
+	                			<img class="media-object event-image" src="{{event.logo}}" alt="UC Berkeley" style="max-width:50px;">
+	              			</a>
+	              			<div class="media-body">
+		                		{% if event.event_type == 1 %}
+		                  			{{event.infosession.all}}
+		                  			<h4 class="media-heading"><a href="/infosession/{{event.infosession.company.name}}/{{event.infosession.id}}/" class="event-header">{{event.name}}</a></h4>
+		                		{% endif %}
+		                		{% if event.event_type == 2 %}
+		                  			<h4 class="media-heading"><a href="/357/{{event.threeFiveSeven.id}}/" class="event-header">{{event.name}}</a></h4>
+		                		{% endif %}
+		                		{% if event.event_type == 3 %}
+		                  			<h4 class="media-heading"><a href="/event-fair/{{event.name|slugify}}/{{event.id}}/" class="event-header">{{event.name}}</a></h4>
+		                		{% endif %}
+		                		{{event.time_start|date:"D, j N P"}} - {{event.time_end|date:"D, j N, P"}}<br />
+		                		{{event.location.name}}
+		              		</div>
+			              	{% if event.resume_drop %}
+			                	<div style="float:right">
+			                  		<div class="event-feature text-center">
+			                    		<h3 class="event-stats-number">DROP</h3>
+			                    		<p class="event-stats-word">Resume</p>
+			                  		</div>
+			                	</div>
+			              	{% endif %}
+	            		</div>
+	          		{% endfor %}
+	        	</div>
+	      	</div>
+	    </div>
+	    {% endfor %}
+	</div>
+
+	<div class="col-lg-3">
+		<!-- Upcoming 357s -->
+		<h4>Upcoming 357s</h4>
+		{% for event in upcoming_357s %}
+      	<div class="sidebar">
+        	<div class="sidebar-heading"><h3 class="sidebar-title">{{ event.time_start|date:"F" }}</h3></div>
+        	<div class="sidebar-body">
+        		<div class="sidebar-subtitle">
+			    	<h4 class="sidebar-subtitle-text">{{event.threeFiveSeven.name}}</h4>
+			    	<a class="btn btn-sm btn-done sidebar-subtitle-button" href="/357/{{event.threeFiveSeven.id}}/">APPLY</a>
+			    </div>
+			    {% for company in event.threeFiveSeven.companies.all %}
+			    	<p class="sidebar-content">{{company.name}}</p>
+			    {% endfor %}
+        	</div>
+      	</div>
+	    {% endfor %}
+	</div>
+</div>
+
+
+{% endblock %}
