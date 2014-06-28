@@ -30,6 +30,7 @@ class Document(models.Model):
 	document_type = models.PositiveSmallIntegerField(choices=DOCUMENT_CHOICES)
 	image_url = models.URLField(max_length=1000)
 	url = models.URLField(max_length=1000)
+	description = models.TextField(blank=True, null=True)
 	unique_hash = models.CharField(max_length=10, unique=True)
 	delete = models.BooleanField(default=False)
 	timestamp = models.DateTimeField(auto_now_add = True)
