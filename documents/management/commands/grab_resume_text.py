@@ -20,7 +20,7 @@ import subprocess
 import urllib2
 
 class Command(BaseCommand):
-    help = 'Updates the Visit table with the location, lat, lng and etc from ip address'
+    help = 'Updates the Document table with the description of the document'
 
     def handle(self, *args, **options):
         # 1. get all documents that were added within last 1 hour with empty description
@@ -29,6 +29,7 @@ class Command(BaseCommand):
         # 4.    convert to high quality image with imagemagick
         # 5.    get text from high quality image
         # 6.    store text in resume entry as description
+        # 7.    Clean up and remove temp files
 
         # 1
         hour_ago = datetime.datetime.now() - datetime.timedelta(hours=1)
@@ -38,25 +39,34 @@ class Command(BaseCommand):
         # 2
         for document in documents_to_update:
             try:
-                # 3,4 - curl "document.url" | convert -density 300 -depth 8 -quality 85 - tmp.png ; tesseract tmp.png tmp ; cat tmp.txt ; rm tmp.png; rm tmp.txt
-
+                # 3,4 and part of 5
                 document_url = document.url
-                # u = urllib2.urlopen(document_url)
-                # localFile = open('temp.pdf', 'w')
-                # localFile.write(u.read())
+                unique_hash = document.unique_hash
+                subprocess.call('curl --silent \"'+document_url+'\" | convert -density 300 -depth 8 -quality 85 - '+unique_hash+'.png;', shell=True)
+                subprocess.call('convert '+unique_hash+'-*.png -append '+unique_hash+'.png;', shell=True)
+                subprocess.call('tesseract '+unique_hash+'.png '+unique_hash+';', shell=True)
 
-                # print localFile
+                print "check 1"
 
-                # img = Image(filename=localFile.name)
-                # img.save(filename='temp.png')
+                # 5
+                text_file = open(''+unique_hash+'.txt','r')
+                document_text = text_file.read()
+                text_file.close()
 
-                # localFile.close()
+                print "check 2"
 
-                # print localFile
-                subprocess.call('curl --silent \"'+document_url+'\" | convert -density 300 -depth 8 -quality 85 - tmp.png; convert tmp-*.png -append tmp.png ; tesseract tmp.png tmp ; cat tmp.txt ; rm tmp.png; rm tmp-*.png ; rm tmp.txt', shell=True)
-                # subprocess.call('rm tmp.*')
+                # 6
+                document.description = document_text
+                document.save()
+
+                print "check 3"
+
+                # 7. remove temp files
+                subprocess.call('rm '+unique_hash+'*')
+
+                print "check 4"
 
             except Exception, e:
                 print e
 
-        self.stdout.write('Successfully updated entries in Visit table with locations!')
+        self.stdout.write('Successfully updated documents with descriptions!')

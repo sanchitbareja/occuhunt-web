@@ -4,7 +4,7 @@ from documents.models import Document, Link, Visit
 #register the admin site
 
 class DocumentAdmin(admin.ModelAdmin):
-	list_display = ['id','user','document_type','image_url','url','unique_hash','delete','timestamp']
+	list_display = ['id','user','document_type','image_url','url','unique_hash','delete','timestamp','description']
 
 class LinkAdmin(admin.ModelAdmin):
 	list_display = ['id', 'user', 'link_name', 'url', 'delete','timestamp']
