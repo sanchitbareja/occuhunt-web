@@ -237,9 +237,6 @@ function add_document(document_type, image_url, pdf_url) {
         type: 'POST',
         dataType: 'json',
         contentType: 'application/json',
-        headers: {
-            "Authorization": 'OAuth 6f9dd960cb005f85b5ba81c158829fe11c3541d9'
-        },
         data: JSON.stringify({
             'document_type':document_type,
             'image_url':image_url,
@@ -267,9 +264,6 @@ function delete_document(user_id ,document_id, html_handle) {
         type: 'DELETE',
         dataType: 'json',
         contentType: 'application/json',
-        headers: {
-            "Authorization": 'OAuth 6f9dd960cb005f85b5ba81c158829fe11c3541d9'
-        },
         data: JSON.stringify({
             'delete':true
         }),
@@ -294,9 +288,6 @@ function get_visits(document_id) {
         type: 'GET',
         dataType: 'json',
         contentType: 'application/json',
-        headers: {
-            "Authorization": 'OAuth 6f9dd960cb005f85b5ba81c158829fe11c3541d9'
-        },
         data: {
             'document':document_id
         },
@@ -421,9 +412,6 @@ function save_new_link(dom_element) {
         type: 'POST',
         dataType: 'json',
         contentType: 'application/json',
-        headers: {
-            "Authorization": 'OAuth 6f9dd960cb005f85b5ba81c158829fe11c3541d9'
-        },
         data: JSON.stringify({
             'label':link_label,
             'url':link_url 
@@ -453,9 +441,6 @@ function delete_link(link_id, dom_element) {
         type: 'DELETE',
         dataType: 'json',
         contentType: 'application/json',
-        headers: {
-            "Authorization": 'OAuth 6f9dd960cb005f85b5ba81c158829fe11c3541d9'
-        },
         data: JSON.stringify({
         }),
         statusCode: {

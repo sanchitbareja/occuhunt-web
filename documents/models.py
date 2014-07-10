@@ -8,7 +8,7 @@ from django.db.models.signals import pre_save, post_save
 from django.dispatch import receiver
 
 # misc
-import datetime
+import datetime, json, random, string
 from mailer import send_mail, send_html_mail
 from occuhunt.settings import EMAIL_MASTERS
 from django.template.loader import render_to_string
@@ -67,3 +67,21 @@ class Visit(models.Model):
 	area_code = models.CharField(max_length=255, null=True, blank=True)
 	timestamp = models.DateTimeField(auto_now_add = True)
 
+@receiver(pre_save, sender=Document)
+def create_unique_hash(sender, instance, *args, **kwargs):
+	# check if instance already has a unique hash.
+	# if has unique_hash, 
+	#     check if indeed is unique, if not, create a unique hash for it
+	# else,
+	#     create a unique hash and save it
+	s=string.lowercase+string.digits
+	unique_hash = ''.join(random.sample(s,10))
+	if Document.objects.filter(user=instance.user, unique_hash=instance.unique_hash).count() > 0:
+		while Document.objects.filter(user=instance.user, unique_hash=unique_hash).count() > 0:
+			unique_hash = ''.join(random.sample(s,10))
+		instance.unique_hash = unique_hash
+	if not instance.unique_hash or instance.unique_hash == '':
+		# check if hash is indeed unique
+		while Document.objects.filter(user=instance.user, unique_hash=unique_hash).count() > 0:
+			unique_hash = ''.join(random.sample(s,10))
+		instance.unique_hash = unique_hash

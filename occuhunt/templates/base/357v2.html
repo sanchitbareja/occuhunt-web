@@ -9,148 +9,9 @@
 {% block extra_style %}
 <link href="{% static 'occuhunt/css/index.css' %}" rel="stylesheet">
 <link href="{% static 'occuhunt/css/jquery.countdown.css' %}" rel="stylesheet" >
-<link href="{% static 'occuhunt/css/apply.css' %}" rel="stylesheet">
+<link href="{% static 'occuhunt/css/profile.css' %}" rel="stylesheet">
+<link href="{% static 'occuhunt/css/357.css' %}" rel="stylesheet">
 <!-- <link href="{% static 'occuhunt/css/svg-grid.css' %}" rel="stylesheet"> -->
-<style type="text/css">
-/* jQuery Countdown styles 2.0.0. */
-.is-countdown {
-  border: 0px solid #ccc;
-  background-color: #fff;
-}
-.countdown-rtl {
-  direction: rtl;
-}
-.countdown-holding span {
-  color: #888;
-}
-.countdown-row {
-  clear: both;
-  width: 100%;
-  padding: 0px 2px;
-  text-align: center;
-}
-.countdown-show1 .countdown-section {
-  width: 98%;
-}
-.countdown-show2 .countdown-section {
-  width: 48%;
-}
-.countdown-show3 .countdown-section {
-  width: 32.5%;
-}
-.countdown-show4 .countdown-section {
-  width: 24.5%;
-}
-.countdown-show5 .countdown-section {
-  width: 19.5%;
-}
-.countdown-show6 .countdown-section {
-  width: 16.25%;
-}
-.countdown-show7 .countdown-section {
-  width: 14%;
-}
-.countdown-section {
-  display: block;
-  float: left;
-  font-size: 75%;
-  text-align: center;
-}
-.countdown-amount {
-    font-size: 200%;
-}
-.countdown-period {
-    display: block;
-}
-.countdown-descr {
-  display: block;
-  width: 100%;
-}
-
-.countdown-time {
-  display: block;
-  width: 100%;
-  color: rgb(170, 186, 204);
-  font-size: 35px;
-  font-family: "Proxima Nova";
-  font-weight: 300;
-  line-height: 1em;
-  margin-bottom: 60px;
-}
-
-.main-357 {
-  display: block;
-  color: rgb(51, 136, 144);
-  font-size: 85px;
-  font-family: "Proxima Nova";
-  font-weight: 400;
-  margin: 0px;
-  padding: 0px;
-  line-height: 1em;
-}
-
-.description-357 {
-  display: block;
-  width: 100%;
-  color: black;
-  font-size: 18px;
-  font-family: "Proxima Nova";
-  font-weight: 300;
-  line-height: 1em;
-  margin-bottom: 5px;
-}
-
-.company-block {
-  display: block;
-  width: 100%;
-  background: rgb(240, 247, 247);
-  border: 1px solid #e4e4e4;
-  padding: 10px;
-  text-align: center;
-}
-
-.company-block > .company-logo {
-  width: 100%;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  height: 50px;
-}
-
-.company-logo > img {
-  width: 100%;
-}
-
-.company-block > h4 {
-  font-size: 15px;
-  font-family: "Proxima Nova";
-  font-weight: 500;
-  line-height: 1em;
-}
-
-.company-block > p {
-  font-size: 13px;
-}
-
-.company-description {
-  height: 160px;
-  text-align: left;
-}
-
-.company-positions {
-  height: 100px;
-}
-
-.squeeze-margin {
-  padding-left: 4px;
-  padding-right: 4px;
-}
-
-h3 {
-  font-weight: 400;
-}
-
-
-</style>
 
 {% endblock %}
 
@@ -158,66 +19,47 @@ h3 {
 <script src="{% static 'occuhunt/js/snap.svg-min.js' %}"></script>
 <script src="{% static 'occuhunt/js/jquery.plugin.js' %}"></script>
 <script src="{% static 'occuhunt/js/jquery.countdown.js' %}"></script>
+
 <script type="text/javascript">
-  mixpanel.track_links("#mp-viewjobs", "Clicked on view jobs from modal in fair page", {'referrer': document.referrer });
   $(document).ready(function(){
     // enable tooltip for all the resume drops
     $(".resume_drop").tooltip();
 
+    // enable preview of resume
+    $(".document_preview_btn").popover();
+
+    // highlight resume on select
+    var selected_resume = null;
+    var selected_cv = null;
+    var selected_docs = [];
+    $("input[name=resumeSelect]").change(function () {
+      new_selected_resume = $(this).val();
+      $("#documentSelect_"+new_selected_resume).parent().parent().css("border", "2px solid #005469");
+      $("#documentSelect_"+selected_resume).parent().parent().css("border", "0px");
+      selected_resume = new_selected_resume;
+    });
+    $("input[name=cvSelect]").change(function () {
+      new_selected_cv = $(this).val();
+      $("#documentSelect_"+new_selected_cv).parent().parent().css("border", "2px solid #005469");
+      $("#documentSelect_"+selected_cv).parent().parent().css("border", "0px");
+      selected_cv = new_selected_cv;
+    });
+    $("input[name=documentSelect]").change(function () {
+      new_checkbox_sel = $(this).val();
+      sel_index = _.indexOf(selected_docs, new_checkbox_sel)
+      if(sel_index > -1) {
+        selected_docs.splice(sel_index, 1);
+        $("#documentSelect_"+new_checkbox_sel).parent().parent().css("border", "0px");
+      } else {
+        selected_docs.push(new_checkbox_sel);
+        $("#documentSelect_"+new_checkbox_sel).parent().parent().css("border", "2px solid #005469");
+      }
+    });
+
     // check which companies user had already applied to and markk them as applied accordingly
     getApplications();
 
-    // getCompanies();
-    $('*[data-poload]').on("click", function() {
-      var e = $(this);
-      mixpanel.track('Viewed company popup from Fair Page');
-      $.ajax({
-          url: '/api/v1/companies/'+e.data('poload')+'/',
-          data: {},
-          dataType: 'json',
-          success: function(data, textStatus, jqXHR){
-            console.log(data);
-            e.unbind("click").popover({
-              html:true,
-              trigger: 'click',
-              container: $(this).attr('id'),
-              title:"<a class='btn-link pull-left' onclick='closeModal("+data['id']+")'><b>X</b></a><h3 class='text-center'>"+data["name"]+"</h3><a class='btn-link' id='modal-plus' onclick='favoriteCompanyWithId("+data['id']+",this, null);' style='right:17px; top:10px;position:absolute; float:right; '><span class='glyphicon glyphicon-plus'></span></a>",
-              content:"<div class='popover-company-info'><img id='background_banner' src='"+data["banner_image"]+"'/><img id='foreground_banner' src='"+data['logo']+"'><p>"+data["company_description"].slice(0,140)+"...</p><div><a class='btn btn-done' style='display:inline-block; margin-right:10px;' id='mp-viewjobs' href='/company/"+data['id']+" /'>VIEW JOBS</a><a class='btn btn-danger' id='resume_drop_"+data['id']+"' style='display:inline-block;' value='"+data['id']+"' name='"+data['name']+"'>DROP RESUME</a></div></div>"
-            }).popover("show");
-
-            $('#resume_drop_'+data['id']+'').on("click", function() {
-              var e = $(this);
-              var company_id = $(this).attr("value");
-              var user_id = $("#user_id").val();
-              var fair_id = $("#fair_id").val();
-              var company_name = $(this).attr("name")
-              $("#company_id").attr('value',company_id);
-              
-              // show the modal with appropriate text
-              $(".companyTitle").text(company_name);
-              $("#resumeDropModal").modal("show");
-
-            });
-
-          },
-      });
-    });
-
-    $('#resume_drop').on("click", function() {
-      console.log("hello");
-      var e = $(this);
-      var company_id = $(this).attr("value");
-      var user_id = $("#user_id").val();
-      var fair_id = $("#fair_id").val();
-      var company_name = $(this).attr("name")
-      $("#company_id").attr('value',company_id);
-      
-      // show the modal with appropriate text
-      $(".companyTitle").text(company_name);
-      $("#resumeDropModal").modal("show");
-
-    });
-
+    // show application modal on click of "resume drop"
     $('.resume_drop_btn').on("click", function() {
       var e = $(this);
       var company_id = $(this).attr("value");
@@ -232,12 +74,12 @@ h3 {
 
     });
 
-    $("#submitResumeDrop").on("click", function() {      
-      var user_id = $("#user_id").val();
+    $("#submitResumeDrop").on("click", function() {
       var fair_id = $("#fair_id").val();
       var company_id = $("#company_id").val();
-      var position = $("#companyPosition").val().join();
-      console.log(position);
+      var position = $("input[name=companyPosition]:checked").map(function() {
+        return $(this).val();
+      }).get().join();
 
       // save user preferences
       // get major
@@ -246,101 +88,145 @@ h3 {
       var grad_year = $("#studentGradYear").val();
       // get degree type
       var degree_type = $("#studentDegree").val();
-      // save all of these preferences
-      console.log(majors);
-      console.log(grad_year);
-      console.log(degree_type);
 
-      // hide modal
-      $("#resumeDropModal").modal("hide");
+      // if student has offers
+      var company_from_text_val = $("#companyFromText").val();
+      var salary_range_val = $("#currentOfferSalaryRange").val();
+      var offer_deadline_val = $("#currentOfferDeadline").val();
 
       // submit resume
-      if($("#resume_enabled").val() == 'False'){
-        $("#messages").append('<div class="alert alert-danger alert-dismissable">'+
-                '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'+
-                'Oops! You need to be logged in or have your resume uploaded to drop your resume with the employers!'+
-              '</div>');
+      if($("#logged_in").val() == 'False'){
+        notLoggedIn();
       } else {
-        resumeDrop(user_id, company_id, fair_id, position, majors, grad_year, degree_type); 
+        // if has company and fair id
+        // if selected at least 1 resume
+        // if seleted at least 1 position
+        // if has major, degree-type and grad-year filled out
+        if(company_id && fair_id) {
+          if(selected_resume) {
+            if(position) {
+              if(majors && degree_type && grad_year) {
+                // send application!
+                resumeDrop(company_id, fair_id, selected_resume, selected_cv, selected_docs, position, majors, grad_year, degree_type);
+
+                // if has company, offer range and deadline
+                if(company_from_text_val && salary_range_val && offer_deadline_val) {
+                  addOffer(company_from_text_val, salary_range_val, offer_deadline_val);
+                }
+
+                // hide modal
+                $("#resumeDropModal").modal("hide");
+              } else {
+                addModalMessage("Check your additional info section. We need to know your major, degree type and graduation year! Please try again.");
+              }
+            } else {
+              addModalMessage("Please select a position and try again!");
+            }
+          } else {
+            addModalMessage("Please select a resume to submit with your application!");
+          }
+        } else {
+          addModalMessage("Oops, there's an error on our side. Please try again or report to us about this. Really sorry for the inconvenience.");
+        }
       }
+
+    });
+
+
+    // toggle additional info
+    $("#toggleAdditionalInfo").on("click", function() {
+      $(".additionalInfoDiv").toggle();
     });
 
     // enable countdown
-  var austDay = new Date();
-  austDay = new Date({{event.fair.time_end|date:"Y"}}, {{event.fair.time_end|date:"n"}}-1, {{event.fair.time_end|date:"j"}});
-  $('#defaultCountdown').countdown({until: austDay, format: 'HMS', compact:true, description:'Countdown', layout: '<p class="countdown-time">{hnn}{sep}{mnn}{sep}{snn} </p> '});
-  $('#year').text(austDay.getFullYear());
+    var austDay = new Date();
+    austDay = new Date({{event.fair.time_end|date:"Y"}}, {{event.fair.time_end|date:"n"}}-1, {{event.fair.time_end|date:"j"}});
+    $('#defaultCountdown').countdown({until: austDay, format: 'HMS', compact:true, description:'Countdown', layout: '<p class="countdown-time">{hnn}{sep}{mnn}{sep}{snn} </p> '});
+    $('#year').text(austDay.getFullYear());
 
   });
 
-  function closeModal(id){
-    $('[data-poload='+id+']').click();
+  function addModalMessage(message){
+    console.log(message);
+    console.log($("#modalMessages"));
+    $("#modalMessages").append('<div class="alert alert-danger alert-dismissable">'+
+      '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'+
+      message+
+    '</div>');
   }
 
-  function resumeDrop(user_id, company_id, fair_id, position, majors, grad_year, degree_type){
+  function notLoggedIn(){
+    $("#messages").append('<div class="alert alert-danger alert-dismissable">'+
+      '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'+
+      'Oops! You need to be logged in to drop your resume with the employers!'+
+    '</div>');
+  }
+
+  function resumeDrop(company_id, fair_id, selected_resume, selected_cv, selected_docs, position, majors, grad_year, degree_type){
     console.log("CONFIRMED");
     
     // new applications
     $.ajax({
-        url: '/api/v1/applications/',
-        type:'POST',
-        dataType: 'json',
-        data: JSON.stringify({
-          'user_id': user_id, 
-          'company_id': company_id,
-          'fair_id': fair_id,
-          'position': position,
-          'status': 1,
-          'majors':majors,
-          'grad_year': grad_year,
-          'degree_type': degree_type
-        }),
-        contentType: 'application/json',
-        statusCode : {
-          201: function(data, textStatus, jsXHR){
-            console.log("successfully dropped resume!");
-            console.log(data);
-            console.log(textStatus);
-            console.log(jsXHR);
-            console.log($(this));
-            // feedback on the small dot that the resume has been submitted
-            // disable clicking
-            $("button.resume_drop_btn[value="+data['company']['id']+"]").attr("disabled",true);
-            $("button.resume_drop_btn[value="+data['company']['id']+"]").text('Applied');
+      url: '/api/v2/applications/',
+      type:'POST',
+      dataType: 'json',
+      data: JSON.stringify({
+        'company_id': company_id,
+        'fair_id': fair_id,
+        'resume': selected_resume,
+        'cv': selected_cv,
+        'docs': selected_docs,
+        'position': position,
+        'status': 1,
+        'majors':majors,
+        'grad_year': grad_year,
+        'degree_type': degree_type
+      }),
+      contentType: 'application/json',
+      statusCode : {
+        201: function(data, textStatus, jsXHR){
+          console.log("successfully dropped resume!");
+          console.log(data);
+          console.log(textStatus);
+          console.log(jsXHR);
+          console.log($(this));
+          // feedback on the small dot that the resume has been submitted
+          // disable clicking
+          $("button.resume_drop_btn[value="+data['company']['id']+"]").attr("disabled",true);
+          $("button.resume_drop_btn[value="+data['company']['id']+"]").text('Applied');
 
-            // give confirmation message about successful resume submission
-            $("#messages").append('<div class="alert alert-success alert-dismissable">'+
-              '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'+
-              'Good job! You <strong>successfully</strong> dropped off your resume at '+data['company']['name']+'!'+
-            '</div>');
-          },
-          500: function(data, textStatus, jsXHR){
-            console.log(data);
-            console.log(textStatus);
-            console.log(jsXHR);
-            // give confirmation message about successful resume submission
-            $("#messages").append('<div class="alert alert-danger alert-dismissable">'+
-              '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'+
-              'Oops! You need to be logged in or have your resume uploaded to drop your resume with the employers!'+
-            '</div>');
-          },
-          404: function(data, textStatus, jsXHR){
-            console.log(data);
-            console.log(textStatus);
-            console.log(jsXHR);
-            // give confirmation message about successful resume submission
-            $("#messages").append('<div class="alert alert-danger alert-dismissable">'+
-              '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'+
-              'Oops! You need to be logged in or have your resume uploaded to drop your resume with the employers!'+
-            '</div>');
-          }
+          // give confirmation message about successful resume submission
+          $("#messages").append('<div class="alert alert-success alert-dismissable">'+
+            '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'+
+            'Good job! You <strong>successfully</strong> dropped off your resume at '+data['company']['name']+'!'+
+          '</div>');
+        },
+        500: function(data, textStatus, jsXHR){
+          console.log(data);
+          console.log(textStatus);
+          console.log(jsXHR);
+          // give confirmation message about successful resume submission
+          $("#messages").append('<div class="alert alert-danger alert-dismissable">'+
+            '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'+
+            'Oops! You need to be logged in or have your resume uploaded to drop your resume with the employers!'+
+          '</div>');
+        },
+        404: function(data, textStatus, jsXHR){
+          console.log(data);
+          console.log(textStatus);
+          console.log(jsXHR);
+          // give confirmation message about successful resume submission
+          $("#messages").append('<div class="alert alert-danger alert-dismissable">'+
+            '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'+
+            'Oops! You need to be logged in or have your resume uploaded to drop your resume with the employers!'+
+          '</div>');
         }
-      });
-    
+      }
+    });
+  }
+
+  function addOffer(company_from_text_val, salary_range_val, offer_deadline_val) {
     // if the student has offers
-    var company_from_text_val = $("#companyFromText").val();
-    var salary_range_val = $("#currentOfferSalaryRange").val();
-    var offer_deadline_val = $("#currentOfferDeadline").val();
     if(company_from_text_val && salary_range_val && offer_deadline_val){
       $.ajax({
         url: '/api/v1/offers/',
@@ -364,7 +250,6 @@ h3 {
         }
       });
     }
-
   }
 
   function getApplications(){
@@ -392,18 +277,17 @@ h3 {
     });
   }
 
-  $(window).bind('scroll resize', function() {
-      $('#filter_bar').css('top', $(this).scrollTop());
-  });
-
 </script>
-
 {% endblock %}
 
 {% block content %}
 <input type="hidden" name="fair_id" value="{{event.fair.id}}" id="fair_id">
 <input type="hidden" name="company_id" value="0" id="company_id">
-<input type="hidden" name="resume_enabled" value="{{resume_url}}" id="resume_enabled">
+{% if not request.user.is_anonymous %}
+<input type="hidden" name="logged_in" value="{{user.id}}" id="logged_in">
+{% else %}
+<input type="hidden" name="logged_in" value="False" id="logged_in">
+{% endif %}
 
   <!-- Main content - 357 -->
   <div id="messages">
@@ -434,284 +318,210 @@ h3 {
       <p style="top:-60px; color:rgb(40, 126, 144); display:block; position:relative;">COUNTDOWN</p>
     </div>
   </div>
+
   <div class="row">
     <div class="col-lg-1"></div>
-    
+    {% for company in event.companies.all %}
     <div class="col-lg-2 text-center squeeze-margin">
-      <h3 class="text-center">DocSend</h3>
+      <h3 class="text-center">{{company.name}}</h3>
       <div class="company-block">
-          <div class="company-logo">
-            <img src="http://docsend-marketing.s3.amazonaws.com/occuhunt/DocSend_logo.png">
-          </div>
-          <h4>LOCATION</h4>
+          <img class="company-logo" src="{{company.logo}}">
+          <h4>DESCRIPTION</h4>
           <p class="company-description">
-            DocSend is changing the way people communicate with documents by enabling you to know what happens after you send them to people. We’re based in San Francisco and co-founded by three CS grads from your favorite rival school across the bay. ... <a href="/company/567/" style="color:#0d5d95;">More</a>
+            {{company.company_description |truncatechars:200}}
           </p>
+          <a href='/company/{{company.id}}/' class="btn btn-md btn-link">More >></a>
           <hr>
           <h4>LOOKING FOR</h4>
           <p class="company-positions">
-            
-            - Software Engineer<br>
-            
-            - Product Manager<br>
-            
-            - Financial Analyst<br>
-            
-            - Sales Intern<br>
-            
-            <br>
+            {% for job in company.job_set.all %}
+            - {{job.name}}<br />
+            {% endfor %}
+            <br />
           </p>
-          <button class="btn btn-md btn-danger resume_drop_btn" value="567" name="DocSend">DROP RESUME</button>
+          <button class='btn btn-md btn-danger resume_drop_btn' value='{{company.id}}' name='{{company.name}}'>DROP RESUME</button>
         </div>
     </div>
-    
-    <div class="col-lg-2 text-center squeeze-margin">
-      <h3 class="text-center">MobileWorks</h3>
-      <div class="company-block">
-          <div class="company-logo">
-            <img class="company-logo" src="http://s3.amazonaws.com/crunchbase_prod_assets/assets/images/resized/0014/9253/149253v4-max-250x250.png">
-          </div>
-          <h4>LOCATION</h4>
-          <p class="company-description">
-            MobileWorks is a crowdsourcing platform for businesses and developers that is more accurate, faster and easier to use than existing solutions. Located in Berkeley, CA. ... <a href="/company/567/" style="color:#0d5d95;">More</a>
-          </p>
-          <hr>
-          <h4>LOOKING FOR</h4>
-          <p class="company-positions">
-            
-            - Software Engineer<br>
-
-            - Internal Sales Intern <br>
-            
-            <br>
-          </p>
-          <button class="btn btn-md btn-danger resume_drop_btn" value="482" name="MobileWorks">DROP RESUME</button>
-        </div>
-    </div>
-    
-    <div class="col-lg-2 text-center squeeze-margin">
-      <h3 class="text-center">Lumosity</h3>
-      <div class="company-block">
-          <div class="company-logo">
-            <img src="http://s3.amazonaws.com/crunchbase_prod_assets/assets/images/resized/0001/7322/17322v7-max-450x450.png">
-          </div>
-          <h4>LOCATION</h4>
-          <p class="company-description">
-            Lumosity's mission is to pioneer the understanding and enhancement of the human brain, giving each person the power to unlock their full potential. Located in San Francisco, CA ... <a href="/company/567/" style="color:#0d5d95;">More</a>
-          </p>
-          
-          <hr>
-          <h4>LOOKING FOR</h4>
-          <p class="company-positions">
-            - Software Engineer<br>
-            
-            - Product Manager<br>
-            
-            - Financial Analyst<br>
-            <br>
-          </p>
-          <button class="btn btn-md btn-danger resume_drop_btn" value="317" name="Lumosity">DROP RESUME</button>
-        </div>
-    </div>
-    
-    <div class="col-lg-2 text-center squeeze-margin">
-      <h3 class="text-center">Yahoo!</h3>
-      <div class="company-block">
-          <div class="company-logo">
-            <img class="company-logo" src="http://s3.amazonaws.com/crunchbase_prod_assets/assets/images/resized/0001/0836/10836v12-max-450x450.png">
-          </div>
-          <h4>LOCATION</h4>
-          <p class="company-description">
-            Yahoo is a major internet brand with search, content verticals, and other web services. Yahoo is located in Sunnyvale, CA. .. <a href="/company/567/" style="color:#0d5d95;">More</a>
-          </p>
-          
-          <hr>
-          <h4>LOOKING FOR</h4>
-          <p class="company-positions">
-                        
-            - Software Engineer<br>
-            
-            - Product Manager<br>
-            
-            - Financial Analyst<br>
-            
-            - Sales Intern<br>
-            <br>
-          </p>
-          <button class="btn btn-md btn-danger resume_drop_btn" value="226" name="Yahoo!">DROP RESUME</button>
-        </div>
-    </div>
-    
-    <div class="col-lg-2 text-center squeeze-margin">
-      <h3 class="text-center">TEKSystems</h3>
-      <div class="company-block">
-          <div class="company-logo">
-            <img class="company-logo" src="http://www.teksystems.com/~/media/Images/Branding/TEKsystems-logo.ashx">
-          </div>
-          <h4>LOCATION</h4>
-          <p class="company-description">
-            TEKSYSTEMS is a subsidiary of Allegis Group, the largest private talent management firm in the world. We are located in San Jose, CA. ... <a href="/company/567/" style="color:#0d5d95;">More</a>
-          </p>
-          
-          <hr>
-          <h4>LOOKING FOR</h4>
-          <p class="company-positions">
-            - Software Engineer<br>
-            
-            - Product Manager<br>
-            
-            - Financial Analyst<br>
-            
-            - Sales Intern<br>
-
-            - Open to any background<br>
-            <br>
-          </p>
-          <button class="btn btn-md btn-danger resume_drop_btn" value="725" name="TEKSystems" disabled="disabled">Applied</button>
-        </div>
-    </div>
-    
+    {% endfor %}
   </div>
 
-<div class="modal fade" id="resumeDropModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <br>
+  <br>
+
+<div class="modal fade" id="resumeDropModal" tabindex="-1" role="dialog" aria-labelledby="resumeDropModal" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         <h4 class="modal-title" id="myModalLabel"></h4>
 
-        <h4 class="modal-title" id="category_header">Resme Drop to <span class="companyTitle"></span></h4>
-        <h5 id="category_subheader">This is your final step. Be sure to check it before submitting!</h5>
+        <h4 class="modal-title" id="category_header">Resume Drop to <span class="companyTitle"></span></h4>
+
       </div>
       <div class="modal-body">
         {% if not request.user.is_anonymous %}
-        <label>Tell us about your current offer! (optional)</label>
+        <!-- Modal error messages -->
         <div class="row">
-          <div class="col-lg-5">
-            <input class="form-control" type="text" placeholder="Company" id="companyFromText">
-          </div>
-          <div class="col-lg-4">
-            <select class="form-control" id="currentOfferSalaryRange">
-              <option value="1">20k-30k</option>
-              <option value="2">30k-40k</option>
-              <option value="3">40k-50k</option>
-              <option value="4">50k-60k</option>
-              <option value="5">60k-70k</option>
-              <option value="6">70k-80k</option>
-              <option value="7">80k-100k</option>
-              <option value="8">100k-120k</option>
-              <option value="9">120k-140k</option>
-              <option value="10">140k-160k</option>
-              <option value="11">160k-180k</option>
-              <option value="12">180k-200k</option>
-              <option value="13">200k-250k</option>
-              <option value="14">250k+</option>
-              <option value="15">I do not wish to disclose</option>
-            </select>
-          </div>
-          <div class="col-lg-3">
-            <select class="form-control" id="currentOfferDeadline">
-              <option value="1">In 3 days</option>
-              <option value="2">In 7 days</option>
-              <option value="3">In 14 days</option>
-              <option value="4">In 28 days</option>
-              <option value="5">I have time </option>
-            </select>
+          <div class="col-lg-12">
+            <div id="modalMessages"></div>
           </div>
         </div>
-        <span class="help-block">This will not be shared with employers or anyone. It's strictly private and not read by anyone.</span>
+        <!-- Pick your title -->
         <div class="row">
           <div class="col-lg-12">
             <h4>Which positions are you interested in with <span class="companyTitle"></span>?</h4>
             <div class="row">
-              <div class="col-lg-12">
-                <select multiple size="8" class="form-control" id="companyPosition" style="width:100%">
-                  <option>Software Engineering</option>
-                  <option>Product Manager</option>
-                  <option>UI/UX Engineering</option>
-                  <option>Marketing</option>
-                  <option>Business Development</option>
-                  <option>Growth Hacker</option>
-                  <option>Accountant</option>
-                  <option>Other</option>
-                </select>
-              </div>
+              <div class="col-lg-4"><input type="checkbox" name="companyPosition" value="Software Engineering">&nbsp;Software Engineering</div>
+              <div class="col-lg-4"><input type="checkbox" name="companyPosition" value="Product Manager">&nbsp;Product Manager</div>
+              <div class="col-lg-4"><input type="checkbox" name="companyPosition" value="UI/UX Engineering">&nbsp;UI/UX Engineering</div>
+              <div class="col-lg-4"><input type="checkbox" name="companyPosition" value="Marketing">&nbsp;Marketing</div>
+              <div class="col-lg-4"><input type="checkbox" name="companyPosition" value="Business Development">&nbsp;Business Development</div>
+              <div class="col-lg-4"><input type="checkbox" name="companyPosition" value="Growth Hacker">&nbsp;Growth Hacker</div>
+              <div class="col-lg-4"><input type="checkbox" name="companyPosition" value="Accountant">&nbsp;Accountant</div>
+              <div class="col-lg-4"><input type="checkbox" name="companyPosition" value="Other">&nbsp;Other</div>
             </div>
           </div>
         </div>
-        <br />
+        <!-- Pick your documents -->
         <div class="row">
-          <div class="col-lg-5">
-            <label>Major</label>
-            <select multiple size="8" class="form-control" id="studentMajor" style="width:100%">
-              {% for major in majors %}
-                {% if major in request.user.student.major.all %}
-                  <option value="{{major.id}}" selected>{{major.major}}</option>
-                {% else %}
-                  <option value="{{major.id}}">{{major.major}}</option>
-                {% endif %}
+          <div class="col-lg-4">
+            <h4>Resumes</h4>
+            <ul class="documents" id="resumes">
+              {% for resume in resumes %}
+              <li class="document">
+                <div class="document_image_bg" style="background: url({{resume.image_url}}); background-size: 68px 108px; height:108px; width: 68px; display:block;">
+                  <div class="document_preview_div">
+                    <button class="btn btn-done btn-sm document_preview_btn" data-toggle="popover" data-placement="bottom" data-html="true" data-content="<img src='{{resume.image_url}}' >">View</button>
+                  </div>
+                  <div class="document_select_div">
+                    <input class="document_select_radio" type="radio" name='resumeSelect' value='{{resume.id}}' id="documentSelect_{{resume.id}}"/>
+                    <label class="btn btn-danger btn-sm document_select_label" for="documentSelect_{{resume.id}}">Select</label>
+                  </div>
+                </div>
+              </li>
               {% endfor %}
-            </select>
+            </ul>
           </div>
           <div class="col-lg-4">
-            <label>Degree Type</label>
-            <select class="form-control" id="studentDegree">
-              <option value=""></option>
-              {% for degree_type in degree_types %}
-                {% if request.user.student.degree.id == degree_type.id %}
-                  <option value="{{degree_type.id}}" selected>{{degree_type.degree}}</option>
-                {% else %}
-                  <option value="{{degree_type.id}}">{{degree_type.degree}}</option>
-                {% endif %}
+            <h4>Cover Letters</h4>
+            <ul class="documents" id="cvs">
+              {% for cv in cvs %}
+              <li class="document">
+                <div class="document_image_bg" style="background: url({{cv.image_url}}); background-size: 68px 108px; height:108px; width: 68px; display:block;">
+                  <div class="document_preview_div">
+                    <button class="btn btn-done btn-sm document_preview_btn" data-toggle="popover" data-placement="bottom" data-html="true" data-content="<img src='{{cv.image_url}}' >">View</button>
+                  </div>
+                  <div class="document_select_div">
+                    <input class="document_select_radio" type="radio" name='cvSelect' value='{{cv.id}}' id="documentSelect_{{cv.id}}"/>
+                    <label class="btn btn-danger btn-sm document_select_label" for="documentSelect_{{cv.id}}">Select</label>
+                  </div>
+                </div>
+              </li>
               {% endfor %}
-            </select>
+            </ul>
           </div>
-          <div class="col-lg-3">
-            <label>Graduation Year</label>
-            {% if request.user.student.graduation_year %}
-              <input type="text" class="input-text" placeholder="Graduation Year" id="studentGradYear" value="{{request.user.student.graduation_year}}">
-            {% else %}
-              <input type="text" class="input-text" placeholder="2015" id="studentGradYear" value="">
-            {% endif %}
-          </div>
-        </div>
-        <br />
-        {% endif %}
-        <div class="row">
-          <div class="col-lg-12">
-            <h4>Resume</h4>
-            {% if request.user.is_anonymous %}
-              <div class="thumbnail">
-                <img src="{% static 'images/example-resume.png' %}">
-                <div class="caption text-center">
-                  <p><a href="/login/linkedin/?next={{request.path}}" class="btn btn-login" style="font-weight:500;">LOG IN</a></p>
-                  <p>Login to activate Resume Drop</p>
-                </div>
-              </div>
-            {% else %}
-              {% if resume_url %}
-                <div class="thumbnail">
-                  <img src="{{resume_url}}" alt="Resume">
-                  <div class="caption text-center">
-                    <p><a href="/showcase/" class="btn btn-done" role="button">Edit Profile</a></p>
+          <div class="col-lg-4">
+            <h4>Additional Docs</h4>
+            <ul class="documents" id="portfolio">
+              {% for portfolio in portfolios %}
+              <li class="document">
+                <div class="document_image_bg" style="background: url({{portfolio.image_url}}); background-size: 68px 108px; height:108px; width: 68px; display:block;">
+                  <div class="document_preview_div">
+                    <button class="btn btn-done btn-sm document_preview_btn" data-toggle="popover" data-placement="bottom" data-html="true" data-content="<img src='{{portfolio.image_url}}' >">View</button>
+                  </div>
+                  <div class="document_select_div">
+                    <input class="document_select_radio" type="checkbox" name='documentSelect' value='{{portfolio.id}}' id="documentSelect_{{portfolio.id}}"/>
+                    <label class="btn btn-danger btn-sm document_select_label" for="documentSelect_{{portfolio.id}}">Select</label>
                   </div>
                 </div>
+              </li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+
+        <h4 id="toggleAdditionalInfo"><span class="glyphicon glyphicon-chevron-right additionalInfoDiv"></span><span class="glyphicon glyphicon-chevron-down additionalInfoDiv" style="display:none;"></span></span>Additional Info</h4>
+        <div class="additionalInfoDiv" style="display:none;">
+          <!-- Current Offer -->
+          <label>Tell us about your current offer! (optional)</label>
+          <div class="row">
+            <div class="col-lg-5">
+              <input class="form-control" type="text" placeholder="Company" id="companyFromText">
+            </div>
+            <div class="col-lg-4">
+              <select class="form-control" id="currentOfferSalaryRange">
+                <option value="1">20k-30k</option>
+                <option value="2">30k-40k</option>
+                <option value="3">40k-50k</option>
+                <option value="4">50k-60k</option>
+                <option value="5">60k-70k</option>
+                <option value="6">70k-80k</option>
+                <option value="7">80k-100k</option>
+                <option value="8">100k-120k</option>
+                <option value="9">120k-140k</option>
+                <option value="10">140k-160k</option>
+                <option value="11">160k-180k</option>
+                <option value="12">180k-200k</option>
+                <option value="13">200k-250k</option>
+                <option value="14">250k+</option>
+                <option value="15">I do not wish to disclose</option>
+              </select>
+            </div>
+            <div class="col-lg-3">
+              <select class="form-control" id="currentOfferDeadline">
+                <option value="1">In 3 days</option>
+                <option value="2">In 7 days</option>
+                <option value="3">In 14 days</option>
+                <option value="4">In 28 days</option>
+                <option value="5">I have time </option>
+              </select>
+            </div>
+          </div>
+          <span class="help-block">This will not be shared with employers or anyone. It's strictly private and not read by anyone.</span>
+
+          <!-- Additional Info - Major, Degree, Grad Date -->
+          <div class="row">
+            <div class="col-lg-5">
+              <label>Major</label>
+              <select multiple size="8" class="form-control" id="studentMajor" style="width:100%">
+                {% for major in majors %}
+                  {% if major in request.user.student.major.all %}
+                    <option value="{{major.id}}" selected>{{major.major}}</option>
+                  {% else %}
+                    <option value="{{major.id}}">{{major.major}}</option>
+                  {% endif %}
+                {% endfor %}
+              </select>
+            </div>
+            <div class="col-lg-4">
+              <label>Degree Type</label>
+              <select class="form-control" id="studentDegree">
+                <option value=""></option>
+                {% for degree_type in degree_types %}
+                  {% if request.user.student.degree.id == degree_type.id %}
+                    <option value="{{degree_type.id}}" selected>{{degree_type.degree}}</option>
+                  {% else %}
+                    <option value="{{degree_type.id}}">{{degree_type.degree}}</option>
+                  {% endif %}
+                {% endfor %}
+              </select>
+            </div>
+            <div class="col-lg-3">
+              <label>Graduation Year</label>
+              {% if request.user.student.graduation_year %}
+                <input type="text" class="input-text" placeholder="Graduation Year" id="studentGradYear" value="{{request.user.student.graduation_year}}">
               {% else %}
-                <div class="thumbnail">
-                  <img src="{% static 'images/example-resume.png' %}" alt="Resume">
-                  <div class="caption text-center">
-                    <p><a href="/showcase/" class="btn btn-done" role="button">Add Resume</a></p>
-                    <p>We don't have your resume on file. Upload it to be able to drop them off at the various recruiters</p>
-                  </div>
-                </div>
+                <input type="text" class="input-text" placeholder="2015" id="studentGradYear" value="">
               {% endif %}
-            {% endif %}
+            </div>
           </div>
         </div>
+
+        {% endif %}
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-done" id="submitResumeDrop">Resume Drop</button>
+        <button type="button" class="btn btn-done" id="submitResumeDrop">DROP RESUME</button>
       </div>
     </div>
   </div>

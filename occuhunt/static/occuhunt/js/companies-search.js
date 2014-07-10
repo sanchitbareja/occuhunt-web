@@ -12,17 +12,15 @@ function randomizeString(){
 }
 
 function considerCompanyWithId(companyId){
-  favorite_url = '/api/v2/application_status/';
+  favorite_url = '/api/v2/applications/';
   console.log(favorite_url);
   $.ajax({ 
     url: favorite_url, 
     type:'POST',
     dataType: 'json',
-    headers: {
-        "Authorization": 'OAuth 6f9dd960cb005f85b5ba81c158829fe11c3541d9'
-    },
     data: JSON.stringify({
         'company_id': companyId,
+        'added_by_user':true
     }),
     contentType: 'application/json',
     statusCode : {
@@ -51,99 +49,4 @@ function updateUIWithConfirmation(success){
       '<strong>Oops!</strong> Please try again. Something went wrong in the process :('+
     '</div>');
   }
-}
-
-function get_companies(count){
-  user_id = $("#user_id").val();
-  // loading state ui
-  $("#loading_state").html('<div id="loadingProgressG"><div id="loadingProgressG_1" class="loadingProgressG"></div></div>');
-
-  // make ajax call
-  $.ajax({
-    url: '/api/v1/companies/',
-    data: { limit: count },
-    success: function(data, textStatus, jqXHR) {
-        // console.log(data);
-        // console.log(textStatus);
-        // console.log(jqXHR);
-        $("#loading_state").empty();
-        document.getElementById('inputCompanySearch').onkeypress = function(e) {
-          var event = e || window.event;
-          var charCode = event.which || event.keyCode;
-
-          if ( charCode == '13' ) {
-            // Enter pressed
-            searchCompanies();
-          }
-        }
-        for(i in data['response']['companies']){
-          if(data['response']['companies'][i]['favorites'].indexOf(parseInt(user_id)) > -1){
-            $("#companies_list").append('<div class="col-lg-3 no-margin" id="company_info">'+
-                                          '<div class="thumbnail" id="company_thumbnail">'+
-                                            '<a id="company_thumbnail_logo" href="/company/'+data['response']['companies'][i]['id']+'/"><img id="company_thumbnail_logo" src="'+data['response']['companies'][i]['logo']+'"></a>'+
-                                          '</div>'+
-                                          '<div id="company_thumbnail_favorite">'+
-                                            '<a class="btn-link" onclick="unfavoriteCompanyWithId('+data['response']['companies'][i]['id']+',this,update_favorites);"><span class="glyphicon glyphicon-plus"></span></a>'+
-                                          '</div>'+
-                                        '</div>');
-          } else {
-            $("#companies_list").append('<div class="col-lg-3 no-margin" id="company_info">'+
-                                          '<div class="thumbnail" id="company_thumbnail">'+
-                                            '<a id="company_thumbnail_logo" href="/company/'+data['response']['companies'][i]['id']+'/"><img id="company_thumbnail_logo" src="'+data['response']['companies'][i]['logo']+'"></a>'+
-                                          '</div>'+
-                                          '<div id="company_thumbnail_favorite">'+
-                                            '<a class="btn-link" onclick="favoriteCompanyWithId('+data['response']['companies'][i]['id']+',this,update_favorites); "><span class="glyphicon glyphicon-plus"></span></a>'+
-                                          '</div>'+
-                                        '</div>');
-          }
-        }
-      },
-    dataType: 'json',
-  });
-}
-
-function searchCompanies(){
-  user_id = $("#user_id").val();
-  // get search term
-  search_query = $("#inputCompanySearch").val();
-  // load UI state
-  $("#loading_state").html('<div id="loadingProgressG"><div id="loadingProgressG_1" class="loadingProgressG"></div></div>');
-  // make query
-  $.ajax({
-    url: '/api/v1/companies/search/',
-    data: {
-      'q': search_query
-    }, 
-    success: function(data, textStatus, jqXHR) {
-        // console.log(data);
-        // console.log(textStatus);
-        // console.log(jqXHR);
-        console.log("searching done");
-        $("#companies_found").text(data['response']['companies'].length+" companies found");
-        $("#companies_list").empty();
-        $("#loading_state").empty();
-        for(i in data['response']['companies']){
-          if(data['response']['companies'][i]['favorites'].indexOf(parseInt(user_id)) > -1){
-            $("#companies_list").append('<div class="col-lg-3 no-margin" id="company_info">'+
-                                          '<div class="thumbnail" id="company_thumbnail">'+
-                                            '<a id="company_thumbnail_logo" href="/company/'+data['response']['companies'][i]['id']+'/"><img id="company_thumbnail_logo" src="'+data['response']['companies'][i]['logo']+'"></a>'+
-                                          '</div>'+
-                                          '<div id="company_thumbnail_favorite">'+
-                                            '<a class="btn-link" onclick="unfavoriteCompanyWithId('+data['response']['companies'][i]['id']+',this, update_favorites);"><span class="glyphicon glyphicon-minus"></span>Remove</a>'+
-                                          '</div>'+
-                                        '</div>');
-          } else {
-            $("#companies_list").append('<div class="col-lg-3 no-margin" id="company_info">'+
-                                          '<div class="thumbnail" id="company_thumbnail">'+
-                                            '<a id="company_thumbnail_logo" href="/company/'+data['response']['companies'][i]['id']+'/"><img id="company_thumbnail_logo" src="'+data['response']['companies'][i]['logo']+'"></a>'+
-                                          '</div>'+
-                                          '<div id="company_thumbnail_favorite">'+
-                                            '<a class="btn-link" onclick="favoriteCompanyWithId('+data['response']['companies'][i]['id']+',this, update_favorites);"><span class="glyphicon glyphicon-plus"></span>Add to favorites</a>'+
-                                          '</div>'+
-                                        '</div>');
-          }
-        }
-      },
-    dataType: 'json',
-  });
 }

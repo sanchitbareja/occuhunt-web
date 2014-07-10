@@ -10,7 +10,7 @@ import os, time, simplejson
 from datetime import datetime, timedelta, time
 from django.http import Http404
 from itertools import chain
-from users.models import User
+from users.models import User, Major, Degree
 
 # Create your views here.
 def get_user_network(request):
@@ -40,3 +40,30 @@ def verify_user_network(request, verification_token):
 		return render_to_response('registeration/verify_network.html', {'verified':True, 'user':user}, RequestContext(request))
 	else:
 		return render_to_response('registeration/verify_network.html', {'verified':False}, RequestContext(request))
+
+@login_required
+def preference_view(request):
+	"""
+	The main overview for a user to view all his documents (resumes, CVs, portfolio), links and analytics
+
+	1. Get all resumes, CVs and portfolio links
+	2. Get all links
+	3. Get analytics for last 1 month
+	4. 
+
+	Corner Cases:
+	1. No resumes/cvs/portfolio
+	2. No links
+	3. No analytics so far
+	4. Too many data points for analytics
+	5. Measure access times
+	6. 
+	"""
+	majors = Major.objects.all()
+	degree_types = Degree.objects.all()
+
+	data_to_send = {
+		'majors':majors,
+		'degree_types':degree_types,
+	}
+	return render_to_response('profile/preferences.html', data_to_send, RequestContext(request))

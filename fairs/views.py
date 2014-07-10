@@ -12,6 +12,7 @@ from django.db.models import Avg
 
 from users.models import Major, Degree
 from resumes.models import Resume
+from documents.models import Document, Visit, Link
 from fairs.models import Fair, ThreeFiveSeven, Infosession
 
 def create_fair(request):
@@ -107,6 +108,51 @@ def career_fair_handler(request, event_name, fair_id):
 				resume = None
 				return render_to_response(career_fair_render, {'resume_url':False}, RequestContext(request))
 	except:
+		raise Http404()
+
+def threefiveseven_handler(request, three_five_seven_id):
+	""" View to the 357 event """
+	# get 357 detail
+	try: 
+		event = ThreeFiveSeven.objects.get(id=int(three_five_seven_id))
+		time_now = datetime.now()
+		featured_documents = Document.objects.filter(delete=False)
+		resumes = Document.objects.filter(user=request.user, document_type=1, delete=False)
+		cvs = Document.objects.filter(user=request.user, document_type=2, delete=False)
+		portfolios = Document.objects.filter(user=request.user, document_type=3, delete=False)
+		links = Link.objects.filter(user=request.user, delete=False)
+
+		data_to_send = {
+			'resume_url':False,
+			'event':event,
+			'time_now':time_now,
+			'featured_documents': featured_documents,
+			'resumes': resumes,
+			'cvs': cvs,
+			'portfolios': portfolios,
+			'links': links
+		}
+		if request.user.is_anonymous():
+			# if it's anonymous user
+			return render_to_response('base/357v2.html', data_to_send, RequestContext(request))
+		else:
+			majors = Major.objects.all()
+			degree_types = Degree.objects.all()
+
+			data_to_send = {
+				'event':event,
+				'majors':majors,
+				'degree_types':degree_types,
+				'time_now':time_now,
+				'featured_documents': featured_documents,
+				'resumes': resumes,
+				'cvs': cvs,
+				'portfolios': portfolios,
+				'links': links
+			}
+			return render_to_response('base/357v2.html', data_to_send, RequestContext(request))
+	except Exception, e:
+		print e
 		raise Http404()
 
 def StartupCareerFairSpring2014View(request):

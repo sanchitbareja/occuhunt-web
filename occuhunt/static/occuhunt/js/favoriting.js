@@ -35,17 +35,14 @@ function updateApplicationStatus(favorite_id, status, note){
   console.log(favorite_id);
   console.log(status);
   console.log(note);
-  favorite_url = '/api/v2/application_status/'+favorite_id+'/';
+  favorite_url = '/api/v2/applications/'+favorite_id+'/';
   console.log(favorite_url);
   $.ajax({ 
     url: favorite_url, 
     type:'PUT',
     dataType: 'json',
-    headers: {
-        "Authorization": 'OAuth 6f9dd960cb005f85b5ba81c158829fe11c3541d9'
-    },
     data: JSON.stringify({
-        'note': note,
+        'student_note': note,
         'status': status
     }),
     contentType: 'application/json',
@@ -111,21 +108,19 @@ function initialize_favoriting() {
 
 // Get application statuses
 function get_application_statuses() {
+    console.log("get application statuses");
     $.ajax({
-        url: '/api/v2/application_status/',
+        url: '/api/v2/applications/',
         type: 'GET',
         dataType: 'json',
         contentType: 'application/json',
-        headers: {
-            "Authorization": 'OAuth 6f9dd960cb005f85b5ba81c158829fe11c3541d9'
-        },
         data: {},
         statusCode: {
             200: function(data, status, xhr){
                 console.log(1);
                 // add link to the list
                 console.log(data);
-                add_application_statuses(data['response']['application_status']);
+                add_application_statuses(data['response']['applications']);
                 refreshStats();
             },
             404: function(){
@@ -190,7 +185,7 @@ function add_application_statuses(application_statuses){
                     '</div>'+
                     '<div class="row">'+
                         '<div class="col-lg-10 col-lg-offset-2">'+
-                            '<p class="list-group-item-text">'+application_statuses[i]['note']+'</p>'+
+                            '<p class="list-group-item-text">'+application_statuses[i]['student_note']+'</p>'+
                         '</div>'+
                     '</div>'+
                 '</div>'+

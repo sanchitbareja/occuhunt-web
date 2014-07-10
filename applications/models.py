@@ -2,7 +2,6 @@ from django.db import models
 from users.models import User
 from fairs.models import Fair
 from companies.models import Company
-from hunts.models import Hunt
 from resumes.models import Resume
 from jobs.models import Job
 from documents.models import Document
@@ -39,17 +38,6 @@ POSITION_CATEGORIES = (
 	('Other','Other')
 	)
 
-class ApplicationTracking(models.Model):
-	"""
-	added_by_user: some applications are self added by user for them to keep track of their own applications
-	"""
-	user = models.ForeignKey(User)
-	company = models.ForeignKey(Company)
-	status = models.SmallIntegerField(choices=STATUS_CATEGORIES, default=1)
-	note = models.TextField(default='', blank=True)
-	added_by_user = models.BooleanField(default=False)
-	timestamp = models.DateTimeField(auto_now_add=True)
-
 class Application(models.Model):
 	"""
 	recruiter_email: email of the recruiter
@@ -57,18 +45,23 @@ class Application(models.Model):
 	
 	each application has multiple documents - related by ForeignKey
 	"""
-	application_status = models.ForeignKey(ApplicationTracking, blank=True, null=True)
 	user = models.ForeignKey(User)
 	company = models.ForeignKey(Company)
-	fair = models.ForeignKey(Fair)
+	fair = models.ForeignKey(Fair, null=True)
+	documents = models.ManyToManyField(Document, null=True)
 	status = models.SmallIntegerField(choices=STATUS_CATEGORIES, default=1)
 	position = models.CharField(max_length=512, default="Other")
 	timestamp = models.DateTimeField(auto_now_add=True)
 	response_timestamp = models.DateTimeField(blank=True, null=True)
 	job = models.ForeignKey(Job, blank=True, null=True)
+	student_note = models.TextField(default='', blank=True)
 	note = models.TextField(default='', blank=True)
 	recruiter_email = models.EmailField(max_length=200, blank=True, null=True)
 	recruiter_message = models.TextField(default='', blank=True)
+	added_by_user = models.BooleanField(default=False)
+
+	def get_documents(self):
+		return self.documents.all()
 
 	def get_resume(self):
 		resume = Resume.objects.filter(user=self.user, showcase=True, original=True).order_by('-timestamp')
@@ -78,25 +71,6 @@ class Application(models.Model):
 		else:
 			resume = None
 			return None
-
-class ApplicationDocument(models.Model):
-	application = models.ForeignKey(Application)
-	document = models.ForeignKey(Document)
-
-def auto_hunt(sender, instance, **kwargs):
-	"""
-	auto create a unique 'hunt' for the person
-	"""
-	# get user and fair
-	# check if user has already checked in for that fair
-	# 	if he has - do nothing
-	# 	else create a hunt entry for him
-	user = instance.user
-	fair = instance.fair
-	existing_hunt = Hunt.objects.filter(user=user, fair=fair)
-	if not len(existing_hunt) > 0:
-		new_hunt = Hunt(user=user, fair=fair)
-		new_hunt.save()
 
 def auto_update_response_time(sender, instance, **kwargs):
 	"""

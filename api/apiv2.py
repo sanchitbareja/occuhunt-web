@@ -8,7 +8,7 @@ from tastypie.resources import ModelResource
 from tastypie import fields
 from tastypie.exceptions import ImmediateHttpResponse
 from tastypie.http import HttpForbidden
-from authentication import OAuth20Authentication
+from authentication import OAuth20Authentication, SessionAuthentication, RecruiterAuthentication
 
 # imports for haystack
 from django.conf.urls.defaults import *
@@ -22,14 +22,13 @@ from django.db.models import Q
 from companies.models import Company
 from favorites.models import Favorite
 from fairs.models import Fair, Room, Map, Table, Fitting
-from users.models import User, Student, Recruiter
-from resumes.models import Resume, Comment
+from users.models import User, Major, Degree, Student, Recruiter
 from recommendations.models import Recommendation, Request
-from hunts.models import Hunt
-from applications.models import ApplicationTracking, Application, ApplicationDocument
+from applications.models import Application
 from jobs.models import Job
 from notifications.models import Notification
 from documents.models import Document, Link, Visit
+from django.contrib.sessions.models import Session
 import datetime, json, random, string
 
 class CompanyResource(ModelResource):
@@ -38,7 +37,7 @@ class CompanyResource(ModelResource):
         resource_name = 'companies'
         limit = 20
         authorization = DjangoAuthorization()
-        authentication = OAuth20Authentication()
+        authentication = SessionAuthentication()
 
         allowed_methods = ['get','put']
         filtering = {
@@ -99,9 +98,9 @@ class UserResource(ModelResource):
         queryset = User.objects.all()
         resource_name = 'users'
         authorization = DjangoAuthorization()
-        authentication = OAuth20Authentication()
+        authentication = SessionAuthentication()
 
-        allowed_methods = ['get']
+        allowed_methods = ['get', 'put']
         filtering = {
             "first_name": ("exact"), "linkedin_uid": ("exact"),
         }
@@ -111,16 +110,6 @@ class UserResource(ModelResource):
         """
         Return a list of users formatted according to what the developer expects
         """
-        # get resume - only recruiter should be able to see resume
-        if bundle.request.user.is_recruiter:
-            resume = Resume.objects.filter(user__id=bundle.data['id'], showcase=True, original=False).order_by('-timestamp')
-            if len(resume) > 0:
-                resume = resume[0]
-                bundle.data['resume'] = resume.url
-            else:
-                resume = None
-                bundle.data['resume'] = None
-
         # get groups
         bundle.data['groups'] = [{'name':group.name, 'id':group.id} for group in bundle.obj.groups.all()]
 
@@ -150,6 +139,73 @@ class UserResource(ModelResource):
 
         return bundle
 
+    def obj_update(self, bundle, **kwargs):
+        """
+        Update user profile
+
+        1. Expecting 
+
+        """
+        try:
+            # only the user himself can update his profile - no one else
+            if int(kwargs['pk']) == int(bundle.request.user.id):
+                # update user preferences for Graduation Date, Major, Degree
+                # update school email
+                user = bundle.request.user
+                # update regular email
+                user = bundle.request.user
+                try:
+                    regular_email = bundle.data['regular_email']
+                    if regular_email:
+                        user.email = regular_email
+                        user.save()
+                except Exception, e:
+                    print e
+                    # raise e
+                try:
+                    school_email = bundle.data['school_email']
+                    if school_email:
+                        user.student.verified_email = school_email
+                        user.student.save()
+                except Exception, e:
+                    print e
+                    # raise e
+                # update grad_year
+                user = bundle.request.user
+                try:
+                    grad_year = bundle.data['grad_year']
+                    if grad_year:
+                        user.student.graduation_year = grad_year
+                        user.student.save()
+                except Exception, e:
+                    print e
+                    # raise e
+                # update majors
+                try:
+                    majors = bundle.data['majors']
+                    if majors:
+                        for major in majors:
+                            major_obj = Major.objects.get(id=int(major))
+                            user.student.major.add(major_obj)
+                        user.student.save()
+                except Exception, e:
+                    print e
+                    # raise e
+                # update degree
+                try:
+                    degree = Degree.objects.get(id=bundle.data['degree_type'])
+                    if degree:
+                        user.student.degree = degree
+                        user.student.save()
+                except Exception, e:
+                    print e
+                    # raise e
+
+        except Exception, e:
+            print e
+            raise e
+        return bundle
+
     def alter_list_data_to_serialize(self, request, data):
         # rename "objects" to "response"
         data['response'] = {"users":data['objects']}
@@ -167,7 +223,7 @@ class FairResource(ModelResource):
         queryset = Fair.objects.all()
         resource_name = 'fairs'
         authorization = DjangoAuthorization()
-        authentication = OAuth20Authentication()
+        authentication = SessionAuthentication()
 
         allowed_methods = ['get']
 
@@ -227,7 +283,7 @@ class JobResource(ModelResource):
         queryset = Job.objects.all()
         resource_name = 'jobs'
         authorization = DjangoAuthorization()
-        authentication = OAuth20Authentication()
+        authentication = SessionAuthentication()
         limit = 20
         always_return_data = True
         allowed_methods = ['get','post', 'put']
@@ -298,7 +354,7 @@ class NotificationResource(ModelResource):
         queryset = Notification.objects.all()
         resource_name = 'notifications'
         authorization = DjangoAuthorization()
-        authentication = OAuth20Authentication()
+        authentication = SessionAuthentication()
         limit = 20
         always_return_data = True
         allowed_methods = ['get','post', 'put']
@@ -341,264 +397,13 @@ class NotificationResource(ModelResource):
     def determine_format(self, request):
         return 'application/json'
 
-class ApplicationTrackingResource(ModelResource):
-    user = fields.OneToOneField(UserResource, 'user', full=True)
-    company = fields.OneToOneField(CompanyResource, 'company', full=True)
-    class Meta:
-        queryset = ApplicationTracking.objects.all()
-        resource_name = 'application_status'
-        authorization = DjangoAuthorization()
-        authentication = OAuth20Authentication()
-        limit = 20
-        always_return_data = True
-        allowed_methods = ['get','post','put']
-        filtering = {
-            "user": ("exact"), "company": ("exact"), "status":ALL
-        }
-
-    def build_filters(self, filters=None):
-        if filters is None:
-            filters = {}
-
-        orm_filters = super(ApplicationTrackingResource, self).build_filters(filters)
-
-        # build filters on user, company, fair and status
-        sqs = ApplicationTracking.objects.all()
-        try:
-            if "user_id" in filters:
-                user_id = filters['user_id']
-                user = User.objects.get(id=user_id)
-                sqs = sqs.filter(user=user)
-            if "company_id" in filters:
-                company_id = filters['company_id']
-                company = Company.objects.get(id=company_id)
-                sqs = sqs.filter(company=company)
-            if "fair_id" in filters:
-                fair_id = filters['fair_id']
-                fair = Fair.objects.get(id=fair_id)
-                sqs = sqs.filter(fair=fair)
-            if "unique_students" in filters:
-                if filters['unique_students']:
-                    sqs = sqs.distinct('user')
-        except:
-            sqs = []
-
-        if "pk__in" not in orm_filters.keys():
-            orm_filters["pk__in"] = []
-            orm_filters["pk__in"] = orm_filters["pk__in"] + [i.pk for i in sqs]
-
-        return orm_filters
-
-    def dehydrate(self, bundle):
-        """
-        Return a list of applications-statuses
-        """
-
-        return bundle
-
-    def obj_create(self, bundle, **kwargs):
-        """
-        Creates a new application status
-        """
-        try:
-            user = bundle.request.user
-            company = Company.objects.get(id=bundle.data['company_id'])
-            # check if an application already exists
-            old_application_status = ApplicationTracking.objects.filter(user=user, company=company)
-            if len(old_application_status) > 0:
-                bundle.obj = old_application_status[0]
-            else:
-                new_application = ApplicationTracking(user=user, company=company, status=6, added_by_user=True)
-                new_application.save()
-                bundle.obj = new_application
-        except Exception, e:
-            print e
-            raise e
-        return bundle
-
-    def obj_update(self, bundle, **kwargs):
-        """
-        Update application status and notes
-        """
-        try:
-            existing_application = ApplicationTracking.objects.get(id=int(kwargs['pk']))
-            if 'note' in bundle.data.keys():
-                existing_application.note = bundle.data['note']
-                existing_application.save()
-            if 'status' in bundle.data.keys():
-                existing_application.status = bundle.data['status']
-                existing_application.save()
-            bundle.obj = existing_application
-        except Exception, e:
-            print e
-            raise e
-        return bundle
-
-    def alter_list_data_to_serialize(self, request, data):
-        # rename "objects" to "applications"
-        data['response'] = {"application_status":data["objects"]}
-        del(data["objects"])
-        return data
-
-    def determine_format(self, request):
-        return 'application/json'
-
-class ApplicationResource(ModelResource):
-    user = fields.OneToOneField(UserResource, 'user', full=True)
-    company = fields.OneToOneField(CompanyResource, 'company', full=True)
-    job = fields.OneToOneField(JobResource, 'job', full=True, null=True)
-    class Meta:
-        queryset = Application.objects.all()
-        resource_name = 'applications'
-        authorization = DjangoAuthorization()
-        authentication = OAuth20Authentication()
-        limit = 20
-        always_return_data = True
-        allowed_methods = ['get','post','put','patch']
-        filtering = {
-            "user": ("exact"), "company": ("exact"), "fair":("exact"), "status":ALL
-        }
-
-    def build_filters(self, filters=None):
-        if filters is None:
-            filters = {}
-
-        orm_filters = super(ApplicationResource, self).build_filters(filters)
-
-        # build filters on user, company, fair and status
-        sqs = Application.objects.all()
-        try:
-            if "user_id" in filters:
-                user_id = filters['user_id']
-                user = User.objects.get(id=user_id)
-                sqs = sqs.filter(user=user)
-            if "company_id" in filters:
-                company_id = filters['company_id']
-                company = Company.objects.get(id=company_id)
-                sqs = sqs.filter(company=company)
-            if "fair_id" in filters:
-                fair_id = filters['fair_id']
-                fair = Fair.objects.get(id=fair_id)
-                sqs = sqs.filter(fair=fair)
-            if "unique_students" in filters:
-                if filters['unique_students']:
-                    sqs = sqs.distinct('user')
-        except:
-            sqs = []
-
-        if "pk__in" not in orm_filters.keys():
-            orm_filters["pk__in"] = []
-            orm_filters["pk__in"] = orm_filters["pk__in"] + [i.pk for i in sqs]
-
-        return orm_filters
-
-    def dehydrate(self, bundle):
-        """
-        Return a list of applications
-        """
-        bundle.data['fair'] = bundle.obj.fair.id
-        if bundle.request.user.is_student:
-            del(bundle.data['status'])
-            del(bundle.data['note'])
-        return bundle
-
-    def obj_create(self, bundle, **kwargs):
-        """
-        Creates a new application
-        """
-        try:
-            user = User.objects.get(id=bundle.data['user_id'])
-            company = Company.objects.get(id=bundle.data['company_id'])
-            fair = Fair.objects.get(id=bundle.data['fair_id'])
-            if 'position' in bundle.data.keys():
-                position = bundle.data['position']
-            else:
-                position = 'Any'
-            if 'status' in bundle.data.keys():
-                status = bundle.data['status']
-            else:
-                status = 1
-            # auto-checkin the user
-            old_checkin = Hunt.objects.filter(user=user, fair=fair)
-            if not len(old_checkin) > 0:
-                new_checkin = Hunt(user=user, fair=fair)
-                new_checkin.save()
-            # check if an application already exists
-            old_application = Application.objects.filter(user=user, company=company, fair=fair)
-            if len(old_application) > 0:
-                bundle.obj = old_application[0]
-            else:
-                new_application = Application(user=user, company=company, fair=fair, status=status, position=position)
-                new_application.save()
-                bundle.obj = new_application
-            # notify user that application has been viewed by company
-            try:
-                new_notification = Notification(user=user, company=company, receiver=1, notification=1)
-                new_notification.save()
-            except Exception, e:
-                print e
-                raise e
-        except Exception, e:
-            print e
-            raise e
-        return bundle
-
-    def obj_update(self, bundle, **kwargs):
-        """
-        Update application status and notes
-        """
-        try:
-            existing_application = Application.objects.get(id=int(kwargs['pk']))
-            if 'note' in bundle.data.keys():
-                existing_application.note = bundle.data['note']
-                existing_application.save()
-                # send notification to student that his app has been viewed
-                try:
-                    new_notification = Notification(user=existing_application.user, company=existing_application.company, receiver=1, notification=1)
-                    new_notification.save()
-                except Exception, e:
-                    print e
-                    raise e
-            if 'status' in bundle.data.keys():
-                existing_application.status = bundle.data['status']
-                existing_application.save()
-                # send notification to student that his status has been updated
-                try:
-                    if bundle.data['status'] == 1 or bundle.data['status'] == 2:
-                        new_notification = Notification(user=existing_application.user, company=existing_application.company, receiver=1, notification=1)
-                        new_notification.save()
-                    if bundle.data['status'] == 3:
-                        new_notification = Notification(user=existing_application.user, company=existing_application.company, receiver=1, notification=3)
-                        new_notification.save()
-                    if bundle.data['status'] == 4:
-                        new_notification = Notification(user=existing_application.user, company=existing_application.company, receiver=1, notification=4)
-                        new_notification.save()
-                except Exception, e:
-                    print e
-                    raise e
-            bundle.obj = existing_application
-        except Exception, e:
-            print e
-            raise e
-        return bundle
-
-    def alter_list_data_to_serialize(self, request, data):
-        # rename "objects" to "applications"
-        data['response'] = {"applications":data["objects"]}
-        del(data["objects"])
-        return data
-
-    def determine_format(self, request):
-        return 'application/json'
-
-
 class DocumentResource(ModelResource):
     user = fields.OneToOneField(UserResource, 'user', full=True)
     class Meta:
         queryset = Document.objects.all().order_by('-timestamp')
         resource_name = 'documents'
         authorization = DjangoAuthorization()
-        authentication = OAuth20Authentication()
+        authentication = SessionAuthentication()
         limit = 20
         always_return_data = True
         allowed_methods = ['get','post','delete']
@@ -661,7 +466,7 @@ class LinkResource(ModelResource):
         queryset = Link.objects.all().order_by('-timestamp')
         resource_name = 'links'
         authorization = DjangoAuthorization()
-        authentication = OAuth20Authentication()
+        authentication = SessionAuthentication()
         limit = 20
         always_return_data = True
         allowed_methods = ['get','post','delete']
@@ -716,7 +521,7 @@ class VisitResource(ModelResource):
         queryset = Visit.objects.all().order_by('-timestamp')
         resource_name = 'visits'
         authorization = DjangoAuthorization()
-        authentication = OAuth20Authentication()
+        authentication = SessionAuthentication()
         limit = 20
         always_return_data = True
         allowed_methods = ['get','post']
@@ -780,3 +585,356 @@ def get_client_ip(request):
     else:
         ip = request.META.get('REMOTE_ADDR')
     return ip
+
+class ApplicationResource(ModelResource):
+    user = fields.OneToOneField(UserResource, 'user', full=True)
+    company = fields.OneToOneField(CompanyResource, 'company', full=True)
+    job = fields.OneToOneField(JobResource, 'job', full=True, null=True)
+    documents = fields.ToManyField(DocumentResource, 'documents', full=True)
+    class Meta:
+        queryset = Application.objects.all()
+        resource_name = 'applications'
+        authorization = DjangoAuthorization()
+        authentication = SessionAuthentication()
+        limit = 20
+        always_return_data = True
+        allowed_methods = ['get','post','put','patch']
+        filtering = {
+            "user": ("exact"), "company": ("exact"), "fair":("exact"), "status":ALL
+        }
+
+    def build_filters(self, filters=None):
+        if filters is None:
+            filters = {}
+
+        orm_filters = super(ApplicationResource, self).build_filters(filters)
+
+        # build filters on user, company, fair and status
+        sqs = Application.objects.all()
+        try:
+            if "user_id" in filters:
+                user_id = filters['user_id']
+                user = User.objects.get(id=user_id)
+                sqs = sqs.filter(user=user)
+            if "company_id" in filters:
+                company_id = filters['company_id']
+                company = Company.objects.get(id=company_id)
+                sqs = sqs.filter(company=company)
+            if "fair_id" in filters:
+                fair_id = filters['fair_id']
+                fair = Fair.objects.get(id=fair_id)
+                sqs = sqs.filter(fair=fair)
+            if "unique_students" in filters:
+                if filters['unique_students']:
+                    sqs = sqs.distinct('user')
+        except:
+            sqs = []
+
+        if "pk__in" not in orm_filters.keys():
+            orm_filters["pk__in"] = []
+            orm_filters["pk__in"] = orm_filters["pk__in"] + [i.pk for i in sqs]
+
+        return orm_filters
+
+    def dehydrate(self, bundle):
+        """
+        Return a list of applications
+        """
+        if bundle.request.user.is_student:
+            del(bundle.data['note'])
+        return bundle
+
+    def obj_create(self, bundle, **kwargs):
+        """
+        two scenarios:
+        1. User adds an application as a 'favorite' to keep track himself
+        2. User applies through Occhunt for a 357
+
+        Conflict resolution:
+        1. If user adds company as favorite initially and then applies through us -> convert application to be managed by us
+        2. If user applies to company through us and then tries to favorite it -> don't do anything to original app
+
+        # Scenario 1
+        Create a new application
+        1. Create a new application with only company and user
+        2. Mark added_by_user as True
+
+        This is what gets sent over in json
+        'company_id': company_id,
+        'added_by_user' True
+
+        # Scenario 2
+        Creates a new application
+        1. Create a new application
+        2. Add application documents to application
+        3. Notify user that application is in process
+
+        This is what gets sent over in json
+        'company_id': company_id,
+        'fair_id': fair_id,
+        'resume': selected_resume,
+        'cv': selected_cv,
+        'docs': selected_docs,
+        'position': position,
+        'status': 1,
+        'majors':majors,
+        'grad_year': grad_year,
+        'degree_type': degree_type
+        """
+        try:
+            # get all data from POST data
+            user = bundle.request.user
+            company = Company.objects.get(id=bundle.data['company_id'])
+            print company
+            if 'added_by_user' in bundle.data.keys() and bundle.data['added_by_user']:
+                # check if an application already exists
+                application = Application.objects.filter(user=user, company=company)
+                if len(application) > 0:
+                    application = application[0]
+                    bundle.obj = application
+                else:
+                    application = Application(user=user, company=company, status=6, added_by_user=True)
+                    application.save()
+                    bundle.obj = application
+            else:
+                fair = Fair.objects.get(id=bundle.data['fair_id'])
+                resume = Document.objects.get(id=bundle.data['resume'])
+                if bundle.data['cv']:
+                    cv = Document.objects.get(id=bundle.data['cv'])
+                else:
+                    cv = None
+                if bundle.data['docs']:
+                    docs = Document.objects.filters(id__in=bundle.data['docs'])
+                else:
+                    docs = None
+                grad_year = bundle.data['grad_year']
+                majors = bundle.data['majors']
+                degree = Degree.objects.get(id=bundle.data['degree_type'])
+
+                if 'position' in bundle.data.keys():
+                    position = bundle.data['position']
+                else:
+                    position = 'Any'
+                if 'status' in bundle.data.keys():
+                    status = bundle.data['status']
+                else:
+                    status = 1
+
+                # 2. Create a new appliation
+                # check if an application already exists - either they favorited it or they already applied before
+                application = Application.objects.filter(user=user, company=company, fair=fair)
+                if len(application) > 0:
+                    application = application[0]
+                    bundle.obj = application
+
+                    # remove applications where it is not tied to a fair
+                    Application.objects.filter(user=user, company=company, fair__isnull=True, added_by_user=True).delete()
+                else:
+                    application = Application(user=user, company=company, fair=fair, position=position, status=status)
+                    application.save()
+                    bundle.obj = application
+
+                    # remove applications where it is not tied to a fair
+                    Application.objects.filter(user=user, company=company, fair__isnull=True, added_by_user=True).delete()
+
+                # 3. Create documents for application
+                # resume
+                # cv
+                # additional docs
+                application.document.add(resume)
+                application.save()
+                if cv:
+                    application.document.add(cv)
+                    application.save()
+                if docs:
+                    for doc in docs:
+                        application.document.add(document=doc)
+                        application.save()
+
+                # update user preferences for Graduation Date, Major, Degree
+                try:
+                    if grad_year:
+                        user.student.graduation_year = grad_year
+                        user.student.save()
+                except Exception, e:
+                    print e
+                    # raise e
+                try:
+                    if majors:
+                        for major in majors:
+                            major_obj = Major.objects.get(id=int(major))
+                            user.student.major.add(major_obj)
+                        user.student.save()
+                except Exception, e:
+                    print e
+                    # raise e
+                try:
+                    if degree:
+                        user.student.degree = degree
+                        user.student.save()
+                except Exception, e:
+                    print e
+                    # raise e
+
+                # 4. notify user that application has been received
+                try:
+                    new_notification = Notification(user=user, company=company, receiver=1, notification=1)
+                    new_notification.save()
+                except Exception, e:
+                    print e
+                    raise e
+            return bundle
+        except Exception, e:
+            print e
+            raise e
+
+    def obj_update(self, bundle, **kwargs):
+        """
+        Update application status and notes
+        """
+        try:
+            existing_application = Application.objects.get(id=int(kwargs['pk']))
+            if 'note' in bundle.data.keys():
+                # only recruiters can make notes here
+                if bundle.request.user.is_recruiter:
+                    existing_application.note = bundle.data['note']
+                    existing_application.save()
+                    # send notification to student that his app has been viewed
+                    try:
+                        new_notification = Notification(user=existing_application.user, company=existing_application.company, receiver=1, notification=1)
+                        new_notification.save()
+                    except Exception, e:
+                        print e
+                        raise e
+            if 'student_note' in bundle.data.keys():
+                # when the student makes a note
+                existing_application.student_note = bundle.data['student_note']
+                existing_application.save()
+            if 'status' in bundle.data.keys():
+                existing_application.status = bundle.data['status']
+                if 'recruiter_email' in bundle.data.keys():
+                    # update recruiter_email - email address
+                    existing_application.recruiter_email = bundle.data['recruiter_email']
+                if 'recruiter_message' in bundle.data.keys():
+                    # update recruiter_message
+                    existing_application.recruiter_message = bundle.data['recruiter_message']
+
+                existing_application.save()
+                
+            bundle.obj = existing_application
+        except Exception, e:
+            print e
+            raise e
+        return bundle
+
+    def authorized_read_list(self, object_list, bundle):
+        if bundle.request.user.is_student:
+            return object_list.filter(user=bundle.request.user)
+        if bundle.request.user.is_recruiter:
+            return object_list.filter(company__id=bundle.request.user.recruiter.company.id)
+
+    def alter_list_data_to_serialize(self, request, data):
+        # rename "objects" to "applications"
+        data['response'] = {"applications":data["objects"]}
+        del(data["objects"])
+        return data
+
+    def determine_format(self, request):
+        return 'application/json'
+
+class ApplicationSearchResource(ModelResource):
+    user = fields.OneToOneField(UserResource, 'user', full=True)
+    company = fields.OneToOneField(CompanyResource, 'company', full=True)
+    job = fields.OneToOneField(JobResource, 'job', full=True, null=True)
+    documents = fields.ToManyField(DocumentResource, 'documents', full=True)
+    class Meta:
+        queryset = Application.objects.all()
+        resource_name = 'applicationsearch'
+        authorization = DjangoAuthorization()
+        authentication = RecruiterAuthentication()
+        limit = 0
+        always_return_data = True
+        allowed_methods = ['get']
+
+    def build_filters(self, filters=None):
+        if filters is None:
+            filters = {}
+
+        orm_filters = super(ApplicationSearchResource, self).build_filters(filters)
+
+        # 1. tokenize skills
+        # 2. create OR query for each token
+        # The queries are ORed within a category and AND between categories
+        q_objects = Q()
+        # if "skills" in filters:
+        #     tokens = filters['skills'].split(',')
+        #     skills_q = Q(documents__description__contains=str(tokens[0]))
+        #     for token in tokens:
+        #         skills_q |= Q(documents__description__contains=str(token))
+        #     q_objects &= skills_q
+        if "schools" in filters:
+            tokens = filters['schools'].split(',')
+            schools_q = Q(user__groups__id=tokens[0])
+            for token in tokens:
+                schools_q |= Q(user__groups__id=token)
+            q_objects &= schools_q
+        if "categories" in filters:
+            tokens = filters['categories'].split(',')
+            categories_q = Q(status=tokens[0])
+            for token in tokens:
+                categories_q |= Q(status=token)
+            q_objects &= categories_q
+        # if "offers" in filters:
+        #     tokens = filters['offers'].split(',')
+        #     for token in tokens:
+        #         sqs.filter()
+        if "positions" in filters:
+            tokens = filters['positions'].split(',')
+            positions_q = Q(position=str(tokens[0]))
+            for token in tokens:
+                positions_q |= Q(position=str(token))
+            q_objects &= positions_q
+        # if "majors" in filters:
+        #     tokens = filters['majors'].split(',')
+        #     for token in tokens:
+        #         sqs.filter(application__user__student__major)
+        if "degrees" in filters:
+            tokens = filters['degrees'].split(',')
+            degrees_q = Q(user__student__degree__id=token[0])
+            for token in tokens:
+                degrees_q |= Q(user__student__degree__id=token)
+            q_objects &= degrees_q
+        if "gradyears" in filters:
+            tokens = filters['gradyears'].split(',')
+            gradyears_q = Q(user__student__graduation_year=int(tokens[0]))
+            for token in tokens:
+                gradyears_q |= Q(user__student__graduation_year=int(token))
+            q_objects &= gradyears_q
+        if "notes" in filters:
+            tokens = filters['notes'].split(',')
+            if '1' in tokens and '0' not in tokens:
+                q_objects &= Q(note__gt='')
+            if '1' not in tokens and '0' in tokens:
+                q_objects &= Q(note__exact='')
+
+        print q_objects
+        # only show Application that are new (i.e. from the last 357s and those with offers that are not expired)
+        sqs = Application.objects.filter(q_objects)
+
+        if "pk__in" not in orm_filters.keys():
+            orm_filters["pk__in"] = []
+        orm_filters["pk__in"] = orm_filters["pk__in"] + [i.pk for i in sqs]
+
+        return orm_filters
+
+    def authorized_read_list(self, object_list, bundle):
+        return object_list.filter(company__id=bundle.request.user.recruiter.company.id)
+
+    def alter_list_data_to_serialize(self, request, data):
+        # rename "objects" to "applications"
+        data['response'] = {"applications":data["objects"]}
+        del(data["objects"])
+        return data
+
+    def determine_format(self, request):
+        return 'application/json'

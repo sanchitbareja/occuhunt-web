@@ -63,9 +63,12 @@ def recruiter_login_third_party(request):
     return HttpResponse(json_results, mimetype='application/json')
 
 def check_if_recruiter(user):
-    if user.recruiter.company:
-        return True
-    else:
+    try:
+        if user.recruiter.company:
+            return True
+        else:
+            return False
+    except:
         return False
 
 @login_required
@@ -156,22 +159,16 @@ def download_pdf(request):
         try:
             POST = request.POST
             application = Application.objects.get(id=POST['application_id'])
-            user = User.objects.get(id=application.user.id)
-            resume = Resume.objects.filter(user=user, showcase=True, original=True).order_by('-timestamp')
-            if len(resume) > 0:
-                resume = resume[0]
-                results['resume_pdf'] = resume.url
-                results['success'] = True
-                # notify user that application has been downloaded by company
-                try:
-                    new_notification = Notification(user=application.user, company=application.company, receiver=1, notification=2)
-                    new_notification.save()
-                except Exception, e:
-                    print e
-                    raise e
-            else:
-                # send student notification to upload pdf again.
-                results['success'] = False
+            documents = application.documents.all()
+            results['pdfs'] = [doc.url for doc in documents]
+            results['success'] = True
+            # notify user that application has been downloaded by company
+            try:
+                new_notification = Notification(user=application.user, company=application.company, receiver=1, notification=2)
+                new_notification.save()
+            except Exception, e:
+                print e
+                raise e
         except:
             pass
     json_results = simplejson.dumps(results)

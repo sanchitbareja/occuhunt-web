@@ -60,7 +60,7 @@ def documents_view(request):
 	5. Measure access times
 	6. 
 	"""
-	featured_documents = Document.objects.filter(delete=False)
+	featured_documents = Document.objects.filter(delete=False)[0:10]
 	resumes = Document.objects.filter(user=request.user, document_type=1, delete=False)
 	cvs = Document.objects.filter(user=request.user, document_type=2, delete=False)
 	portfolios = Document.objects.filter(user=request.user, document_type=3, delete=False)
@@ -95,9 +95,6 @@ def dashboard_view(request):
 		'lat_avg':lat_avg['location__lat__avg'],
 		'lng_avg':lng_avg['location__lng__avg']
 	}
-
-	print lat_avg
-	print lng_avg
 
 	return render_to_response('profile/dashboard.html', data_to_send, RequestContext(request))
 

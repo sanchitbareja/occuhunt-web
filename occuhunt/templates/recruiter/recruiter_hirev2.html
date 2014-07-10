@@ -8,30 +8,6 @@
 <link href="{% static 'occuhunt/css/recruiter_hire.css' %}" rel="stylesheet">
 <script src="{% static 'occuhunt/js/custom-form-elements.js' %}"></script>
 <script src="{% static 'underscore/underscore-min.js' %}"></script>
-<style type="text/css">
-  body {
-    background-color: white;
-    -webkit-font-smoothing: antialiased;
-    font-smoothing: antialiased;
-    font-smooth: always;
-  }
-  .list-group-item {
-    border-radius: 0px;
-  }
-
-  #application_email {
-    font-style: normal;
-  }
-
-  #application_status {
-    font-style: normal;
-  }
-
-  .popover {
-    max-width: 400px;
-  }
-
-</style>
 
 {% endblock %}
 
@@ -40,77 +16,264 @@
 <script type="text/javascript">
 
 var applicants = [];
+var current_selected_candidate = null;
+var search_skills = [];
+var search_schools = [];
+var search_categories = [];
+var search_offers = [];
+var search_positions = [];
+var search_majors = [];
+var search_degrees = [];
+var search_gradyears = [];
+var search_notes = [];
 
-function get_events() {
-  $.ajax({
-    url: '/api/v1/fairs/',
-    data: { },
-    success: function(data, textStatus, jqXHR) {
-        console.log(data);
-        console.log(textStatus);
-        console.log(jqXHR);
-        for (var i = 0; i < data['objects'].length; i++) {
-          $("#filter_event").append('<option value="'+data['objects'][i]['id']+'">'+data['objects'][i]['name']+'</option>');
-        };
-        get_candidates();
-      },
-    dataType: 'json',
-  });
+function add_skill(skill){
+  if(search_skills.indexOf(skill) < 0){
+    search_skills.push(skill);
+    push_pill(null, skill, 'skills');
+    get_candidates();
+  }
 }
 
-function set_fair_id(){
-  $("#fair_id_input").val($("#filter_event").val());
+function remove_skill(skill){
+  ind = search_skills.indexOf(skill);
+  if(ind > -1){
+    search_skills.splice(ind, 1);
+  }
+}
+
+function add_school(id, elem){
+  if(search_schools.indexOf(id) < 0){
+    search_schools.push(id);
+    push_pill(id, $(elem).text(), 'schools');
+    get_candidates();
+  }
+}
+
+function remove_school(id){
+  ind = search_schools.indexOf(id);
+  if(ind > -1){
+    search_schools.splice(ind, 1);
+  }
+}
+
+function add_category(id, elem){
+  if(search_categories.indexOf(id) < 0){
+    search_categories.push(id);
+    push_pill(id, $(elem).text(), 'categories');
+    get_candidates();
+  }
+} 
+
+function remove_category(id){
+  ind = search_categories.indexOf(id);
+  if(ind > -1){
+    search_categories.splice(ind, 1);
+  }
+}
+
+function add_offer(id, elem){
+  if(search_offers.indexOf(id) < 0){
+    search_offers.push(id);
+    push_pill(id, $(elem).text(), 'offers');
+    get_candidates();
+  }
+}
+
+function remove_offer(id){
+  ind = search_offers.indexOf(id);
+  if(ind > -1){
+    search_offers.splice(ind, 1);
+  }
+}
+
+function add_position(position, elem){
+  if(search_positions.indexOf(position) < 0){
+    search_positions.push(position);
+    push_pill(null, $(elem).text(), 'positions');
+    get_candidates();
+  }
+}
+
+function remove_position(position){
+  ind = search_positions.indexOf(position);
+  if(ind > -1){
+    search_positions.splice(ind, 1);
+  }
+}
+
+function add_major(id, elem){
+  if(search_majors.indexOf(id) < 0){
+    search_majors.push(id);
+    push_pill(id, $(elem).text(), 'majors');
+    get_candidates();
+  }
+}
+
+function remove_major(id){
+  ind = search_majors.indexOf(id);
+  if(ind > -1){
+    search_majors.splice(ind, 1);
+  }
+}
+
+function add_degree(id, elem){
+  if(search_degrees.indexOf(id) < 0){
+    search_degrees.push(id);
+    push_pill(id, $(elem).text(), 'degrees');
+    get_candidates();
+  }
+}
+
+function remove_degree(id){
+  ind = search_degrees.indexOf(id);
+  if(ind > -1){
+    search_degrees.splice(ind, 1);
+  }
+}
+
+function add_gradyear(year, elem){
+  if(search_gradyears.indexOf(year) < 0){
+    search_gradyears.push(year);
+    push_pill(year, year, 'gradyears');
+    get_candidates();
+  }
+}
+
+function remove_gradyear(year){
+  ind = search_gradyears.indexOf(year);
+  if(ind > -1){
+    search_gradyears.splice(ind, 1);
+  }
+}
+
+function add_note(val, elem){
+  if(search_notes.indexOf(val) < 0){
+    search_notes.push(val);
+    push_pill(val, $(elem).text(), 'notes');
+    get_candidates();
+  }
+}
+
+function remove_note(val){
+  ind = search_notes.indexOf(val);
+  if(ind > -1){
+    search_notes.splice(ind, 1);
+  }
+}
+
+function push_pill(id, name, category){
+  // 1. get category div
+  // 2. add pill with hidden inputs
+  var cat_div = $("#"+category+"_pill");
+  if(id !== null){
+    cat_div.append('<a class="pill-text" onclick=\'remove_pill('+id+',"'+name+'","'+category+'",this);\'>'+name+'<span class="glyphicon glyphicon-remove"></span>/</a>');
+  } else {
+    cat_div.append('<a class="pill-text" onclick=\'remove_pill(null,"'+name+'","'+category+'",this);\'>'+name+'<span class="glyphicon glyphicon-remove"></span>/</a>');
+  }
+}
+
+function remove_pill(id, name, category, elem){
+  // 1. get category div
+  // 2. remove pill and hidden inputs
+  if(category == 'skills'){
+    remove_skill(name);
+  }
+  if(category == 'schools'){
+    remove_school(id); 
+  }
+  if(category == 'categories'){
+    remove_category(id);
+  }
+  if(category == 'offers'){
+    remove_offer(id);
+  }
+  if(category == 'positions'){
+    remove_position(name);
+  }
+  if(category == 'majors'){
+    remove_major(id);
+  }
+  if(category == 'degrees'){
+    remove_degree(id)
+  }
+  if(category == 'gradyears'){
+    remove_gradyear(id);
+  }
+  if(category == 'notes'){
+    remove_note(id);
+  }
+
+  $(elem).remove();
+  get_candidates();
 }
 
 function get_candidates() {
   applicants = [];
   clear_candidates();
-  fair_id = $("#filter_event").val();
-  degree_id = $("#degree_type").val();
-  major_id = $("#major_type").val();
-  grad_year = $("#grad_year").val();
-  set_fair_id();
-  // <option value="1">Applicants that are awaiting response</option>
-  // <option value="2">Applicants I've talked to</option>
-  // <option value="3">Applicants I've rejected</option>
-  // <option value="4">Applicants to interview</option>
-  // <option value="5">All event attendees</option>
-  data_to_send = {};
-  url = '/api/v1/applications/'
-  if($("#filter_applicants").val() == "1"){
-    company_id = $("#recruiter_id").val();
-    url = '/api/v1/applications/?fair_id='+fair_id+'&company_id='+company_id+'&status__in=1&status__in=2';
-  } else if ($("#filter_applicants").val() == "2") {
-    company_id = $("#recruiter_id").val();
-    url = '/api/v1/applications/?fair_id='+fair_id+'&company_id='+company_id+'&status__in=2';
-  } else if ($("#filter_applicants").val() == "3") {
-    company_id = $("#recruiter_id").val();
-    url = '/api/v1/applications/?fair_id='+fair_id+'&company_id='+company_id+'&status__in=3';
-  } else if ($("#filter_applicants").val() == "4") {
-    company_id = $("#recruiter_id").val();
-    url = '/api/v1/applications/?fair_id='+fair_id+'&company_id='+company_id+'&status__in=4';
-  } else {
-    url = '/api/v1/applications/?fair_id='+fair_id+'&unique_students=true';
-    data_to_send = {'fair_id':fair_id, 'unique_students':true};
+  base_url = '/api/v2/applicationsearch/';
+  sq = [];
+
+  // skills, schools, categories, offers, positions, majors, degrees, gradyears
+  if(search_skills.length){
+    sqp_skills = 'skills=';
+    sq_skills = encodeURIComponent(search_skills.join());
+    sq.push(sqp_skills.concat(sq_skills));
   }
-  if(degree_id){
-    url = url+'&degree_type='+degree_id;
+  if(search_schools.length){
+    sqp_schools = 'schools=';
+    sq_schools = encodeURIComponent(search_schools.join());
+    sq.push(sqp_schools.concat(sq_schools));
   }
-  if(major_id){
-    url = url+'&major='+major_id;
+  if(search_categories.length){
+    sqp_categories = 'categories=';
+    sq_categories = encodeURIComponent(search_categories.join());
+    sq.push(sqp_categories.concat(sq_categories));
   }
-  if(grad_year){
-    url = url+'&grad_year='+grad_year;
+  if(search_offers.length){
+    sqp_offers = 'offers=';
+    sq_offers = encodeURIComponent(search_offers.join());
+    sq.push(sqp_offers.concat(sq_offers));
   }
+  if(search_positions.length){
+    sqp_positions = 'positions=';
+    sq_positions = encodeURIComponent(search_positions.join());
+    sq.push(sqp_positions.concat(sq_positions));
+  }
+  if(search_majors.length){
+    sqp_majors = 'majors=';
+    sq_majors = encodeURIComponent(search_majors.join());
+    sq.push(sqp_majors.concat(sq_majors));
+  }
+  if(search_degrees.length){
+    sqp_degrees = 'degrees=';
+    sq_degrees = encodeURIComponent(search_degrees.join());
+    sq.push(sqp_degrees.concat(sq_degrees));
+  }
+  if(search_gradyears.length){
+    sqp_gradyears = 'gradyears=';
+    sq_gradyears = encodeURIComponent(search_gradyears.join());
+    sq.push(sqp_gradyears.concat(sq_gradyears));
+  }
+  if(search_notes.length){
+    sqp_notes = 'notes=';
+    sq_notes = encodeURIComponent(search_notes.join());
+    sq.push(sqp_notes.concat(sq_notes));
+  }
+
+  search_query = sq.join('&');
+  search_url = base_url.concat('?').concat(search_query);
+
   $.ajax({
-    url: url,
+    url: search_url,
     data: {},
     success: function(data, textStatus, jqXHR) {
         console.log(data);
         console.log(textStatus);
         console.log(jqXHR);
-        search_applicants();
         if(data['response']['applications'].length > 0) {
+          clear_candidates();
+
           applicants = data['response']['applications'];
           for (var i = 0; i < data['response']['applications'].length; i++) {
             positions_list = split_commas(data['response']['applications'][i]['position']);
@@ -118,13 +281,16 @@ function get_candidates() {
             for (var j = 0; j < positions_list.length; j++){
               positions = positions.concat(' <span class="label label-success">'+positions_list[j]+'</span>');
             }
-            $("#candidate_list").append('<a id="applicant_list_id_'+data['response']['applications'][i]['id']+'" onclick="get_candidate('+data['response']['applications'][i]['id']+')" class="list-group-item">'+data['response']['applications'][i]['user']['first_name']+' '+data['response']['applications'][i]['user']['last_name']+'</a>');
+            $("#candidate_list").append('<a id="applicant_list_id_'+data['response']['applications'][i]['id']+'" onclick="get_candidate('+data['response']['applications'][i]['id']+')" class="list-group-item application_status_'+data['response']['applications'][i]['status']+'">'+data['response']['applications'][i]['user']['first_name']+' '+data['response']['applications'][i]['user']['last_name']+'</a>');
           };
+
           // auto-select the first candidate
-          $("#applicant_list_id_"+data['response']['applications'][0]['id']).first().click();
+          next_application(true);
         } else {
           $("#candidate_list").append('<a class="list-group-item">Sorry, no candidates :( Please choose another category</a>')
         }
+        // update candidate count
+        update_candidate_count(data['meta']['total_count']);
       },
     dataType: 'json',
   });
@@ -132,6 +298,14 @@ function get_candidates() {
 
 function clear_candidates(){
   $("#candidate_list").empty();
+}
+
+function clear_documents(){
+  $("#application_documents").empty();
+}
+
+function update_candidate_count(val){
+  $("#candidate_count").text(val);
 }
 
 function split_commas(str){
@@ -142,7 +316,7 @@ function get_candidate(application_id) {
   // if candidate did apply to the company, then it must in fact 
   console.log(application_id);
   $.ajax({
-    url: '/api/v1/applications/'+application_id+'/',
+    url: '/api/v2/applications/'+application_id+'/',
     data: { },
     success: function(data, textStatus, jqXHR) {
         console.log(data);
@@ -154,8 +328,18 @@ function get_candidate(application_id) {
         $("#application_last_name").text(data['user']['last_name']);
         $("#application_email").text(data['user']['email']);
         $("#application_note").val(data['note']);
-        $("#application_resume_img").attr({'src': data['user']['resume']});
-        if($("#filter_applicants").val() == "1" || $("#filter_applicants").val() == "2"){
+
+        // add documents to main view
+        clear_documents();
+        for (var i = data['documents'].length - 1; i >= 0; i--) {
+          if(data['documents'][i]['document_type'] == 1){
+            $("#application_documents").prepend("<img src='"+data['documents'][i]['image_url']+"'>");
+          } else {
+            $("#application_documents").append("<img src='"+data['documents'][i]['image_url']+"'>");
+          }
+        };
+
+        if(data['status'] == "1" || data['status'] == "2"){
           // configure accept and reject buttons
           $("#accept_applicant_btn").attr({'onclick':'show_acceptance_message('+application_id+',"'+data['user']['first_name']+'","'+data['user']['last_name']+'","'+data['company']['name']+'");'});
           $("#reject_applicant_btn").attr({'onclick':'reject_candidate('+application_id+');'});
@@ -168,13 +352,13 @@ function get_candidate(application_id) {
           $("#download_pdf_btn").show();
           $("#download_pdf_btn").attr({'onclick':'download_pdf('+application_id+');'});
           // application status
-          if($("#filter_applicants").val() == "1") {
+          if(data['status'] == "1") {
             $("#application_status").text("Awaiting response");
           }
-          if($("#filter_applicants").val() == "2") {
+          if(data['status'] == "2") {
             $("#application_status").text("Met at fair - Awaiting response");
           }
-        } else if ($("#filter_applicants").val() == "3" || $("#filter_applicants").val() == "4") {
+        } else if (data['status'] == "3" || data['status'] == "4") {
           // configure accept and reject buttons
           $("#reject_applicant_btn").hide();
           $("#accept_applicant_btn").hide();
@@ -185,10 +369,10 @@ function get_candidate(application_id) {
           $("#download_pdf_btn").show();
           $("#download_pdf_btn").attr({'onclick':'download_pdf('+application_id+');'});
           // application status
-          if($("#filter_applicants").val() == "3") {
+          if(data['status'] == "3") {
             $("#application_status").text("Rejected");
           }
-          if($("#filter_applicants").val() == "4") {
+          if(data['status'] == "4") {
             $("#application_status").text("To invite for interview");
           }
         } else {
@@ -200,6 +384,14 @@ function get_candidate(application_id) {
           // application status config
           $("#application_status").text("Fair Attendee");
         }
+
+        // show the applicant as selected in the list - deselect previous candidate
+        if(current_selected_candidate) {
+          // deselect previous candidate
+          $("#applicant_list_id_"+current_selected_candidate).removeClass("selected_candidate");
+        }
+        current_selected_candidate = application_id;
+        $("#applicant_list_id_"+current_selected_candidate).addClass("selected_candidate");
       },
     dataType: 'json',
   });
@@ -210,7 +402,7 @@ function show_acceptance_message(application_id, first_name, last_name, company_
   console.log(application_id);
   console.log(first_name);
   console.log(last_name);
-  var html_content = "<label>Your email</label><br /><input class='form-control input-sm' type='text' id='recruiter_email' placeholder='Email'/><br /><label>Email Body</label><br /><div id='application_message'>Hello <span id='msg_first_name'>"+String(first_name)+"</span> <span id='msg_last_name'>"+String(last_name)+"</span>, <br /><br />"+
+  var html_content = "<label>Your email</label><br /><input class='form-control input-sm' type='text' id='recruiter_email' placeholder='Email' value='{{request.user.email}}'/><br /><label>Email Body</label><br /><div id='application_message'>Hello <span id='msg_first_name'>"+String(first_name)+"</span> <span id='msg_last_name'>"+String(last_name)+"</span>, <br /><br />"+
     ""+String(company_name)+" has indicated an interest in interviewing you. We've CC'ed the contact person in this email. Please connect with them to find a common time.<br /><br />"+
     "<textarea style='width:350px;height:100px;' id='recruiter_message'>Here are some times suggested by the recruiter:\n\n</textarea><br /><br />"+
     "Keep up the good work!<br /><br />"+
@@ -223,18 +415,22 @@ function show_acceptance_message(application_id, first_name, last_name, company_
   $("#accept_applicant_btn").popover({
     animation: 'true', 
     html:'true', 
-    trigger:'click',
+    trigger:'manual',
     title:"Message applicant",
     content:html_content,
     placement:'bottom',
     container:'body'
   });
 
+  // set the attributes for the popover
   $("#msg_first_name").text(first_name);
   $("#msg_last_name").text(last_name);
   $("#msg_company_name").text(company_name);
   $("#send_application_email").attr({'onclick':'accept_candidate('+application_id+');'});
-  console.log($("#send_application_email"));
+
+  // toggle the popover
+  $("#accept_applicant_btn").popover('toggle');
+
 }
 
 function accept_candidate(application_id){
@@ -248,7 +444,7 @@ function accept_candidate(application_id){
     var recruiter_message = $("#recruiter_message").val()+"";
 
     $.ajax({
-      url: '/api/v1/applications/'+String(application_id)+'/',
+      url: '/api/v2/applications/'+String(application_id)+'/',
       type: 'PUT',
       data: JSON.stringify({
         'status': 4,
@@ -260,7 +456,7 @@ function accept_candidate(application_id){
       success: function(data, textStatus, jsXHR){
         console.log(data);
         // remove person from list dom - never need to show again
-        $("#applicant_list_id_"+String(application_id)).next().click();
+        next_application(false);
         $("#applicant_list_id_"+String(application_id)).remove();
         // hide popover as well
         $("#accept_applicant_btn").popover('hide');
@@ -273,7 +469,7 @@ function accept_candidate(application_id){
 
 function reject_candidate(application_id){
   $.ajax({
-    url: '/api/v1/applications/'+String(application_id)+'/',
+    url: '/api/v2/applications/'+String(application_id)+'/',
     type: 'PUT',
     data: JSON.stringify({
       'status': 3,
@@ -292,7 +488,7 @@ function reject_candidate(application_id){
 function save_note(application_id) {
   if($("#application_note").val()){
     $.ajax({
-      url: '/api/v1/applications/'+String(application_id)+'/',
+      url: '/api/v2/applications/'+String(application_id)+'/',
       type: 'PUT',
       data: JSON.stringify({
         'note': $("#application_note").val(),
@@ -318,11 +514,15 @@ function download_pdf(application_id) {
     url: "/recruiter/candidate/download_pdf/",
     data: { application_id: application_id, csrfmiddlewaretoken: $('input[name="csrfmiddlewaretoken"]').val() }
   }).done(function( returnData ) {
+    console.log(returnData);
     if(returnData['success']){
       // extract resume url
+      console.log("download_pdf");
       console.log(returnData);
       // being download process
-      window.open(returnData['resume_pdf'],'_blank');
+      for (var i = returnData['pdfs'].length - 1; i >= 0; i--) {
+        window.open(returnData['pdfs'][i],'_blank');
+      };
     } else {
       // ask them to give feedback or try again in a while.
     }
@@ -339,52 +539,58 @@ function disable_save_note(){
   $("#application_note_btn").attr({"disabled":true});
 }
 
-function search_applicants(){
-  $("#search_applicants").keyup(function(){
-    query = $("#search_applicants").val();
-    // get applicants by first_name, last_name and email
-    applicants_sh = _.map(applicants,function(applicant){ 
-      app_id = String(applicant['id']);
-      applicant_majors = applicant["user"]["majors"].join(" ");
-      search_text = applicant['user']["first_name"]+" "+applicant["user"]["last_name"]+" "+applicant["user"]["email"]+" "+applicant["user"]["graduation_year"]+" "+applicant["user"]["degree"]+" "+applicant_majors;
-      dict = {};
-      dict["app_id"] = app_id;
-      dict["search_text"] = search_text;
-      dict["first_name"] = applicant['user']["first_name"];
-      dict["last_name"] = applicant['user']["last_name"];
-      return dict;
-    });
-    // search in all fields
-    matched_applicants = _.filter(applicants_sh, function(applicant){ 
-      return (applicant["search_text"].toLowerCase().indexOf(query.toLowerCase()) > -1); 
-    });
-    console.log(matched_applicants);
-    // clear candidates adn display just the list
-    clear_candidates();
-    // if list is empty, just get candidates again
-    if(matched_applicants.length > 0) {
-      for (var i = 0; i < matched_applicants.length; i++) {
-        $("#candidate_list").append('<a id="applicant_list_id_'+matched_applicants[i]['app_id']+'" onclick="get_candidate('+matched_applicants[i]['app_id']+')" class="list-group-item">'+matched_applicants[i]['first_name']+' '+matched_applicants[i]['last_name']+'</a>');
-      };
-    } else {
-      $("#candidate_list").append('<a class="list-group-item">Sorry, no candidates :( Please choose another category</a>')
-    }
-  });
+function next_application(select_first){
+  // 1. click on first candidate if nothing is selected
+  // 2. click on next candidate in applicants array if smth is selected
+  // 3. don't click on anything if last candidate in array
+  if(current_selected_candidate === null || select_first){
+    $("[id^=applicant_list_id_]").first().click();
+  } else {
+    $("#applicant_list_id_"+String(current_selected_candidate)).next().click();
+  }
+}
+
+function previous_application(select_first){
+  // 1. click on first candidate if nothing is selected
+  // 2. click on previous candidate in applicants array if smth is selected
+  // 3. don't click on anything if first candidate
+  if(current_selected_candidate === null || select_first){
+    $("[id^=applicant_list_id_]").first().click();
+  } else {
+    $("#applicant_list_id_"+String(current_selected_candidate)).prev().click();
+  }
 }
 
 $(document).ready(function() {
-  get_events();
-  // clear_candidates();
-  // get_candidates();
-
   // on change of any of the filters
-  $("#filter_school").on("change",get_candidates);
-  $("#filter_event").on("change",get_candidates);
-  $("#filter_applicants").on("change",get_candidates);
-  $("#degree_type").on("change",get_candidates);
-  $("#major_type").on("change",get_candidates);
-  $("#grad_year").on("change",get_candidates);
   $("#application_note").on("keyup",enable_save_note);
+
+  // add skill on keyup
+  $("#search_applicants").keypress(function(e) {
+    if(e.which == 13) {
+      // 1. get skill value
+      // 2. add skill value
+      // 3. clear input value for search
+      skill = $("#search_applicants").val();
+      add_skill(skill);
+      $("#search_applicants").val('');
+    }
+  });
+
+  // control keyboard left-right-up-down keys to select next applications
+  $(document).keydown(function(e){
+    // left or up
+    if (e.keyCode == 37 || e.keyCode == 38) {
+      previous_application(false);
+    }
+    // right or down
+    if (e.keyCode == 39 || e.keyCode == 40) {
+      next_application(false);
+    }
+  });
+
+  // add "Awaiting Candidates" by default - this will call get_candidates as well
+  add_category(1,$.parseHTML("<div>Awaiting  Response</div>"));
 });
 
 </script>
@@ -392,136 +598,146 @@ $(document).ready(function() {
 {% endblock %}
 
 {% block subnavbar_base %}
+
 <div class="row" style="background-color:#005f69; padding-bottom:0px; height: 40px; margin-left:0px; margin-right:0px;">
   <div class="container" style="padding:8px 0 8px 0; vertical-align:middle;">
     <!-- Search bar -->
-    <form role="search" style="padding:0px; width:250px; display:inline-block; vertical-align:middle;">
-      <div>
-        <input type="text" placeholder="Search skills & keywords" id="search_applicants" style="width:100%; display:block; border-radius:3px; margin:auto; border:1px solid white; padding-left: 10px;">
-      </div>
-    </form>
+    <input type="text" placeholder="Search skills & keywords" id="search_applicants" style="width:250px; display:inline-block; border-radius:3px; margin:auto; border:1px solid white; padding-left: 10px;">
 
     <!-- School, Position, Grad Date, Degree, Major, Category -->
     <div class="dropdown" style="display:inline-block; padding-left:10px; top:2px;">
       <a data-toggle="dropdown" href="#" style="color:white; font-family:'Proxima Nova'; font-size:15px;">Schools <b class="caret"></b></a>
       </button>
       <ul class="dropdown-menu" role="menu" id="filter_school">
-        <li><a onclick="add_school(1);">UC Berkeley</a></li>
+        <li><a onclick="add_school(1, this);">UC Berkeley</a></li>
       </ul>
     </div>
 
     <div class="dropdown" style="display:inline-block; padding-left:10px; top:2px;">
-      <a data-toggle="dropdown" href="#" style="color:white; font-family:'Proxima Nova'; font-size:15px;">Categories <b class="caret"></b></a>
+      <a data-toggle="dropdown" href="#" style="color:white; font-family:'Proxima Nova'; font-size:15px;">Category <b class="caret"></b></a>
       </button>
       <ul class="dropdown-menu" role="menu" id="filter_applicants">
-        <li><a onclick="add_category(1);">Awaiting response</a></li>
-        <li><a onclick="add_category(2);">Talked to</a></li>
-        <li><a onclick="add_category(3);">Rejected</a></li>
-        <li><a onclick="add_category(4);">Interview</a></li>
-        <li><a onclick="add_category(5);">Attendees</a></li>
+        <li><a onclick="add_category(1, this);">Awaiting Response</a></li>
+        <li><a onclick="add_category(2, this);">Talked To</a></li>
+        <li><a onclick="add_category(3, this);">Rejected</a></li>
+        <li><a onclick="add_category(4, this);">Interview</a></li>
+        <li><a onclick="add_category(5, this);">Attendees</a></li>
       </ul>
     </div>
+
+<!-- Offers -->
+<!--     <div class="dropdown" style="display:inline-block; padding-left:10px; top:2px;">
+      <a data-toggle="dropdown" href="#" style="color:white; font-family:'Proxima Nova'; font-size:15px;">Offers <b class="caret"></b></a>
+      </button>
+      <ul class="dropdown-menu" role="menu" id="filter_offers">
+        <li><a onclick="add_offer(1, this);">With Offers</a></li>
+        <li><a onclick="add_offer(2, this);">Without Offers</a></li>
+      </ul>
+    </div> -->
 
     <div class="dropdown" style="display:inline-block; padding-left:10px; top:2px;">
       <a data-toggle="dropdown" href="#" style="color:white; font-family:'Proxima Nova'; font-size:15px;">Positions <b class="caret"></b></a>
       </button>
       <ul class="dropdown-menu" role="menu">
-        <li><a href="#">Action</a></li>
-        <li><a href="#">Another action</a></li>
-        <li><a href="#">Something else here</a></li>
-        <li class="divider"></li>
-        <li><a href="#">Separated link</a></li>
+        <li><a onclick="add_position('Software Engineering', this);">Software Engineering</a></li>
+        <li><a onclick="add_position('Product Manager', this);">Product Manager</a></li>
+        <li><a onclick="add_position('UI/UX Engineering', this);">UI/UX Engineering</a></li>
+        <li><a onclick="add_position('Marketing', this);">Marketing</a></li>
+        <li><a onclick="add_position('Business Development', this);">Business Development</a></li>
+        <li><a onclick="add_position('Growth Hacker', this);">Growth Hacker</a></li>
+        <li><a onclick="add_position('Accountant', this);">Accountant</a></li>
+        <li><a onclick="add_position('Other', this);">Other</a></li>
       </ul>
     </div>
 
-    <div class="dropdown" style="display:inline-block; padding-left:10px; top:2px;">
+    <!-- <div class="dropdown" style="display:inline-block; padding-left:10px; top:2px;">
       <a data-toggle="dropdown" href="#" style="color:white; font-family:'Proxima Nova'; font-size:15px;">Majors <b class="caret"></b></a>
       </button>
       <ul class="dropdown-menu" id="major_type" role="menu">
-        <li><a onclick="add_major(1);">Accounting</a></li>
-        <li><a onclick="add_major(2);">Aerospace Engineering</a></li>
-        <li><a onclick="add_major(3);">Anthropology</a></li>
-        <li><a onclick="add_major(4);">Applied Mathematics</a></li>
-        <li><a onclick="add_major(5);">Architecture</a></li>
-        <li><a onclick="add_major(6);">Art</a></li>
-        <li><a onclick="add_major(7);">Art History</a></li>
-        <li><a onclick="add_major(8);">Artificial Intelligence</a></li>
-        <li><a onclick="add_major(9);">Biochemistry</a></li>
-        <li><a onclick="add_major(10);">Bioengineering</a></li>
-        <li><a onclick="add_major(11);">Biology</a></li>
-        <li><a onclick="add_major(12);">Business</a></li>
-        <li><a onclick="add_major(13);">Chemical Engineering</a></li>
-        <li><a onclick="add_major(14);">Chemistry</a></li>
-        <li><a onclick="add_major(15);">Chinese</a></li>
-        <li><a onclick="add_major(16);">Civil Engineering</a></li>
-        <li><a onclick="add_major(17);">Cognitive Science</a></li>
-        <li><a onclick="add_major(18);">Communications</a></li>
-        <li><a onclick="add_major(19);">Computer Engineering</a></li>
-        <li><a onclick="add_major(20);">Computer Science</a></li>
-        <li><a onclick="add_major(21);">Design</a></li>
-        <li><a onclick="add_major(22);">Economics</a></li>
-        <li><a onclick="add_major(23);">Education</a></li>
-        <li><a onclick="add_major(24);">Electrical Engineering</a></li>
-        <li><a onclick="add_major(25);">Embedded Systems</a></li>
-        <li><a onclick="add_major(26);">English</a></li>
-        <li><a onclick="add_major(27);">Entrepreneurship</a></li>
-        <li><a onclick="add_major(28);">Environmental Studies</a></li>
-        <li><a onclick="add_major(29);">Finance</a></li>
-        <li><a onclick="add_major(30);">Fine Arts</a></li>
-        <li><a onclick="add_major(31);">French</a></li>
-        <li><a onclick="add_major(32);">Government</a></li>
-        <li><a onclick="add_major(33);">Graphic Design</a></li>
-        <li><a onclick="add_major(34);">History</a></li>
-        <li><a onclick="add_major(35);">Human Computer Interaction</a></li>
-        <li><a onclick="add_major(36);">Industrial Engineering</a></li>
-        <li><a onclick="add_major(37);">Informatics</a></li>
-        <li><a onclick="add_major(38);">Information Security</a></li>
-        <li><a onclick="add_major(39);">Information Technology</a></li>
-        <li><a onclick="add_major(40);">International Relations</a></li>
-        <li><a onclick="add_major(41);">Japanese</a></li>
-        <li><a onclick="add_major(42);">Journalism</a></li>
-        <li><a onclick="add_major(43);">Law</a></li>
-        <li><a onclick="add_major(44);">Linguistics</a></li>
-        <li><a onclick="add_major(45);">Literature</a></li>
-        <li><a onclick="add_major(46);">Machine Learning</a></li>
-        <li><a onclick="add_major(47);">Marketing</a></li>
-        <li><a onclick="add_major(48);">Materials Science</a></li>
-        <li><a onclick="add_major(49);">Mathematics</a></li>
-        <li><a onclick="add_major(50);">Mechanical Engineering</a></li>
-        <li><a onclick="add_major(51);">Molecular Biology</a></li>
-        <li><a onclick="add_major(52);">Music</a></li>
-        <li><a onclick="add_major(53);">Nanotechnology</a></li>
-        <li><a onclick="add_major(54);">Neuroscience</a></li>
-        <li><a onclick="add_major(55);">Nuclear Engineering</a></li>
-        <li><a onclick="add_major(56);">Operations Research</a></li>
-        <li><a onclick="add_major(57);">Philosophy</a></li>
-        <li><a onclick="add_major(58);">Physics</a></li>
-        <li><a onclick="add_major(59);">Political Science</a></li>
-        <li><a onclick="add_major(60);">Project Management</a></li>
-        <li><a onclick="add_major(61);">Psychology</a></li>
-        <li><a onclick="add_major(62);">Robotics</a></li>
-        <li><a onclick="add_major(63);">Sociology</a></li>
-        <li><a onclick="add_major(64);">Software Engineering</a></li>
-        <li><a onclick="add_major(65);">Spanish</a></li>
-        <li><a onclick="add_major(66);">Statistics</a></li>
-        <li><a onclick="add_major(67);">Symbolic Systems</a></li>
-        <li><a onclick="add_major(68);">Systems Engineering</a></li>
-        <li><a onclick="add_major(69);">Telecommunications</a></li>
+        <li><a onclick="add_major(1, this);">Accounting</a></li>
+        <li><a onclick="add_major(2, this);">Aerospace Engineering</a></li>
+        <li><a onclick="add_major(3, this);">Anthropology</a></li>
+        <li><a onclick="add_major(4, this);">Applied Mathematics</a></li>
+        <li><a onclick="add_major(5, this);">Architecture</a></li>
+        <li><a onclick="add_major(6, this);">Art</a></li>
+        <li><a onclick="add_major(7, this);">Art History</a></li>
+        <li><a onclick="add_major(8, this);">Artificial Intelligence</a></li>
+        <li><a onclick="add_major(9, this);">Biochemistry</a></li>
+        <li><a onclick="add_major(10, this);">Bioengineering</a></li>
+        <li><a onclick="add_major(11, this);">Biology</a></li>
+        <li><a onclick="add_major(12, this);">Business</a></li>
+        <li><a onclick="add_major(13, this);">Chemical Engineering</a></li>
+        <li><a onclick="add_major(14, this);">Chemistry</a></li>
+        <li><a onclick="add_major(15, this);">Chinese</a></li>
+        <li><a onclick="add_major(16, this);">Civil Engineering</a></li>
+        <li><a onclick="add_major(17, this);">Cognitive Science</a></li>
+        <li><a onclick="add_major(18, this);">Communications</a></li>
+        <li><a onclick="add_major(19, this);">Computer Engineering</a></li>
+        <li><a onclick="add_major(20, this);">Computer Science</a></li>
+        <li><a onclick="add_major(21, this);">Design</a></li>
+        <li><a onclick="add_major(22, this);">Economics</a></li>
+        <li><a onclick="add_major(23, this);">Education</a></li>
+        <li><a onclick="add_major(24, this);">Electrical Engineering</a></li>
+        <li><a onclick="add_major(25, this);">Embedded Systems</a></li>
+        <li><a onclick="add_major(26, this);">English</a></li>
+        <li><a onclick="add_major(27, this);">Entrepreneurship</a></li>
+        <li><a onclick="add_major(28, this);">Environmental Studies</a></li>
+        <li><a onclick="add_major(29, this);">Finance</a></li>
+        <li><a onclick="add_major(30, this);">Fine Arts</a></li>
+        <li><a onclick="add_major(31, this);">French</a></li>
+        <li><a onclick="add_major(32, this);">Government</a></li>
+        <li><a onclick="add_major(33, this);">Graphic Design</a></li>
+        <li><a onclick="add_major(34, this);">History</a></li>
+        <li><a onclick="add_major(35, this);">Human Computer Interaction</a></li>
+        <li><a onclick="add_major(36, this);">Industrial Engineering</a></li>
+        <li><a onclick="add_major(37, this);">Informatics</a></li>
+        <li><a onclick="add_major(38, this);">Information Security</a></li>
+        <li><a onclick="add_major(39, this);">Information Technology</a></li>
+        <li><a onclick="add_major(40, this);">International Relations</a></li>
+        <li><a onclick="add_major(41, this);">Japanese</a></li>
+        <li><a onclick="add_major(42, this);">Journalism</a></li>
+        <li><a onclick="add_major(43, this);">Law</a></li>
+        <li><a onclick="add_major(44, this);">Linguistics</a></li>
+        <li><a onclick="add_major(45, this);">Literature</a></li>
+        <li><a onclick="add_major(46, this);">Machine Learning</a></li>
+        <li><a onclick="add_major(47, this);">Marketing</a></li>
+        <li><a onclick="add_major(48, this);">Materials Science</a></li>
+        <li><a onclick="add_major(49, this);">Mathematics</a></li>
+        <li><a onclick="add_major(50, this);">Mechanical Engineering</a></li>
+        <li><a onclick="add_major(51, this);">Molecular Biology</a></li>
+        <li><a onclick="add_major(52, this);">Music</a></li>
+        <li><a onclick="add_major(53, this);">Nanotechnology</a></li>
+        <li><a onclick="add_major(54, this);">Neuroscience</a></li>
+        <li><a onclick="add_major(55, this);">Nuclear Engineering</a></li>
+        <li><a onclick="add_major(56, this);">Operations Research</a></li>
+        <li><a onclick="add_major(57, this);">Philosophy</a></li>
+        <li><a onclick="add_major(58, this);">Physics</a></li>
+        <li><a onclick="add_major(59, this);">Political Science</a></li>
+        <li><a onclick="add_major(60, this);">Project Management</a></li>
+        <li><a onclick="add_major(61, this);">Psychology</a></li>
+        <li><a onclick="add_major(62, this);">Robotics</a></li>
+        <li><a onclick="add_major(63, this);">Sociology</a></li>
+        <li><a onclick="add_major(64, this);">Software Engineering</a></li>
+        <li><a onclick="add_major(65, this);">Spanish</a></li>
+        <li><a onclick="add_major(66, this);">Statistics</a></li>
+        <li><a onclick="add_major(67, this);">Symbolic Systems</a></li>
+        <li><a onclick="add_major(68, this);">Systems Engineering</a></li>
+        <li><a onclick="add_major(69, this);">Telecommunications</a></li>
       </ul>
-    </div>
+    </div> -->
 
     <div class="dropdown" style="display:inline-block; padding-left:10px; top:2px;">
       <a data-toggle="dropdown" href="#" style="color:white; font-family:'Proxima Nova'; font-size:15px;">Degrees <b class="caret"></b></a>
       </button>
       <ul class="dropdown-menu" id="degree_type" role="menu">
-        <li><a onclick="add_degree(1);">BA</a></li>
-        <li><a onclick="add_degree(2);">BS</a></li>
-        <li><a onclick="add_degree(3);">MS</a></li>
-        <li><a onclick="add_degree(4);">MA</a></li>
-        <li><a onclick="add_degree(5);">MBA</a></li>
-        <li><a onclick="add_degree(6);">JS</a></li>
-        <li><a onclick="add_degree(7);">PhD</a></li>
-        <li><a onclick="add_degree(8);">High School Diploma</a></li>
+        <li><a onclick="add_degree(1, this);">BA</a></li>
+        <li><a onclick="add_degree(2, this);">BS</a></li>
+        <li><a onclick="add_degree(3, this);">MS</a></li>
+        <li><a onclick="add_degree(4, this);">MA</a></li>
+        <li><a onclick="add_degree(5, this);">MBA</a></li>
+        <li><a onclick="add_degree(6, this);">JS</a></li>
+        <li><a onclick="add_degree(7, this);">PhD</a></li>
+        <li><a onclick="add_degree(8, this);">High School Diploma</a></li>
       </ul>
     </div>
 
@@ -529,32 +745,73 @@ $(document).ready(function() {
       <a data-toggle="dropdown" href="#" style="color:white; font-family:'Proxima Nova'; font-size:15px;">Grad Dates <b class="caret"></b></a>
       </button>
       <ul class="dropdown-menu" id="grad_year" role="menu">
-        <li><a onclick="add_gradyear(2010);">2010</a></li>
-        <li><a onclick="add_gradyear(2011);">2011</a></li>
-        <li><a onclick="add_gradyear(2012);">2012</a></li>
-        <li><a onclick="add_gradyear(2013);">2013</a></li>
-        <li><a onclick="add_gradyear(2014);">2014</a></li>
-        <li><a onclick="add_gradyear(2015);">2015</a></li>
-        <li><a onclick="add_gradyear(2016);">2016</a></li>
-        <li><a onclick="add_gradyear(2017);">2017</a></li>
-        <li><a onclick="add_gradyear(2018);">2018</a></li>
+        <li><a onclick="add_gradyear(2010, this);">2010</a></li>
+        <li><a onclick="add_gradyear(2011, this);">2011</a></li>
+        <li><a onclick="add_gradyear(2012, this);">2012</a></li>
+        <li><a onclick="add_gradyear(2013, this);">2013</a></li>
+        <li><a onclick="add_gradyear(2014, this);">2014</a></li>
+        <li><a onclick="add_gradyear(2015, this);">2015</a></li>
+        <li><a onclick="add_gradyear(2016, this);">2016</a></li>
+        <li><a onclick="add_gradyear(2017, this);">2017</a></li>
+        <li><a onclick="add_gradyear(2018, this);">2018</a></li>
       </ul>
     </div>
 
-    <div class="dropdown" style="display:inline-block; padding-left:10px; top:2px; float:right;">
+    <div class="dropdown" style="display:inline-block; padding-left:10px; top:2px;">
+      <a data-toggle="dropdown" href="#" style="color:white; font-family:'Proxima Nova'; font-size:15px;">Notes <b class="caret"></b></a>
+      </button>
+      <ul class="dropdown-menu" id="note_filter" role="menu">
+        <li><a onclick="add_note(1, this);">Have Notes</a></li>
+        <li><a onclick="add_note(0, this);">No Notes</a></li>
+      </ul>
+    </div>
+
+    <!-- Save Search functionality -->
+    <!-- <div class="dropdown" style="display:inline-block; padding-left:10px; top:2px; float:right;">
       <a href="" style="color:white; font-family:'Proxima Nova'; font-weight:700; font-size:15px;"><span class="glyphicon glyphicon-plus" style="color:white;"></span>&nbsp;Save Search</a>&nbsp;&nbsp;&nbsp;&nbsp;
       <a href="" style="color:white; font-family:'Proxima Nova'; font-weight:500; font-size:15px;">Previous Searches <b class="caret"></b></a>
-    </div>
+    </div> -->
 
   </div>
 </div>
 
 <div class="row">
   <div class="container" style="padding:15px 0px 15px 0px; vertical-align:middle;">
-    <span style="font-size:14px; font-weight:500;">Showing candidates who match:</span>
-    <span class="label label-link" style="font-size:12px">C++ <span class="glyphicon glyphicon-remove" style="color:white; top:2px;"></span> / python <span class="glyphicon glyphicon-remove" style="color:white; top:2px;"></span> / Olympiad <span class="glyphicon glyphicon-remove" style="color:white; top:2px;"></span></span>
-    <span class="label label-warning">AND</span>
-    <span class="label label-link" style="font-size:12px">UC Berkeley <span class="glyphicon glyphicon-remove" style="color:white; top:2px;"></span> / Stanford <span class="glyphicon glyphicon-remove" style="color:white; top:2px;"></span></span>
+    <div class="label label-link" id="skills_pill">Skills:
+    </div>
+
+    <span class="label label-warning and-separator">AND</span>
+    <div class="label label-link" id="schools_pill">Schools:
+    </div>
+
+    <span class="label label-warning and-separator">AND</span>
+    <div class="label label-link" id="categories_pill">Categories:
+    </div>
+
+    <span class="label label-warning and-separator">AND</span>
+    <div class="label label-link" id="offers_pill">Offers:
+    </div>
+
+    <span class="label label-warning and-separator">AND</span>
+    <div class="label label-link" id="positions_pill">Positions:
+    </div>
+
+    <span class="label label-warning and-separator">AND</span>
+    <div class="label label-link" id="majors_pill">Majors:
+    </div>
+
+    <span class="label label-warning and-separator">AND</span>
+    <div class="label label-link" id="degrees_pill">Degrees:
+    </div>
+
+    <span class="label label-warning and-separator">AND</span>
+    <div class="label label-link" id="gradyears_pill">Grad Years:
+    </div>
+
+    <span class="label label-warning and-separator">AND</span>
+    <div class="label label-link" id="notes_pill">Notes:
+    </div>
+
 
     <!-- export data button -->
     <form class="pull-right" role="export-data" action="/recruiter/hire/download_excel_to_export/" method="post">
@@ -562,7 +819,7 @@ $(document).ready(function() {
         <input type="hidden" name="fair_id" value="" id="fair_id_input">
         <input type="hidden" name="company_id" value="{{request.user.recruiter.company.id}}" id="company_id_input">
         {% csrf_token %}
-        <input type="submit" value="Export Data" class="btn btn-inverted-default pull-right">
+        <input type="submit" value="Export Candidates" class="btn btn-inverted-default pull-right">
       </div>
     </form>
   </div>
@@ -575,7 +832,7 @@ $(document).ready(function() {
 <div class="row">
   <div class="col-lg-2 col-md-2 category_box">
     <div class="row" id="category_header_box">
-      <h4 id="category_header">Candidates (57)</h4>
+      <h4 id="category_header">Candidates (<span id="candidate_count">57</span>)</h4>
       <!-- <h5 id="category_subheader">Select a candidate.</h5> -->
       <hr style="margin-bottom:0px; margin-top:0px;">
       
@@ -586,9 +843,9 @@ $(document).ready(function() {
       </div>
     </div>
   </div>
-  <div class="col-lg-10 col-md-10 category_box" id="application_info" style="text-align:center;">
+  <div class="col-lg-10 col-md-10 category_box" id="application_info">
     <div class="row" id="category_header_box">
-      <div class="col-lg-10">
+      <div class="col-lg-12">
         <h3 id="category_header"><span id="application_first_name">First</span>&nbsp;<span id="application_last_name">Last Name</span></h3>
         <h5 id="category_subheader"><span id="application_email">Email</span><h5>
         <h5 id="category_subheader"><span id="application_status">Application Status</span></h5>
@@ -596,27 +853,26 @@ $(document).ready(function() {
         <button class="btn btn-lg btn-danger" id="reject_applicant_btn" style="position:absolute; top:10px; left:10px;">Reject</button>      
       </div>
     </div>
-    <hr>
+    <hr style="padding:0px;margin:0px -15px 0px -15px;">
     <div class="row">
-      <div class="col-lg-10">
-        <h4>Resume</h4>
-        <a class="btn btn-done btn-sm pull-right" id="download_pdf_btn" style="margin-top:-34px;">Download</a>
-        <div style="text-align:center;">
-          <img style="border:1px solid #acacac;" src="https://resumefeed.s3.amazonaws.com/sanchit-barejapdfu01nBM1mjF4kaWEJmaXcdgkyP4fBqI" id="application_resume_img">
+      <div class="col-lg-10" style="padding:0px; border-right:1px solid #e4e4e4;">
+        <div style="text-align:center;" id="application_documents">
         </div>
       </div>
-      <div class="col-lg-2" id="note_div">
+      <div class="col-lg-2" id="note_div" style="padding:10px;height:inherit;">
+        <a class="btn btn-inverted-default btn-sm btn-block" id="download_pdf_btn" style="margin:10px 0px;">Download .PDF</a>
+<!--         <p style="color:#005f69;">Companies Interviewing: <b>10</b></p>
+        <p style="color:#005f69;">Salary: <b>70-80k</b></p>
+        <hr style="padding:0px;margin:0px -10px 0px -10px;"> -->
         <h4>Notes</h4>
-        <textarea class="form-control" rows="5" id="application_note">Sample Note</textarea>
-        <!-- <a class="btn btn-done btn-sm pull-right" disabled id="application_note_btn" >Save Note</a> -->
+        <textarea style="width:100%; line-height: 25px; border: 0px; border:1px solid #e4e4e4; color:black;" rows="5" id="application_note" placeholder="Sample Note"></textarea>
+        <a class="btn btn-done btn-sm btn-block" disabled id="application_note_btn" >Save Note</a>
+        <br />
+        <br />
+        <br />
       </div>
     </div>
   </div>
 </div>
 
-<script type="text/javascript">
-  
-</script>
-
-<!-- hard code everything for design -->
 {% endblock %}
