@@ -300,7 +300,4 @@ except Exception:
             'INDEX_NAME': 'documents',
             },
         }
-    
-    }
-
     pass # there is no local settings file
