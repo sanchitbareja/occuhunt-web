@@ -23,7 +23,6 @@ from companies.models import Company
 from favorites.models import Favorite
 from fairs.models import Fair, Room, Map, Table, Fitting
 from users.models import User, Major, Degree, Student, Recruiter
-from recommendations.models import Recommendation, Request
 from applications.models import Application
 from jobs.models import Job
 from notifications.models import Notification
@@ -294,7 +293,7 @@ class JobResource(ModelResource):
         Return a list of jobs in format as expected by developer
         """
         # get network
-        bundle.data['network'] = {'name':bundle.obj.network.name, 'id':bundle.obj.network.id}
+        # bundle.data['network'] = {'name':bundle.obj.network.name, 'id':bundle.obj.network.id}
         return bundle
 
     def obj_create(self, bundle, **kwargs):
@@ -730,7 +729,8 @@ class ApplicationResource(ModelResource):
                     # remove applications where it is not tied to a fair
                     Application.objects.filter(user=user, company=company, fair__isnull=True, added_by_user=True).delete()
                 else:
-                    application = Application(user=user, company=company, fair=fair, position=position, status=status)
+                    now = datetime.datetime.now()
+                    application = Application(user=user, company=company, fair=fair, position=position, status=status, student_note='This application will be managed for you till the interview stage. You applied on '+str(now.month)+'/'+str(now.day)+'/'+str(now.year))
                     application.save()
                     bundle.obj = application
 
@@ -741,14 +741,14 @@ class ApplicationResource(ModelResource):
                 # resume
                 # cv
                 # additional docs
-                application.document.add(resume)
+                application.documents.add(resume)
                 application.save()
                 if cv:
-                    application.document.add(cv)
+                    application.documents.add(cv)
                     application.save()
                 if docs:
                     for doc in docs:
-                        application.document.add(document=doc)
+                        application.documents.add(document=doc)
                         application.save()
 
                 # update user preferences for Graduation Date, Major, Degree
@@ -894,10 +894,10 @@ class ApplicationSearchResource(ModelResource):
             for token in tokens:
                 positions_q |= Q(position=str(token))
             q_objects &= positions_q
-        # if "majors" in filters:
-        #     tokens = filters['majors'].split(',')
-        #     for token in tokens:
-        #         sqs.filter(application__user__student__major)
+        if "majors" in filters:
+            tokens = filters['majors'].split(',')
+            for token in tokens:
+                sqs.filter(user__student__major__id=token)
         if "degrees" in filters:
             tokens = filters['degrees'].split(',')
             degrees_q = Q(user__student__degree__id=token[0])

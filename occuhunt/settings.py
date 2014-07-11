@@ -155,8 +155,6 @@ INSTALLED_APPS = (
     'fairs',
     'jobs',
     'resumes',
-    'recommendations',
-    'hunts',
     'applications',
     'recruiters',
     'notifications',
