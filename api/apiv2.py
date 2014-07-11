@@ -896,8 +896,10 @@ class ApplicationSearchResource(ModelResource):
             q_objects &= positions_q
         if "majors" in filters:
             tokens = filters['majors'].split(',')
+            majors_q = Q(user__student__major__id=tokens[0])
             for token in tokens:
-                sqs.filter(user__student__major__id=token)
+                majors_q |= Q(user__student__major__id=token)
+            q_objects &= majors_q
         if "degrees" in filters:
             tokens = filters['degrees'].split(',')
             degrees_q = Q(user__student__degree__id=token[0])
