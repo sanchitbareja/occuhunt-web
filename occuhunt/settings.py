@@ -293,19 +293,14 @@ try:
     from occuhunt.settings_local import HAYSTACK_CONNECTIONS
 except Exception:
     # Django-Haystack settings - used for search and indexing
-    # HAYSTACK_CONNECTIONS = {
-    #     'default': {
-    #         'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
-    #         'URL': os.environ['SEARCHBOX_URL'],
-    #         'INDEX_NAME': 'documents',
-    #         },
-    #     }
     HAYSTACK_CONNECTIONS = {
         'default': {
             'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
-            'URL': 'http://127.0.0.1:9200/',
-            'INDEX_NAME': 'haystack',
-        },
+            'URL': os.environ['SEARCHBOX_URL'],
+            'INDEX_NAME': 'documents',
+            },
+        }
+    
     }
 
     pass # there is no local settings file
