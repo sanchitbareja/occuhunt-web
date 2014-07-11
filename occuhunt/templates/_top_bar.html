@@ -26,12 +26,12 @@
         {% if user.is_authenticated %}
         <li><a href="/events/" id="mp-viewdiscover">EVENTS</a></li>
         <li><a href="/offrhunt/">OFFRHUNT</a></li>
-        <li><a href="/plan/resume-feed/" id="mp-viewresumefeed">RESUME FEEDBACK</a></li>
-        <li><a href="/showcase/">PROFILE</a></li>
+        <li><a href="/profile/documents/">DOCUMENTS</a></li>
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{user.first_name | upper}}
             <b class="caret"></b></a>
           <ul class="dropdown-menu">
+            <li><a href="/profile/general/">Profile</a></li>
             <li><a href="/logout/" id="mp-loggedout">Logout</a></li>
             <input type="hidden" name="user_id" value="{{user.id}}" id="user_id">
           </ul>
