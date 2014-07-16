@@ -23,7 +23,7 @@ def home(request):
 
 def splash(request):
     """Splash view"""
-    return render_to_response('splash.html', {},
+    return render_to_response('homepage2.html', {},
                                   RequestContext(request))
 
 def companies(request):

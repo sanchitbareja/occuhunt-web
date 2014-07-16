@@ -83,8 +83,9 @@ def dashboard_view(request):
 
 	today = datetime.today()
 	sixMonthsAgo = today - timedelta(days=178)
+	oneWeekAgo = today - timedelta(days=7)
 	all_events = Fair.objects.filter(time_start__gt=sixMonthsAgo).order_by('-time_start')
-	upcoming_357 = Fair.objects.filter(event_type=2).order_by('-time_start')
+	upcoming_357 = Fair.objects.filter(event_type=2, time_start__gt=oneWeekAgo).order_by('-time_start')
 
 	# center of map coordinates
 	lat_avg = all_events.aggregate(Avg('location__lat'))
@@ -113,15 +114,11 @@ def preview_document(request, username, document_hash):
 	client_ip = get_client_ip(request)
 	doc = Document.objects.filter(unique_hash=document_hash, delete=False)[0]
 	links = Link.objects.filter(user__username=username, delete=False)
-	print doc.user.__dict__
-	if doc.user.username == username:
-		data_to_send = {
-			'document': doc,
-			'links': links
-		}
-		return render_to_response('profile/preview.html', data_to_send, RequestContext(request))
-	else:
-		return render_to_response('profile/preview.html', data_to_send, RequestContext(request))
+	data_to_send = {
+		'document': doc,
+		'links': links
+	}
+	return render_to_response('profile/preview.html', data_to_send, RequestContext(request))
 
 def individual_resume(request, hashstr):
 	"""Get individual resumes for sharing

@@ -24,11 +24,13 @@ from favorites.models import Favorite
 from fairs.models import Fair, Room, Map, Table, Fitting
 from users.models import User, Major, Degree, Student, Recruiter
 from applications.models import Application
+from offers.models import Offer
 from jobs.models import Job
 from notifications.models import Notification
 from documents.models import Document, Link, Visit
 from django.contrib.sessions.models import Session
 import datetime, json, random, string
+from itertools import chain
 
 class CompanyResource(ModelResource):
     class Meta:
@@ -590,6 +592,7 @@ class ApplicationResource(ModelResource):
     company = fields.OneToOneField(CompanyResource, 'company', full=True)
     job = fields.OneToOneField(JobResource, 'job', full=True, null=True)
     documents = fields.ToManyField(DocumentResource, 'documents', full=True)
+    offer = fields.BooleanField(attribute='user__offer_set__isnull',default=False)
     class Meta:
         queryset = Application.objects.all()
         resource_name = 'applications'
@@ -639,8 +642,11 @@ class ApplicationResource(ModelResource):
         """
         Return a list of applications
         """
+        print bundle.obj.user.offer_set.all()
         if bundle.request.user.is_student:
             del(bundle.data['note'])
+        if bundle.obj.user.offer_set.all().count() > 0:
+           bundle.data['offer'] = True
         return bundle
 
     def obj_create(self, bundle, **kwargs):
@@ -847,6 +853,7 @@ class ApplicationSearchResource(ModelResource):
     company = fields.OneToOneField(CompanyResource, 'company', full=True)
     job = fields.OneToOneField(JobResource, 'job', full=True, null=True)
     documents = fields.ToManyField(DocumentResource, 'documents', full=True)
+    offer = fields.BooleanField(attribute='user__offer__isnull',default=False)
     class Meta:
         queryset = Application.objects.all()
         resource_name = 'applicationsearch'
@@ -856,85 +863,186 @@ class ApplicationSearchResource(ModelResource):
         always_return_data = True
         allowed_methods = ['get']
 
+    def dehydrate(self, bundle):
+        """
+        Return a list of applications
+        """
+        if bundle.obj.user.offer_set.all().count() > 0:
+           bundle.data['offer'] = True
+        return bundle
+
     def build_filters(self, filters=None):
-        if filters is None:
-            filters = {}
+        try:
+            if filters is None:
+                filters = {}
 
-        orm_filters = super(ApplicationSearchResource, self).build_filters(filters)
+            orm_filters = super(ApplicationSearchResource, self).build_filters(filters)
 
-        # 1. tokenize skills
-        # 2. create OR query for each token
-        # The queries are ORed within a category and AND between categories
-        q_objects = Q()
-        # if "skills" in filters:
-        #     tokens = filters['skills'].split(',')
-        #     skills_q = Q(documents__description__contains=str(tokens[0]))
-        #     for token in tokens:
-        #         skills_q |= Q(documents__description__contains=str(token))
-        #     q_objects &= skills_q
-        if "schools" in filters:
-            tokens = filters['schools'].split(',')
-            schools_q = Q(user__groups__id=tokens[0])
-            for token in tokens:
-                schools_q |= Q(user__groups__id=token)
-            q_objects &= schools_q
-        if "categories" in filters:
-            tokens = filters['categories'].split(',')
-            categories_q = Q(status=tokens[0])
-            for token in tokens:
-                categories_q |= Q(status=token)
-            q_objects &= categories_q
-        # if "offers" in filters:
-        #     tokens = filters['offers'].split(',')
-        #     for token in tokens:
-        #         sqs.filter()
-        if "positions" in filters:
-            tokens = filters['positions'].split(',')
-            positions_q = Q(position=str(tokens[0]))
-            for token in tokens:
-                positions_q |= Q(position=str(token))
-            q_objects &= positions_q
-        if "majors" in filters:
-            tokens = filters['majors'].split(',')
-            majors_q = Q(user__student__major__id=tokens[0])
-            for token in tokens:
-                majors_q |= Q(user__student__major__id=token)
-            q_objects &= majors_q
-        if "degrees" in filters:
-            tokens = filters['degrees'].split(',')
-            degrees_q = Q(user__student__degree__id=token[0])
-            for token in tokens:
-                degrees_q |= Q(user__student__degree__id=token)
-            q_objects &= degrees_q
-        if "gradyears" in filters:
-            tokens = filters['gradyears'].split(',')
-            gradyears_q = Q(user__student__graduation_year=int(tokens[0]))
-            for token in tokens:
-                gradyears_q |= Q(user__student__graduation_year=int(token))
-            q_objects &= gradyears_q
-        if "notes" in filters:
-            tokens = filters['notes'].split(',')
-            if '1' in tokens and '0' not in tokens:
-                q_objects &= Q(note__gt='')
-            if '1' not in tokens and '0' in tokens:
-                q_objects &= Q(note__exact='')
+            # 1. tokenize skills
+            # 2. create OR query for each token
+            # The queries are ORed within a category and AND between categories
+            q_objects = Q()
+            if "skills" in filters:
+                # icontains is a case-insensitive containment match
+                tokens = filters['skills'].split(',')
+                skills_q = Q(documents__description__icontains=str(tokens[0]))
+                for token in tokens:
+                    skills_q |= Q(documents__description__icontains=str(token))
+                q_objects &= skills_q
+            if "schools" in filters:
+                tokens = filters['schools'].split(',')
+                schools_q = Q(user__groups__id=tokens[0])
+                for token in tokens:
+                    schools_q |= Q(user__groups__id=token)
+                q_objects &= schools_q
+            if "categories" in filters:
+                tokens = filters['categories'].split(',')
+                categories_q = Q(status=tokens[0])
+                for token in tokens:
+                    categories_q |= Q(status=token)
+                q_objects &= categories_q
+            # if "offers" in filters:
+            #     tokens = filters['offers'].split(',')
+            #     if '1' in tokens and '0' not in tokens:
+            #         q_objects &= Q(user__offer__isnull=True)
+            #     if '1' not in tokens and '0' in tokens:
+            #         q_objects &= Q(user__offer__isnull=False)
+            if "positions" in filters:
+                tokens = filters['positions'].split(',')
+                positions_q = Q(position=str(tokens[0]))
+                for token in tokens:
+                    positions_q |= Q(position=str(token))
+                q_objects &= positions_q
+            if "majors" in filters:
+                tokens = filters['majors'].split(',')
+                majors_q = Q(user__student__major__id=tokens[0])
+                for token in tokens:
+                    majors_q |= Q(user__student__major__id=token)
+                q_objects &= majors_q
+            if "degrees" in filters:
+                tokens = filters['degrees'].split(',')
+                degrees_q = Q(user__student__degree__id=token[0])
+                for token in tokens:
+                    degrees_q |= Q(user__student__degree__id=token)
+                q_objects &= degrees_q
+            if "gradyears" in filters:
+                tokens = filters['gradyears'].split(',')
+                gradyears_q = Q(user__student__graduation_year=int(tokens[0]))
+                for token in tokens:
+                    gradyears_q |= Q(user__student__graduation_year=int(token))
+                q_objects &= gradyears_q
+            if "notes" in filters:
+                tokens = filters['notes'].split(',')
+                if '1' in tokens and '0' not in tokens:
+                    q_objects &= Q(note__gt='')
+                if '1' not in tokens and '0' in tokens:
+                    q_objects &= Q(note__exact='')
 
-        print q_objects
-        # only show Application that are new (i.e. from the last 357s and those with offers that are not expired)
-        sqs = Application.objects.filter(q_objects)
+            print q_objects
+            # only show Application that are new (i.e. from the last 357s and those with offers that are not expired)            
+            sqs = Application.objects.filter(q_objects)
 
-        if "pk__in" not in orm_filters.keys():
-            orm_filters["pk__in"] = []
-        orm_filters["pk__in"] = orm_filters["pk__in"] + [i.pk for i in sqs]
+            if "pk__in" not in orm_filters.keys():
+                orm_filters["pk__in"] = []
+            orm_filters["pk__in"] = orm_filters["pk__in"] + [i.pk for i in sqs]
 
-        return orm_filters
+            return orm_filters
+        except Exception as e:
+            print e
+            raise e
 
     def authorized_read_list(self, object_list, bundle):
-        return object_list.filter(company__id=bundle.request.user.recruiter.company.id)
+        """
+        Offer Deadlines
+        (1, 'In 3 days'),
+        (2, 'In 7 days'),
+        (3, 'In 14 days'),
+        (4, 'In 28 days'),
+        (5, 'I have time')
+        """
+        #  separate those with offers and those without offers
+        # 1. for those with offers - no filtering
+        # 2. for those without offers, filters based on company
+        # 3. merge both lists and that is teh final lists
+        one_month_ago = datetime.datetime.now() - datetime.timedelta(days=30)
+        with_offers = object_list.filter(user__offer__isnull=False, user__offer__timestamp__gt=one_month_ago)
+        without_offers = object_list.exclude(id__in=with_offers)
+        without_offers = without_offers.filter(company__id=bundle.request.user.recruiter.company.id)
+
+        print with_offers.count()
+        print without_offers.count()
+
+        result_list = with_offers | without_offers
+        result_list = result_list.distinct('user')
+        return result_list
 
     def alter_list_data_to_serialize(self, request, data):
         # rename "objects" to "applications"
         data['response'] = {"applications":data["objects"]}
+        del(data["objects"])
+        return data
+
+    def determine_format(self, request):
+        return 'application/json'
+
+class OfferResource(ModelResource):
+    user = fields.OneToOneField(UserResource, 'user', full=True)
+    company_from = fields.OneToOneField(CompanyResource, 'company_from', full=True)
+    class Meta:
+        queryset = Offer.objects.all()
+        resource_name = 'offers'
+        authorization = DjangoAuthorization()
+        authentication = SessionAuthentication()
+        limit = 100
+        always_return_data = False
+        allowed_methods = ['get','post']
+        filtering = {
+            "user": ("exact"), "company_from": ("exact")
+        }
+
+    def dehydrate(self, bundle):
+        """
+        Return a list of offers
+        """
+        return bundle
+
+    def obj_create(self, bundle, **kwargs):
+        """
+        Creates a new offer
+        """
+        try:
+            print 1
+            # need to have user, salary_range, company and offer_deadline at minimum
+            user = bundle.request.user
+            company_from_text = bundle.data['company_from_text']
+            salary_range = bundle.data['salary_range']
+            offer_deadline = bundle.data['offer_deadline']
+
+            print 2
+            # check if have multiple offers
+            number_of_offers = 1
+            # check if have interested_in_startups
+            interested_in_startups = True
+            # check if have interested_in_corps
+            interested_in_corps = True
+            # check if have companies_interested_in
+            companies_interested_in = bundle.data['companies_interested_in']
+
+            print 3
+
+            new_offer = Offer(user=user, company_from_text=company_from_text, number_of_offers=number_of_offers, salary_range=salary_range, offer_deadline=offer_deadline, interested_in_startups=interested_in_startups, interested_in_corps=interested_in_corps, companies_considering=companies_interested_in)
+            print new_offer
+            new_offer.save()
+            print 4
+            bundle.obj = new_offer
+        except Exception, e:
+            print e
+            raise e
+        return bundle
+
+    def alter_list_data_to_serialize(self, request, data):
+        # rename "objects" to "hunts"
+        data['response'] = {"hunts":data["objects"]}
         del(data["objects"])
         return data
 

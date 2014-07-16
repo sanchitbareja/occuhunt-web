@@ -4,7 +4,7 @@ from companies.views import home, splash, companies, company, search, search_que
 from resumes.views import resume_feed, sign_s3_upload, submit_resume, individual_resume
 from jobs.views import favorites, apply_jobs, match_jobs
 from notifications.views import showcase_notifications, showcase_applications
-from fairs.views import create_fair, all_events, career_fair_handler, infosession_handler, three_five_seven_handler, threefiveseven_handler, StartupCareerFairSpring2014View, ISchoolInfoCampView, PBLCareerFairSpring2014View, Dropin357View, Dropin3572View, Dropin3573View, GestureKitInfosession15April2014View
+from fairs.views import create_fair, all_events, career_fair_handler, infosession_handler, three_five_seven_handler, StartupCareerFairSpring2014View, ISchoolInfoCampView, PBLCareerFairSpring2014View, Dropin357View, Dropin3572View, Dropin3573View, GestureKitInfosession15April2014View
 from recruiters.views import recruiter_splash, recruiter_hire, recruiter_market, recruiter_sell, recruiter_sponsorship_request, download_pdf, recruiter_login, recruiter_login_third_party, recruiter_analytics, download_excel_to_export
 from offers.views import offrhunt_handler
 from documents.views import dashboard_view, documents_view, preview_document
@@ -18,7 +18,7 @@ admin.autodiscover()
 
 # API
 from tastypie.api import Api
-from api.apiv2 import CompanyResource, UserResource, FairResource, JobResource, NotificationResource, ApplicationResource, DocumentResource, LinkResource, VisitResource, ApplicationSearchResource
+from api.apiv2 import CompanyResource, UserResource, FairResource, JobResource, NotificationResource, ApplicationResource, DocumentResource, LinkResource, VisitResource, ApplicationSearchResource, OfferResource
 from api.views import logout_view, login_error, feedback_form
 
 v2_api = Api(api_name='v2')
@@ -32,6 +32,7 @@ v2_api.register(DocumentResource())
 v2_api.register(LinkResource())
 v2_api.register(VisitResource())
 v2_api.register(ApplicationSearchResource())
+v2_api.register(OfferResource())
 
 urlpatterns = patterns('',
     url(r'^$', splash, name='splash'),
@@ -121,8 +122,6 @@ urlpatterns = patterns('',
     url(r'^profile/documents/$', documents_view, name='documents_view'),
     url(r'^profile/general/$', preference_view, name='preference_view'),
     url(r'^document/([A-Za-z0-9_-]+)/([A-Za-z0-9_-]+)/$', preview_document, name='preview_document'),
-    url(r'^357v2/([0-9]+)/$', threefiveseven_handler, name="three_five_seven_handler"),
-    url(r'^homepage/$', TemplateView.as_view(template_name="homepage2.html")),
     url(r'^rhomepage/$', TemplateView.as_view(template_name="recruiter/recruiter_splash2.html")),
     url(r'^search-companies/$', search_query, name='search_companies'),
 

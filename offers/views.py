@@ -26,21 +26,17 @@ def offrhunt_handler(request):
 			return render_to_response('base/offrhunt_template.html', {'resume_url':False, 'time_now':time_now}, RequestContext(request))
 		else:
 			current_offer = Offer.objects.filter(user=request.user)
-			resume = Document.objects.filter(user=request.user, document_type=1).order_by('-timestamp')
+			resumes = Document.objects.filter(user=request.user, document_type=1, delete=False)
+			cvs = Document.objects.filter(user=request.user, document_type=2, delete=False)
+			portfolios = Document.objects.filter(user=request.user, document_type=3, delete=False)
 			majors = Major.objects.all()
 			degree_types = Degree.objects.all()
 			if len(current_offer) > 0:
 				current_offer = True
 			else:
 				current_offer = False
-			if len(resume) > 0:
-				# if user has a resume - yay!
-				resume = resume[0]
-				return render_to_response('base/offrhunt_template.html', {'resume_url':resume.url, 'majors':majors, 'degree_types':degree_types, 'time_now':time_now, 'current_offer': current_offer}, RequestContext(request))
-			else:
-				# if user doesn't have a resume on file, boo :(
-				resume = None
-				return render_to_response('base/offrhunt_template.html', {'resume_url':False, 'majors':majors, 'degree_types':degree_types, 'time_now':time_now, 'current_offer': current_offer}, RequestContext(request))
+
+			return render_to_response('base/offrhunt_template.html', {'resumes': resumes, 'cvs': cvs, 'portfolios': portfolios, 'majors':majors, 'degree_types':degree_types, 'time_now':time_now, 'current_offer': current_offer}, RequestContext(request))
 	except Exception as e:
 		print e
 		raise Http404()

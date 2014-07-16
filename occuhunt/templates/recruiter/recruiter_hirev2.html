@@ -9,6 +9,20 @@
 <script src="{% static 'occuhunt/js/custom-form-elements.js' %}"></script>
 <script src="{% static 'underscore/underscore-min.js' %}"></script>
 
+<style type="text/css">
+
+.has-offer {
+  position: absolute;
+  display: inline;
+  top: 15px;
+  right: 10px;
+  border-radius: 5px;
+  height: 10px;
+  width: 10px;
+  background: #fe6f00;
+}
+</style>
+
 {% endblock %}
 
 {% block extra_script %}
@@ -281,8 +295,15 @@ function get_candidates() {
             for (var j = 0; j < positions_list.length; j++){
               positions = positions.concat(' <span class="label label-success">'+positions_list[j]+'</span>');
             }
-            $("#candidate_list").append('<a id="applicant_list_id_'+data['response']['applications'][i]['id']+'" onclick="get_candidate('+data['response']['applications'][i]['id']+')" class="list-group-item application_status_'+data['response']['applications'][i]['status']+'">'+data['response']['applications'][i]['user']['first_name']+' '+data['response']['applications'][i]['user']['last_name']+'</a>');
+            if(data['response']['applications'][i]['offer']){
+              $("#candidate_list").append('<a id="applicant_list_id_'+data['response']['applications'][i]['id']+'" onclick="get_candidate('+data['response']['applications'][i]['id']+')" class="list-group-item application_status_'+data['response']['applications'][i]['status']+'">'+data['response']['applications'][i]['user']['first_name']+' '+data['response']['applications'][i]['user']['last_name']+'<div class="has-offer" data-toggle="tooltip" data-placement="left" title="Has an offer"></div></a>');
+            } else {
+              $("#candidate_list").append('<a id="applicant_list_id_'+data['response']['applications'][i]['id']+'" onclick="get_candidate('+data['response']['applications'][i]['id']+')" class="list-group-item application_status_'+data['response']['applications'][i]['status']+'">'+data['response']['applications'][i]['user']['first_name']+' '+data['response']['applications'][i]['user']['last_name']+'</a>');
+            }
           };
+
+          // enable tooltip
+          $('.has-offer').tooltip();
 
           // auto-select the first candidate
           next_application(true);
@@ -621,7 +642,6 @@ $(document).ready(function() {
         <li><a onclick="add_category(2, this);">Talked To</a></li>
         <li><a onclick="add_category(3, this);">Rejected</a></li>
         <li><a onclick="add_category(4, this);">Interview</a></li>
-        <li><a onclick="add_category(5, this);">Attendees</a></li>
       </ul>
     </div>
 
@@ -761,7 +781,7 @@ $(document).ready(function() {
       <a data-toggle="dropdown" href="#" style="color:white; font-family:'Proxima Nova'; font-size:15px;">Notes <b class="caret"></b></a>
       </button>
       <ul class="dropdown-menu" id="note_filter" role="menu">
-        <li><a onclick="add_note(1, this);">Have Notes</a></li>
+        <li><a onclick="add_note(1, this);">Has Notes</a></li>
         <li><a onclick="add_note(0, this);">No Notes</a></li>
       </ul>
     </div>
