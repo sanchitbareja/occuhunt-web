@@ -1,0 +1,618 @@
+{% extends "base.html" %}
+{% load static from staticfiles %}
+{% load i18n %}
+{% load url from future %}
+
+{% block head_title_base %}357{% endblock %}
+
+
+{% block extra_style %}
+<link href="{% static 'occuhunt/css/index.css' %}" rel="stylesheet">
+<link href="{% static 'occuhunt/css/jquery.countdown.css' %}" rel="stylesheet" >
+<link href="{% static 'occuhunt/css/apply.css' %}" rel="stylesheet">
+<!-- <link href="{% static 'occuhunt/css/svg-grid.css' %}" rel="stylesheet"> -->
+<style type="text/css">
+/* jQuery Countdown styles 2.0.0. */
+.is-countdown {
+  border: 0px solid #ccc;
+  background-color: #fff;
+}
+.countdown-rtl {
+  direction: rtl;
+}
+.countdown-holding span {
+  color: #888;
+}
+.countdown-row {
+  clear: both;
+  width: 100%;
+  padding: 0px 2px;
+  text-align: center;
+}
+.countdown-show1 .countdown-section {
+  width: 98%;
+}
+.countdown-show2 .countdown-section {
+  width: 48%;
+}
+.countdown-show3 .countdown-section {
+  width: 32.5%;
+}
+.countdown-show4 .countdown-section {
+  width: 24.5%;
+}
+.countdown-show5 .countdown-section {
+  width: 19.5%;
+}
+.countdown-show6 .countdown-section {
+  width: 16.25%;
+}
+.countdown-show7 .countdown-section {
+  width: 14%;
+}
+.countdown-section {
+  display: block;
+  float: left;
+  font-size: 75%;
+  text-align: center;
+}
+.countdown-amount {
+    font-size: 200%;
+}
+.countdown-period {
+    display: block;
+}
+.countdown-descr {
+  display: block;
+  width: 100%;
+}
+
+.countdown-time {
+  display: block;
+  width: 100%;
+  color: rgb(170, 186, 204);
+  font-size: 35px;
+  font-family: "Proxima Nova";
+  font-weight: 300;
+  line-height: 1em;
+  margin-bottom: 60px;
+}
+
+.main-357 {
+  display: block;
+  color: rgb(51, 136, 144);
+  font-size: 85px;
+  font-family: "Proxima Nova";
+  font-weight: 400;
+  margin: 0px;
+  padding: 0px;
+  line-height: 1em;
+}
+
+.description-357 {
+  display: block;
+  width: 100%;
+  color: black;
+  font-size: 18px;
+  font-family: "Proxima Nova";
+  font-weight: 300;
+  line-height: 1em;
+  margin-bottom: 5px;
+}
+
+.company-block {
+  display: block;
+  width: 100%;
+  background: rgb(240, 247, 247);
+  border: 1px solid #e4e4e4;
+  padding: 10px;
+}
+
+.company-block > .company-logo {
+  width: 100%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.company-block > h4 {
+  font-size: 15px;
+  font-family: "Proxima Nova";
+  font-weight: 500;
+  line-height: 1em;
+}
+
+.company-block > p {
+  font-size: 13px;
+}
+
+.squeeze-margin {
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+h3 {
+  font-weight: 400;
+}
+
+
+</style>
+
+{% endblock %}
+
+{% block extra_script %}
+<script src="{% static 'occuhunt/js/snap.svg-min.js' %}"></script>
+<script src="{% static 'occuhunt/js/jquery.plugin.js' %}"></script>
+<script src="{% static 'occuhunt/js/jquery.countdown.js' %}"></script>
+<script type="text/javascript">
+  mixpanel.track_links("#mp-viewjobs", "Clicked on view jobs from modal in fair page", {'referrer': document.referrer });
+  $(document).ready(function(){
+    // enable tooltip for all the resume drops
+    $(".resume_drop").tooltip();
+
+    // check which companies user had already applied to and markk them as applied accordingly
+    getApplications();
+
+    // getCompanies();
+    $('*[data-poload]').on("click", function() {
+      var e = $(this);
+      mixpanel.track('Viewed company popup from Fair Page');
+      $.ajax({
+          url: '/api/v1/companies/'+e.data('poload')+'/',
+          data: {},
+          dataType: 'json',
+          success: function(data, textStatus, jqXHR){
+            console.log(data);
+            e.unbind("click").popover({
+              html:true,
+              trigger: 'click',
+              container: $(this).attr('id'),
+              title:"<a class='btn-link pull-left' onclick='closeModal("+data['id']+")'><b>X</b></a><h3 class='text-center'>"+data["name"]+"</h3><a class='btn-link' id='modal-plus' onclick='favoriteCompanyWithId("+data['id']+",this, null);' style='right:17px; top:10px;position:absolute; float:right; '><span class='glyphicon glyphicon-plus'></span></a>",
+              content:"<div class='popover-company-info'><img id='background_banner' src='"+data["banner_image"]+"'/><img id='foreground_banner' src='"+data['logo']+"'><p>"+data["company_description"].slice(0,140)+"...</p><div><a class='btn btn-done' style='display:inline-block; margin-right:10px;' id='mp-viewjobs' href='/company/"+data['id']+" /'>VIEW JOBS</a><a class='btn btn-danger' id='resume_drop_"+data['id']+"' style='display:inline-block;' value='"+data['id']+"' name='"+data['name']+"'>DROP RESUME</a></div></div>"
+            }).popover("show");
+
+            $('#resume_drop_'+data['id']+'').on("click", function() {
+              var e = $(this);
+              var company_id = $(this).attr("value");
+              var user_id = $("#user_id").val();
+              var fair_id = $("#fair_id").val();
+              var company_name = $(this).attr("name")
+              $("#company_id").attr('value',company_id);
+              
+              // show the modal with appropriate text
+              $(".companyTitle").text(company_name);
+              $("#resumeDropModal").modal("show");
+
+            });
+
+          },
+      });
+    });
+
+    $('#resume_drop').on("click", function() {
+      console.log("hello");
+      var e = $(this);
+      var company_id = $(this).attr("value");
+      var user_id = $("#user_id").val();
+      var fair_id = $("#fair_id").val();
+      var company_name = $(this).attr("name")
+      $("#company_id").attr('value',company_id);
+      
+      // show the modal with appropriate text
+      $(".companyTitle").text(company_name);
+      $("#resumeDropModal").modal("show");
+
+    });
+
+    $('.resume_drop_btn').on("click", function() {
+      var e = $(this);
+      var company_id = $(this).attr("value");
+      var user_id = $("#user_id").val();
+      var fair_id = $("#fair_id").val();
+      var company_name = $(this).attr("name")
+      $("#company_id").attr('value',company_id);
+      
+      // show the modal with appropriate text
+      $(".companyTitle").text(company_name);
+      $("#resumeDropModal").modal("show");
+
+    });
+
+    $("#submitResumeDrop").on("click", function() {      
+      var user_id = $("#user_id").val();
+      var fair_id = $("#fair_id").val();
+      var company_id = $("#company_id").val();
+      var position = $("#companyPosition").val().join();
+      console.log(position);
+
+      // save user preferences
+      // get major
+      var majors = $("#studentMajor").val();
+      // get graduation year
+      var grad_year = $("#studentGradYear").val();
+      // get degree type
+      var degree_type = $("#studentDegree").val();
+      // save all of these preferences
+      console.log(majors);
+      console.log(grad_year);
+      console.log(degree_type);
+
+      // hide modal
+      $("#resumeDropModal").modal("hide");
+
+      // submit resume
+      if($("#resume_enabled").val() == 'False'){
+        $("#messages").append('<div class="alert alert-danger alert-dismissable">'+
+                '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'+
+                'Oops! You need to be logged in or have your resume uploaded to drop your resume with the employers!'+
+              '</div>');
+      } else {
+        resumeDrop(user_id, company_id, fair_id, position, majors, grad_year, degree_type); 
+      }
+    });
+
+    // enable countdown
+  var austDay = new Date();
+  austDay = new Date({{event.fair.time_end|date:"Y"}}, {{event.fair.time_end|date:"n"}}-1, {{event.fair.time_end|date:"j"}});
+  $('#defaultCountdown').countdown({until: austDay, format: 'HMS', compact:true, description:'Countdown', layout: '<p class="countdown-time">{hnn}{sep}{mnn}{sep}{snn} </p> '});
+  $('#year').text(austDay.getFullYear());
+
+  });
+
+  function closeModal(id){
+    $('[data-poload='+id+']').click();
+  }
+
+  function resumeDrop(user_id, company_id, fair_id, position, majors, grad_year, degree_type){
+    console.log("CONFIRMED");
+    
+    // new applications
+    $.ajax({
+        url: '/api/v1/applications/',
+        type:'POST',
+        dataType: 'json',
+        data: JSON.stringify({
+          'user_id': user_id, 
+          'company_id': company_id,
+          'fair_id': fair_id,
+          'position': position,
+          'status': 1,
+          'majors':majors,
+          'grad_year': grad_year,
+          'degree_type': degree_type
+        }),
+        contentType: 'application/json',
+        statusCode : {
+          201: function(data, textStatus, jsXHR){
+            console.log("successfully dropped resume!");
+            console.log(data);
+            console.log(textStatus);
+            console.log(jsXHR);
+            console.log($(this));
+            // feedback on the small dot that the resume has been submitted
+            // disable clicking
+            $("button.resume_drop_btn[value="+data['company']['id']+"]").attr("disabled",true);
+            $("button.resume_drop_btn[value="+data['company']['id']+"]").text('Applied');
+
+            // give confirmation message about successful resume submission
+            $("#messages").append('<div class="alert alert-success alert-dismissable">'+
+              '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'+
+              'Good job! You <strong>successfully</strong> dropped off your resume at '+data['company']['name']+'!'+
+            '</div>');
+          },
+          500: function(data, textStatus, jsXHR){
+            console.log(data);
+            console.log(textStatus);
+            console.log(jsXHR);
+            // give confirmation message about successful resume submission
+            $("#messages").append('<div class="alert alert-danger alert-dismissable">'+
+              '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'+
+              'Oops! You need to be logged in or have your resume uploaded to drop your resume with the employers!'+
+            '</div>');
+          },
+          404: function(data, textStatus, jsXHR){
+            console.log(data);
+            console.log(textStatus);
+            console.log(jsXHR);
+            // give confirmation message about successful resume submission
+            $("#messages").append('<div class="alert alert-danger alert-dismissable">'+
+              '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'+
+              'Oops! You need to be logged in or have your resume uploaded to drop your resume with the employers!'+
+            '</div>');
+          }
+        }
+      });
+    
+    // if the student has offers
+    var company_from_text_val = $("#companyFromText").val();
+    var salary_range_val = $("#currentOfferSalaryRange").val();
+    var offer_deadline_val = $("#currentOfferDeadline").val();
+    if(company_from_text_val && salary_range_val && offer_deadline_val){
+      $.ajax({
+        url: '/api/v1/offers/',
+        type: 'POST',
+        dataType: 'json',
+        data: JSON.stringify({
+          'user_id': user_id,
+          'company_from_text': company_from_text_val,
+          'salary_range': salary_range_val,
+          'offer_deadline': offer_deadline_val,
+          'companies_interested_in': company_id
+        }),
+        contentType: 'application/json',
+        statusCode: {
+          201: function(data, textStatus, jsXHR) {
+          },
+          500: function(data, textStatus, jsXHR) {
+          },
+          404: function(data, textStatus, jsXHR) {
+          }
+        }
+      });
+    }
+
+  }
+
+  function getApplications(){
+    user_id = $("#user_id").val();
+    fair_id = $("#fair_id").val();
+    console.log("get applications");
+    $.ajax({
+      url: '/api/v1/applications/?user='+String(user_id)+'&fair='+String(fair_id),
+      type: 'GET',
+      contentType: 'application/json',
+      dataType: 'json',
+      processData: false,
+      success: function(data, textStatus, jqXHR) {
+        console.log(data);
+        console.log(textStatus);
+        console.log(jqXHR);
+        for (var i = data['response']['applications'].length - 1; i >= 0; i--) {
+
+          // disable clicking
+          $("button.resume_drop_btn[value="+data['response']['applications'][i]['company']['id']+"]").attr("disabled",true);
+          $("button.resume_drop_btn[value="+data['response']['applications'][i]['company']['id']+"]").text('Applied');
+        }
+      },
+      dataType: 'json',
+    });
+  }
+
+  $(window).bind('scroll resize', function() {
+      $('#filter_bar').css('top', $(this).scrollTop());
+  });
+
+</script>
+
+{% endblock %}
+
+{% block content %}
+<input type="hidden" name="fair_id" value="{{event.fair.id}}" id="fair_id">
+<input type="hidden" name="company_id" value="0" id="company_id">
+<input type="hidden" name="resume_enabled" value="{{resume_url}}" id="resume_enabled">
+
+  <!-- Main content - 357 -->
+  <div id="messages">
+    {% if event.fair.time_end < time_now or event.fair.time_start > time_now %}
+    <div class="alert alert-success alert-dismissable">
+      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+      Resume drop is now closed!
+    </div>
+    {% endif %}
+    {% if event.fair.time_end > time_now and event.fair.time_start < time_now %}
+    <div class="alert alert-success alert-dismissable">
+      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+      Apply to these companies directly and get a response in 7 days!
+    </div>
+    {% endif %}
+  </div>
+  <div class="row">
+    <div class="col-lg-5">
+      <p class="main-357 text-right">357</p>
+    </div>
+    <div class="col-lg-5">
+      <p class="description-357" style="margin-top:8px;"><b>3</b> days to drop your resumes</p>
+      <p class="description-357"><b>5</b> stellar companies</p>
+      <p class="description-357"><b>7</b> days guaranteed response time from the company</p>
+    </div>
+    <div class="col-lg-2">
+      <div id="defaultCountdown"></div>
+      <p style="top:-60px; color:rgb(40, 126, 144); display:block; position:relative;">COUNTDOWN</p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-12">
+      <div><img src="http://docsend-marketing.s3.amazonaws.com/occuhunt/DocSend_logo.png"></div>
+      <div><img src="http://s3.amazonaws.com/crunchbase_prod_assets/assets/images/resized/0014/9253/149253v4-max-250x250.png"></div>
+      <div><img src="http://s3.amazonaws.com/crunchbase_prod_assets/assets/images/resized/0001/0836/10836v12-max-450x450.png"></div>
+      <div><img src="http://www.teksystems.com/~/media/Images/Branding/TEKsystems-logo.ashx"></div>
+      <div><img src="http://s3.amazonaws.com/crunchbase_prod_assets/assets/images/resized/0014/9253/149253v4-max-250x250.png"></div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-1"></div>
+    {% for company in event.companies.all %}
+    <div class="col-lg-2 text-center squeeze-margin">
+      <h3 class="text-center">{{company.name}}</h3>
+      <div class="company-block">
+          <img class="company-logo" src="{{company.logo}}">
+          <h4>DESCRIPTION</h4>
+          <p class="company-description">
+            {{company.company_description}}
+          </p>
+          <a href='/company/{{company.id}}/' class="btn btn-md btn-done">More</a>
+          <hr>
+          <h4>LOOKING FOR</h4>
+          <p class="company-positions">
+            {% for job in company.job_set.all %}
+            - {{job.name}}<br />
+            {% endfor %}
+            <br />
+          </p>
+          <button class='btn btn-md btn-danger resume_drop_btn' value='{{company.id}}' name='{{company.name}}'>DROP RESUME</button>
+        </div>
+    </div>
+    {% endfor %}
+  </div>
+  <br />
+  <div class="row">
+    <div class="col-lg-12">
+      <h2>357 - a weekly event</h2>
+      <p>
+        Every week (Mon-Wed or Tues-Thurs - 3 days), Occuhunt will showcase 5 companies that are serious about looking for interns/full-time employees. These companies will respond back within 7 days (before the following Wed/Thurs).
+
+        <br />
+
+        If you like our 357s, feel free to contact us and host one by your organization. Or, if you're a company that wish to be featured, contact us and we'll work something out for you!
+      </p>
+      <h2>Need feedback on your resume?</h2>
+      <p>
+        We've built something for you to get genuine feedback from your peers. Check out <a href='http://occuhunt.com/plan/resume-feed/'>http://occuhunt.com/plan/resume-feed/</a>
+      </p>
+    </div>
+  </div>
+
+<div class="modal fade" id="resumeDropModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel"></h4>
+
+        <h4 class="modal-title" id="category_header">Resme Drop to <span class="companyTitle"></span></h4>
+        <h5 id="category_subheader">This is your final step. Be sure to check it before submitting!</h5>
+      </div>
+      <div class="modal-body">
+        {% if not request.user.is_anonymous %}
+        <label>Tell us about your current offer! (optional)</label>
+        <div class="row">
+          <div class="col-lg-5">
+            <input class="form-control" type="text" placeholder="Company" id="companyFromText">
+          </div>
+          <div class="col-lg-4">
+            <select class="form-control" id="currentOfferSalaryRange">
+              <option value="1">20k-30k</option>
+              <option value="2">30k-40k</option>
+              <option value="3">40k-50k</option>
+              <option value="4">50k-60k</option>
+              <option value="5">60k-70k</option>
+              <option value="6">70k-80k</option>
+              <option value="7">80k-100k</option>
+              <option value="8">100k-120k</option>
+              <option value="9">120k-140k</option>
+              <option value="10">140k-160k</option>
+              <option value="11">160k-180k</option>
+              <option value="12">180k-200k</option>
+              <option value="13">200k-250k</option>
+              <option value="14">250k+</option>
+              <option value="15">I do not wish to disclose</option>
+            </select>
+          </div>
+          <div class="col-lg-3">
+            <select class="form-control" id="currentOfferDeadline">
+              <option value="1">In 3 days</option>
+              <option value="2">In 7 days</option>
+              <option value="3">In 14 days</option>
+              <option value="4">In 28 days</option>
+              <option value="5">I have time </option>
+            </select>
+          </div>
+        </div>
+        <span class="help-block">This will not be shared with employers or anyone. It's strictly private and not read by anyone.</span>
+        <div class="row">
+          <div class="col-lg-12">
+            <h4>Which positions are you interested in with <span class="companyTitle"></span>?</h4>
+            <div class="row">
+              <div class="col-lg-12">
+                <select multiple size="8" class="form-control" id="companyPosition" style="width:100%">
+                  <option>Software Engineering</option>
+                  <option>Product Manager</option>
+                  <option>UI/UX Engineering</option>
+                  <option>Marketing</option>
+                  <option>Business Development</option>
+                  <option>Growth Hacker</option>
+                  <option>Accountant</option>
+                  <option>Other</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <br />
+        <div class="row">
+          <div class="col-lg-5">
+            <label>Major</label>
+            <select multiple size="8" class="form-control" id="studentMajor" style="width:100%">
+              {% for major in majors %}
+                {% if major in request.user.student.major.all %}
+                  <option value="{{major.id}}" selected>{{major.major}}</option>
+                {% else %}
+                  <option value="{{major.id}}">{{major.major}}</option>
+                {% endif %}
+              {% endfor %}
+            </select>
+          </div>
+          <div class="col-lg-4">
+            <label>Degree Type</label>
+            <select class="form-control" id="studentDegree">
+              <option value=""></option>
+              {% for degree_type in degree_types %}
+                {% if request.user.student.degree.id == degree_type.id %}
+                  <option value="{{degree_type.id}}" selected>{{degree_type.degree}}</option>
+                {% else %}
+                  <option value="{{degree_type.id}}">{{degree_type.degree}}</option>
+                {% endif %}
+              {% endfor %}
+            </select>
+          </div>
+          <div class="col-lg-3">
+            <label>Graduation Year</label>
+            {% if request.user.student.graduation_year %}
+              <input type="text" class="input-text" placeholder="Graduation Year" id="studentGradYear" value="{{request.user.student.graduation_year}}">
+            {% else %}
+              <input type="text" class="input-text" placeholder="2015" id="studentGradYear" value="">
+            {% endif %}
+          </div>
+        </div>
+        <br />
+        {% endif %}
+        <div class="row">
+          <div class="col-lg-12">
+            <h4>Resume</h4>
+            {% if request.user.is_anonymous %}
+              <div class="thumbnail">
+                <img src="{% static 'images/example-resume.png' %}">
+                <div class="caption text-center">
+                  <p><a href="/login/linkedin/?next={{request.path}}" class="btn btn-login" style="font-weight:500;">LOG IN</a></p>
+                  <p>Login to activate Resume Drop</p>
+                </div>
+              </div>
+            {% else %}
+              {% if resume_url %}
+                <div class="thumbnail">
+                  <img src="{{resume_url}}" alt="Resume">
+                  <div class="caption text-center">
+                    <p><a href="/showcase/" class="btn btn-done" role="button">Edit Profile</a></p>
+                  </div>
+                </div>
+              {% else %}
+                <div class="thumbnail">
+                  <img src="{% static 'images/example-resume.png' %}" alt="Resume">
+                  <div class="caption text-center">
+                    <p><a href="/showcase/" class="btn btn-done" role="button">Add Resume</a></p>
+                    <p>We don't have your resume on file. Upload it to be able to drop them off at the various recruiters</p>
+                  </div>
+                </div>
+              {% endif %}
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-done" id="submitResumeDrop">Resume Drop</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

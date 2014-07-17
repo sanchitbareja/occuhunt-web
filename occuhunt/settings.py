@@ -2,7 +2,7 @@
 import os.path
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 
-DEBUG = False
+DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -155,12 +155,11 @@ INSTALLED_APPS = (
     'fairs',
     'jobs',
     'resumes',
-    'recommendations',
-    'hunts',
     'applications',
     'recruiters',
     'notifications',
-    'offers'
+    'offers',
+    'documents'
 )
 
 # A sample logging configuration. The only tangible logging
@@ -299,5 +298,4 @@ except Exception:
             'INDEX_NAME': 'documents',
             },
         }
-
     pass # there is no local settings file

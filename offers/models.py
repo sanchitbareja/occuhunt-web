@@ -2,7 +2,6 @@ from django.db import models
 from users.models import User
 from fairs.models import Fair
 from companies.models import Company
-from hunts.models import Hunt
 from resumes.models import Resume
 from jobs.models import Job
 

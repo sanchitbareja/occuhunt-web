@@ -6,25 +6,30 @@
 {% block head_title %} - Get Ready for Your Next Job{% endblock %}
 
 {% block extra_style %}
-
+<link href="{% static 'occuhunt/css/profile.css' %}" rel="stylesheet">
+<link href="{% static 'occuhunt/css/357.css' %}" rel="stylesheet">
 <style type="text/css">
 
+.popover-content{
+  padding: 0px;.
+}
+
 .bold-statement {
-  font-size: 100px;
+  font-size: 70px;
   padding-top: 20px;
   padding-bottom: 0px;
-  font-weight: 500;
-  color: white;
+  font-weight: 300;
+  color: #035d67;
   line-height: 1;
   margin-bottom: 0px;
 }
 
 .quote-statement {
-  font-size: 27px;
+  font-size: 18px;
   padding-top: 0px;
   padding-bottom: 20px;
   font-weight: 400;
-  color: rgb(200,200,200);
+  color: #035d67;
   line-height: 1;
   margin-bottom: 0;
 }
@@ -41,124 +46,120 @@
 
 body {
   height:100%;
-  background: url('http://thecodeplayer.com/uploads/media/gs.png');
-  background: linear-gradient(rgba(196, 102, 0, 0.2), rgba(155, 89, 182, 0.2)), url('http://thecodeplayer.com/uploads/media/gs.png');
 }
 
-/*form styles*/
-#msform {
-  width: 60%;
-  margin: 20px auto;
-  text-align: center;
-  position: relative;
+.cbp_tmtimeline {
+    margin: 30px 0 0 0;
+    padding: 0;
+    list-style: none;
+    position: relative;
+} 
+ 
+/* The line */
+.cbp_tmtimeline:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 10px;
+    background: #70aab0;
+    left: 20%;
+    margin-left: -10px;
 }
-#msform fieldset {
-  background: white;
-  border: 0 none;
-  border-radius: 3px;
-  box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.4);
-  padding: 20px 30px;
-  
-  box-sizing: border-box;
-  width: 80%;
-  margin: 0 10%;
-  
-  /*stacking fieldsets above each other*/
-  position: absolute;
+ 
+.cbp_tmtimeline > li {
+    position: relative;
 }
-/*Hide all except first fieldset*/
-#msform fieldset:not(:first-of-type) {
-  display: none;
+ 
+/* The date/time */
+.cbp_tmtimeline > li .cbp_tmtime {
+    display: block;
+    width: 25%;
+    padding-right: 100px;
+    position: absolute;
 }
-/*inputs*/
-#msform input, #msform textarea {
-  padding: 15px;
-  border: 1px solid #ccc;
-  border-radius: 3px;
-  margin-bottom: 10px;
-  width: 100%;
-  box-sizing: border-box;
-  color: #2C3E50;
-  font-size: 13px;
+ 
+.cbp_tmtimeline > li .cbp_tmtime span {
+    display: block;
+    text-align: right;
 }
-/*buttons*/
-#msform .action-button {
-  width: 100px;
-  background: #70aab0;
-  font-weight: bold;
-  color: white;
-  border: 0 none;
-  border-radius: 1px;
-  cursor: pointer;
-  padding: 10px 5px;
-  margin: 10px 5px;
+ 
+.cbp_tmtimeline > li .cbp_tmtime span:first-child {
+    font-size: 0.9em;
+    color: #70aab0;
 }
-#msform .action-button:hover, #msform .action-button:focus {
-  box-shadow: 0 0 0 2px white, 0 0 0 3px #70aab0;
+ 
+.cbp_tmtimeline > li .cbp_tmtime span:last-child {
+    font-size: 2.9em;
+    color: #70aab0;
 }
-/*headings*/
-.fs-title {
-  font-size: 15px;
-  text-transform: uppercase;
-  color: #2C3E50;
-  margin-bottom: 10px;
+ 
+.cbp_tmtimeline > li:nth-child(odd) .cbp_tmtime span:last-child {
+    color: #70aab0;
 }
-.fs-subtitle {
-  font-weight: normal;
-  font-size: 13px;
-  color: #666;
-  margin-bottom: 20px;
+ 
+/* Right content */
+.cbp_tmtimeline > li .cbp_tmlabel {
+    margin: 0 0 15px 25%;
+    background: #348891;
+    color: #fff;
+    padding: 2em;
+    font-size: 1.2em;
+    font-weight: 300;
+    line-height: 1.4;
+    position: relative;
+    border-radius: 5px;
+    width: 60%;
+    text-align: center;
 }
-/*progressbar*/
-#progressbar {
-  margin-bottom: 30px;
-  overflow: hidden;
-  /*CSS counters to number the steps*/
-  counter-reset: step;
+ 
+.cbp_tmtimeline > li:nth-child(odd) .cbp_tmlabel {
+    background: #005f69;
 }
-#progressbar li {
-  list-style-type: none;
-  color: white;
-  text-transform: uppercase;
-  font-size: 9px;
-  width: 30%;
-  float: left;
-  position: relative;
+ 
+.cbp_tmtimeline > li .cbp_tmlabel h2 { 
+    margin-top: 0px;
+    padding: 0 0 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.4);
 }
-#progressbar li:before {
-  content: counter(step);
-  counter-increment: step;
-  width: 20px;
-  line-height: 20px;
-  display: block;
-  font-size: 10px;
-  color: #333;
-  background: white;
-  border-radius: 3px;
-  margin: 0 auto 5px auto;
+ 
+/* The triangle */
+.cbp_tmtimeline > li .cbp_tmlabel:after {
+    right: 100%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+    border-right-color: #348891;
+    border-width: 10px;
+    top: 10px;
 }
-/*progressbar connectors*/
-#progressbar li:after {
-  content: '';
-  width: 100%;
-  height: 2px;
-  background: white;
-  position: absolute;
-  left: -50%;
-  top: 9px;
-  z-index: -1; /*put it behind the numbers*/
+ 
+.cbp_tmtimeline > li:nth-child(odd) .cbp_tmlabel:after {
+    border-right-color: #005f69;
 }
-#progressbar li:first-child:after {
-  /*connector not needed before the first step*/
-  content: none; 
+ 
+/* The icons */
+.cbp_tmtimeline > li .cbp_tmicon {
+    width: 80px;
+    height: 80px;
+    font-size: 60px;
+    line-height: 80px;
+    -webkit-font-smoothing: antialiased;
+    position: absolute;
+    color: #fff;
+    background: #70aab0;
+    border-radius: 50%;
+    box-shadow: 0 0 0 8px #70aab0;
+    text-align: center;
+    left: 20%;
+    top: 0;
+    margin: 0 0 0 -45px;
 }
-/*marking active/completed steps green*/
-/*The number of the step and the connector before it = green*/
-#progressbar li.active:before,  #progressbar li.active:after{
-  background: #70aab0;
-  color: white;
-}
-
+ 
+ 
 </style>
 
 {% endblock %}
@@ -170,79 +171,35 @@ body {
 <script type="text/javascript">
 
 $(document).ready(function(){
-  //jQuery time
-  var current_fs, next_fs, previous_fs; //fieldsets
-  var left, opacity, scale; //fieldset properties which we will animate
-  var animating; //flag to prevent quick multi-click glitches
+  // enable preview of resume
+  $(".document_preview_btn").popover();
 
-  $(".next").click(function(){
-    if(animating) return false;
-    animating = true;
-    
-    current_fs = $(this).parent();
-    next_fs = $(this).parent().next();
-    
-    //activate next step on progressbar using the index of next_fs
-    $("#progressbar li").eq($("fieldset").index(next_fs)).addClass("active");
-    
-    //show the next fieldset
-    next_fs.show(); 
-    //hide the current fieldset with style
-    current_fs.animate({opacity: 0}, {
-      step: function(now, mx) {
-        //as the opacity of current_fs reduces to 0 - stored in "now"
-        //1. scale current_fs down to 80%
-        scale = 1 - (1 - now) * 0.2;
-        //2. bring next_fs from the right(50%)
-        left = (now * 50)+"%";
-        //3. increase opacity of next_fs to 1 as it moves in
-        opacity = 1 - now;
-        current_fs.css({'transform': 'scale('+scale+')'});
-        next_fs.css({'left': left, 'opacity': opacity});
-      }, 
-      duration: 800, 
-      complete: function(){
-        current_fs.hide();
-        animating = false;
-      }, 
-      //this comes from the custom easing plugin
-      easing: 'easeInOutBack'
-    });
+ // highlight resume on select
+  var selected_resume = null;
+  var selected_cv = null;
+  var selected_docs = [];
+  $("input[name=resumeSelect]").change(function () {
+    new_selected_resume = $(this).val();
+    $("#documentSelect_"+new_selected_resume).parent().parent().css("border", "2px solid #005469");
+    $("#documentSelect_"+selected_resume).parent().parent().css("border", "0px");
+    selected_resume = new_selected_resume;
   });
-
-  $(".previous").click(function(){
-    if(animating) return false;
-    animating = true;
-    
-    current_fs = $(this).parent();
-    previous_fs = $(this).parent().prev();
-    
-    //de-activate current step on progressbar
-    $("#progressbar li").eq($("fieldset").index(current_fs)).removeClass("active");
-    
-    //show the previous fieldset
-    previous_fs.show(); 
-    //hide the current fieldset with style
-    current_fs.animate({opacity: 0}, {
-      step: function(now, mx) {
-        //as the opacity of current_fs reduces to 0 - stored in "now"
-        //1. scale previous_fs from 80% to 100%
-        scale = 0.8 + (1 - now) * 0.2;
-        //2. take current_fs to the right(50%) - from 0%
-        left = ((1-now) * 50)+"%";
-        //3. increase opacity of previous_fs to 1 as it moves in
-        opacity = 1 - now;
-        current_fs.css({'left': left});
-        previous_fs.css({'transform': 'scale('+scale+')', 'opacity': opacity});
-      }, 
-      duration: 800, 
-      complete: function(){
-        current_fs.hide();
-        animating = false;
-      }, 
-      //this comes from the custom easing plugin
-      easing: 'easeInOutBack'
-    });
+  $("input[name=cvSelect]").change(function () {
+    new_selected_cv = $(this).val();
+    $("#documentSelect_"+new_selected_cv).parent().parent().css("border", "2px solid #005469");
+    $("#documentSelect_"+selected_cv).parent().parent().css("border", "0px");
+    selected_cv = new_selected_cv;
+  });
+  $("input[name=documentSelect]").change(function () {
+    new_checkbox_sel = $(this).val();
+    sel_index = _.indexOf(selected_docs, new_checkbox_sel)
+    if(sel_index > -1) {
+      selected_docs.splice(sel_index, 1);
+      $("#documentSelect_"+new_checkbox_sel).parent().parent().css("border", "0px");
+    } else {
+      selected_docs.push(new_checkbox_sel);
+      $("#documentSelect_"+new_checkbox_sel).parent().parent().css("border", "2px solid #005469");
+    }
   });
 
   $(".submit").click(function(){
@@ -250,7 +207,9 @@ $(document).ready(function(){
     var user_id = $("#user_id").val();
     var fair_id = $("#fair_id").val();
     var company_id = $("#company_id").val();
-    var position = $("#companyPosition").val().join();
+    var position = $("input[name=companyPosition]:checked").map(function() {
+      return $(this).val();
+    }).get().join();
     console.log(position);
 
     // save user preferences
@@ -269,98 +228,107 @@ $(document).ready(function(){
     if($("#resume_enabled").val() == 'False'){
       alert('Oops! You need to be logged in or have your resume uploaded to drop your resume with the employers!');
     } else {
-      resumeDrop(user_id, company_id, fair_id, position, majors, grad_year, degree_type);
+      resumeDrop(selected_resume, selected_cv, selected_docs, company_id, fair_id, position, majors, grad_year, degree_type);
     }
     return false;
   });
 
-  function resumeDrop(user_id, company_id, fair_id, position, majors, grad_year, degree_type){
-    console.log("CONFIRMED");
-    
-    // new applications
+});
+
+function resumeDrop(selected_resume, selected_cv, selected_docs, company_id, fair_id, position, majors, grad_year, degree_type){
+  console.log("CONFIRMED");
+  
+  // new applications
+  $.ajax({
+    url: '/api/v2/applications/',
+    type:'POST',
+    dataType: 'json',
+    data: JSON.stringify({
+      'company_id': company_id,
+      'fair_id': fair_id,
+      'resume': selected_resume,
+      'cv': selected_cv,
+      'docs': selected_docs,
+      'position': position,
+      'status': 1,
+      'majors':majors,
+      'grad_year': grad_year,
+      'degree_type': degree_type
+    }),
+    contentType: 'application/json',
+    statusCode : {
+      201: function(data, textStatus, jsXHR){
+        console.log("successfully dropped resume!");
+        console.log(data);
+        console.log(textStatus);
+        console.log(jsXHR);
+        console.log($(this));
+        // hide everything and show success message
+        $("#msform").hide();
+        $("#messages").append('<div class="row">'+
+          '<div class="col-lg-2"></div>'+
+          '<div class="col-lg-8 text-center">'+
+            '<p class="quote-statement">We\'ve received your current offer. Please wait a couple of days before we get back to you! Do send us feedback at occuhunt@gmail.com or call us at 510-612-7328 if you need any assistance. Thanks!</p>'+
+          '</div>'+
+          '<div class="col-lg-2"></div>'+
+        '</div>');
+      },
+      500: function(data, textStatus, jsXHR){
+        console.log(data);
+        console.log(textStatus);
+        console.log(jsXHR);
+        // give confirmation message about failed resume submission
+        alert('Oops! You need to be logged in or have your resume uploaded to drop your resume with the employers!');
+      },
+      404: function(data, textStatus, jsXHR){
+        console.log(data);
+        console.log(textStatus);
+        console.log(jsXHR);
+        // give confirmation message about failed resume submission
+        alert('Oops! You need to be logged in or have your resume uploaded to drop your resume with the employers!');
+      }
+    }
+  });
+  
+  // if the student has offers
+  var company_from_text_val = $("#companyFromText").val();
+  var salary_range_val = $("input[name=currentOfferSalaryRange]:checked").val();
+  var offer_deadline_val = $("input[name=currentOfferDeadline]:checked").val();
+  var companies_interested_in_val = $("#companiesInterestedIn").val();
+  if(company_from_text_val && salary_range_val && offer_deadline_val && companies_interested_in_val){
     $.ajax({
-      url: '/api/v1/applications/',
-      type:'POST',
+      url: '/api/v2/offers/',
+      type: 'POST',
       dataType: 'json',
       data: JSON.stringify({
-        'user_id': user_id, 
-        'company_id': company_id,
-        'fair_id': fair_id,
-        'position': position,
-        'status': 1,
-        'majors':majors,
-        'grad_year': grad_year,
-        'degree_type': degree_type
+        'company_from_text': company_from_text_val,
+        'salary_range': salary_range_val,
+        'offer_deadline': offer_deadline_val,
+        'companies_interested_in': companies_interested_in_val
       }),
       contentType: 'application/json',
-      statusCode : {
-        201: function(data, textStatus, jsXHR){
-          console.log("successfully dropped resume!");
-          console.log(data);
-          console.log(textStatus);
-          console.log(jsXHR);
-          console.log($(this));
-          // hide everything and show success message
-          $("#msform").hide();
-          $("#messages").append('<div class="row">'+
-            '<div class="col-lg-2"></div>'+
-            '<div class="col-lg-8 text-center">'+
-              '<p class="quote-statement">We\'ve received your current offer. Please wait a couple of days before we get back to you! Do send us feedback at occuhunt@gmail.com or call us at 510-612-7328 if you need any assistance. Thanks!</p>'+
-            '</div>'+
-            '<div class="col-lg-2"></div>'+
-          '</div>');
+      statusCode: {
+        201: function(data, textStatus, jsXHR) {
         },
-        500: function(data, textStatus, jsXHR){
-          console.log(data);
-          console.log(textStatus);
-          console.log(jsXHR);
-          // give confirmation message about failed resume submission
-          alert('Oops! You need to be logged in or have your resume uploaded to drop your resume with the employers!');
+        500: function(data, textStatus, jsXHR) {
         },
-        404: function(data, textStatus, jsXHR){
-          console.log(data);
-          console.log(textStatus);
-          console.log(jsXHR);
-          // give confirmation message about failed resume submission
-          alert('Oops! You need to be logged in or have your resume uploaded to drop your resume with the employers!');
+        404: function(data, textStatus, jsXHR) {
         }
       }
     });
-    
-    // if the student has offers
-    var company_from_text_val = $("#companyFromText").val();
-    var salary_range_val = $("#currentOfferSalaryRange").val();
-    var offer_deadline_val = $("#currentOfferDeadline").val();
-    var companies_interested_in_val = $("#companiesInterestedIn").val();
-    if(company_from_text_val && salary_range_val && offer_deadline_val && companies_interested_in_val){
-      $.ajax({
-        url: '/api/v1/offers/',
-        type: 'POST',
-        dataType: 'json',
-        data: JSON.stringify({
-          'user_id': user_id,
-          'company_from_text': company_from_text_val,
-          'salary_range': salary_range_val,
-          'offer_deadline': offer_deadline_val,
-          'companies_interested_in': companies_interested_in_val
-        }),
-        contentType: 'application/json',
-        statusCode: {
-          201: function(data, textStatus, jsXHR) {
-          },
-          500: function(data, textStatus, jsXHR) {
-          },
-          404: function(data, textStatus, jsXHR) {
-          }
-        }
-      });
-    } else {
-      alert("Oops! You've not missed something. Please check and try again.");
-    }
-
+  } else {
+    alert("Oops! You've not missed something. Please check and try again.");
   }
 
-});
+}
+
+function searchCompanies(text){
+
+}
+
+function searchResults(text){
+  
+}
 
 </script>
 
@@ -369,33 +337,35 @@ $(document).ready(function(){
 
 {% block full_content %}
 
-<input type="hidden" name="fair_id" value="19" id="fair_id">
+<input type="hidden" name="fair_id" value="1" id="fair_id">
 <input type="hidden" name="company_id" value="672" id="company_id">
-<input type="hidden" name="resume_enabled" value="{{resume_url}}" id="resume_enabled">
 
 <div class="row">
-  <div class="col-lg-2"></div>
-  <div class="col-lg-8 text-center">
+  <div class="col-lg-12 text-center">
     <p class="bold-statement">OffrHunt</p>
     <p class="quote-statement">Your leverage in job negotiation</p>
     <!-- <img style="width:400px;" src="{% static 'images/multiple_offers.png' %}"> -->
-    <p class="explanation-statement">Have you ever been forced to accept a job offer because of lack of choice? You were not sure if you could have gotten more (and possibly better) offers? OffrHunt uses your current offer as a leverage in getting recruiters to respond quickly. If a company is interested in you, they'll most likely call you for their final round of interview (as opposed to going through three or four rounds) before deciding to extend an offer to you. This program is currently in beta so things may break but we'll do our best to improve over time. Thanks!</p>
   </div>
-  <div class="col-lg-2"></div>
+</div>
+
+<div class="row">
+  <div class="col-lg-12 text-center">
+    <p class="quote-statement">Leverage your current job offer and potentially receive more from competing companies looking to hire people in your field.</p>
+    <!-- <img style="width:400px;" src="{% static 'images/multiple_offers.png' %}"> -->
+  </div>
 </div>
 
 <div id="messages"></div>
 
 {% if current_offer %}
-<div class="row">
+<!-- <div class="row">
   <div class="col-lg-2"></div>
   <div class="col-lg-8 text-center">
     <p class="quote-statement">We've received your current offer. Please wait a couple of days before we get back to you! Do send us feedback at occuhunt@gmail.com or call us at 510-612-7328 if you need any assistance. Thanks!</p>
   </div>
   <div class="col-lg-2"></div>
 </div>
-
-{% else %}
+ -->
   {% if request.user.is_anonymous %}
   <div class="row">
     <div class="col-lg-2"></div>
@@ -405,173 +375,226 @@ $(document).ready(function(){
     <div class="col-lg-2"></div>
   </div>
   {% else %}
-  <!-- multistep form -->
-  <form id="msform">
-    <!-- progressbar -->
-    <ul id="progressbar">
-      <li class="active">Current Offer</li>
-      <li>Companies Of Interest</li>
-      <li>Final Check</li>
-    </ul>
-    <!-- fieldsets -->
-    <fieldset>
-      <h2 class="fs-title">Current Offer</h2>
-      <h3 class="fs-subtitle">This is completely private and confidential</h3>
-      <label>Company</label>
-      <input type="text" name="companyOffer" id="companyFromText" placeholder="Company" />
-      <br />
-      <label>Offer Range</label>
-      <select class="form-control input-lg" style="width:100%;" id="currentOfferSalaryRange">
-        <option value="1">20k-30k</option>
-        <option value="2">30k-40k</option>
-        <option value="3">40k-50k</option>
-        <option value="4">50k-60k</option>
-        <option value="5">60k-70k</option>
-        <option value="6">70k-80k</option>
-        <option value="7">80k-100k</option>
-        <option value="8">100k-120k</option>
-        <option value="9">120k-140k</option>
-        <option value="10">140k-160k</option>
-        <option value="11">160k-180k</option>
-        <option value="12">180k-200k</option>
-        <option value="13">200k-250k</option>
-        <option value="14">250k+</option>
-        <option value="15">I do not wish to disclose</option>
-      </select>
-      <br />
-      <label>Deadline to reply by?</label>
-      <select class="form-control input-lg" style="width:100%;" id="currentOfferDeadline">
-        <option value="1">In 3 days</option>
-        <option value="2">In 7 days</option>
-        <option value="3">In 14 days</option>
-        <option value="4">In 28 days</option>
-        <option value="5">I have time </option>
-      </select>
-      <br />
-      <input type="button" name="next" class="next action-button" value="Next" />
-    </fieldset>
-    <fieldset>
-      <h2 class="fs-title">Companies Of Interest</h2>
-      <h3 class="fs-subtitle">Which companies do you want to consider applying to? Seperate them by commas (,). We've partnered with companies like Greylock, Dropbox, TubeMogul and etc. Name any company you are interested in and we'll make the connection for you!</h3>
-      <textarea class="form-control" id="companiesInterestedIn">
-      </textarea>
-      <input type="button" name="previous" class="previous action-button" value="Previous" />
-      <input type="button" name="next" class="next action-button" value="Next" />
-    </fieldset>
-    <fieldset>
-      <h2 class="fs-title">Final Check</h2>
-      <h3 class="fs-subtitle">Check your resume and details!</h3>
-      <label>Major</label>
-      <select multiple size="8" class="form-control" id="studentMajor" style="width:100%">
-        {% for major in majors %}
-          {% if major in request.user.student.major.all %}
-            <option value="{{major.id}}" selected>{{major.major}}</option>
-          {% else %}
-            <option value="{{major.id}}">{{major.major}}</option>
-          {% endif %}
-        {% endfor %}
-      </select>
 
-      <br />
-      <label>Job Interest</label>
-      <select multiple size="8" class="form-control" id="companyPosition" style="width:100%">
-        <option>Software Engineering</option>
-        <option>Product Manager</option>
-        <option>UI/UX Engineering</option>
-        <option>Marketing</option>
-        <option>Business Development</option>
-        <option>Growth Hacker</option>
-        <option>Accountant</option>
-        <option>Other</option>
-      </select>
+  <div class="row">
+    <div class="col-lg-12">
+      <ul class="cbp_tmtimeline">
+          <li>
+              <div class="cbp_tmicon">1</div>
+              <div class="cbp_tmlabel">
+                  <h2>What's your current offer?</h2>
+                  <p>
+                    <label for="companyFromText">Company</label>
+                    <input type="text" name="companyOffer" id="companyFromText" placeholder="Company" class="form-control" style="width:100%;"/>
+                    <br />
+                    <label>Offer Range</label>
+                    <div class="btn-group" data-toggle="buttons">
+                      <label class="btn btn-default">
+                        <input type="radio" name="currentOfferSalaryRange" id="option1" value="1"> 20k<br />30k
+                      </label>
+                      <label class="btn btn-default">
+                        <input type="radio" name="currentOfferSalaryRange" id="option2" value="2"> 30k<br />40k
+                      </label>
+                      <label class="btn btn-default">
+                        <input type="radio" name="currentOfferSalaryRange" id="option3" value="3"> 40k<br />50k
+                      </label>
+                      <label class="btn btn-default">
+                        <input type="radio" name="currentOfferSalaryRange" id="option4" value="4"> 50k<br />60k
+                      </label>
+                      <label class="btn btn-default">
+                        <input type="radio" name="currentOfferSalaryRange" id="option5" value="5"> 60k<br />70k
+                      </label>
+                      <label class="btn btn-default">
+                        <input type="radio" name="currentOfferSalaryRange" id="option6" value="6"> 70k<br />80k
+                      </label>
+                      <label class="btn btn-default">
+                        <input type="radio" name="currentOfferSalaryRange" id="option7" value="7"> 80k<br />100k
+                      </label>
+                      <label class="btn btn-default">
+                        <input type="radio" name="currentOfferSalaryRange" id="option8" value="8"> 100k<br />120k
+                      </label>
+                      <label class="btn btn-default">
+                        <input type="radio" name="currentOfferSalaryRange" id="option9" value="9"> 120k<br />140k
+                      </label>
+                      <label class="btn btn-default">
+                        <input type="radio" name="currentOfferSalaryRange" id="option10" value="10"> 140k<br />160k
+                      </label>
+                      <label class="btn btn-default">
+                        <input type="radio" name="currentOfferSalaryRange" id="option11" value="11"> 160k<br />+
+                      </label>
+                      <label class="btn btn-default">
+                        <input type="radio" name="currentOfferSalaryRange" id="option12" value="12"> Can't<br />tell
+                      </label>
+                    </div>
+                    <br />
+                    <br />
+                    <label>Deadline to reply by?</label><br />
+                    <div class="btn-group" data-toggle="buttons">
+                      <label class="btn btn-default">
+                        <input type="radio" name="currentOfferDeadline" id="option1" value="1"> In 3 days
+                      </label>
+                      <label class="btn btn-default">
+                        <input type="radio" name="currentOfferDeadline" id="option2" value="2"> In 7 days
+                      </label>
+                      <label class="btn btn-default">
+                        <input type="radio" name="currentOfferDeadline" id="option3" value="3"> In 14 days
+                      </label>
+                      <label class="btn btn-default">
+                        <input type="radio" name="currentOfferDeadline" id="option4" value="4"> In 28 days
+                      </label>
+                      <label class="btn btn-default">
+                        <input type="radio" name="currentOfferDeadline" id="option5" value="5"> I have time
+                      </label>
+                    </div>
+                  </p>
+              </div>
+          </li>
+          <li>
+              <div class="cbp_tmicon">2</div>
+              <div class="cbp_tmlabel">
+                  <h2>Which companies are you interested in?</h2>
+                  <p>
+                    <p>Which companies do you want to consider applying to? Seperate them by commas (,). We've partnered with companies like Greylock, Dropbox, TubeMogul and etc. Name any company you are interested in and we'll make the connection for you!</p>
+                    <textarea class="form-control" id="companiesInterestedIn" style="width:100%; height:100px;">
+                    </textarea>
+                  </p>
+              </div>
+          </li>
+          <li>
+              <div class="cbp_tmicon">3</div>
+              <div class="cbp_tmlabel">
+                  <h2>Final Check</h2>
+                  <p>
+                    <div class="row">
+                      <div class="col-lg-12">
+                        <label>Which positions are you interested in?</label>
+                        <div class="row">
+                          <div class="col-lg-4"><input type="checkbox" name="companyPosition" value="Software Engineering">&nbsp;Software Engineering</div>
+                          <div class="col-lg-4"><input type="checkbox" name="companyPosition" value="Product Manager">&nbsp;Product Manager</div>
+                          <div class="col-lg-4"><input type="checkbox" name="companyPosition" value="UI/UX Engineering">&nbsp;UI/UX Engineering</div>
+                          <div class="col-lg-4"><input type="checkbox" name="companyPosition" value="Marketing">&nbsp;Marketing</div>
+                          <div class="col-lg-4"><input type="checkbox" name="companyPosition" value="Business Development">&nbsp;Business Development</div>
+                          <div class="col-lg-4"><input type="checkbox" name="companyPosition" value="Growth Hacker">&nbsp;Growth Hacker</div>
+                          <div class="col-lg-4"><input type="checkbox" name="companyPosition" value="Accountant">&nbsp;Accountant</div>
+                          <div class="col-lg-4"><input type="checkbox" name="companyPosition" value="Other">&nbsp;Other</div>
+                        </div>
+                      </div>
+                    </div>
+                    <br />
+                    <!-- Pick your documents -->
+                    <div class="row">
+                      <div class="col-lg-4">
+                        <label>Resumes</label>
+                        <ul class="documents" id="resumes">
+                          {% for resume in resumes %}
+                          <li class="document">
+                            <div class="document_image_bg" style="background: url({{resume.image_url}}); background-size: 68px 108px; height:108px; width: 68px; display:block;">
+                              <div class="document_preview_div">
+                                <button class="btn btn-done btn-sm document_preview_btn" data-toggle="popover" data-placement="bottom" data-html="true" data-content="<img src='{{resume.image_url}}' >">View</button>
+                              </div>
+                              <div class="document_select_div">
+                                <input class="document_select_radio" type="radio" name='resumeSelect' value='{{resume.id}}' id="documentSelect_{{resume.id}}"/>
+                                <label class="btn btn-danger btn-sm document_select_label" for="documentSelect_{{resume.id}}">Select</label>
+                              </div>
+                            </div>
+                          </li>
+                          {% endfor %}
+                        </ul>
+                      </div>
+                      <div class="col-lg-4">
+                        <label>Cover Letters</label>
+                        <ul class="documents" id="cvs">
+                          {% for cv in cvs %}
+                          <li class="document">
+                            <div class="document_image_bg" style="background: url({{cv.image_url}}); background-size: 68px 108px; height:108px; width: 68px; display:block;">
+                              <div class="document_preview_div">
+                                <button class="btn btn-done btn-sm document_preview_btn" data-toggle="popover" data-placement="bottom" data-html="true" data-content="<img src='{{cv.image_url}}' >">View</button>
+                              </div>
+                              <div class="document_select_div">
+                                <input class="document_select_radio" type="radio" name='cvSelect' value='{{cv.id}}' id="documentSelect_{{cv.id}}"/>
+                                <label class="btn btn-danger btn-sm document_select_label" for="documentSelect_{{cv.id}}">Select</label>
+                              </div>
+                            </div>
+                          </li>
+                          {% endfor %}
+                        </ul>
+                      </div>
+                      <div class="col-lg-4">
+                        <label>Additional Docs</label>
+                        <ul class="documents" id="portfolio">
+                          {% for portfolio in portfolios %}
+                          <li class="document">
+                            <div class="document_image_bg" style="background: url({{portfolio.image_url}}); background-size: 68px 108px; height:108px; width: 68px; display:block;">
+                              <div class="document_preview_div">
+                                <button class="btn btn-done btn-sm document_preview_btn" data-toggle="popover" data-placement="bottom" data-html="true" data-content="<img src='{{portfolio.image_url}}' >">View</button>
+                              </div>
+                              <div class="document_select_div">
+                                <input class="document_select_radio" type="checkbox" name='documentSelect' value='{{portfolio.id}}' id="documentSelect_{{portfolio.id}}"/>
+                                <label class="btn btn-danger btn-sm document_select_label" for="documentSelect_{{portfolio.id}}">Select</label>
+                              </div>
+                            </div>
+                          </li>
+                          {% endfor %}
+                        </ul>
+                      </div>
+                    </div>
 
-      <br />
-      <label>Degree Type</label>
-      <select class="form-control" style="width:100%;" id="studentDegree">
-        <option value=""></option>
-        {% for degree_type in degree_types %}
-          {% if request.user.student.degree.id == degree_type.id %}
-            <option value="{{degree_type.id}}" selected>{{degree_type.degree}}</option>
-          {% else %}
-            <option value="{{degree_type.id}}">{{degree_type.degree}}</option>
-          {% endif %}
-        {% endfor %}
-      </select>
+                    <br />
+                    <div class="additionalInfoDiv">
+                   
+                      <!-- Additional Info - Major, Degree, Grad Date -->
+                      <div class="row">
+                        <div class="col-lg-4">
+                          <label>Major</label>
+                          <select multiple size="8" class="form-control" id="studentMajor" style="width:100%">
+                            {% for major in majors %}
+                              {% if major in request.user.student.major.all %}
+                                <option value="{{major.id}}" selected>{{major.major}}</option>
+                              {% else %}
+                                <option value="{{major.id}}">{{major.major}}</option>
+                              {% endif %}
+                            {% endfor %}
+                          </select>
+                        </div>
+                        <div class="col-lg-4">
+                          <label>Degree Type</label>
+                          <select class="form-control" id="studentDegree">
+                            <option value=""></option>
+                            {% for degree_type in degree_types %}
+                              {% if request.user.student.degree.id == degree_type.id %}
+                                <option value="{{degree_type.id}}" selected>{{degree_type.degree}}</option>
+                              {% else %}
+                                <option value="{{degree_type.id}}">{{degree_type.degree}}</option>
+                              {% endif %}
+                            {% endfor %}
+                          </select>
+                        </div>
+                        <div class="col-lg-4">
+                          <label>Graduation Year</label>
+                          {% if request.user.student.graduation_year %}
+                            <input type="text" class="input-text" placeholder="Graduation Year" id="studentGradYear" value="{{request.user.student.graduation_year}}">
+                          {% else %}
+                            <input type="text" class="input-text" placeholder="2015" id="studentGradYear" value="">
+                          {% endif %}
+                        </div>
+                      </div>
+                    </div>
+                  </p>
+                  <button class="submit btn btn-danger btn-lg">Submit</button>
+              </div>
+          </li>
+      </ul>
+    </div>
+  </div>
 
-      <br />
-      <label>Graduation Year</label>
-      {% if request.user.student.graduation_year %}
-        <input type="text" class="input-text" style="width:100%;" placeholder="Graduation Year" id="studentGradYear" value="{{request.user.student.graduation_year}}">
-      {% else %}
-        <input type="text" class="input-text" placeholder="2015" id="studentGradYear" value="">
-      {% endif %}
+  <div class="row">
+    <div class="col-lg-12 text-center">
+      <img src="{% static 'images/companies-example.jpg' %}">
+    </div>
+  </div>
 
-      <label>Resume</label>
-      {% if request.user.is_anonymous %}
-        <div class="thumbnail">
-          <img src="{% static 'images/example-resume.png' %}">
-          <div class="caption text-center">
-            <p><a href="/login/linkedin/?next={{request.path}}" class="btn btn-login" style="font-weight:500;">LOG IN</a></p>
-            <p>Login to activate Resume Drop</p>
-          </div>
-        </div>
-      {% else %}
-        {% if resume_url %}
-          <div class="thumbnail">
-            <img src="{{resume_url}}" alt="Resume">
-            <div class="caption text-center">
-              <p><a href="/showcase/" class="btn btn-done" role="button">Edit Profile</a></p>
-            </div>
-          </div>
-        {% else %}
-          <div class="thumbnail">
-            <img src="{% static 'images/example-resume.png' %}" alt="Resume">
-            <div class="caption text-center">
-              <p><a href="/showcase/" class="btn btn-done" role="button">Add Resume</a></p>
-              <p>We don't have your resume on file. Upload it to particapte in OffrHunt</p>
-            </div>
-          </div>
-        {% endif %}
-      {% endif %}
-
-      <input type="button" name="previous" class="previous action-button" value="Previous" />
-      {% if request.user.is_anonymous %}
-      {% else %}
-        {% if resume_url %}
-          <input type="submit" name="submit" class="submit action-button" value="Submit" />
-        {% endif %}
-      {% endif %}
-    </fieldset>
-  </form>
   {% endif %}
-
 {% endif %}
-
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
 
 {% endblock %}
 

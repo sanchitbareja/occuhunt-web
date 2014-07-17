@@ -1,13 +1,15 @@
 import logging
 
 from django.http import HttpResponse
-from django.contrib.auth.models import AnonymousUser, User
+from django.contrib.auth.models import AnonymousUser
 from django.utils import timezone
 
 from tastypie.authentication import Authentication
+from users.models import User
 
 import provider.oauth2
 from provider.oauth2.models import AccessToken
+from django.contrib.sessions.models import Session
 
 """
 This is a simple OAuth 2.0 authentication model for tastypie
@@ -27,7 +29,6 @@ class OAuthError(RuntimeError):
     """Generic exception class."""
     def __init__(self, message='OAuth error occured.'):
         self.message = message
-
 
 class OAuth20Authentication(Authentication):
     """
@@ -91,3 +92,101 @@ def verify_access_token(key):
 
     logging.info('Valid access')
     return token
+
+class SessionAuthentication(Authentication):
+    """
+    Authentication by using the session id
+
+    This Authentication method checks for a provided HTTP_AUTHORIZATION
+    and looks up to see if this is a vlid Session Token
+    """
+    def __init__(self, realm='API'):
+        self.realm = realm
+
+    def is_authenticated(self, request, **kwargs):
+        """
+        Verify session request. Parameters accepted as
+        values in "Authorization" header, or as a GET request
+        or in a POST body.
+        """
+        logging.info("SessionAuthentication")
+
+        try:
+            key = request.GET.get('session_key')
+            if not key:
+                key = request.POST.get('session_key')
+            if not key:
+                auth_header_value = request.META.get('HTTP_AUTHORIZATION')
+                if auth_header_value:
+                    key = auth_header_value.split(' ')[1]
+            if not key:
+                logging.error('SessionAuthentication. No session_key found.')
+                return None
+            """
+            If verify_access_token() does not pass, it will raise an error
+            """
+            session = Session.objects.get(session_key=key)
+            uid = session.get_decoded().get('_auth_user_id')
+            user = User.objects.get(pk=uid)
+
+            request.user = user
+
+            return True
+        except KeyError, e:
+            logging.exception("Error in SessionAuthentication.")
+            request.user = AnonymousUser()
+            return False
+        except Exception, e:
+            logging.exception("Error in SessionAuthentication.")
+            return False
+        return True
+
+class RecruiterAuthentication(Authentication):
+    """
+    Authentication by using the session id
+
+    This Authentication method checks for a provided HTTP_AUTHORIZATION
+    and looks up to see if this is a vlid Session Token
+    """
+    def __init__(self, realm='API'):
+        self.realm = realm
+
+    def is_authenticated(self, request, **kwargs):
+        """
+        Verify session request. Parameters accepted as
+        values in "Authorization" header, or as a GET request
+        or in a POST body.
+        """
+        logging.info("SessionAuthentication")
+
+        try:
+            key = request.GET.get('session_key')
+            if not key:
+                key = request.POST.get('session_key')
+            if not key:
+                auth_header_value = request.META.get('HTTP_AUTHORIZATION')
+                if auth_header_value:
+                    key = auth_header_value.split(' ')[1]
+            if not key:
+                logging.error('SessionAuthentication. No session_key found.')
+                return None
+            """
+            If verify_access_token() does not pass, it will raise an error
+            """
+            session = Session.objects.get(session_key=key)
+            uid = session.get_decoded().get('_auth_user_id')
+            user = User.objects.get(pk=uid)
+
+            if user.is_recruiter or user.is_superuser:
+                request.user = user
+                return True
+            else:
+                return False
+        except KeyError, e:
+            logging.exception("Error in SessionAuthentication.")
+            request.user = AnonymousUser()
+            return False
+        except Exception, e:
+            logging.exception("Error in SessionAuthentication.")
+            return False
+        return True

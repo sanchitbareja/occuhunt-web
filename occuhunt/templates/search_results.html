@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% load static from staticfiles %}
+{% load i18n %}
+{% load url from future %}
+
+{% block head_title_base %}Discover Companies{% endblock %}
+
+{% block extra_style %}
+<link href="{% static "occuhunt/css/companies-list.css" %}" rel="stylesheet">
+<link href="{% static "occuhunt/css/companies-favoriting.css" %}" rel="stylesheet">
+
+<style type="text/css">
+
+body {
+    -webkit-font-smoothing: antialiased;
+    font-smoothing: antialiased;
+    font-smooth: always;
+}
+
+.active{
+  border-right: 2px solid #005f69;
+  font-weight: bold;
+  -webkit-box-shadow: inset 0 0px 0px rgba(0, 0, 0, 0.125) !important;
+  box-shadow: inset 0 0px 0px rgba(0, 0, 0, 0.125) !important;
+}
+
+.active:hover {
+  border-right: 2px solid #005f69;
+  font-weight: bold;
+  -webkit-box-shadow: inset 0 0px 0px rgba(0, 0, 0, 0.125) !important;
+  box-shadow: inset 0 0px 0px rgba(0, 0, 0, 0.125) !important;
+}
+
+</style>
+
+
+{% endblock %}
+
+{% block extra_script %}
+<script src="{% static "occuhunt/js/companies-search.js" %}"></script>
+{% endblock %}
+
+{% block content %}
+
+<div class="row text-center page-header-section">
+  <h1 style="color:black; padding-bottom:10px;">Companies</h1>
+</div>
+
+<div class="row">
+  <div class="col-lg-12">
+    <div class="row" id="companies_list">
+      {% if companies %}
+        {% for company in companies %}
+        <div class="col-lg-2 no-margin" id="company_info">
+          <div class="thumbnail" id="company_thumbnail">
+            <a id="company_thumbnail_logo" href="/company/{{company.id}}/"><img id="company_thumbnail_logo" src="{{company.logo}}"></a>
+          </div>
+          <div id="company_thumbnail_favorite">
+            <a class="btn-link" onclick="considerCompanyWithId({{company.id}});"><span class="glyphicon glyphicon-plus" style="font-size:1em;"></span>Considering {{company.name}}</a>
+          </div>
+        </div>
+        {% endfor %}
+      {% else %}
+        <h2>No companies found :(</h2>
+        <img style="width:100%" src="http://modernmixing.com/wp-content/uploads/2011/01/Baby-scratching-his-head.jpg">
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<br />
+
+{% endblock %}

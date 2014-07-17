@@ -6,6 +6,10 @@
 
     S3Upload.prototype.s3_sign_put_url = '/signS3put';
 
+    S3Upload.prototype.file_dom_class = '';
+
+    S3Upload.prototype.file_number = 0;
+
     S3Upload.prototype.file_dom_selector = 'file_upload';
 
     S3Upload.prototype.file_data = null;
@@ -30,7 +34,11 @@
       if(this.file_data){
         this.handleDataUpload(this.file_data);
       } else {
-        this.handleFileSelect(document.getElementById(this.file_dom_selector));        
+        if(this.file_dom_class){
+          this.handleFileSelect(document.getElementsByClassName(this.file_dom_class)[this.file_number]);
+        } else {
+          this.handleFileSelect(document.getElementById(this.file_dom_selector));
+        }
       }
     }
 

@@ -66,6 +66,15 @@ typeof d?c=b[d]=[]:d="mixpanel";c.people=c.people||[];c.toString=function(b){var
 b._i.push([a,e,d])};b.__SV=1.2}})(document,window.mixpanel||[]);
 mixpanel.init("a84e2f34f22d01f012b63767216f0853");</script>
             <!-- end Mixpanel -->
+
+            <!-- Authorization Headers -->
+            <script type="text/javascript">
+              $.ajaxSetup({
+                headers: {
+                  Authorization: 'Token {{request.session.session_key}}'
+                }
+              });
+            </script>
             {% block extra_script %}{% endblock %}
         {% endblock %}
     </head>
@@ -84,6 +93,10 @@ mixpanel.init("a84e2f34f22d01f012b63767216f0853");</script>
       <input type="hidden" name="recruiter_id" value="{{recruiter_id}}" id="recruiter_id">
       {% block topbar_base %}
         {% include "recruiter/_top_bar_recruiter.html" %}
+      {% endblock %}
+
+      {% block subnavbar_base %}
+      
       {% endblock %}
 
       {% block full_content %}

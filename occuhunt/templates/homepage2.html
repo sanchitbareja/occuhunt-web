@@ -1,0 +1,243 @@
+{% load static from staticfiles %}
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="Occuhunt">
+        <meta name="author" content="Occuhunt">
+        <meta property="og:title" content="Occuhunt" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="http://www.occuhunt.com" />
+        <meta property="og:image" content='https://occuhuntstatic.s3.amazonaws.com/images/other/357.jpg'/>
+        <meta property="og:description" content="Connect talent with opportunity" />
+        <meta property="fb:app_id" content="576667545721505" />
+        <link rel="shortcut icon" href="{% static '/images/other/favicon.ico' %}">
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,300' rel='stylesheet' type='text/css'>
+        <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+
+        <!-- Set the viewport width to device width for mobile -->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <title>Occuhunt</title>
+
+        <!-- Bootstrap core CSS -->
+        <link href="{% static "bootstrap/dist/css/bootstrap.css" %}" rel="stylesheet">
+        <link href="{% static "occuhunt/css/app.css" %}" rel="stylesheet">
+
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+          <script src="{% static "bootstrap/assets/js/html5shiv.js" %}"></script>
+          <script src="{% static "bootstrap/assets/js/respond.min.js" %}"></script>
+        <![endif]-->
+
+          <!-- Bootstrap core JavaScript
+          ================================================== -->
+          <!-- Placed at the end of the document so the pages load faster -->
+          <script src="{% static "bootstrap/assets/js/jquery.js" %}"></script>
+          <script src="{% static "bootstrap/dist/js/bootstrap.min.js" %}"></script>
+          <script src="{% static "bootstrap/js/collapse.js" %}"></script>
+          <script src="{% static "bootstrap/js/modal.js" %}"></script>
+          <!-- Underscore -->
+          <script src="{% static "bootstrap/js/modal.js" %}"></script>
+          <!-- Occuhunt js -->
+          <script src="{% static "underscore/underscore-min.js" %}"></script>
+          <!-- Google Analytics -->
+          <script>
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+            ga('create', 'UA-44279330-1', 'occuhunt.com');
+            ga('send', 'pageview');
+
+          </script>
+          <!-- start Mixpanel --><script type="text/javascript">(function(e,b){if(!b.__SV){var a,f,i,g;window.mixpanel=b;a=e.createElement("script");a.type="text/javascript";a.async=!0;a.src=("https:"===e.location.protocol?"https:":"http:")+'//cdn.mxpnl.com/libs/mixpanel-2.2.min.js';f=e.getElementsByTagName("script")[0];f.parentNode.insertBefore(a,f);b._i=[];b.init=function(a,e,d){function f(b,h){var a=h.split(".");2==a.length&&(b=b[a[0]],h=a[1]);b[h]=function(){b.push([h].concat(Array.prototype.slice.call(arguments,0)))}}var c=b;"undefined"!==
+typeof d?c=b[d]=[]:d="mixpanel";c.people=c.people||[];c.toString=function(b){var a="mixpanel";"mixpanel"!==d&&(a+="."+d);b||(a+=" (stub)");return a};c.people.toString=function(){return c.toString(1)+".people (stub)"};i="disable track track_pageview track_links track_forms register register_once alias unregister identify name_tag set_config people.set people.set_once people.increment people.append people.track_charge people.clear_charges people.delete_user".split(" ");for(g=0;g<i.length;g++)f(c,i[g]);
+b._i.push([a,e,d])};b.__SV=1.2}})(document,window.mixpanel||[]);
+mixpanel.init("a84e2f34f22d01f012b63767216f0853");</script>
+            <!-- end Mixpanel -->
+
+            <!-- Authorization Headers -->
+            <script type="text/javascript">
+              $.ajaxSetup({
+                headers: {
+                  Authorization: 'Token {{request.session.session_key}}'
+                }
+              });
+            </script>
+    </head>
+
+    <body class="{% block body_class %}{% endblock %}" id="{% block body_id %}{% endblock %}" style="-webkit-font-smoothing: antialiased; font-smoothing: antialiased;">
+      <div id="fb-root"></div>
+      <script>(function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=576667545721505";
+        fjs.parentNode.insertBefore(js, fjs);
+      }(document, 'script', 'facebook-jssdk'));</script>
+
+      <div class="row" style="background:url({% static 'images/helpinghand2.jpg' %})">
+
+        <div class="navbar navbar-default" role="navigation" style="background: transparent;">
+          <div class="container">    
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a href="/" id="mp-logohome"><img src="{% static "images/logo/Occuhunt-Logo-White.png" %}" style="height:30px; margin-top:10px; margin-bottom:4px"></a>
+            </div>
+            <div class="collapse navbar-collapse navbar-ex1-collapse">
+              <ul class="nav navbar-nav navbar-right">
+                {% if request.user.is_authenticated %}
+                <li><a href="/events/" id="mp-viewdiscover">DASHBOARD</a></li>
+                <li><a href="/offrhunt/">OFFRHUNT</a></li>
+                <li><a href="/profile/documents/">DOCUMENTS</a></li>
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{request.user.first_name | upper}}
+                    <b class="caret"></b></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="/profile/general/">Profile</a></li>
+                    <li><a href="/logout/" id="mp-loggedout">Logout</a></li>
+                    <input type="hidden" name="user_id" value="{{user.id}}" id="user_id">
+                  </ul>
+                </li>
+                {% else %}
+                  <li><div style="height:24px;margin-top:7px;"><a href="/login/linkedin/?next=/events/" id="mp-loggedin" class="btn btn-inverted-default" style="font-weight:500;">LOG IN</a></div></li>
+                {% endif %}
+              </ul>
+            </div><!--/.nav-collapse -->
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-12 text-center">
+            <br />
+            <br />
+            <br />
+            <br />
+            <p style="font-size:60px; color:white; font-weight:900">Finding work shouldn't be work.</p>
+            <br />
+            <p style="font-size:30px; color:white; font-weight:400;">We bring you new companies every week.</p>
+            <br />
+            <p style="font-size:30px; color:white; font-weight:400;">They compete to hire you.</p>
+            <br />
+            <br />
+            <br />
+            <a href="/login/linkedin/?next=/events/" class="btn btn-xlg btn-done" id="mp-signupsplash" style="margin-top:-15px; font-weight:900;">SIGN UP WITH LINKEDIN</a>
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-lg-12 text-center">
+          <br />
+          <br />
+          <p style="font-size:43px; color:#88b9be; font-weight:500; ">Two great ways to get hired.</p>
+          <br />
+          <br />
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-lg-1"></div>
+        <div class="col-lg-5 text-center">
+          <p style="font-weight:900; font-size: 50px; color:#005f69;">357</p>
+          <p style="color:#88b9be; font-size:24px; font-weight:400; ">
+            3 days to apply to 5 companies. <br />
+            Drop your resume in under 30 seconds <br />
+            & get a guaranteed response in 7 days. <br />
+          </p>
+          <br />
+          <br />
+        </div>
+        <div class="col-lg-5 text-center">
+          <p style="font-weight:900; font-size: 50px; color:#005f69;">OffrHunt</p>
+          <p style="color:#88b9be; font-size:24px; font-weight:400; ">
+            Let companies know you have an <br />
+            offer on the table. There's a good <br />
+            chance they might also be interested. <br />
+          </p>
+          <br />
+          <br />
+        </div>
+        <div class="col-lg-1"></div>
+
+      </div>
+
+      <div class="row" style="background:#005f69;">
+        <div class="col-lg-12 text-center">
+          <br />
+          <br />
+          <p style="font-size:43px; color:white; font-weight:600; ">One place for your professional files.</p>
+          <br />
+          <p style="font-size:24px; color:white; font-weight:500;">
+            Upload resumes, cover letters, and anything else you might need to land a job.<br />
+            Use them to apply for multiple openings at breakneck speed.
+          </p>
+          <br />
+          <br />
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-lg-12 text-center">
+          <br />
+          <br />
+          <p style="font-size:43px; color:#88b9be; font-weight:500; ">We've helped people connect with jobs at:</p>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-lg-12 text-center">
+          <img src="{% static 'images/companies-example.jpg' %}" />
+        </div>
+      </div>
+
+      <div class="row" style="background:#005f69;">
+        <div class="col-lg-12 text-center">
+          <br />
+          <br />
+          <p style="font-size:43px; color:white; font-weight:600; ">Don't just take our word for it.</p>
+          <br />
+          <!-- <p style="font-size:24px; color:white; font-weight:500;">
+            This is the best website ever. I got ten internships very quickly.<br />
+             Love this thing. Shit man. This is the bomb!
+          </p> -->
+          <br />
+          <br />
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-lg-12 text-center">
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <p style="font-size:43px; color:#005f69; font-weight:500; ">
+            Enough talk, let's find some work! &nbsp;&nbsp;
+             <a href="/login/linkedin/?next=/events/" class="btn btn-xlg btn-done" id="mp-signupsplash" style="margin-top:-15px;">SIGN UP WITH LINKEDIN</a>
+          </p>
+          <br />
+          <br />
+          <br />
+          <br />
+        </div>
+      </div>
+
+      {% include "_footer.html" %}
+
+    </body>
+</html>

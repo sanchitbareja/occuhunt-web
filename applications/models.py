@@ -2,9 +2,9 @@ from django.db import models
 from users.models import User
 from fairs.models import Fair
 from companies.models import Company
-from hunts.models import Hunt
 from resumes.models import Resume
 from jobs.models import Job
+from documents.models import Document
 
 # signals
 from django.db.models.signals import pre_save, post_save
@@ -23,6 +23,8 @@ STATUS_CATEGORIES = (
 	(2,'Interacted With'),
 	(3,'Rejected'),
 	(4,'To Interview'),
+	(5,'Offered'),
+	(6,'Considering'),
 	)
 
 POSITION_CATEGORIES = (
@@ -36,26 +38,30 @@ POSITION_CATEGORIES = (
 	('Other','Other')
 	)
 
-WEIGHT_CHOICES = (
-	(1, 1),
-	(2, 2),
-	(3, 3),
-	(4, 4),
-	(5, 5)
-	)
-
 class Application(models.Model):
+	"""
+	recruiter_email: email of the recruiter
+	recruiter_message: email content sent by recruiter
+	
+	each application has multiple documents - related by ForeignKey
+	"""
 	user = models.ForeignKey(User)
 	company = models.ForeignKey(Company)
-	fair = models.ForeignKey(Fair)
+	fair = models.ForeignKey(Fair, null=True)
+	documents = models.ManyToManyField(Document, null=True)
 	status = models.SmallIntegerField(choices=STATUS_CATEGORIES, default=1)
 	position = models.CharField(max_length=512, default="Other")
-	note = models.TextField(default='', blank=True)
 	timestamp = models.DateTimeField(auto_now_add=True)
 	response_timestamp = models.DateTimeField(blank=True, null=True)
 	job = models.ForeignKey(Job, blank=True, null=True)
+	student_note = models.TextField(default='', blank=True)
+	note = models.TextField(default='', blank=True)
 	recruiter_email = models.EmailField(max_length=200, blank=True, null=True)
 	recruiter_message = models.TextField(default='', blank=True)
+	added_by_user = models.BooleanField(default=False)
+
+	def get_documents(self):
+		return self.documents.all()
 
 	def get_resume(self):
 		resume = Resume.objects.filter(user=self.user, showcase=True, original=True).order_by('-timestamp')
@@ -65,32 +71,6 @@ class Application(models.Model):
 		else:
 			resume = None
 			return None
-
-class Label(models.Model):
-	name = models.CharField(max_length=512)
-	company = models.ForeignKey(Company)
-	weight = models.IntegerField(choices=WEIGHT_CHOICES)
-
-class Rating(models.Model):
-	user = models.ForeignKey(User)
-	label = models.ForeignKey(Label)
-	application = models.ForeignKey(Application)
-	timestamp = models.DateTimeField(auto_now=False, auto_now_add=True)
-
-def auto_hunt(sender, instance, **kwargs):
-	"""
-	auto create a unique 'hunt' for the person
-	"""
-	# get user and fair
-	# check if user has already checked in for that fair
-	# 	if he has - do nothing
-	# 	else create a hunt entry for him
-	user = instance.user
-	fair = instance.fair
-	existing_hunt = Hunt.objects.filter(user=user, fair=fair)
-	if not len(existing_hunt) > 0:
-		new_hunt = Hunt(user=user, fair=fair)
-		new_hunt.save()
 
 def auto_update_response_time(sender, instance, **kwargs):
 	"""

@@ -3,7 +3,7 @@
 	height:1350px;
 	border-width: 1px;
 	border-color: #acacac;
-	border-radius: 5px;
+	border-radius: px;
 	overflow: scroll; 
 }
 
@@ -23,6 +23,10 @@
 	font-weight: 100;
 	font-style: italic;
 	line-height: 8px;
+}
+
+#application_info {
+	border-left: 0px;
 }
 
 #applicant_main {
@@ -139,4 +143,71 @@ input[type="radio"]:checked + label span {
     background:url(/static/images/checkmark2.png) no-repeat;
     background-size:40px;
     
+}
+
+
+/* Navbar */
+
+.navbar-inverse {
+	background-color: #005f69;
+	margin-bottom: 0px;
+}
+
+/* Seperator */
+
+.and-separator {
+	padding-left:2px !important;
+	padding-right:2px !important; 
+	margin-left:2px !important; 
+	margin-right:2px !important;
+}
+
+.glyphicon-remove {
+	color:white !important; 
+	top:2px !important;
+}
+
+.pill-text {
+	display: inline;
+	color:white;
+}
+
+.pill-text:hover {
+	font-style: normal;
+	color:rgb(200,200,200);
+}
+
+body {
+    background-color: white;
+    -webkit-font-smoothing: antialiased;
+    font-smoothing: antialiased;
+    font-smooth: always;
+}
+.list-group-item {
+	border-radius: 0px;
+}
+
+#application_email {
+	font-style: normal;
+}
+
+#application_status {
+	font-style: normal;
+}
+
+.popover {
+	max-width: 400px;
+}
+
+/* Applications status states */
+.application_status_3 {
+	background-color: rgba(217, 83, 79, 0.1);
+}
+
+.application_status_4 {
+	background: rgba(92, 184, 92, 0.1);
+}
+
+.selected_candidate {
+	border-right: 5px solid #005f69;
 }

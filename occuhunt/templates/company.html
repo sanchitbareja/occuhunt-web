@@ -50,9 +50,9 @@
 					<br>
 					{% if user.is_authenticated %}
 						{% if is_favorited %}
-						<a class="btn btn-fav-dark" id="visit_careers_site_btn" onclick='unfavoriteCompanyWithId({{ company.id }},this)'>- UNFAVORITE</a>
+						<a class="btn btn-fav-dark" id="visit_careers_site_btn" onclick='unfavoriteCompanyWithId({{ company.id }},this)'>- UNCONSDIER {{company.name|upper}}</a>
 						{% else %}
-						<a class="btn btn-fav-dark" id="visit_careers_site_btn" onclick='favoriteCompanyWithId({{ company.id }},this)'>+ FAVORITE</a>
+						<a class="btn btn-fav-dark" id="visit_careers_site_btn" onclick='favoriteCompanyWithId({{ company.id }},this)'>+ CONSIDER {{company.name|upper}}</a>
 						{% endif %}
 					{% endif %}
 				</div>

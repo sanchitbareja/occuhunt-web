@@ -1,0 +1,214 @@
+{% extends "base.html" %}
+{% load static from staticfiles %}
+{% load i18n %}
+{% load url from future %}
+
+{% block extra_style %}
+<link href="{% static 'occuhunt/css/profile.css' %}" rel="stylesheet">
+<link href="{% static 'occuhunt/css/sidebar.css' %}" rel="stylesheet">
+<link href="{% static 'occuhunt/css/companies-list.css' %}" rel="stylesheet">
+<link href="{% static 'occuhunt/css/companies-favoriting.css' %}" rel="stylesheet">
+<style type="text/css">
+
+
+h4 {
+	color: #005F69;
+	font-weight: 500;
+}
+
+</style>
+
+{% endblock %}
+
+{% block extra_script %}
+
+<!-- Date formatting library -->
+<script src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.1.0/moment.min.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.2/underscore-min.js" type="text/javascript"></script>
+<script type="text/javascript" src="{% static 'occuhunt/js/lodash.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'occuhunt/js/s3upload.js' %}"></script>
+<script type="text/javascript" src="{% static 'occuhunt/js/progress-meter.js' %}"></script>
+<!-- In production, only one script (pdf.js) is necessary -->
+<!-- In production, change the content of PDFJS.workerSrc below -->
+<script type="text/javascript" src="{% static 'pdfjs/src/shared/util.js' %}"></script>
+<script type="text/javascript" src="{% static 'pdfjs/src/shared/colorspace.js' %}"></script>
+<script type="text/javascript" src="{% static 'pdfjs/src/shared/pattern.js' %}"></script>
+<script type="text/javascript" src="{% static 'pdfjs/src/shared/function.js' %}"></script>
+<script type="text/javascript" src="{% static 'pdfjs/src/shared/annotation.js' %}"></script>
+<script type="text/javascript" src="{% static 'pdfjs/src/display/api.js' %}"></script>
+<script type="text/javascript" src="{% static 'pdfjs/src/display/metadata.js' %}"></script>
+<script type="text/javascript" src="{% static 'pdfjs/src/display/canvas.js' %}"></script>
+<script type="text/javascript" src="{% static 'pdfjs/src/display/font_loader.js' %}"></script>
+
+<script type="text/javascript">
+  // Specify the main script used to create a new PDF.JS web worker.
+  // In production, change this to point to the combined `pdf.js` file.
+  PDFJS.workerSrc = '{% static 'pdfjs/src/worker_loader.js' %}';
+</script>
+
+<script src="{% static 'occuhunt/js/waypoints.min.js' %}"></script>
+<script src="{% static 'occuhunt/js/waypoints-infinite.min.js' %}"></script>
+<script src="{% static 'occuhunt/js/profile.js' %}"></script>
+
+
+{% endblock %}
+
+{% block content %}
+<script type="text/javascript" src="{% static 'zeroclipboard/ZeroClipboard.js' %}"></script>
+
+<!-- 
+<div class="col-lg-3">
+	<h4>Links<br /><span style="font-size:0.6em;"><i>Add personal links to your profile</i></span></h4>
+
+	<div id="link_pills">
+		{% for link in links %}
+			<div class="label label-link"><a style="color:#fdfdfd;" href="{{ link.url }}" target="_blank"><span>{{ link.link_name }}</span></a>&nbsp;<span class="glyphicon glyphicon-remove" id="delete_link" onclick="delete_link({{link.id}},this);"></span></div>
+		{% endfor %}
+	</div>
+
+	<div id="add_new_link">
+		<div style="display:inline-block;">
+			<input class="input-text" id="link_label" style="vertical-align:top; display:inline-block; width:25%;" type="text" placeholder="Label">&nbsp;&nbsp;
+			<input class="input-text" id="link_url" style="vertical-align:top; display:inline-block; width:50%;" type="text" placeholder="http://hello.com">
+			<button class="btn btn-sm btn-inverted-default" style="vertical-align:bottom; display:inline-block;" onclick="save_new_link(this);"><span class="glyphicon glyphicon-plus"></span></button>
+		</div>
+	</div>
+
+	<br />
+	<h4>Who's viewed your document?<br /><span style="font-size:0.6em;"><i>Click on &nbsp;<span style="color:grey;" class="glyphicon glyphicon-eye-open"></span>&nbsp; for a document to get insights</i></span></h4>
+	<div style="height:250px;width:100%;" id="map-canvas"></div>
+	<div class="list-group" id="visit_notifications">
+		<div class="list-group-item" id="total_views">
+			<span style="font-size:1em;"><i>Click on &nbsp;<span style="color:grey;" class="glyphicon glyphicon-eye-open"></span>&nbsp; for a document to get insights</i></span>
+		</div>
+	</div>
+	
+</div> -->
+
+
+<!-- Instruction for uploading pdf -->
+<!-- <div class="row">
+	<div class="col-lg-4 text-center">
+		<div class="circle">
+			<span style="color:black;" class="glyphicon glyphicon-plus"></span>
+		</div>
+		<p>Upload resumes, cover letters and other documents</p>
+	</div>
+	<div class="col-lg-4 text-center">
+		<div class="circle">
+			<span style="color:black;" class="glyphicon glyphicon-link"></span>
+		</div>
+		<p>Share link in emails with recruiters</p>
+	</div>
+	<div class="col-lg-4 text-center">
+		<div class="circle">
+			<span style="color:black;" class="glyphicon glyphicon-eye-open"></span>
+		</div>
+		<p>Reach out to recruiters when they view/download your document</p>
+	</div>
+</div>
+<hr /> -->
+
+	
+<!-- This is where the pdf renders -->
+<div class="row" id="canvas_div">
+  	<canvas id="the-canvas" style="display:none;" />
+</div>  	
+
+<div class="row">
+	<div class="col-lg-12">
+		<h4>Featured Documents</h4>
+		<ul class="documents">
+			{% for featured_doc in featured_documents %}
+			<li class="document">
+				<a href="/document/{{featured_doc.user.username}}/{{featured_doc.unique_hash}}/" target="_blank"><img class="document_image" src="{{featured_doc.image_url}}"></a>
+			</li>
+			{% endfor %}
+		</ul>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-lg-3">
+	    <h4>Resumes</h4>	    
+	    <ul class="documents" id="resumes">
+	    	<li class="document">
+		      	<a id="file_select_button" href='javascript:;'>
+		      		<img class="document_image" src="{% static 'images/add-document.png' %}">
+		        	<input type="file" class="file_upload" name="file_source" accept="application/pdf" onchange='render_pdf(1);'>
+		      	</a>
+	    	</li>
+	    	{% for resume in resumes %}
+	    	<li class="document">
+	    		<a href="/document/{{resume.user.username}}/{{resume.unique_hash}}/" target="_blank"><img class="document_image" src="{{resume.image_url}}"></a>
+	    		<ul class="actions">
+	    			<li><a class="viewAnalytics" data-toggle="tooltip" data-placement="top" onclick="get_visits({{resume.id}});"><span class="glyphicon glyphicon-eye-open"></span></a></li>
+	    			<li><a class="copyToClipboard" data-clipboard-text="http://www.occuhunt.com/document/{{resume.user.username}}/{{resume.unique_hash}}/" data-toggle="tooltip" data-placement="top"><span class="glyphicon glyphicon-link"></span></a></li>
+	    			<li><a class="deleteResume" data-toggle="tooltip" data-placement="top" onclick="delete_document({{request.user.id}},{{resume.id}}, this);"><span class="glyphicon glyphicon-trash"></span></a></li>
+	    		</ul>
+	    	</li>
+	    	{% endfor %}
+	    </ul>
+	</div>
+	<div class="col-lg-3">
+	    <h4>Cover Letters</h4>
+	    <ul class="documents" id="cvs">
+	    	<li class="document">
+	    		<a id="file_select_button" href='javascript:;'>
+		      		<img class="document_image" src="{% static 'images/add-document.png' %}">
+		        	<input type="file" class="file_upload" name="file_source" accept="application/pdf" onchange='render_pdf(2);'>
+		      	</a>
+	    	</li>
+	    	{% for cv in cvs %}
+	    	<li class="document">
+	    		<a href="/document/{{cv.user.username}}/{{cv.unique_hash}}/" target="_blank"><img class="document_image" src="{{cv.image_url}}"></a>
+	    		<ul class="actions">
+	    			<li><a class="viewAnalytics" data-toggle="tooltip" data-placement="top" onclick="get_visits({{cv.id}});"><span class="glyphicon glyphicon-eye-open"></span></a></li>
+	    			<li><a class="copyToClipboard" data-clipboard-text="http://www.occuhunt.com/document/{{cv.user.username}}/{{cv.unique_hash}}/" data-toggle="tooltip" data-placement="top"><span class="glyphicon glyphicon-link"></span></a></li>
+	    			<li><a class="deleteResume" data-toggle="tooltip" data-placement="top" onclick="delete_document({{request.user.id}},{{cv.id}}, this);"><span class="glyphicon glyphicon-trash"></span></a></li>
+	    		</ul>
+	    	</li>
+	    	{% endfor %}
+	    </ul>
+	</div>
+	<div class="col-lg-3">
+	    <h4>Additional Documents</h4>
+	    <ul class="documents" id="portfolio">
+	    	<li class="document">
+	    		<a id="file_select_button" href='javascript:;'>
+		      		<img class="document_image" src="{% static 'images/add-document.png' %}">
+		        	<input type="file" class="file_upload" name="file_source" accept="application/pdf" onchange='render_pdf(3);'>
+		      	</a>
+		      </li>
+	    	{% for portfolio in portfolios %}
+	    	<li class="document">
+	    		<a href="/document/{{portfolio.user.username}}/{{portfolio.unique_hash}}/" target="_blank"><img class="document_image" src="{{portfolio.image_url}}"></a>
+	    		<ul class="actions">
+	    			<li><a class="viewAnalytics" data-toggle="tooltip" data-placement="top" onclick="get_visits({{portfolio.id}});"><span class="glyphicon glyphicon-eye-open"></span></a></li>
+	    			<li><a class="copyToClipboard" data-clipboard-text="http://www.occuhunt.com/document/{{portfolio.user.username}}/{{portfolio.unique_hash}}/" data-toggle="tooltip" data-placement="top"><span class="glyphicon glyphicon-link"></span></a></li>
+	    			<li><a class="deleteResume" data-toggle="tooltip" data-placement="top" onclick="delete_document({{request.user.id}},{{portfolio.id}}, this);"><span class="glyphicon glyphicon-trash"></span></a></li>
+	    		</ul>
+	    	</li>
+	    	{% endfor %}
+	    </ul>
+	</div>
+
+	<div class="col-lg-3">
+		<h4>Who's viewed your document?<br /></h4>
+	    <div style="height:150px;width:100%;" id="map-canvas"></div>
+	    <div class="list-group" id="visit_notifications">
+	        <div class="list-group-item" id="total_views">
+
+	        </div>
+	    </div>
+	</div>
+</div>
+
+<!-- Show loading state whenever user has to wait for smth to be loaded -->
+<div class="loading-state">
+	<div id="spinnerWait"><div class="spinner"><div class="bar1"></div><div class="bar2"></div><div class="bar3"></div><div class="bar4"></div><div class="bar5"></div><div class="bar6"></div><div class="bar7"></div><div class="bar8"></div><div class="bar9"></div><div class="bar10"></div><div class="bar11"></div><div class="bar12"></div></div><p></p></div>
+	<h1>Loading</h1>
+	<p>Depending on your network connection, this usually takes about 5-10 seconds</p>
+</div>
+
+{% endblock %}

@@ -10,6 +10,7 @@ import os, time, simplejson
 from datetime import datetime, timedelta, time
 from django.http import Http404
 from itertools import chain
+from haystack.query import SearchQuerySet
 
 from companies.models import Company
 from favorites.models import Favorite
@@ -22,7 +23,7 @@ def home(request):
 
 def splash(request):
     """Splash view"""
-    return render_to_response('splash.html', {},
+    return render_to_response('homepage2.html', {},
                                   RequestContext(request))
 
 def companies(request):
@@ -36,6 +37,15 @@ def search(request):
     return render_to_response('search.html', {"search_link":True},
                                   RequestContext(request))
 
+def search_query(request):
+    """Search companies view"""
+    query = request.GET['q']
+    search_results = SearchQuerySet().models(Company).load_all().auto_query(query)
+    print search_results
+    data_to_send = {
+      'companies':search_results
+    }
+    return render_to_response('search_results.html', data_to_send, RequestContext(request))
 
 def company(request, companyID):
     """Individual Company view"""

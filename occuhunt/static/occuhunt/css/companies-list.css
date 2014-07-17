@@ -22,6 +22,12 @@
   padding-right: 0px;
 }
 
+.left-no-margin {
+  margin-left: 0px;
+  padding-left: 0px;
+}
+
+
 #company_thumbnail_favorite {
   display: none;
   position: absolute;

@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h2>Search</h2>
+    <h2>Search All</h2>
 
     <form method="get" action=".">
         <table>
@@ -20,6 +20,7 @@
             {% for result in page.object_list %}
                 <p>
                     <a href="{{ result.object.get_absolute_url }}">{{ result.object.name }}</a>
+                    <img src="{{ result.object.image_url }}">
                 </p>
             {% empty %}
                 <p>No results found.</p>
