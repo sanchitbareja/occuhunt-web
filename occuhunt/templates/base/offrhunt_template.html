@@ -357,6 +357,16 @@ function searchResults(text){
 
 <div id="messages"></div>
 
+{% if request.user.is_anonymous %}
+  <div class="row">
+    <div class="col-lg-2"></div>
+    <div class="col-lg-8 text-center">
+      <p class="quote-statement">You need to be logged-in to view this page.</p>
+    </div>
+    <div class="col-lg-2"></div>
+  </div>
+{% endif %}
+
 {% if current_offer %}
 <!-- <div class="row">
   <div class="col-lg-2"></div>
@@ -366,15 +376,7 @@ function searchResults(text){
   <div class="col-lg-2"></div>
 </div>
  -->
-  {% if request.user.is_anonymous %}
-  <div class="row">
-    <div class="col-lg-2"></div>
-    <div class="col-lg-8 text-center">
-      <p class="quote-statement">You need to be logged-in to view this page.</p>
-    </div>
-    <div class="col-lg-2"></div>
-  </div>
-  {% else %}
+  
 
   <div class="row">
     <div class="col-lg-12">
@@ -593,7 +595,6 @@ function searchResults(text){
     </div>
   </div>
 
-  {% endif %}
 {% endif %}
 
 {% endblock %}
