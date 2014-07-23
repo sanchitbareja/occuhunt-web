@@ -647,6 +647,7 @@ class ApplicationResource(ModelResource):
             del(bundle.data['note'])
         if bundle.obj.user.offer_set.all().count() > 0:
            bundle.data['offer'] = True
+           bundle.data['offerCompany'] = bundle.obj.user.offer_set.all()[0].company_from_text
         return bundle
 
     def obj_create(self, bundle, **kwargs):
