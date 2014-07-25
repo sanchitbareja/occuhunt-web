@@ -649,6 +649,10 @@ class ApplicationResource(ModelResource):
         if bundle.obj.user.offer_set.all().count() > 0:
            bundle.data['offer'] = True
            bundle.data['offerCompany'] = bundle.obj.user.offer_set.all()[0].company_from_text
+        if Application.objects.filter(user=bundle.obj.user, status=4).count() > 0:
+            bundle.data['interviewing'] = True
+        else:
+            bundle.data['interviewing'] = False
         return bundle
 
     def obj_create(self, bundle, **kwargs):
@@ -896,6 +900,10 @@ class ApplicationSearchResource(ModelResource):
         """
         if bundle.obj.user.offer_set.all().count() > 0:
            bundle.data['offer'] = True
+        if Application.objects.filter(user=bundle.obj.user, status=4).count() > 0:
+            bundle.data['interviewing'] = True
+        else:
+            bundle.data['interviewing'] = False
         return bundle
 
     def build_filters(self, filters=None):
@@ -994,12 +1002,12 @@ class ApplicationSearchResource(ModelResource):
         # 3. merge both lists and that is teh final lists
         one_month_ago = datetime.datetime.now() - datetime.timedelta(days=30)
         try:
+            occuhunt_company = Company.objects.get(name="Occuhunt")
             applied_to_company_with_filters = object_list.filter(company__id=bundle.request.user.recruiter.company.id)
-            didnt_apply_to_company = Application.objects.exclude(company__id=bundle.request.user.recruiter.company.id)
-            didnt_apply_to_company_but_with_offers = didnt_apply_to_company.filter(user__offer__isnull=False, user__offer__timestamp__gt=one_month_ago, user__offer__approved=True)
-            didnt_apply_to_company_but_with_offers = didnt_apply_to_company_but_with_offers.filter(user__offer__company_from__id=bundle.request.user.recruiter.company.id)
+            through_offrhunt = Application.objects.filter(company=occuhunt_company, user__offer__isnull=False, user__offer__timestamp__gt=one_month_ago, user__offer__approved=True)
+            offrhunt_applications = through_offrhunt.exclude(user__offer__company_from__id=bundle.request.user.recruiter.company.id)
             
-            result_list = didnt_apply_to_company_but_with_offers | applied_to_company_with_filters
+            result_list = offrhunt_applications | applied_to_company_with_filters
             result_list = result_list.distinct('user')
             return result_list
         except Exception as e:

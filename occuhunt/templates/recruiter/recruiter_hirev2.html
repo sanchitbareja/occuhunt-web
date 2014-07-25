@@ -21,6 +21,18 @@
   width: 10px;
   background: #fe6f00;
 }
+
+.is-interviewing {
+   position: absolute;
+  display: inline;
+  top: 15px;
+  right: 25px;
+  border-radius: 5px;
+  height: 10px;
+  width: 10px;
+  background: #5188b7; 
+}
+
 </style>
 
 {% endblock %}
@@ -295,15 +307,20 @@ function get_candidates() {
             for (var j = 0; j < positions_list.length; j++){
               positions = positions.concat(' <span class="label label-success">'+positions_list[j]+'</span>');
             }
+            interviewing_div = '';
+            if(data['response']['applications'][i]['interviewing']){
+              interviewing_div = '<div class="is-interviewing" data-toggle="tooltip" data-placement="left" title="Interviewing elsewhere"></div>';
+            } 
             if(data['response']['applications'][i]['offer']){
-              $("#candidate_list").prepend('<a id="applicant_list_id_'+data['response']['applications'][i]['id']+'" onclick="get_candidate('+data['response']['applications'][i]['id']+')" class="list-group-item application_status_'+data['response']['applications'][i]['status']+'">'+data['response']['applications'][i]['user']['first_name']+' '+data['response']['applications'][i]['user']['last_name']+'<div class="has-offer" data-toggle="tooltip" data-placement="left" title="Has an offer"></div></a>');
+              $("#candidate_list").prepend('<a id="applicant_list_id_'+data['response']['applications'][i]['id']+'" onclick="get_candidate('+data['response']['applications'][i]['id']+')" class="list-group-item application_status_'+data['response']['applications'][i]['status']+'">'+data['response']['applications'][i]['user']['first_name']+' '+data['response']['applications'][i]['user']['last_name']+interviewing_div+'<div class="has-offer" data-toggle="tooltip" data-placement="left" title="Has an offer"></div></a>');
             } else {
-              $("#candidate_list").append('<a id="applicant_list_id_'+data['response']['applications'][i]['id']+'" onclick="get_candidate('+data['response']['applications'][i]['id']+')" class="list-group-item application_status_'+data['response']['applications'][i]['status']+'">'+data['response']['applications'][i]['user']['first_name']+' '+data['response']['applications'][i]['user']['last_name']+'</a>');
+              $("#candidate_list").append('<a id="applicant_list_id_'+data['response']['applications'][i]['id']+'" onclick="get_candidate('+data['response']['applications'][i]['id']+')" class="list-group-item application_status_'+data['response']['applications'][i]['status']+'">'+data['response']['applications'][i]['user']['first_name']+' '+data['response']['applications'][i]['user']['last_name']+interviewing_div+'</a>');
             }
           };
 
           // enable tooltip
           $('.has-offer').tooltip();
+          $('.is-interviewing').tooltip();
 
           // auto-select the first candidate
           next_application(true);
@@ -420,15 +437,16 @@ function get_candidate(application_id) {
           if(data['status'] == "4") {
             $("#application_status").text("To invite for interview");
           }
-        } else {
-          // hide all other buttons
-          $("#accept_applicant_btn").hide();
-          $("#reject_applicant_btn").hide();
-          $("#note_div").hide();
-          $("#download_pdf_btn").hide();
-          // application status config
-          $("#application_status").text("Fair Attendee");
-        }
+        } 
+        // else {
+        //   // hide all other buttons
+        //   $("#accept_applicant_btn").hide();
+        //   $("#reject_applicant_btn").hide();
+        //   $("#note_div").hide();
+        //   $("#download_pdf_btn").hide();
+        //   // application status config
+        //   $("#application_status").text("Fair Attendee");
+        // }
 
         // show the applicant as selected in the list - deselect previous candidate
         if(current_selected_candidate) {

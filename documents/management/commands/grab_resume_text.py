@@ -32,9 +32,9 @@ class Command(BaseCommand):
         # 7.    Clean up and remove temp files
 
         # 1
-        hour_ago = datetime.datetime.now() - datetime.timedelta(hours=1)
-        documents_to_update = Document.objects.all()
-        # documents_to_update = Document.objects.filter(Q(timestamp__gte=hour_ago), Q(description__isnull=True)| Q(description=''))
+        aday_ago = datetime.datetime.now() - datetime.timedelta(hours=24)
+        # documents_to_update = Document.objects.all()
+        documents_to_update = Document.objects.filter(Q(timestamp__gte=aday_ago), Q(description__isnull=True)| Q(description=''))
 
         # 2
         for document in documents_to_update:
