@@ -59,6 +59,7 @@ class Application(models.Model):
 	recruiter_email = models.EmailField(max_length=200, blank=True, null=True)
 	recruiter_message = models.TextField(default='', blank=True)
 	added_by_user = models.BooleanField(default=False)
+	added_by_offrhunt = models.BooleanField(default=False)
 
 	def get_documents(self):
 		return self.documents.all()
@@ -84,27 +85,51 @@ def auto_update_response_time(sender, instance, **kwargs):
 		#  send user email about update
 	"""
 	try:
-		current_app = Application.objects.get(id=instance.id)
-		if (current_app.status == 1 or current_app.status == 2) and (instance.status == 3 or instance.status == 4):
-			# update response_time
-			instance.response_timestamp = datetime.datetime.now()
-			# send user email that he got rejected/called for interview
-			template_html = 'emails/new_notification.html'
-			template_text = 'emails/new_notification.txt'
+		current_app = Application.objects.filter(id=instance.id)
+		if current_app.count() > 0:
+			# update of application status
+			current_app = current_app[0]
+			if (current_app.status == 1 or current_app.status == 2) and (instance.status == 3 or instance.status == 4):
+				# update response_time
+				instance.response_timestamp = datetime.datetime.now()
+				# send user email that he got rejected/called for interview
+				template_html = 'emails/new_notification.html'
+				template_text = 'emails/new_notification.txt'
 
-			subject = "[Occuhunt] "+current_app.company.name+" Application Update"
-			from_email = 'occuhunt@gmail.com'
-			recruiter_email = instance.recruiter_email
-			recruiter_message = instance.recruiter_message
-			to_email = current_app.user.email
+				subject = "[Occuhunt] "+current_app.company.name+" Application Update"
+				from_email = 'occuhunt@gmail.com'
+				recruiter_email = instance.recruiter_email
+				recruiter_message = instance.recruiter_message
+				to_email = current_app.user.email
 
-			text_content = render_to_string(template_text, {'name':current_app.user.first_name+' '+current_app.user.last_name, 'company':current_app.company.name, 'old_status':current_app.status, 'updated_status':instance.status, 'recruiter_message':recruiter_message})
-			html_content = render_to_string(template_html, {'name':current_app.user.first_name+' '+current_app.user.last_name, 'company':current_app.company.name, 'old_status':current_app.status, 'updated_status':instance.status, 'recruiter_message':recruiter_message})
+				text_content = render_to_string(template_text, {'name':current_app.user.first_name+' '+current_app.user.last_name, 'company':current_app.company.name, 'old_status':current_app.status, 'updated_status':instance.status, 'recruiter_message':recruiter_message})
+				html_content = render_to_string(template_html, {'name':current_app.user.first_name+' '+current_app.user.last_name, 'company':current_app.company.name, 'old_status':current_app.status, 'updated_status':instance.status, 'recruiter_message':recruiter_message})
 
-			if recruiter_email:
-				send_html_mail(subject, text_content, html_content, from_email, [to_email, recruiter_email])
-			else:
-				send_html_mail(subject, text_content, html_content, from_email, [to_email])
+				if recruiter_email:
+					send_html_mail(subject, text_content, html_content, from_email, [to_email, recruiter_email])
+				else:
+					send_html_mail(subject, text_content, html_content, from_email, [to_email])
+		else:
+			# new application from offrhunt
+			if instance.added_by_offrhunt:
+				instance.response_timestamp = datetime.datetime.now()
+				# send user email that he got rejected/called for interview
+				template_html = 'emails/new_notification.html'
+				template_text = 'emails/new_notification.txt'
+
+				subject = "[Occuhunt] "+instance.company.name+" Application Update"
+				from_email = 'occuhunt@gmail.com'
+				recruiter_email = instance.recruiter_email
+				recruiter_message = instance.recruiter_message
+				to_email = instance.user.email
+
+				text_content = render_to_string(template_text, {'name':instance.user.first_name+' '+instance.user.last_name, 'company':instance.company.name, 'old_status':instance.status, 'updated_status':instance.status, 'recruiter_message':recruiter_message})
+				html_content = render_to_string(template_html, {'name':instance.user.first_name+' '+instance.user.last_name, 'company':instance.company.name, 'old_status':instance.status, 'updated_status':instance.status, 'recruiter_message':recruiter_message})
+
+				if recruiter_email:
+					send_html_mail(subject, text_content, html_content, from_email, [to_email, recruiter_email])
+				else:
+					send_html_mail(subject, text_content, html_content, from_email, [to_email])
 	except Exception, e:
 		print e
 		

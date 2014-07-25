@@ -652,9 +652,10 @@ class ApplicationResource(ModelResource):
 
     def obj_create(self, bundle, **kwargs):
         """
-        two scenarios:
+        three scenarios:
         1. User adds an application as a 'favorite' to keep track himself
         2. User applies through Occhunt for a 357
+        3. Recruiter decides to interview a candidate with an offer 
 
         Conflict resolution:
         1. If user adds company as favorite initially and then applies through us -> convert application to be managed by us
@@ -686,13 +687,37 @@ class ApplicationResource(ModelResource):
         'majors':majors,
         'grad_year': grad_year,
         'degree_type': degree_type
+
+        # Scenario 3
+        Creates a new application
+        1. Creates a new application
+        2. Email student about interest expressed by recruiter
+        3. Copy over details from old application
+
+        This i what gets sent over in json
+        'application_id': application_id,
+        'company_id': company_id
+        'recruiter_email': recruiter_email,
+        'recruiter_message': recruiter_message
         """
         try:
             # get all data from POST data
             user = bundle.request.user
             company = Company.objects.get(id=bundle.data['company_id'])
             print company
-            if 'added_by_user' in bundle.data.keys() and bundle.data['added_by_user']:
+            if 'application_id' in bundle.data.keys() and bundle.data['application_id']:
+                # 1. copy data from old application
+                old_application = Application.objects.get(id=bundle.data['application_id'])
+                # 2. change company to requested company, status to interviewing, added_by_user=False, mention in student_note that he got offer through offrhunt
+                new_application = Application(user=old_application.user, company=company, status=4, position=old_application.position, student_note="The recruiter found you through OffrHunt", added_by_user=False, recruiter_email=bundle.data['recruiter_email'], recruiter_message=bundle.data['recruiter_message'], added_by_offrhunt=True)
+                new_application.save()
+                # 3. copy documents
+                for doc in old_application.documents.all():
+                    new_application.documents.add(doc)
+                # 4. save new application
+                new_application.save()
+                bundle.obj = new_application
+            elif 'added_by_user' in bundle.data.keys() and bundle.data['added_by_user']:
                 # check if an application already exists
                 application = Application.objects.filter(user=user, company=company)
                 if len(application) > 0:
@@ -962,20 +987,22 @@ class ApplicationSearchResource(ModelResource):
         (5, 'I have time')
         """
         #  separate those with offers and those without offers
-        # 1. for those with offers - no filtering
-        # 2. for those without offers, filters based on company
+        # 1. for those that applied to company
+        # 2. for those that didn't apply to company but with offers (OffrHunt) 
+        #       - hide those that got offer from that company itself.
         # 3. merge both lists and that is teh final lists
         one_month_ago = datetime.datetime.now() - datetime.timedelta(days=30)
-        with_offers = object_list.filter(user__offer__isnull=False, user__offer__timestamp__gt=one_month_ago)
-        without_offers = object_list.exclude(id__in=with_offers)
-        without_offers = without_offers.filter(company__id=bundle.request.user.recruiter.company.id)
-
-        print with_offers.count()
-        print without_offers.count()
-
-        result_list = with_offers | without_offers
-        result_list = result_list.distinct('user')
-        return result_list
+        try:
+            applied_to_company_with_filters = object_list.filter(company__id=bundle.request.user.recruiter.company.id)
+            didnt_apply_to_company = Application.objects.exclude(company__id=bundle.request.user.recruiter.company.id)
+            didnt_apply_to_company_but_with_offers = didnt_apply_to_company.filter(user__offer__isnull=False, user__offer__timestamp__gt=one_month_ago, user__offer__approved=True)
+            didnt_apply_to_company_but_with_offers = didnt_apply_to_company_but_with_offers.filter(user__offer__company_from__id=bundle.request.user.recruiter.company.id)
+            
+            result_list = didnt_apply_to_company_but_with_offers | applied_to_company_with_filters
+            result_list = result_list.distinct('user')
+            return result_list
+        except Exception as e:
+            print e
 
     def alter_list_data_to_serialize(self, request, data):
         # rename "objects" to "applications"
