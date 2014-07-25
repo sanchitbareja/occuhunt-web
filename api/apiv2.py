@@ -711,10 +711,11 @@ class ApplicationResource(ModelResource):
             company = Company.objects.get(id=bundle.data['company_id'])
             print company
             if 'application_id' in bundle.data.keys() and bundle.data['application_id']:
+                # These will come through OffrHunt
                 # 1. copy data from old application
                 old_application = Application.objects.get(id=bundle.data['application_id'])
                 # 2. change company to requested company, status to interviewing, added_by_user=False, mention in student_note that he got offer through offrhunt
-                new_application = Application(user=old_application.user, company=company, status=4, position=old_application.position, student_note="The recruiter found you through OffrHunt", added_by_user=False, recruiter_email=bundle.data['recruiter_email'], recruiter_message=bundle.data['recruiter_message'], added_by_offrhunt=True)
+                new_application = Application(user=old_application.user, company=company, status=4, position=old_application.position, student_note="The recruiter found you through OffrHunt", added_by_user=False, reason_given=old_application.reason_given,recruiter_email=bundle.data['recruiter_email'], recruiter_message=bundle.data['recruiter_message'], added_by_offrhunt=True)
                 new_application.save()
                 # 3. copy documents
                 for doc in old_application.documents.all():
@@ -723,6 +724,7 @@ class ApplicationResource(ModelResource):
                 new_application.save()
                 bundle.obj = new_application
             elif 'added_by_user' in bundle.data.keys() and bundle.data['added_by_user']:
+                # These will come through for those that add companies on their own
                 # check if an application already exists
                 application = Application.objects.filter(user=user, company=company)
                 if len(application) > 0:
@@ -733,6 +735,7 @@ class ApplicationResource(ModelResource):
                     application.save()
                     bundle.obj = application
             else:
+                # These will come through 357s and students submitting for OffrHunt
                 fair = Fair.objects.get(id=bundle.data['fair_id'])
                 resume = Document.objects.get(id=bundle.data['resume'])
                 if bundle.data['cv']:
@@ -755,6 +758,10 @@ class ApplicationResource(ModelResource):
                     status = bundle.data['status']
                 else:
                     status = 1
+                if 'reason_given' in bundle.data.keys():
+                    reason_given = bundle.data['reason_given']
+                else:
+                    reason_given = ''
 
                 # 2. Create a new appliation
                 # check if an application already exists - either they favorited it or they already applied before
@@ -764,15 +771,16 @@ class ApplicationResource(ModelResource):
                     bundle.obj = application
 
                     # remove applications where it is not tied to a fair
-                    Application.objects.filter(user=user, company=company, fair__isnull=True, added_by_user=True).delete()
+                    # Application.objects.filter(user=user, company=company, fair__isnull=True, added_by_user=True).delete()
                 else:
+                    print reason_given
                     now = datetime.datetime.now()
-                    application = Application(user=user, company=company, fair=fair, position=position, status=status, student_note='This application will be managed for you till the interview stage. You applied on '+str(now.month)+'/'+str(now.day)+'/'+str(now.year))
+                    application = Application(user=user, company=company, fair=fair, position=position, status=status, reason_given=reason_given,student_note='This application will be managed for you till the interview stage. You applied on '+str(now.month)+'/'+str(now.day)+'/'+str(now.year))
                     application.save()
                     bundle.obj = application
 
                     # remove applications where it is not tied to a fair
-                    Application.objects.filter(user=user, company=company, fair__isnull=True, added_by_user=True).delete()
+                    # Application.objects.filter(user=user, company=company, fair__isnull=True, added_by_user=True).delete()
 
                 # 3. Create documents for application
                 # resume

@@ -51,6 +51,7 @@ class Application(models.Model):
 	documents = models.ManyToManyField(Document, null=True)
 	status = models.SmallIntegerField(choices=STATUS_CATEGORIES, default=1)
 	position = models.CharField(max_length=512, default="Other")
+	reason_given = models.TextField(blank=True, null=True)
 	timestamp = models.DateTimeField(auto_now_add=True)
 	response_timestamp = models.DateTimeField(blank=True, null=True)
 	job = models.ForeignKey(Job, blank=True, null=True)

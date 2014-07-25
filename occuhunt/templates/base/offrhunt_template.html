@@ -224,18 +224,22 @@ $(document).ready(function(){
     console.log(grad_year);
     console.log(degree_type);
 
+    // get user reasons
+    var reason_given = $("#reasonForApplying").val();
+
     // submit resume
     if($("#resume_enabled").val() == 'False'){
       alert('Oops! You need to be logged in or have your resume uploaded to drop your resume with the employers!');
     } else {
-      resumeDrop(selected_resume, selected_cv, selected_docs, company_id, fair_id, position, majors, grad_year, degree_type);
+      resumeDrop(selected_resume, selected_cv, selected_docs, company_id, fair_id, position, reason_given, majors, grad_year, degree_type);
     }
+
     return false;
   });
 
 });
 
-function resumeDrop(selected_resume, selected_cv, selected_docs, company_id, fair_id, position, majors, grad_year, degree_type){
+function resumeDrop(selected_resume, selected_cv, selected_docs, company_id, fair_id, position, reason_given, majors, grad_year, degree_type){
   console.log("CONFIRMED");
   
   // new applications
@@ -250,6 +254,7 @@ function resumeDrop(selected_resume, selected_cv, selected_docs, company_id, fai
       'cv': selected_cv,
       'docs': selected_docs,
       'position': position,
+      'reason_given': reason_given,
       'status': 1,
       'majors':majors,
       'grad_year': grad_year,
@@ -264,11 +269,11 @@ function resumeDrop(selected_resume, selected_cv, selected_docs, company_id, fai
         console.log(jsXHR);
         console.log($(this));
         // hide everything and show success message
-        $("#msform").hide();
+        $(".cbp_tmtimeline").hide();
         $("#messages").append('<div class="row">'+
           '<div class="col-lg-2"></div>'+
           '<div class="col-lg-8 text-center">'+
-            '<p class="quote-statement">We\'ve received your current offer. Please wait a couple of days before we get back to you! Do send us feedback at occuhunt@gmail.com or call us at 510-612-7328 if you need any assistance. Thanks!</p>'+
+            '<p style="background: #005f69; border-radius:5px; padding:10px; color:white; font-size:20px;">We\'ve received your current offer. Please wait a couple of days before we get back to you! Do send us feedback at occuhunt@gmail.com or call us at 510-612-7328 if you need any assistance. Thanks!</p>'+
           '</div>'+
           '<div class="col-lg-2"></div>'+
         '</div>');
@@ -368,14 +373,14 @@ function searchResults(text){
 {% endif %}
 
 {% if current_offer %}
-<!-- <div class="row">
+
+<div class="row">
   <div class="col-lg-2"></div>
   <div class="col-lg-8 text-center">
-    <p class="quote-statement">We've received your current offer. Please wait a couple of days before we get back to you! Do send us feedback at occuhunt@gmail.com or call us at 510-612-7328 if you need any assistance. Thanks!</p>
+    <p style="background: #005f69; border-radius:5px; padding:10px; color:white; font-size:20px;">We've received your current offer. Please wait a couple of days before we get back to you! Do send us feedback at occuhunt@gmail.com or call us at 510-612-7328 if you need any assistance. Thanks!</p>
   </div>
   <div class="col-lg-2"></div>
 </div>
- -->
 
 {% else %}
 
@@ -458,9 +463,12 @@ function searchResults(text){
                   <h2>Which companies are you interested in?</h2>
                   <p>
                     <p>Which companies do you want to consider applying to? Seperate them by commas (,). We've partnered with companies like Greylock, Dropbox, TubeMogul and etc. Name any company you are interested in and we'll make the connection for you!</p>
-                    <textarea class="form-control" id="companiesInterestedIn" style="width:100%; height:100px;">
-                    </textarea>
+                    <textarea class="form-control" id="companiesInterestedIn" style="width:100%; height:100px;"></textarea>
                   </p>
+                  <br />
+                  <h2>What are your main reasons for participating in OffrHunt?</h2>
+                  <p>This could be location, to learn more about other companies or growth opportunities and etc.</p>
+                  <textarea class="form-control" id="reasonForApplying" style="width:100%; height:100px;"></textarea>
               </div>
           </li>
           <li>
@@ -594,6 +602,7 @@ function searchResults(text){
 
   <div class="row">
     <div class="col-lg-12 text-center">
+      <h1>Companies using us</h1>
       <img src="{% static 'images/companies-example.jpg' %}">
     </div>
   </div>

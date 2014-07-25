@@ -89,6 +89,9 @@
       // get degree type
       var degree_type = $("#studentDegree").val();
 
+      // get student reason
+      var reason_given = $("#reasonForApplying").val();
+
       // if student has offers
       var company_from_text_val = $("#companyFromText").val();
       var salary_range_val = $("#currentOfferSalaryRange").val();
@@ -107,7 +110,7 @@
             if(position) {
               if(majors && degree_type && grad_year) {
                 // send application!
-                resumeDrop(company_id, fair_id, selected_resume, selected_cv, selected_docs, position, majors, grad_year, degree_type);
+                resumeDrop(company_id, fair_id, selected_resume, selected_cv, selected_docs, position, reason_given, majors, grad_year, degree_type);
 
                 // if has company, offer range and deadline
                 if(company_from_text_val && salary_range_val && offer_deadline_val) {
@@ -162,7 +165,7 @@
     '</div>');
   }
 
-  function resumeDrop(company_id, fair_id, selected_resume, selected_cv, selected_docs, position, majors, grad_year, degree_type){
+  function resumeDrop(company_id, fair_id, selected_resume, selected_cv, selected_docs, position, reason_given, majors, grad_year, degree_type){
     console.log("CONFIRMED");
     
     // new applications
@@ -177,6 +180,7 @@
         'cv': selected_cv,
         'docs': selected_docs,
         'position': position,
+        'reason_given': reason_given,
         'status': 1,
         'majors':majors,
         'grad_year': grad_year,
@@ -440,6 +444,9 @@
           </div>
         </div>
 
+        <h4>Why <span class="companyTitle"></span>? Briefly tell us what attracts you to <span class="companyTitle"></span></h4>
+        <textarea class="form-control" style="width:100%;" id="reasonForApplying"></textarea>
+
         <h4 id="toggleAdditionalInfo"><span class="glyphicon glyphicon-chevron-right additionalInfoDiv"></span><span class="glyphicon glyphicon-chevron-down additionalInfoDiv" style="display:none;"></span></span>Additional Info</h4>
         <div class="additionalInfoDiv" style="display:none;">
           <!-- Current Offer -->
@@ -477,7 +484,7 @@
               </select>
             </div>
           </div>
-          <span class="help-block">This will not be shared with employers or anyone. It's strictly private and not read by anyone.</span>
+          <span class="help-block">This will not be shown to the company you have received the offer from.</span>
 
           <!-- Additional Info - Major, Degree, Grad Date -->
           <div class="row">

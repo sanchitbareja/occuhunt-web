@@ -387,6 +387,8 @@ function get_candidate(application_id) {
           $("#contact_applicant_btn").hide();
           $("#companyOfferFrom").show();
           $("#companyOfferFrom").text(data['offerCompany']);
+          $("#reasonForApplying").show();
+          $("#reasonForApplying").text(data['reason_given'])
         } else if(data['offer']) {
           // show contact message
           $("#contact_applicant_btn").attr({'onclick':'show_contact_message('+application_id+',"'+data['user']['first_name']+'","'+data['user']['last_name']+'","'+data['company']['name']+'");'});
@@ -395,6 +397,8 @@ function get_candidate(application_id) {
           $("#accept_applicant_btn").hide();
           $("#companyOfferFrom").show();
           $("#companyOfferFrom").text(data['offerCompany']);
+          $("#reasonForApplying").show();
+          $("#reasonForApplying").text(data['reason_given'])
         } else {
           $("#contact_applicant_btn").hide();
           $("#companyOfferFrom").hide();
@@ -993,6 +997,7 @@ $(document).ready(function() {
         <a class="btn btn-inverted-default btn-sm btn-block" id="download_pdf_btn" style="margin:10px 0px;">Download .PDF</a>
         <!-- <p style="color:#005f69;">Companies Interviewing: <b>10</b></p> -->
         <p style="color:#005f69;">Offer From: <b id="companyOfferFrom"></b></p>
+        <p style="color:#005f69;">What's the student thinking? <b id="reasonForApplying"></b></p>
         <hr style="padding:0px;margin:0px -10px 0px -10px;">
         <h4>Notes</h4>
         <textarea style="width:100%; line-height: 25px; border: 0px; border:1px solid #e4e4e4; color:black;" rows="5" id="application_note" placeholder="Sample Note"></textarea>
