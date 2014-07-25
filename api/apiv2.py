@@ -185,6 +185,7 @@ class UserResource(ModelResource):
                 try:
                     majors = bundle.data['majors']
                     if majors:
+                        user.student.major.clear()
                         for major in majors:
                             major_obj = Major.objects.get(id=int(major))
                             user.student.major.add(major_obj)
