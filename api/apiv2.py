@@ -1012,8 +1012,13 @@ class ApplicationSearchResource(ModelResource):
         try:
             occuhunt_company = Company.objects.get(name="Occuhunt")
             applied_to_company_with_filters = object_list.filter(company__id=bundle.request.user.recruiter.company.id)
+            # get all offrhunt applications
             through_offrhunt = Application.objects.filter(company=occuhunt_company, user__offer__isnull=False, user__offer__timestamp__gt=one_month_ago, user__offer__approved=True)
+            # exclude applications where the offer is from the recruiter's company
             offrhunt_applications = through_offrhunt.exclude(user__offer__company_from__id=bundle.request.user.recruiter.company.id)
+            # exclude applications where the user has already been contacted by the company
+            applied_to_company_without_filters = Application.objects.filter(company__id=bundle.request.user.recruiter.company.id, timestamp__gt=one_month_ago)
+            offrhunt_applications = offrhunt_applications.exclude(user__id__in=[app.user.id for app in applied_to_company_without_filters])
             
             result_list = offrhunt_applications | applied_to_company_with_filters
             result_list = result_list.distinct('user')
