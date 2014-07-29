@@ -476,7 +476,7 @@ function searchResults(text){
               <div class="cbp_tmlabel">
                   <h2>Final Check</h2>
                   <p>
-                    <div class="row">
+                    <div class="row text-left">
                       <div class="col-lg-12">
                         <label>Which positions are you interested in?</label>
                         <div class="row">
@@ -493,7 +493,7 @@ function searchResults(text){
                     </div>
                     <br />
                     <!-- Pick your documents -->
-                    <div class="row">
+                    <div class="row text-left">
                       <div class="col-lg-4">
                         <label>Resumes</label>
                         <ul class="documents" id="resumes">
@@ -510,6 +510,11 @@ function searchResults(text){
                             </div>
                           </li>
                           {% endfor %}
+                          <li class="document" style="position:absolute;">
+                            <a href='/profile/documents/'>
+                              <img style="width:68px; height:108px;" src="{% static 'images/add-document.png' %}">
+                            </a>
+                          </li>
                         </ul>
                       </div>
                       <div class="col-lg-4">
@@ -528,6 +533,11 @@ function searchResults(text){
                             </div>
                           </li>
                           {% endfor %}
+                          <li class="document" style="position:absolute;">
+                            <a href='/profile/documents/'>
+                              <img style="width:68px; height:108px;" src="{% static 'images/add-document.png' %}">
+                            </a>
+                          </li>
                         </ul>
                       </div>
                       <div class="col-lg-4">
@@ -546,12 +556,17 @@ function searchResults(text){
                             </div>
                           </li>
                           {% endfor %}
+                          <li class="document" style="position:absolute;">
+                            <a href='/profile/documents/'>
+                              <img style="width:68px; height:108px;" src="{% static 'images/add-document.png' %}">
+                            </a>
+                          </li>
                         </ul>
                       </div>
                     </div>
 
                     <br />
-                    <div class="additionalInfoDiv">
+                    <div class="additionalInfoDiv text-left">
                    
                       <!-- Additional Info - Major, Degree, Grad Date -->
                       <div class="row">
