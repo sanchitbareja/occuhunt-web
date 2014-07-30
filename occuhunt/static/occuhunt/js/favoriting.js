@@ -194,6 +194,7 @@ function add_application_statuses(application_statuses){
     }
 }
 
+// this is used by dashboard page
 function initialize(){
     // update_favorites();
     initialize_favoriting();

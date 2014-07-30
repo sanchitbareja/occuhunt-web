@@ -18,6 +18,39 @@
 
 {% block extra_script %}
 <!-- Add javascript here -->
+<script type="text/javascript">
+	// used to add applications for the company page
+	function addApplicationWithCompanyId(company_id, element) {
+	    console.log("get application statuses");
+	    $.ajax({
+	        url: '/api/v2/applications/',
+	        type: 'POST',
+	        dataType: 'json',
+	        contentType: 'application/json',
+	        data: JSON.stringify({
+	            'company_id': company_id,
+	            'added_by_user': true
+	        }),
+	        statusCode: {
+	            201: function(data, status, xhr){
+	                console.log(1);
+	                console.log(data);
+	                // change UI to "Considering Mobileworks!"
+	                $(element).text("I'm considering");
+	                $(element).attr("onclick", "");
+	                $(element).attr("disabled",true);
+	            },
+	            404: function(){
+	                console.log(3);
+	            },
+	            500: function(){
+	                console.log(4);
+	            }
+	        }
+	    });
+	};
+
+</script>
 {% endblock %}
 
 {% block content %}
@@ -50,9 +83,9 @@
 					<br>
 					{% if user.is_authenticated %}
 						{% if is_favorited %}
-						<a class="btn btn-fav-dark" id="visit_careers_site_btn" onclick='unfavoriteCompanyWithId({{ company.id }},this)'>- UNCONSDIER {{company.name|upper}}</a>
+						<a class="btn btn-fav-dark" id="visit_careers_site_btn" disabled>I'm considering</a>
 						{% else %}
-						<a class="btn btn-fav-dark" id="visit_careers_site_btn" onclick='favoriteCompanyWithId({{ company.id }},this)'>+ CONSIDER {{company.name|upper}}</a>
+						<a class="btn btn-fav-dark" id="visit_careers_site_btn" onclick='addApplicationWithCompanyId({{ company.id }},this)'>+ CONSIDER {{company.name|upper}}</a>
 						{% endif %}
 					{% endif %}
 				</div>

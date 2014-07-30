@@ -13,7 +13,7 @@ from itertools import chain
 from haystack.query import SearchQuerySet
 
 from companies.models import Company
-from favorites.models import Favorite
+from applications.models import Application
 from jobs.models import Job
 
 def home(request):
@@ -56,7 +56,7 @@ def company(request, companyID):
             return render_to_response('company.html', {'company': company, 'jobs':public_jobs},
                                   RequestContext(request))
         else:
-            favorite = Favorite.objects.filter(company=company, user__id=request.user.id)
+            favorite = Application.objects.filter(company=company, user__id=request.user.id)
             filtered_jobs = []
             is_favorited = False
             if len(favorite) > 0:
