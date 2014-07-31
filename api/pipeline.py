@@ -1,6 +1,8 @@
 from django.contrib.auth.models import Group
 from mailer import send_mail
-from django.shortcuts import redirect
+from django.template import Context, RequestContext
+from django.shortcuts import redirect, render_to_response
+from django.core.urlresolvers import reverse
 from users.models import User, Student
 from social.pipeline.partial import partial
 from occuhunt.settings import BASE_URL
@@ -36,32 +38,16 @@ def create_password(request, backend, *args, **kwargs):
                 pass
         else:
             print 6
-            if 'verified_email' in request.session.keys() and 'school_network' in request.session.keys() and 'email_identifier' in request.session.keys():
+            if 'verified_email' in request.session.keys() and 'school_network' in request.session.keys():
                 print request.session['verified_email']
                 print request.session['school_network']
-                print request.session['email_identifier']
-                user.student.verified_email = request.session['verified_email']+request.session['email_identifier']
-                if request.session['school_network'] == 1:
-                    print 9
-                    g = Group.objects.get(name='UC Berkeley')
-                    user.student.groups.add(g)
-                if request.session['school_network'] == 2:
-                    print 9
-                    g = Group.objects.get(name='UC Berkeley ISchool')
-                    user.student.groups.add(g)
-                if request.session['school_network'] == 3:
-                    print 9
-                    g = Group.objects.get(name='San Jose State University School of Library and Information Science')
-                    user.student.groups.add(g)
-                if request.session['school_network'] == 4:
-                    print 9
-                    g = Group.objects.get(name='Academy of Art')
-                    user.student.groups.add(g)
-                if request.session['school_network'] == 5:
-                    print 10
-                    g = Group.objects.get(name='Carnegie Mellon University')
-                    user.student.groups.add(g)
+                user.student.verified_email = request.session['verified_email']
                 user.student.save()
+                
+                g = Group.objects.get(id=request.session['school_network'])
+                user.groups.add(g)
+                user.save()
+
                 # send user verification email
                 from_email = 'occuhunt@gmail.com'
                 to_email = user.student.verified_email
@@ -76,33 +62,17 @@ def create_password(request, backend, *args, **kwargs):
                 return redirect('get-email-network')
     else:
         print 7
-        if 'verified_email' in request.session.keys() and 'school_network' in request.session.keys() and 'email_identifier' in request.session.keys():
+        if 'verified_email' in request.session.keys() and 'school_network' in request.session.keys():
             # save network and verified email and convert to student
             print 8
-            student_user = Student(user_ptr_id=user)
+            student_user = Student(user_ptr_id=user.id)
             student_user.__dict__.update(user.__dict__)
-            student_user.verified_email = request.session['verified_email']+request.session['email_identifier']
-            if request.session['school_network'] == 1:
-                print 9
-                g = Group.objects.get(name='UC Berkeley')
-                student_user.groups.add(g)
-            if request.session['school_network'] == 2:
-                print 9
-                g = Group.objects.get(name='UC Berkeley ISchool')
-                student_user.groups.add(g)
-            if request.session['school_network'] == 3:
-                print 9
-                g = Group.objects.get(name='San Jose State University School of Library and Information Science')
-                student_user.groups.add(g)
-            if request.session['school_network'] == 4:
-                print 9
-                g = Group.objects.get(name='Academy of Art')
-                student_user.groups.add(g)
-            if request.session['school_network'] == 5:
-                print 10
-                g = Group.objects.get(name='Carnegie Mellon University')
-                student_user.groups.add(g)
+            student_user.verified_email = request.session['verified_email']
+
+            g = Group.objects.get(id=request.session['school_network'])
+            student_user.groups.add(g)
             student_user.save()
+
             # send student verification email
             from_email = 'occuhunt@gmail.com'
             to_email = student_user.verified_email
@@ -111,7 +81,7 @@ def create_password(request, backend, *args, **kwargs):
             user.verification_token = verification_token
             user.is_verified = False
             user.save()
-            send_mail('[Occuhunt] Verify your network.', 'Click on the following link to verify your network: '+verification_url, from_email, [to_email], fail_silently=False)
+            # send_mail('[Occuhunt] Verify your network.', 'Click on the following link to verify your network: '+verification_url, from_email, [to_email], fail_silently=False)
             os.system('python manage.py send_mail')
             print "sent email"
         else:
@@ -135,48 +105,5 @@ def associate_group(request, backend, *args, **kwargs):
     """
     try:
         print kwargs
-        if type(kwargs['response']['educations']['education']) == type({}):
-            if "University of California, Berkeley".lower() in kwargs['response']['educations']['education']['school-name'].lower():
-                g = Group.objects.get(name='UC Berkeley')
-                user = kwargs['user']
-                user.groups.add(g)
-                user.save()
-            elif "University of California Berkeley".lower() in kwargs['response']['educations']['education']['school-name'].lower():
-                g = Group.objects.get(name='UC Berkeley')
-                user = kwargs['user']
-                user.groups.add(g)
-                user.save()
-            elif "UC Berkeley".lower() in kwargs['response']['educations']['education']['school-name'].lower():
-                g = Group.objects.get(name='UC Berkeley')
-                user = kwargs['user']
-                user.groups.add(g)
-                user.save()
-            elif "Carnegie Mellon University".lower() in kwargs['response']['educations']['education']['school-name'].lower():
-                g = Group.objects.get(name='Carnegie Mellon University')
-                user = kwargs['user']
-                user.groups.add(g)
-                user.save()
-        elif type(kwargs['response']['educations']['education']) == type([]):
-            for education in kwargs['response']['educations']['education']:
-                if "University of California, Berkeley".lower() in education['school-name'].lower():
-                    g = Group.objects.get(name='UC Berkeley')
-                    user = kwargs['user']
-                    user.groups.add(g)
-                    user.save()
-                elif "University of California Berkeley".lower() in education['school-name'].lower():
-                    g = Group.objects.get(name='UC Berkeley')
-                    user = kwargs['user']
-                    user.groups.add(g)
-                    user.save()
-                elif "UC Berkeley".lower() in education['school-name'].lower():
-                    g = Group.objects.get(name='UC Berkeley')
-                    user = kwargs['user']
-                    user.groups.add(g)
-                    user.save()
-                elif "Carnegie Mellon University".lower() in education['school-name'].lower():
-                    g = Group.objects.get(name='Carnegie Mellon University')
-                    user = kwargs['user']
-                    user.groups.add(g)
-                    user.save()
     except Exception as e:
         print e

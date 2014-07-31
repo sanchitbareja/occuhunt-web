@@ -11,6 +11,7 @@ from datetime import datetime, timedelta, time
 from django.http import Http404
 from itertools import chain
 from users.models import User, Major, Degree
+from django.contrib.auth.models import Group
 
 # Create your views here.
 def get_user_network(request):
@@ -20,12 +21,11 @@ def get_user_network(request):
 	3. complete partial_pipeline
 	"""
 	if request.method == 'POST':
-		request.session['verified_email'] = request.POST.get('verified_email_address')
-		request.session['school_network'] = request.POST.get('verified_network')
-		request.session['email_identifier'] = request.POST.get('email_identifier')
+		request.session['verified_email'] = request.POST.get('verified_email')
+		request.session['school_network'] = request.POST.get('school_network')
 		backend = request.session['partial_pipeline']['backend']
 		return redirect('social:complete', backend=backend)
-	return render_to_response('registeration/get_network.html', {}, RequestContext(request))
+	return render_to_response('registeration/get_network.html', {'groups':Group.objects.all()}, RequestContext(request))
 
 def verify_user_network(request, verification_token):
 	"""
