@@ -4,7 +4,7 @@ from companies.views import home, splash, companies, company, search, search_que
 from resumes.views import resume_feed, sign_s3_upload, submit_resume, individual_resume
 from jobs.views import favorites, apply_jobs, match_jobs
 from notifications.views import showcase_notifications, showcase_applications
-from fairs.views import create_fair, all_events, career_fair_handler, infosession_handler, three_five_seven_handler, StartupCareerFairSpring2014View, ISchoolInfoCampView, PBLCareerFairSpring2014View, Dropin357View, Dropin3572View, Dropin3573View, GestureKitInfosession15April2014View
+from fairs.views import create_fair, all_events, career_fair_handler, infosession_handler, three_five_seven_handler
 from recruiters.views import recruiter_splash, recruiter_hire, recruiter_market, recruiter_sell, recruiter_sponsorship_request, download_pdf, recruiter_login, recruiter_login_third_party, recruiter_analytics, download_excel_to_export
 from offers.views import offrhunt_handler
 from documents.views import dashboard_view, documents_view, preview_document
@@ -65,53 +65,6 @@ urlpatterns = patterns('',
     url(r'^privacy/$',TemplateView.as_view(template_name="privacy_policy.html")),
     url(r'^logout/$', logout_view, name='logout'),
     url(r'^login-error/$', login_error, name='login-error'),
-
-    # Career Fairs
-    url(r'^fair/UCBerkeley/Just-In-Time-Job-Fair-Spring-2014/$', TemplateView.as_view(template_name="CareerFairs/UCBerkeley/JustInTimeJobFairSpring2014.html")),
-    url(r'^fair/UCBerkeley/PBL-Career-Fair-Spring-2014/$', PBLCareerFairSpring2014View, name='PBL-Career-Fair-Spring-2014'),
-    url(r'^fair/UCBerkeley/CED-Career-Fair-Spring-2014/$', TemplateView.as_view(template_name="CareerFairs/UCBerkeley/CEDFairSpring2014.html")),
-    url(r'^fair/UCBerkeley/InfoCamp-iSchool-Spring-2014/$', ISchoolInfoCampView, name='ISchool-InfoCamp'),
-    url(r'^fair/UCBerkeley/Energy-Environment-Natural-Resources-Career-Fair-Spring-2014/$', TemplateView.as_view(template_name="CareerFairs/UCBerkeley/EnergyEnvironmentNaturalResourcesCareerFairSpring2014.html")),
-    url(r'^fair/UCBerkeley/Startup-Fair-Spring-2014/$', StartupCareerFairSpring2014View, name='Startup-Fair-Spring-2014'),
-    url(r'^fair/UCBerkeley/Internship-Summer-Fair-Spring-2014/$', TemplateView.as_view(template_name="CareerFairs/UCBerkeley/InternshipSummerFairSpring2014.html")),
-    url(r'^fair/UCBerkeley/Spring-Career-Fair-Spring-2014/$', TemplateView.as_view(template_name="CareerFairs/UCBerkeley/SpringCareerFairSpring2014.html")),
-    url(r'^fair/UCBerkeley/EECS-Internship-Fair-Spring-2014/$', TemplateView.as_view(template_name="CareerFairs/UCBerkeley/EECSInternshipOpenHouseSpring2014.html")),
-    url(r'^fair/UCBerkeley/Civil-Environmental-Fair-Fall-2013/$', TemplateView.as_view(template_name="CareerFairs/UCBerkeley/CivilAndEnvironmentalEngineeringCareerFairFall2013.html")),
-    url(r'^fair/UCBerkeley/Early-Bird-Internship-Fair-Fall-2013/$', TemplateView.as_view(template_name="CareerFairs/UCBerkeley/EarlyBirdInternshipFairFall2013.html")),
-    url(r'^fair/UCBerkeley/Startup-Fair-Fall-2013/$', TemplateView.as_view(template_name="CareerFairs/UCBerkeley/StartupCareerFairFall2013.html")),
-    url(r'^fair/UCBerkeley/EECS-Fair-Fall-2013/$', TemplateView.as_view(template_name="CareerFairs/UCBerkeley/EECSCareerFairFall2013.html")),
-
-    # Dropins
-    url(r'^fair/UCBerkeley/357-Dropin-April-9-2014/$', Dropin357View, name='357-Dropin-April-9-2014'),
-    url(r'^fair/UCBerkeley/357-Dropin-April-16-2014/$', Dropin3572View, name='357-Dropin-April-16-2014'),
-    url(r'^fair/UCBerkeley/357-Dropin-April-23-2014/$', Dropin3573View, name='357-Dropin-April-23-2014'),
-
-    # Infosessions
-    url(r'^fair/UCBerkeley/GestureKit-Infosession-April-15-2014/$', GestureKitInfosession15April2014View, name='GestureKit-Infosession-April-15-2014'),
-
-    url(r'^static/faircoords/1_1.json', RedirectView.as_view(url='https://occuhuntstatic.s3.amazonaws.com/faircoords/1_1.json')),
-    url(r'^static/faircoords/2_2.json', RedirectView.as_view(url='https://occuhuntstatic.s3.amazonaws.com/faircoords/2_2.json')),
-    url(r'^static/faircoords/2_3.json', RedirectView.as_view(url='https://occuhuntstatic.s3.amazonaws.com/faircoords/2_3.json')),
-    url(r'^static/faircoords/2_4.json', RedirectView.as_view(url='https://occuhuntstatic.s3.amazonaws.com/faircoords/2_4.json')),
-    url(r'^static/faircoords/3_1.json', RedirectView.as_view(url='https://occuhuntstatic.s3.amazonaws.com/faircoords/3_1.json')),
-    url(r'^static/faircoords/4_2.json', RedirectView.as_view(url='https://occuhuntstatic.s3.amazonaws.com/faircoords/4_2.json')),
-    url(r'^static/faircoords/4_3.json', RedirectView.as_view(url='https://occuhuntstatic.s3.amazonaws.com/faircoords/4_3.json')),
-    url(r'^static/faircoords/4_4.json', RedirectView.as_view(url='https://occuhuntstatic.s3.amazonaws.com/faircoords/4_4.json')),
-    url(r'^static/faircoords/5_2.json', RedirectView.as_view(url='https://occuhuntstatic.s3.amazonaws.com/faircoords/5_2.json')),
-    url(r'^static/faircoords/5_3.json', RedirectView.as_view(url='https://occuhuntstatic.s3.amazonaws.com/faircoords/5_3.json')),
-    url(r'^static/faircoords/5_4.json', RedirectView.as_view(url='https://occuhuntstatic.s3.amazonaws.com/faircoords/5_4.json')),
-    url(r'^static/faircoords/6_1.json', RedirectView.as_view(url='https://occuhuntstatic.s3.amazonaws.com/faircoords/6_1.json')),
-    url(r'^static/faircoords/7_1.json', RedirectView.as_view(url='https://occuhuntstatic.s3.amazonaws.com/faircoords/7_1.json')),
-    url(r'^static/faircoords/8.json', RedirectView.as_view(url='https://occuhuntstatic.s3.amazonaws.com/faircoords/8.json')),
-    url(r'^static/faircoords/8_.json', RedirectView.as_view(url='https://occuhuntstatic.s3.amazonaws.com/faircoords/8_.json')),
-    url(r'^static/faircoords/8_2.json', RedirectView.as_view(url='https://occuhuntstatic.s3.amazonaws.com/faircoords/8_2.json')),
-    url(r'^static/faircoords/8_3.json', RedirectView.as_view(url='https://occuhuntstatic.s3.amazonaws.com/faircoords/8_3.json')),
-    url(r'^static/faircoords/8_4.json', RedirectView.as_view(url='https://occuhuntstatic.s3.amazonaws.com/faircoords/8_4.json')),
-    url(r'^static/faircoords/9_1.json', RedirectView.as_view(url='https://occuhuntstatic.s3.amazonaws.com/faircoords/9_1.json')),
-    url(r'^static/faircoords/10_1.json', RedirectView.as_view(url='https://occuhuntstatic.s3.amazonaws.com/faircoords/10_1.json')),
-    url(r'^static/faircoords/11_5.json', RedirectView.as_view(url='https://occuhuntstatic.s3.amazonaws.com/faircoords/11_5.json')),
-    url(r'^static/faircoords/12_6.json', RedirectView.as_view(url='https://occuhuntstatic.s3.amazonaws.com/faircoords/12_6.json')),
-    url(r'^static/faircoords/13_2.json', RedirectView.as_view(url='https://occuhuntstatic.s3.amazonaws.com/faircoords/13_2.json')),
 
     # Test urls
     url(r'^events/$', dashboard_view, name='dashboard_view'),

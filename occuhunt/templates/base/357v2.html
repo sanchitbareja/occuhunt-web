@@ -343,7 +343,11 @@
             {% endfor %}
             <br />
           </p>
-          <button class='btn btn-md btn-danger resume_drop_btn' value='{{company.id}}' name='{{company.name}}'>DROP RESUME</button>
+          {% if request.user.is_authenticated %}
+            <button class='btn btn-md btn-danger resume_drop_btn' value='{{company.id}}' name='{{company.name}}'>DROP RESUME</button>
+          {% else %}
+            <a class='btn btn-md btn-danger' href="/login/linkedin/?next={{request.path}}">LOGIN TO <br />DROP RESUME</a>
+          {% endif %}
         </div>
     </div>
     {% endfor %}
