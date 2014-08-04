@@ -237,6 +237,7 @@ function remove_pill(id, name, category, elem){
 function get_candidates() {
   applicants = [];
   clear_candidates();
+  show_load_state();
   base_url = '/api/v2/applicationsearch/';
   sq = [];
 
@@ -327,6 +328,9 @@ function get_candidates() {
         } else {
           $("#candidate_list").append('<a class="list-group-item">Sorry, no candidates :( Please choose another category</a>')
         }
+        // hide load state
+        hide_load_state();
+
         // update candidate count
         update_candidate_count(data['meta']['total_count']);
       },
@@ -340,6 +344,14 @@ function clear_candidates(){
 
 function clear_documents(){
   $("#application_documents").empty();
+}
+
+function show_load_state(){
+  $("#loading_state").show();
+}
+
+function hide_load_state(){
+  $("#loading_state").hide();
 }
 
 function update_candidate_count(val){
@@ -970,6 +982,7 @@ $(document).ready(function() {
       
     </div>
     <div class="row">
+      <div id="loading_state" style="display:none;" class="text-center"><img src="{% static 'images/ajax-loader.gif' %}"></div>
       <div class="list-group" id="candidate_list">
         <!-- Candidates will appear here -->
       </div>
