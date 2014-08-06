@@ -233,7 +233,7 @@
     // if the student has offers
     if(company_from_text_val && salary_range_val && offer_deadline_val){
       $.ajax({
-        url: '/api/v1/offers/',
+        url: '/api/v2/offers/',
         type: 'POST',
         dataType: 'json',
         data: JSON.stringify({
@@ -261,7 +261,7 @@
     fair_id = $("#fair_id").val();
     console.log("get applications");
     $.ajax({
-      url: '/api/v1/applications/?user='+String(user_id)+'&fair='+String(fair_id),
+      url: '/api/v2/applications/?user='+String(user_id)+'&fair='+String(fair_id),
       type: 'GET',
       contentType: 'application/json',
       dataType: 'json',
@@ -408,7 +408,7 @@
                 </div>
               </li>
               {% endfor %}
-              <li class="document" style="position:absolute;">
+              <li class="document" style="display:block;">
                 <a href='/profile/documents/'>
                   <img style="width:68px; height:108px;" src="{% static 'images/add-document.png' %}">
                 </a>
@@ -431,7 +431,7 @@
                 </div>
               </li>
               {% endfor %}
-              <li class="document" style="position:absolute;">
+              <li class="document" style="display:block;">
                 <a href='/profile/documents/'>
                   <img style="width:68px; height:108px;" src="{% static 'images/add-document.png' %}">
                 </a>
@@ -454,7 +454,7 @@
                 </div>
               </li>
               {% endfor %}
-              <li class="document" style="position:absolute;">
+              <li class="document" style="display:block;">
                 <a href='/profile/documents/'>
                   <img style="width:68px; height:108px;" src="{% static 'images/add-document.png' %}">
                 </a>
