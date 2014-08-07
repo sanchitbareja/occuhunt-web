@@ -74,6 +74,20 @@
 
     });
 
+    // show login modal on click of "resume drop" when user is not logged in
+    $('.login_modal_btn').on("click", function() {
+      var e = $(this);
+      var company_id = $(this).attr("value");
+      var fair_id = $("#fair_id").val();
+      var company_name = $(this).attr("name")
+      $("#company_id").attr('value',company_id);
+      
+      // show the modal with appropriate text
+      $(".companyTitle").text(company_name);
+      $("#loginModal").modal("show");
+
+    });
+
     $("#submitResumeDrop").on("click", function() {
       var fair_id = $("#fair_id").val();
       var company_id = $("#company_id").val();
@@ -237,7 +251,6 @@
         type: 'POST',
         dataType: 'json',
         data: JSON.stringify({
-          'user_id': user_id,
           'company_from_text': company_from_text_val,
           'salary_range': salary_range_val,
           'offer_deadline': offer_deadline_val,
@@ -261,7 +274,7 @@
     fair_id = $("#fair_id").val();
     console.log("get applications");
     $.ajax({
-      url: '/api/v2/applications/?user='+String(user_id)+'&fair='+String(fair_id),
+      url: '/api/v2/applications/?fair='+String(fair_id),
       type: 'GET',
       contentType: 'application/json',
       dataType: 'json',
@@ -346,7 +359,7 @@
           {% if request.user.is_authenticated %}
             <button class='btn btn-md btn-danger resume_drop_btn' value='{{company.id}}' name='{{company.name}}'>DROP RESUME</button>
           {% else %}
-            <a class='btn btn-md btn-danger' href="/login/linkedin/?next={{request.path}}">LOGIN TO <br />DROP RESUME</a>
+            <button class='btn btn-md btn-danger login_modal_btn' value='{{company.id}}' name='{{company.name}}'>DROP RESUME</button>
           {% endif %}
         </div>
     </div>
@@ -356,6 +369,29 @@
   <br>
   <br>
 
+<!-- Modal when user isn't logged in -->
+<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="resumeDropModal" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel"></h4>
+
+        <h4 class="modal-title" id="category_header">Resume Drop to <span class="companyTitle"></span></h4>
+
+      </div>
+      <div class="modal-body">
+        Login to drop your resume with <span class="companyTitle"></span>!
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <a class='btn btn-md btn-danger' href="/login/linkedin/?next={{request.path}}">LOGIN TO DROP RESUME</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal when user is logged in -->
 <div class="modal fade" id="resumeDropModal" tabindex="-1" role="dialog" aria-labelledby="resumeDropModal" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
