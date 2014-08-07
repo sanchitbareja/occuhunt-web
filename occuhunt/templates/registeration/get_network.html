@@ -12,6 +12,25 @@
 		font-smoothing: antialiased;
 		font-smooth: always;
 	}
+
+	.network-image {
+		padding: 10px;
+		width: 200px;
+		/*height: 200px;*/
+		line-height: 200px;
+		border-radius: 5px;
+		/*border: 1px solid #e4e4e4;*/
+		display: inline-block;
+		vertical-align: middle;
+	}
+
+	.network-image > img {
+		max-width: 100%;
+		max-height: 100%;
+		vertical-align: middle;
+		display: block;
+		line-height: 200px;
+	}
 </style>
 
 {% endblock %}
@@ -36,7 +55,7 @@
 					    </select>
 			  		</div>
 			  	</div>
-			  	<div class="col-lg-4">
+			  	<div class="col-lg-3">
 				  	<div class="form-group">
 				    	<label for="verified_email">School Email</label>
 				    	<div class="input-group input-group-lg">
@@ -44,11 +63,31 @@
 						</div>
 				  	</div>
 				</div>
+				<div class="col-lg-6">
+					<label>Ready!</label>
+					<div class="input-group input-group-lg">
+						<input type="submit" class="btn btn-lg btn-done" value="Use Occuhunt!"></input>
+					</div>	
+				</div>
 			</div>
 		  	<br />
 		  	<br />
-		  	<input type="submit" class="btn btn-lg btn-done" value="Use Occuhunt!"></input>
 		</form>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-lg-12">
+		<h1 style="font-weight:200;">Exclusively at:</h1>
+		<div class="network-image">
+			<img src="{% static 'images/berkeley_network.gif' %}">
+		</div>
+		<div class="network-image">
+			<img src="{% static 'images/hmc_network.gif' %}">
+		</div>
+		<div class="network-image">
+			<img src="{% static 'images/cmu_network.gif' %}">
+		</div>
 	</div>
 </div>
 
