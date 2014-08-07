@@ -25,7 +25,7 @@ def get_user_network(request):
 		request.session['school_network'] = request.POST.get('school_network')
 		backend = request.session['partial_pipeline']['backend']
 		return redirect('social:complete', backend=backend)
-	return render_to_response('registeration/get_network.html', {'groups':Group.objects.all()}, RequestContext(request))
+	return render_to_response('registeration/get_network.html', {'groups':Group.objects.all().order_by('name')}, RequestContext(request))
 
 def verify_user_network(request, verification_token):
 	"""
