@@ -14,7 +14,63 @@
 <!-- Date formatting library -->
 <script src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.1.0/moment.min.js"></script>
 <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.2/underscore-min.js" type="text/javascript"></script>
+<script type="text/javascript">
 
+
+	function update_user(){
+		// save user profile
+		// get school email
+		var school_email = $("#studentSchoolEmail").val();
+		// get regular email
+		var regular_email = $("#studentRegularEmail").val();
+	    // get major
+	    var majors = $("#studentMajor").val();
+	    // get graduation year
+	    var grad_year = $("#studentGradYear").val();
+	    // get degree type
+	    var degree_type = $("#studentDegree").val();
+
+	    // new applications
+	    $.ajax({
+	      	url: '/api/v2/users/{{request.user.id}}/',
+	      	type:'PUT',
+	      	dataType: 'json',
+	      	data: JSON.stringify({
+	      		'school_email':school_email,
+	      		'regular_email':regular_email,
+	        	'majors':majors,
+	        	'grad_year': grad_year,
+	        	'degree_type': degree_type
+	      	}),
+	      	contentType: 'application/json',
+	      	statusCode : {
+	        	204: function(data, textStatus, jsXHR){
+	          		console.log("successfully dropped resume!");
+	          		console.log(data);
+	          		console.log(textStatus);
+	          		console.log(jsXHR);
+		          	// ui save user
+		          	$("#saveProfile").text("Saved profile! Edit and save again.")
+	        	},
+	        	500: function(data, textStatus, jsXHR){
+	          		console.log(data);
+	          		console.log(textStatus);
+	          		console.log(jsXHR);
+	          		// ui confirmation
+	          		alert("Oops, something wrong happened! Try saving again.")
+	        	},
+	        	404: function(data, textStatus, jsXHR){
+	          		console.log(data);
+	          		console.log(textStatus);
+	          		console.log(jsXHR);
+	          		// ui confirmation
+	          		alert("Oops, something wrong happened! Try saving again.")
+	        	}
+	      	}
+	    });
+	}
+
+</script>
 
 {% endblock %}
 
@@ -23,30 +79,16 @@
 
 <div class="col-lg-2">
 	<div class="text-right">
-		{% if request.get_full_path == "/showcase/" %}
-			<a href="/showcase/" class="btn btn-link active">My Profile</a><br />
+		{% if request.get_full_path == "/profile/general/" %}
+			<a href="/profile/general/" class="btn btn-link active">My Profile</a><br />
 		{% else %}
-			<a href="/showcase/" class="btn btn-link">My Profile</a><br />
+			<a href="/profile/general/" class="btn btn-link">My Profile</a><br />
 		{% endif %}
-		<!-- {% if request.get_full_path == "/showcase/requests/" %}
-			<a href="/showcase/requests/" class="btn btn-link active">Recommend <span class="notification_number">{{requests_number}}</span></a><br />
+
+		{% if request.get_full_path == "/profile/notifications/" %}
+			<a href="/profile/notifications/" class="btn btn-link active">Notifications</a><br />
 		{% else %}
-			<a href="/showcase/requests/" class="btn btn-link">Recommend <span class="notification_number">{{requests_number}}</span></a><br />
-		{% endif %}
-		{% if request.get_full_path == "/showcase/requests/new/" %}
-			<a href="/showcase/requests/new/" class="btn btn-link active">Invite</a><br />
-		{% else %}
-			<a href="/showcase/requests/new/" class="btn btn-link">Invite</a><br />
-		{% endif %} -->
-		{% if request.get_full_path == "/showcase/applications/" %}
-			<a href="/showcase/applications/" class="btn btn-link active">Application Status</a><br />
-		{% else %}
-			<a href="/showcase/applications/" class="btn btn-link">Application Status</a><br />
-		{% endif %}
-		{% if request.get_full_path == "/showcase/analytics/" %}
-			<a href="/showcase/analytics/" class="btn btn-link active">Activity</a><br />
-		{% else %}
-			<a href="/showcase/analytics/" class="btn btn-link">Activity</a><br />
+			<a href="/profile/notifications/" class="btn btn-link">Notifications</a><br />
 		{% endif %}
 	</div>
 </div>
@@ -119,5 +161,4 @@
 		</div>
 	</div>
 </div>
-
 {% endblock %}

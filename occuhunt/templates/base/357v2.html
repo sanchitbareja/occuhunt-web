@@ -72,6 +72,9 @@
       $(".companyTitle").text(company_name);
       $("#resumeDropModal").modal("show");
 
+      // clear any old modal messages
+      clearModalMessages();
+
     });
 
     // show login modal on click of "resume drop" when user is not logged in
@@ -170,6 +173,10 @@
       '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'+
       message+
     '</div>');
+  }
+
+  function clearModalMessages(){
+    $("#modalMessages").empty();
   }
 
   function notLoggedIn(){
@@ -357,7 +364,11 @@
             <br />
           </p>
           {% if request.user.is_authenticated %}
-            <button class='btn btn-md btn-danger resume_drop_btn' value='{{company.id}}' name='{{company.name}}'>DROP RESUME</button>
+            {% if time_now < event.fair.time_end %}
+              <button class='btn btn-md btn-danger resume_drop_btn' value='{{company.id}}' name='{{company.name}}'>DROP RESUME</button>
+            {% else %}
+              <button disabled class='btn btn-md btn-danger resume_drop_btn' value='{{company.id}}' name='{{company.name}}'>CLOSED</button>
+            {% endif %}
           {% else %}
             <button class='btn btn-md btn-danger login_modal_btn' value='{{company.id}}' name='{{company.name}}'>DROP RESUME</button>
           {% endif %}
