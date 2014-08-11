@@ -38,6 +38,11 @@
         {% else %}
           <li><a href="/recruiter/hire/">HIRE</a></li>
         {% endif %}
+        {% if request.path == '/recruiter/hire/offrhunt/' %}
+          <li class="active"><a href="/recruiter/hire/offrhunt/" style="color:#005f69;">OFFRHUNT</a></li>
+        {% else %}
+          <li><a href="/recruiter/hire/offrhunt/">OFFRHUNT</a></li>
+        {% endif %}
         <!-- <li><a href="/recruiter/analytics/">ANALYZE</a></li> -->
         {% if request.path == '/recruiter/market/' %}
           <li class="active"><a href="/recruiter/market/" style="color:#005f69;">POST A JOB</a></li>

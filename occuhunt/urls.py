@@ -5,7 +5,7 @@ from resumes.views import resume_feed, sign_s3_upload, submit_resume, individual
 from jobs.views import favorites, apply_jobs, match_jobs
 from notifications.views import showcase_notifications, showcase_applications
 from fairs.views import create_fair, all_events, career_fair_handler, infosession_handler, three_five_seven_handler
-from recruiters.views import recruiter_splash, recruiter_hire, recruiter_market, recruiter_sell, recruiter_sponsorship_request, download_pdf, recruiter_login, recruiter_login_third_party, recruiter_analytics, download_excel_to_export
+from recruiters.views import recruiter_splash, recruiter_hire, recruiter_hire_offrhunt, recruiter_market, recruiter_sell, recruiter_sponsorship_request, download_pdf, recruiter_login, recruiter_login_third_party, recruiter_analytics, download_excel_to_export
 from offers.views import offrhunt_handler
 from documents.views import dashboard_view, documents_view, preview_document
 from django.conf import settings
@@ -18,7 +18,7 @@ admin.autodiscover()
 
 # API
 from tastypie.api import Api
-from api.apiv2 import CompanyResource, UserResource, FairResource, JobResource, NotificationResource, ApplicationResource, DocumentResource, LinkResource, VisitResource, ApplicationSearchResource, OfferResource
+from api.apiv2 import CompanyResource, UserResource, FairResource, JobResource, NotificationResource, ApplicationResource, DocumentResource, LinkResource, VisitResource, ApplicationSearchResource, ApplicationSearchOffrhuntResource, OfferResource
 from api.views import logout_view, login_error, feedback_form
 
 v2_api = Api(api_name='v2')
@@ -32,6 +32,7 @@ v2_api.register(DocumentResource())
 v2_api.register(LinkResource())
 v2_api.register(VisitResource())
 v2_api.register(ApplicationSearchResource())
+v2_api.register(ApplicationSearchOffrhuntResource())
 v2_api.register(OfferResource())
 
 urlpatterns = patterns('',
@@ -53,6 +54,7 @@ urlpatterns = patterns('',
     url(r'^recruiter/change-password/$', 'django.contrib.auth.views.password_change', {'template_name': 'registeration/password_change_form.html'}),
     url(r'^recruiter/change-password-success/$', 'django.contrib.auth.views.password_change_done', {'template_name': 'registeration/password_change_done.html'}),
     url(r'^recruiter/hire/$', recruiter_hire, name='recruiter_hire'),
+    url(r'^recruiter/hire/offrhunt/$', recruiter_hire_offrhunt, name='recruiter_hire_offrhunt'),
     url(r'^recruiter/hire/download_excel_to_export/$', download_excel_to_export, name='download_excel_to_export'),
     url(r'^recruiter/analytics/$', recruiter_analytics, name='recruiter_analytics'),
     url(r'^recruiter/candidate/download_pdf/$',download_pdf),

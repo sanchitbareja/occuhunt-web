@@ -8,6 +8,7 @@
 <link href="{% static 'occuhunt/css/recruiter_hire.css' %}" rel="stylesheet">
 <script src="{% static 'occuhunt/js/custom-form-elements.js' %}"></script>
 <script src="{% static 'underscore/underscore-min.js' %}"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.1.0/moment.min.js"></script>
 
 <style type="text/css">
 
@@ -238,7 +239,7 @@ function get_candidates() {
   applicants = [];
   clear_candidates();
   show_load_state();
-  base_url = '/api/v2/applicationsearch/';
+  base_url = '/api/v2/applicationsearchoffrhunt/';
   sq = [];
 
   // skills, schools, categories, offers, positions, majors, degrees, gradyears
@@ -316,8 +317,10 @@ function get_candidates() {
             if(data['response']['applications'][i]['offer']){
               offer_div = '<div class="has-offer" data-toggle="tooltip" data-placement="left" title="Has a verified offer"></div>';
             }
-            $("#candidate_list").append('<a id="applicant_list_id_'+data['response']['applications'][i]['id']+'" onclick="get_candidate('+data['response']['applications'][i]['id']+')" class="list-group-item application_status_'+data['response']['applications'][i]['status']+'">'+data['response']['applications'][i]['user']['first_name']+' '+data['response']['applications'][i]['user']['last_name']+interviewing_div+offer_div+'</a>');
-            }
+            time_obj = moment.utc(data['response']['applications'][i]['offerDeadline']);
+            time_string = time_obj.fromNow().toString();
+            // remember that all candidates have an offer in this list
+            $("#candidate_list").append('<a id="applicant_list_id_'+data['response']['applications'][i]['id']+'" onclick="get_candidate('+data['response']['applications'][i]['id']+')" class="list-group-item application_status_'+data['response']['applications'][i]['status']+'"><div class="row"><div class="col-lg-4">'+data['response']['applications'][i]['user']['first_name']+'</div><div class="col-lg-4">'+data['response']['applications'][i]['offerCompany']+'</div><div class="col-lg-4">'+time_string+interviewing_div+offer_div+'</div></div></a>');
           };
 
           // enable tooltip
@@ -975,9 +978,9 @@ $(document).ready(function() {
 {% block content %}
 
 <div class="row">
-  <div class="col-lg-2 col-md-2 col-sm-2 category_box">
+  <div class="col-lg-3 col-md-3 col-sm-3 category_box">
     <div class="row" id="category_header_box">
-      <h4 id="category_header">Your Candidates (<span id="candidate_count">57</span>)</h4>
+      <h4 id="category_header">OffrHunt Candidates (<span id="candidate_count">57</span>)</h4>
       <!-- <h5 id="category_subheader">Select a candidate.</h5> -->
       <hr style="margin-bottom:0px; margin-top:0px;">
       
@@ -989,16 +992,28 @@ $(document).ready(function() {
       </div>
     </div>
   </div>
-  <div class="col-lg-10 col-md-10 col-sm-10 category_box" id="application_info">
+  <div class="col-lg-9 col-md-9 col-sm-9 category_box" id="application_info">
     <div class="row" id="category_header_box">
-      <div class="col-lg-12">
-        <h3 id="category_header"><span id="application_first_name">First</span>&nbsp;<span id="application_last_name">Last Name</span></h3>
-        <h5 id="category_subheader"><span id="application_email">Email</span><h5>
-        <h5 id="category_subheader"><span id="application_status">Application Status</span></h5>
-        <button class="btn btn-lg btn-success" id="contact_applicant_btn" style="position:absolute; top:10px; right:10px; display:none;">Contact Candidate</button>
-        <button class="btn btn-lg btn-success" id="accept_applicant_btn" style="position:absolute; top:10px; right:10px; display:none;">To Interview</button>
-        <button class="btn btn-lg btn-danger" id="reject_applicant_btn" style="position:absolute; top:10px; left:10px; display:none;">Reject</button>      
-
+      <div class="col-lg-12 col-md-12 col-sm-12">
+        <div class="row">
+          <div class="col-lg-3 col-md-3 col-sm-3">
+            <h3 id="category_header"><span id="application_first_name">First</span>&nbsp;<span id="application_last_name">Last Name</span></h3>
+            <h5 id="category_subheader"><span id="application_email">Email</span><h5>
+          </div>
+          <div class="col-lg-3 col-md-3 col-sm-3">
+            <h3 id="category_header"><b id="companyOfferFrom"></b></h3>
+            <h5 id="category_subheader">Offer Company<h5>
+          </div>
+          <div class="col-lg-3 col-md-3 col-sm-3">
+            <h3 id="category_header"><b id="companyOfferDeadline">3 days</b></h3>
+            <h5 id="category_subheader">Offer Deadline<h5>
+          </div>
+          <div class="col-lg-3 col-md-3 col-sm-3">
+            <button class="btn btn-lg btn-success" id="contact_applicant_btn" style="position:absolute; top:10px; right:10px; display:none;">Contact Candidate</button>
+            <button class="btn btn-lg btn-success" id="accept_applicant_btn" style="position:absolute; top:10px; right:10px; display:none;">To Interview</button>
+            <button class="btn btn-lg btn-danger" id="reject_applicant_btn" style="position:absolute; top:10px; left:10px; display:none;">Reject</button>  
+          </div>
+        </div>
       </div>
     </div>
     <hr style="padding:0px;margin:0px -15px 0px -15px;">
@@ -1010,8 +1025,7 @@ $(document).ready(function() {
       <div class="col-lg-2" id="note_div" style="padding:10px;height:inherit;">
         <a class="btn btn-inverted-default btn-sm btn-block" id="download_pdf_btn" style="margin:10px 0px;">Download .PDF</a>
         <!-- <p style="color:#005f69;">Companies Interviewing: <b>10</b></p> -->
-        <p style="color:#005f69;">Offer From: <b id="companyOfferFrom"></b></p>
-        <p style="color:#005f69;">What's the student thinking? <b id="reasonForApplying"></b></p>
+        <p style="color:#005f69;">Why am I looking for another offer? <b id="reasonForApplying"></b></p>
         <hr style="padding:0px;margin:0px -10px 0px -10px;">
         <h4>Notes</h4>
         <textarea style="width:100%; line-height: 25px; border: 0px; border:1px solid #e4e4e4; color:black;" rows="5" id="application_note" placeholder="Sample Note"></textarea>

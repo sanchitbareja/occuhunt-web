@@ -76,7 +76,15 @@ def check_if_recruiter(user):
 def recruiter_hire(request):
     """Recruiter interface for hiring candidates"""
     recruiter_id = request.user.recruiter.company.id
-    return render_to_response('recruiter/recruiter_hirev2.html', {'recruiter_id':recruiter_id}, RequestContext(request))
+    return render_to_response('recruiter/recruiter_hire.html', {'recruiter_id':recruiter_id}, RequestContext(request))
+
+@login_required
+@user_passes_test(check_if_recruiter, redirect_field_name='')
+def recruiter_hire_offrhunt(request):
+    """Recruiter interface for hiring candidates"""
+    recruiter_id = request.user.recruiter.company.id
+    return render_to_response('recruiter/recruiter_hire_offrhunt.html', {'recruiter_id':recruiter_id}, RequestContext(request))
+
 
 @login_required
 @user_passes_test(check_if_recruiter, redirect_field_name='')

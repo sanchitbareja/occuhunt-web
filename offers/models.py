@@ -56,6 +56,7 @@ class Offer(models.Model):
 	number_of_offers = models.SmallIntegerField(null=True, blank=True)
 	salary_range = models.SmallIntegerField(choices=SALARY_RANGE_CHOICES, default=15)
 	offer_deadline = models.SmallIntegerField(choices=OFFER_DEADLINE_CHOICES, default=3)
+	offer_deadline_timestamp = models.DateTimeField(auto_now_add=True, auto_now=False)
 	interested_in_startups = models.BooleanField(default=False)
 	interested_in_corps = models.BooleanField(default=True)
 	companies_considering = models.TextField()

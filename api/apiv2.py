@@ -1010,8 +1010,149 @@ class ApplicationSearchResource(ModelResource):
         # 3. merge both lists and that is teh final lists
         one_month_ago = datetime.datetime.now() - datetime.timedelta(days=30)
         try:
-            occuhunt_company = Company.objects.get(name="Occuhunt")
             applied_to_company_with_filters = object_list.filter(company__id=bundle.request.user.recruiter.company.id)
+            result_list = applied_to_company_with_filters
+            result_list = result_list.distinct('user')
+            return result_list
+        except Exception as e:
+            print e
+
+    def alter_list_data_to_serialize(self, request, data):
+        # rename "objects" to "applications"
+        data['response'] = {"applications":data["objects"]}
+        del(data["objects"])
+        return data
+
+    def determine_format(self, request):
+        return 'application/json'
+
+class ApplicationSearchOffrhuntResource(ModelResource):
+    user = fields.OneToOneField(UserResource, 'user', full=True)
+    company = fields.OneToOneField(CompanyResource, 'company', full=True)
+    job = fields.OneToOneField(JobResource, 'job', full=True, null=True)
+    documents = fields.ToManyField(DocumentResource, 'documents', full=True)
+    offer = fields.BooleanField(attribute='user__offer__isnull',default=False)
+    class Meta:
+        queryset = Application.objects.all()
+        resource_name = 'applicationsearchoffrhunt'
+        authorization = DjangoAuthorization()
+        authentication = RecruiterAuthentication()
+        limit = 0
+        always_return_data = True
+        allowed_methods = ['get']
+
+    def dehydrate(self, bundle):
+        """
+        Return a list of applications
+        """
+        if bundle.obj.user.offer_set.all().count() > 0:
+            offer = bundle.obj.user.offer_set.all()[0]
+            bundle.data['offer'] = True
+            bundle.data['offerCompany'] = offer.company_from_text
+            bundle.data['offerDeadline'] = offer.offer_deadline_timestamp
+        if Application.objects.filter(user=bundle.obj.user, status=4).count() > 0:
+            bundle.data['interviewing'] = True
+        else:
+            bundle.data['interviewing'] = False
+        return bundle
+
+    def build_filters(self, filters=None):
+        try:
+            if filters is None:
+                filters = {}
+
+            orm_filters = super(ApplicationSearchOffrhuntResource, self).build_filters(filters)
+
+            # 1. tokenize skills
+            # 2. create OR query for each token
+            # The queries are ORed within a category and AND between categories
+            q_objects = Q()
+            if "skills" in filters:
+                # icontains is a case-insensitive containment match
+                tokens = filters['skills'].split(',')
+                skills_q = Q(documents__description__icontains=str(tokens[0]))
+                for token in tokens:
+                    skills_q |= Q(documents__description__icontains=str(token))
+                q_objects &= skills_q
+            if "schools" in filters:
+                tokens = filters['schools'].split(',')
+                schools_q = Q(user__groups__id=tokens[0])
+                for token in tokens:
+                    schools_q |= Q(user__groups__id=token)
+                q_objects &= schools_q
+            if "categories" in filters:
+                tokens = filters['categories'].split(',')
+                categories_q = Q(status=tokens[0])
+                for token in tokens:
+                    categories_q |= Q(status=token)
+                q_objects &= categories_q
+            # if "offers" in filters:
+            #     tokens = filters['offers'].split(',')
+            #     if '1' in tokens and '0' not in tokens:
+            #         q_objects &= Q(user__offer__isnull=True)
+            #     if '1' not in tokens and '0' in tokens:
+            #         q_objects &= Q(user__offer__isnull=False)
+            if "positions" in filters:
+                tokens = filters['positions'].split(',')
+                positions_q = Q(position=str(tokens[0]))
+                for token in tokens:
+                    positions_q |= Q(position=str(token))
+                q_objects &= positions_q
+            if "majors" in filters:
+                tokens = filters['majors'].split(',')
+                majors_q = Q(user__student__major__id=tokens[0])
+                for token in tokens:
+                    majors_q |= Q(user__student__major__id=token)
+                q_objects &= majors_q
+            if "degrees" in filters:
+                tokens = filters['degrees'].split(',')
+                degrees_q = Q(user__student__degree__id=token[0])
+                for token in tokens:
+                    degrees_q |= Q(user__student__degree__id=token)
+                q_objects &= degrees_q
+            if "gradyears" in filters:
+                tokens = filters['gradyears'].split(',')
+                gradyears_q = Q(user__student__graduation_year=int(tokens[0]))
+                for token in tokens:
+                    gradyears_q |= Q(user__student__graduation_year=int(token))
+                q_objects &= gradyears_q
+            if "notes" in filters:
+                tokens = filters['notes'].split(',')
+                if '1' in tokens and '0' not in tokens:
+                    q_objects &= Q(note__gt='')
+                if '1' not in tokens and '0' in tokens:
+                    q_objects &= Q(note__exact='')
+
+            print q_objects
+            # only show Application that are new (i.e. from the last 357s and those with offers that are not expired)            
+            sqs = Application.objects.filter(q_objects)
+
+            if "pk__in" not in orm_filters.keys():
+                orm_filters["pk__in"] = []
+            orm_filters["pk__in"] = orm_filters["pk__in"] + [i.pk for i in sqs]
+
+            return orm_filters
+        except Exception as e:
+            print e
+            raise e
+
+    def authorized_read_list(self, object_list, bundle):
+        """
+        Offer Deadlines
+        (1, 'In 3 days'),
+        (2, 'In 7 days'),
+        (3, 'In 14 days'),
+        (4, 'In 28 days'),
+        (5, 'I have time')
+        """
+        #  separate those with offers and those without offers
+        # 1. for those that applied to company
+        # 2. for those that didn't apply to company but with offers (OffrHunt) 
+        #       - hide those that got offer from that company itself.
+        # 3. merge both lists and that is teh final lists
+        one_month_ago = datetime.datetime.now() - datetime.timedelta(days=30)
+        try:
+            occuhunt_company = Company.objects.get(name="Occuhunt")
             # get all offrhunt applications
             through_offrhunt = Application.objects.filter(company=occuhunt_company, user__offer__isnull=False, user__offer__timestamp__gt=one_month_ago, user__offer__approved=True)
             # exclude applications where the offer is from the recruiter's company
@@ -1019,9 +1160,8 @@ class ApplicationSearchResource(ModelResource):
             # exclude applications where the user has already been contacted by the company
             applied_to_company_without_filters = Application.objects.filter(company__id=bundle.request.user.recruiter.company.id, timestamp__gt=one_month_ago)
             offrhunt_applications = offrhunt_applications.exclude(user__id__in=[app.user.id for app in applied_to_company_without_filters])
-            
-            result_list = offrhunt_applications | applied_to_company_with_filters
-            result_list = result_list.distinct('user')
+
+            result_list = offrhunt_applications
             return result_list
         except Exception as e:
             print e
