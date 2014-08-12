@@ -309,23 +309,11 @@ function get_candidates() {
             for (var j = 0; j < positions_list.length; j++){
               positions = positions.concat(' <span class="label label-success">'+positions_list[j]+'</span>');
             }
-            interviewing_div = '';
-            offer_div = '';
-            if(data['response']['applications'][i]['interviewing']){
-              interviewing_div = '<div class="is-interviewing" data-toggle="tooltip" data-placement="left" title="Interviewing elsewhere"></div>';
-            } 
-            if(data['response']['applications'][i]['offer']){
-              offer_div = '<div class="has-offer" data-toggle="tooltip" data-placement="left" title="Has a verified offer"></div>';
-            }
             time_obj = moment.utc(data['response']['applications'][i]['offerDeadline']);
             time_string = time_obj.fromNow().toString();
             // remember that all candidates have an offer in this list
-            $("#candidate_list").append('<a id="applicant_list_id_'+data['response']['applications'][i]['id']+'" onclick="get_candidate('+data['response']['applications'][i]['id']+')" class="list-group-item application_status_'+data['response']['applications'][i]['status']+'"><div class="row"><div class="col-lg-4">'+data['response']['applications'][i]['user']['first_name']+'</div><div class="col-lg-4">'+data['response']['applications'][i]['offerCompany']+'</div><div class="col-lg-4">'+time_string+interviewing_div+offer_div+'</div></div></a>');
+            $("#candidate_list").append('<a id="applicant_list_id_'+data['response']['applications'][i]['id']+'" onclick="get_candidate('+data['response']['applications'][i]['id']+')" class="list-group-item application_status_'+data['response']['applications'][i]['status']+'"><div class="row"><div class="col-lg-4">'+data['response']['applications'][i]['user']['first_name']+' '+data['response']['applications'][i]['user']['last_name']+'</div><div class="col-lg-4">'+data['response']['applications'][i]['offerCompany']+'</div><div class="col-lg-4">'+time_string+'</div></div></a>');
           };
-
-          // enable tooltip
-          $('.has-offer').tooltip();
-          $('.is-interviewing').tooltip();
 
           // auto-select the first candidate
           next_application(true);
@@ -376,12 +364,15 @@ function get_candidate(application_id) {
         console.log(data);
         console.log(textStatus);
         console.log(jqXHR);
+        time_obj = moment.utc(data['offerDeadline']);
+        time_string = time_obj.fromNow().toString();
         $("#application_info").show();
         // need to check if everything exist
         $("#application_first_name").text(data['user']['first_name']);
         $("#application_last_name").text(data['user']['last_name']);
         $("#application_email").text(data['user']['email']);
         $("#application_note").val(data['note']);
+        $("#companyOfferDeadline").text(time_string);
 
         // add documents to main view
         clear_documents();
@@ -393,80 +384,16 @@ function get_candidate(application_id) {
           }
         };
 
-        // show candidates with offers
-        // Cases:
-        // 1. Student has offer and applied to company - application to company takes prioirity
-        // 2. Student has offer but didn't apply to company - offer takes priority
-        // 3. Student has no offer but applied to company - application to company takes priority
-        if (data['offer'] && data['offerCompany'] == data['company']['name']) {
-          // do nothing - the next if statement handles it
-          $("#contact_applicant_btn").hide();
-          $("#companyOfferFrom").show();
-          $("#companyOfferFrom").text(data['offerCompany']);
-          $("#reasonForApplying").show();
-          $("#reasonForApplying").text(data['reason_given'])
-        } else if(data['offer']) {
+        // only show candidates with offers
+        if(data['offer']) {
           // show contact message
           $("#contact_applicant_btn").attr({'onclick':'show_contact_message('+application_id+',"'+data['user']['first_name']+'","'+data['user']['last_name']+'","'+data['company']['name']+'");'});
           $("#contact_applicant_btn").show();
-          $("#reject_applicant_btn").hide();
-          $("#accept_applicant_btn").hide();
           $("#companyOfferFrom").show();
           $("#companyOfferFrom").text(data['offerCompany']);
           $("#reasonForApplying").show();
           $("#reasonForApplying").text(data['reason_given'])
-        } else {
-          $("#contact_applicant_btn").hide();
-          $("#companyOfferFrom").hide();
-        };
-
-        if((data['status'] == "1" || data['status'] == "2") && ((data['offer'] && data['offerCompany'] == data['company']['name']) || !data['offer'])) {
-          // configure accept and reject buttons
-          $("#accept_applicant_btn").attr({'onclick':'show_acceptance_message('+application_id+',"'+data['user']['first_name']+'","'+data['user']['last_name']+'","'+data['company']['name']+'");'});
-          $("#reject_applicant_btn").attr({'onclick':'reject_candidate('+application_id+');'});
-          $("#reject_applicant_btn").show();
-          $("#accept_applicant_btn").show();
-          // configure notes
-          $("#application_note_btn").attr({'onclick':'save_note('+application_id+');'});
-          $("#note_div").show();
-          // configure download pdf
-          $("#download_pdf_btn").show();
-          $("#download_pdf_btn").attr({'onclick':'download_pdf('+application_id+');'});
-          // application status
-          if(data['status'] == "1") {
-            $("#application_status").text("Awaiting response");
-          }
-          if(data['status'] == "2") {
-            $("#application_status").text("Met at fair - Awaiting response");
-          }
-        } else if (data['status'] == "3" || data['status'] == "4") {
-          // configure accept and reject buttons
-          $("#contact_applicant_btn").hide();
-          $("#reject_applicant_btn").hide();
-          $("#accept_applicant_btn").hide();
-          // configure application notes
-          $("#application_note_btn").attr({'onclick':'save_note('+application_id+');'});
-          $("#note_div").show();
-          // configure download pdf
-          $("#download_pdf_btn").show();
-          $("#download_pdf_btn").attr({'onclick':'download_pdf('+application_id+');'});
-          // application status
-          if(data['status'] == "3") {
-            $("#application_status").text("Rejected");
-          }
-          if(data['status'] == "4") {
-            $("#application_status").text("To invite for interview");
-          }
-        } 
-        // else {
-        //   // hide all other buttons
-        //   $("#accept_applicant_btn").hide();
-        //   $("#reject_applicant_btn").hide();
-        //   $("#note_div").hide();
-        //   $("#download_pdf_btn").hide();
-        //   // application status config
-        //   $("#application_status").text("Fair Attendee");
-        // }
+        }
 
         // show the applicant as selected in the list - deselect previous candidate
         if(current_selected_candidate) {

@@ -647,8 +647,10 @@ class ApplicationResource(ModelResource):
         if bundle.request.user.is_student:
             del(bundle.data['note'])
         if bundle.obj.user.offer_set.all().count() > 0:
-           bundle.data['offer'] = True
-           bundle.data['offerCompany'] = bundle.obj.user.offer_set.all()[0].company_from_text
+            offer = bundle.obj.user.offer_set.all()[0]
+            bundle.data['offer'] = True
+            bundle.data['offerCompany'] = offer.company_from_text
+            bundle.data['offerDeadline'] = offer.offer_deadline_timestamp
         if Application.objects.filter(user=bundle.obj.user, status=4).count() > 0:
             bundle.data['interviewing'] = True
         else:
