@@ -61,6 +61,20 @@
 
   	// get all companies on launch
   	$(document).ready(initialize);
+
+  	function show_rejected_candidates() {
+  		$("#rejected_candidates_btn").hide();
+  		$(".swap-3-to-4").removeClass("col-lg-4");
+  		$(".swap-3-to-4").addClass("col-lg-3");
+  		$("#rejected_tab").show();
+  	}
+
+  	function hide_rejected_candidates() {
+  		$("#rejected_candidates_btn").show();
+  		$(".swap-3-to-4").removeClass("col-lg-3");
+  		$(".swap-3-to-4").addClass("col-lg-4");
+  		$("#rejected_tab").hide();
+  	}
   
 </script>
 {% endblock %}
@@ -72,7 +86,7 @@
 		<!-- Application status -->
 		<h4>Application Status</h4>
 		<div class="row">
-		  	<div class="col-lg-3 no-margin">
+		  	<div class="col-lg-4 no-margin swap-3-to-4">
 		    	<div class="list-group fixed-height-draggable" id="favorite-category-applied-considering">
 		      		<div class="list-group-header" id="category-applied">
 		        		<div class="row">
@@ -85,7 +99,7 @@
 		      		<!-- add list-group-item here -->
 		    	</div>
 		  	</div>
-		  	<div class="col-lg-3 no-margin">
+		  	<div class="col-lg-4 no-margin swap-3-to-4">
 		    	<div class="list-group fixed-height-draggable" id="favorite-category-interviewing">
 		      		<div class="list-group-header" id="category-interviewing">
 		        		<div class="row">
@@ -98,8 +112,8 @@
 		      		<!-- add list-group-item here -->
 		    	</div>
 		  	</div>
-		  	<div class="col-lg-3 no-margin">
-		    	<div class="list-group fixed-height-draggable" id="favorite-category-offered">
+		  	<div class="col-lg-4 no-margin swap-3-to-4">
+		    	<div class="list-group fixed-height-draggable" id="favorite-category-offered" style="padding-bottom:0px; margin-bottom:0px;">
 		      		<div class="list-group-header" id="category-offered">
 		        		<div class="row">
 		          			<div class="col-lg-12">
@@ -108,11 +122,12 @@
 		          			</div>
 		        		</div>
 		      		</div>
+		      		<button id="rejected_candidates_btn" style="position:absolute; float:right; bottom:0; right:0; background: #5a5a5a; color:white; padding: 5px 20px; font-size: 12px; font-weight: 200; font-family: 'Proxima Nova'; border:0px;" onclick="show_rejected_candidates();">Show Rejected</button>
 		      		<!-- add list-group-item here -->
 		    	</div>
 		  	</div>
-		  	<div class="col-lg-3 no-margin">
-		    	<div class="list-group fixed-height-draggable" id="favorite-category-rejected">
+		  	<div id="rejected_tab" class="col-lg-3 no-margin swap-3-to-4" style="display:none;">
+		    	<div class="list-group fixed-height-draggable" id="favorite-category-rejected" style="padding-bottom:0px; margin-bottom:0px;">
 			      	<div class="list-group-header" id="category-rejected">
 			        	<div class="row">
 			          		<div class="col-lg-12">
@@ -121,6 +136,7 @@
 			          		</div>
 			        	</div>
 			      	</div>
+			      	<button id="rejected_candidates_btn" style="position:absolute; float:right; bottom:0; right:0; background: #5a5a5a; color:white; padding: 5px 20px; font-size: 12px; font-weight: 200; font-family: 'Proxima Nova'; border:0px;" onclick="hide_rejected_candidates();">Hide Rejected</button>
 			      	<!-- add list-group-item here -->
 		    	</div>
 		  	</div>

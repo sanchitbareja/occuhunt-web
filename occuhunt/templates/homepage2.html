@@ -79,7 +79,7 @@ mixpanel.init("a84e2f34f22d01f012b63767216f0853");</script>
         fjs.parentNode.insertBefore(js, fjs);
       }(document, 'script', 'facebook-jssdk'));</script>
 
-      <div class="row" style="background:url({% static 'images/helpinghand2.jpg' %})">
+      <div class="row" style="background:url({% static 'images/helpinghand2.jpg' %}); background-repeat:no-repeat; background-size:100%;">
 
         <div class="navbar navbar-default" role="navigation" style="background: transparent;">
           <div class="container">    
@@ -194,13 +194,23 @@ mixpanel.init("a84e2f34f22d01f012b63767216f0853");</script>
         <div class="col-lg-12 text-center">
           <br />
           <br />
-          <p style="font-size:43px; color:#88b9be; font-weight:500; ">We've helped people connect with jobs at:</p>
+          <p style="font-size:43px; color:#88b9be; font-weight:500; ">We're helping people connect to jobs at:</p>
         </div>
       </div>
 
       <div class="row">
         <div class="col-lg-12 text-center">
-          <img src="{% static 'images/companies-example.jpg' %}" />
+          <img class="featured-company" src="{% static 'images/samplelogos/airbnb.jpg' %}" />
+          <img class="featured-company" src="{% static 'images/samplelogos/palantir.jpg' %}" />
+          <img class="featured-company" src="{% static 'images/samplelogos/yahoo.jpg' %}" />
+          <img class="featured-company" src="{% static 'images/samplelogos/dropbox.jpg' %}" /><br /><br /><br />
+          <img class="featured-company" src="{% static 'images/samplelogos/box.jpg' %}" />
+          <img class="featured-company" src="{% static 'images/samplelogos/twitter.jpg' %}" />
+          <img class="featured-company" src="{% static 'images/samplelogos/appdynamics.jpg' %}" /><br /><br /><br />
+          <img class="featured-company" src="{% static 'images/samplelogos/whisper.jpg' %}" />
+          <img class="featured-company" src="{% static 'images/samplelogos/square.jpg' %}" />
+          <img class="featured-company" src="{% static 'images/samplelogos/lockheedmartin.jpg' %}" /><br /><br /><br />
+
         </div>
       </div>
 
@@ -210,10 +220,7 @@ mixpanel.init("a84e2f34f22d01f012b63767216f0853");</script>
           <br />
           <p style="font-size:43px; color:white; font-weight:600; ">Don't just take our word for it.</p>
           <br />
-          <!-- <p style="font-size:24px; color:white; font-weight:500;">
-            This is the best website ever. I got ten internships very quickly.<br />
-             Love this thing. Shit man. This is the bomb!
-          </p> -->
+          <img class="featured-company" src="{% static 'images/other/testimonials.png' %}" />
           <br />
           <br />
         </div>
