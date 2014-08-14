@@ -402,6 +402,11 @@ function get_candidate(application_id) {
         }
         current_selected_candidate = application_id;
         $("#applicant_list_id_"+current_selected_candidate).addClass("selected_candidate");
+
+        time_obj_applied = moment.utc(data['timestamp']);
+        time_string_applied = time_obj_applied.fromNow().toString();
+        // add the date the application was submitted
+        $("#applicationDate").text(time_string_applied);
       },
     dataType: 'json',
   });
@@ -860,7 +865,7 @@ $(document).ready(function() {
     </div>
 
     <span class="label label-warning and-separator">AND</span>
-    <div class="label label-link" id="categories_pill">Categories:
+    <div class="label label-link" id="categories_pill">Status:
     </div>
 
     <span class="label label-warning and-separator">AND</span>
@@ -952,6 +957,7 @@ $(document).ready(function() {
       <div class="col-lg-2" id="note_div" style="padding:10px;height:inherit;">
         <a class="btn btn-inverted-default btn-sm btn-block" id="download_pdf_btn" style="margin:10px 0px;">Download .PDF</a>
         <!-- <p style="color:#005f69;">Companies Interviewing: <b>10</b></p> -->
+        <p style="color:#005f69;">Application date: <b id="applicationDate"></b></p>
         <p style="color:#005f69;">Why am I looking for another offer? <b id="reasonForApplying"></b></p>
         <hr style="padding:0px;margin:0px -10px 0px -10px;">
         <h4>Notes</h4>
