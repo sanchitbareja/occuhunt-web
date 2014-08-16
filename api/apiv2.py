@@ -745,7 +745,7 @@ class ApplicationResource(ModelResource):
                 else:
                     cv = None
                 if bundle.data['docs']:
-                    docs = Document.objects.filters(id__in=bundle.data['docs'])
+                    docs = Document.objects.filter(id__in=bundle.data['docs'])
                 else:
                     docs = None
                 grad_year = bundle.data['grad_year']
