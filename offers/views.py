@@ -10,6 +10,8 @@ import os, time, simplejson
 from datetime import datetime, timedelta, time
 from django.db.models import Avg
 
+from companies.models import Company
+from applications.models import Application
 from users.models import Major, Degree
 from documents.models import Document
 from offers.models import Offer
@@ -33,10 +35,12 @@ def offrhunt_handler(request):
 			degree_types = Degree.objects.all()
 			if len(current_offer) > 0:
 				current_offer = current_offer[0]
+				occuhunt_company = Company.objects.get(name="Occuhunt")
+				offrhunt_application = Application.objects.filter(company=occuhunt_company, user=request.user)[0]
+				return render_to_response('base/offrhunt_template.html', {'offrhunt_application':offrhunt_application, 'resumes': resumes, 'cvs': cvs, 'portfolios': portfolios, 'majors':majors, 'degree_types':degree_types, 'time_now':time_now, 'current_offer': current_offer}, RequestContext(request))
 			else:
 				current_offer = False
-
-			return render_to_response('base/offrhunt_template.html', {'resumes': resumes, 'cvs': cvs, 'portfolios': portfolios, 'majors':majors, 'degree_types':degree_types, 'time_now':time_now, 'current_offer': current_offer}, RequestContext(request))
+				return render_to_response('base/offrhunt_template.html', {'resumes': resumes, 'cvs': cvs, 'portfolios': portfolios, 'majors':majors, 'degree_types':degree_types, 'time_now':time_now, 'current_offer': current_offer}, RequestContext(request))
 	except Exception as e:
 		print e
 		raise Http404()
