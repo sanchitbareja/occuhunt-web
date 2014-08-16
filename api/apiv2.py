@@ -523,7 +523,7 @@ class VisitResource(ModelResource):
         queryset = Visit.objects.all().order_by('-timestamp')
         resource_name = 'visits'
         authorization = DjangoAuthorization()
-        # authentication = SessionAuthentication()
+        authentication = SessionAuthentication()
         limit = 20
         always_return_data = True
         allowed_methods = ['get','post']
@@ -966,7 +966,7 @@ class ApplicationSearchResource(ModelResource):
                 q_objects &= majors_q
             if "degrees" in filters:
                 tokens = filters['degrees'].split(',')
-                degrees_q = Q(user__student__degree__id=token[0])
+                degrees_q = Q(user__student__degree__id=tokens[0])
                 for token in tokens:
                     degrees_q |= Q(user__student__degree__id=token)
                 q_objects &= degrees_q
@@ -1108,7 +1108,7 @@ class ApplicationSearchOffrhuntResource(ModelResource):
                 q_objects &= majors_q
             if "degrees" in filters:
                 tokens = filters['degrees'].split(',')
-                degrees_q = Q(user__student__degree__id=token[0])
+                degrees_q = Q(user__student__degree__id=tokens[0])
                 for token in tokens:
                     degrees_q |= Q(user__student__degree__id=token)
                 q_objects &= degrees_q

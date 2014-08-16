@@ -125,9 +125,7 @@ class SessionAuthentication(Authentication):
             """
             If verify_access_token() does not pass, it will raise an error
             """
-            print key
             session = Session.objects.get(session_key=key)
-            print session
             uid = session.get_decoded().get('_auth_user_id')
             user = User.objects.get(pk=uid)
 
