@@ -795,7 +795,7 @@ class ApplicationResource(ModelResource):
                     application.save()
                 if docs:
                     for doc in docs:
-                        application.documents.add(document=doc)
+                        application.documents.add(doc)
                         application.save()
 
                 # update user preferences for Graduation Date, Major, Degree

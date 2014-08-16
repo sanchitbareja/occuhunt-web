@@ -204,7 +204,6 @@ $(document).ready(function(){
 
   $(".submit").click(function(){
     // resume drop
-    var user_id = $("#user_id").val();
     var fair_id = $("#fair_id").val();
     var company_id = $("#company_id").val();
     var position = $("input[name=companyPosition]:checked").map(function() {
@@ -228,12 +227,7 @@ $(document).ready(function(){
     var reason_given = $("#reasonForApplying").val();
 
     // submit resume
-    if($("#resume_enabled").val() == 'False'){
-      alert('Oops! You need to be logged in or have your resume uploaded to drop your resume with the employers!');
-    } else {
-      resumeDrop(selected_resume, selected_cv, selected_docs, company_id, fair_id, position, reason_given, majors, grad_year, degree_type);
-    }
-
+    resumeDrop(selected_resume, selected_cv, selected_docs, company_id, fair_id, position, reason_given, majors, grad_year, degree_type);
     return false;
   });
 
@@ -268,8 +262,6 @@ function resumeDrop(selected_resume, selected_cv, selected_docs, company_id, fai
         console.log(textStatus);
         console.log(jsXHR);
         console.log($(this));
-        // reload and show that request is pending approval
-        location.reload();
       },
       500: function(data, textStatus, jsXHR){
         console.log(data);
@@ -307,6 +299,8 @@ function resumeDrop(selected_resume, selected_cv, selected_docs, company_id, fai
       contentType: 'application/json',
       statusCode: {
         201: function(data, textStatus, jsXHR) {
+          // reload and show that request is pending approval
+          location.reload();
         },
         500: function(data, textStatus, jsXHR) {
         },
