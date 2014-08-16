@@ -523,7 +523,7 @@ class VisitResource(ModelResource):
         queryset = Visit.objects.all().order_by('-timestamp')
         resource_name = 'visits'
         authorization = DjangoAuthorization()
-        authentication = SessionAuthentication()
+        # authentication = SessionAuthentication()
         limit = 20
         always_return_data = True
         allowed_methods = ['get','post']

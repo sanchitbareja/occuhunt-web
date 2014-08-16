@@ -173,3 +173,7 @@ span[class*='icon-2x']:hover {
   font-family: 'Proxima Nova';
   font-weight: 400;
 }
+
+.featured-company {
+  padding: 10px 50px;
+}

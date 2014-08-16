@@ -1,0 +1,42 @@
+.sidebar {
+	width:100%;
+	border-radius: 3px;
+}
+
+.sidebar-heading {
+	background-color: #005F69;
+	padding: 10px 15px;
+	margin: 0px;
+}
+
+.sidebar-title {
+	color:white;
+	padding: 0px;
+	margin: 0px;
+	font-size: 20px;
+}
+
+.sidebar-body {
+	background-color: #EEF7F7;
+	padding: 10px 15px;
+}
+
+.sidebar-subtitle {
+	color: #00272E;
+	clear: both;
+}
+
+.sidebar-subtitle-text {
+	color: #00272E;
+	display: inline-block;
+}
+
+.sidebar-subtitle-button {
+	float: right;
+	display: inline-block;
+}
+
+.sidebar-content {
+	color: #005F69;
+	padding: 2px 15px;
+}

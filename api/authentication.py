@@ -125,7 +125,9 @@ class SessionAuthentication(Authentication):
             """
             If verify_access_token() does not pass, it will raise an error
             """
+            print key
             session = Session.objects.get(session_key=key)
+            print session
             uid = session.get_decoded().get('_auth_user_id')
             user = User.objects.get(pk=uid)
 
@@ -135,6 +137,9 @@ class SessionAuthentication(Authentication):
         except KeyError, e:
             logging.exception("Error in SessionAuthentication.")
             request.user = AnonymousUser()
+            return False
+        except Exception, e:
+            logging.exception("Error in OAuth20Authentication.")
             return False
         return True
 
@@ -182,5 +187,8 @@ class RecruiterAuthentication(Authentication):
         except KeyError, e:
             logging.exception("Error in SessionAuthentication.")
             request.user = AnonymousUser()
+            return False
+        except Exception, e:
+            logging.exception("Error in OAuth20Authentication.")
             return False
         return True

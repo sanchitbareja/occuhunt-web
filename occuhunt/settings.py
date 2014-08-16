@@ -6,7 +6,7 @@ DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-    ('Sanchit Bareja', 'sanchitbareja@gmail.com'), ('Sidwyn Koh', 'sidwyn@gmail.com'), ('Occuhunt Founders', 'occuhunt@gmail.com'),
+    ('Sanchit Bareja', 'sanchitbareja@gmail.com'), ('Occuhunt Founders', 'occuhunt@gmail.com'),
 )
 
 EMAIL_MASTERS = [email[1] for email in ADMINS]
