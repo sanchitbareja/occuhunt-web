@@ -113,19 +113,6 @@ h4 {
 <!-- This is where the pdf renders -->
 <div class="row" id="canvas_div">
   	<canvas id="the-canvas" style="display:none;" />
-</div>  	
-
-<div class="row">
-	<div class="col-lg-12">
-		<h4>Learn from your seniors. Find out what they did.</h4>
-		<ul class="documents">
-			{% for featured_doc in featured_documents %}
-			<li class="document">
-				<a href="/document/{{featured_doc.user.username}}/{{featured_doc.unique_hash}}/" target="_blank"><img class="document_image" src="{{featured_doc.image_url}}"></a>
-			</li>
-			{% endfor %}
-		</ul>
-	</div>
 </div>
 
 <div class="row">

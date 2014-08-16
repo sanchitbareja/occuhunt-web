@@ -136,9 +136,6 @@ class SessionAuthentication(Authentication):
             logging.exception("Error in SessionAuthentication.")
             request.user = AnonymousUser()
             return False
-        except Exception, e:
-            logging.exception("Error in SessionAuthentication.")
-            return False
         return True
 
 class RecruiterAuthentication(Authentication):
@@ -185,8 +182,5 @@ class RecruiterAuthentication(Authentication):
         except KeyError, e:
             logging.exception("Error in SessionAuthentication.")
             request.user = AnonymousUser()
-            return False
-        except Exception, e:
-            logging.exception("Error in SessionAuthentication.")
             return False
         return True

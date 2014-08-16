@@ -32,7 +32,7 @@ def offrhunt_handler(request):
 			majors = Major.objects.all()
 			degree_types = Degree.objects.all()
 			if len(current_offer) > 0:
-				current_offer = True
+				current_offer = current_offer[0]
 			else:
 				current_offer = False
 

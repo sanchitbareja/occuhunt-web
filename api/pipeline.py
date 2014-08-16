@@ -81,7 +81,7 @@ def create_password(request, backend, *args, **kwargs):
             user.verification_token = verification_token
             user.is_verified = False
             user.save()
-            # send_mail('[Occuhunt] Verify your network.', 'Click on the following link to verify your network: '+verification_url, from_email, [to_email], fail_silently=False)
+            send_mail('[Occuhunt] Verify your network.', 'Click on the following link to verify your network: '+verification_url, from_email, [to_email], fail_silently=False)
             os.system('python manage.py send_mail')
             print "sent email"
         else:
