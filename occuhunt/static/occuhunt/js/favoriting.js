@@ -122,6 +122,9 @@ function get_application_statuses() {
                 console.log(data);
                 add_application_statuses(data['response']['applications']);
                 refreshStats();
+                if(data['response']['applications'].length == 0) {
+                    show_onboarding();
+                }
             },
             404: function(){
                 console.log(3);
@@ -132,6 +135,10 @@ function get_application_statuses() {
         }
     });
 };
+
+function show_onboarding(){
+    $("#on_board_student").show();
+}
 
 function add_application_statuses(application_statuses){
     // status reference

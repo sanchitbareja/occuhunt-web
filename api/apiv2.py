@@ -643,7 +643,6 @@ class ApplicationResource(ModelResource):
         """
         Return a list of applications
         """
-        print bundle.obj.user.offer_set.all()
         if bundle.request.user.is_student:
             del(bundle.data['note'])
         if bundle.obj.user.offer_set.all().count() > 0:
@@ -879,6 +878,7 @@ class ApplicationResource(ModelResource):
             return object_list.filter(user=bundle.request.user)
         if bundle.request.user.is_recruiter:
             return object_list.filter(company__id=bundle.request.user.recruiter.company.id)
+        return object_list.filter(user=bundle.request.user)
 
     def alter_list_data_to_serialize(self, request, data):
         # rename "objects" to "applications"
