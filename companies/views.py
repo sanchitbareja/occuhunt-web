@@ -42,6 +42,10 @@ def search_query(request):
     query = request.GET['q']
     search_results = SearchQuerySet().models(Company).load_all().auto_query(query)
     print search_results
+    for company in search_results:
+      print company
+      print company.companies.company.id
+      print company.companies.company.logo
     data_to_send = {
       'companies':search_results
     }
