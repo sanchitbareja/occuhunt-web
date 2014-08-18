@@ -37,7 +37,7 @@ def recruiter_login(request):
         if user.is_active:
             login(request, user)
             # Redirect to a success page.
-            return redirect('/recruiter/hire/')
+            return redirect('/recruiter/hire/offrhunt/')
         else:
             # Return a 'disabled account' error message
             return render_to_response('recruiter/recruiter_splash.html', {'error_loggin_in':True}, RequestContext(request))

@@ -33,15 +33,15 @@
       <ul class="nav navbar-nav nav">
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        {% if request.path == '/recruiter/hire/' %}
-          <li class="active"><a href="/recruiter/hire/" style="color:#005f69;">HIRE</a></li>
-        {% else %}
-          <li><a href="/recruiter/hire/">HIRE</a></li>
-        {% endif %}
         {% if request.path == '/recruiter/hire/offrhunt/' %}
           <li class="active"><a href="/recruiter/hire/offrhunt/" style="color:#005f69;">OFFRHUNT</a></li>
         {% else %}
           <li><a href="/recruiter/hire/offrhunt/">OFFRHUNT</a></li>
+        {% endif %}
+        {% if request.path == '/recruiter/hire/' %}
+          <li class="active"><a href="/recruiter/hire/" style="color:#005f69;">HIRE</a></li>
+        {% else %}
+          <li><a href="/recruiter/hire/">HIRE</a></li>
         {% endif %}
         <!-- <li><a href="/recruiter/analytics/">ANALYZE</a></li> -->
         {% if request.path == '/recruiter/market/' %}
