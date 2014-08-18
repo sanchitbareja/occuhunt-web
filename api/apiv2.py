@@ -599,7 +599,7 @@ class ApplicationResource(ModelResource):
         resource_name = 'applications'
         authorization = DjangoAuthorization()
         authentication = SessionAuthentication()
-        limit = 20
+        limit = 1000
         always_return_data = True
         allowed_methods = ['get','post','put','patch']
         filtering = {
