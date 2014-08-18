@@ -17,11 +17,11 @@
       <a href="/" id="mp-logohome"><img src="{% static "images/logo/OccuhuntLogo.png" %}" style="height:30px; margin-top:10px; margin-bottom:4px"></a>
     </div>
     <div class="collapse navbar-collapse navbar-ex1-collapse">
-      <!-- <form class="navbar-form navbar-left" role="search" action="/search-companies/" method="get">
+      <form class="navbar-form navbar-left" role="search" action="/search-companies/" method="get">
         <div class="form-group">
           <input type="text" class="form-control" placeholder="Search Companies" style="width:300px;" id="inputCompanySearch" name="q">
         </div>
-      </form> -->
+      </form>
       <ul class="nav navbar-nav navbar-right">
         {% if user.is_authenticated %}
         {% if request.path == '/events/' %}

@@ -53,10 +53,10 @@ body {
         {% for company in companies %}
         <div class="col-lg-2 no-margin" id="company_info">
           <div class="thumbnail" id="company_thumbnail">
-            <a id="company_thumbnail_logo" href="/company/{{company.id}}/"><img id="company_thumbnail_logo" src="{{company.logo}}"></a>
+            <a id="company_thumbnail_logo" href="/company/{{company.object.id}}/"><img id="company_thumbnail_logo" src="{{company.object.logo}}"></a>
           </div>
           <div id="company_thumbnail_favorite">
-            <a class="btn-link" onclick="considerCompanyWithId({{company.id}});"><span class="glyphicon glyphicon-plus" style="font-size:1em;"></span>Considering {{company.name}}</a>
+            <a class="btn-link" onclick="considerCompanyWithId({{company.object.id}});"><span class="glyphicon glyphicon-plus" style="font-size:1em;"></span>Considering {{company.object.name}}</a>
           </div>
         </div>
         {% endfor %}
