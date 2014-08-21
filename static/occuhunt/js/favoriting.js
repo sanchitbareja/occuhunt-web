@@ -14,6 +14,8 @@ function addInputField(e){
     $(e).find('textarea').val(note);
     $(e).find('textarea').focus();
   }
+  // mixpanel tracking
+  mixpanel.track("Dashboard > Add Note", {'referrer': document.referrer });
 }
 
 function addNote(e){
@@ -29,6 +31,8 @@ function addNote(e){
   }
   console.log(e);
   $(e).remove();
+  // mixpanel tracking
+  mixpanel.track("Dashboard > Save Note", {'referrer': document.referrer });
 }
 
 function updateApplicationStatus(favorite_id, status, note){
@@ -65,6 +69,8 @@ function refreshStats(){
     for (var i = listGroups.length - 1; i >= 0; i--) {
         $(listGroups[i]).find('.list-group-header-stats').text($(listGroups[i]).find('.list-group-item').length);
     };
+    // mixpanel tracking
+    mixpanel.track("Dashboard > Changed application status", {'referrer': document.referrer });
 }
 
 function initialize_favoriting() {
@@ -122,6 +128,9 @@ function get_application_statuses() {
                 console.log(data);
                 add_application_statuses(data['response']['applications']);
                 refreshStats();
+                if(data['response']['applications'].length == 0) {
+                    show_onboarding();
+                }
             },
             404: function(){
                 console.log(3);
@@ -132,6 +141,10 @@ function get_application_statuses() {
         }
     });
 };
+
+function show_onboarding(){
+    $("#on_board_student").show();
+}
 
 function add_application_statuses(application_statuses){
     // status reference

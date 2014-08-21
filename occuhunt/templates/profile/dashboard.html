@@ -67,6 +67,7 @@
   		$(".swap-3-to-4").removeClass("col-lg-4");
   		$(".swap-3-to-4").addClass("col-lg-3");
   		$("#rejected_tab").show();
+  		mixpanel.track("Dashboard > Show Rejected", {'referrer': document.referrer });
   	}
 
   	function hide_rejected_candidates() {
@@ -74,6 +75,7 @@
   		$(".swap-3-to-4").removeClass("col-lg-3");
   		$(".swap-3-to-4").addClass("col-lg-4");
   		$("#rejected_tab").hide();
+  		mixpanel.track("Dashboard > Hide Rejected", {'referrer': document.referrer });
   	}
   
 </script>
@@ -169,13 +171,13 @@
 	              			<div class="media-body">
 		                		{% if event.event_type == 1 %}
 		                  			{{event.infosession.all}}
-		                  			<h4 class="media-heading"><a href="/infosession/{{event.infosession.company.name}}/{{event.infosession.id}}/" class="event-header">{{event.name}}</a></h4>
+		                  			<h4 class="media-heading"><a href="/infosession/{{event.infosession.company.name}}/{{event.infosession.id}}/" class="event-header" onclick='mixpanel.track("Dashboard > infosession", {"referrer": document.referrer });'>{{event.name}}</a></h4>
 		                		{% endif %}
 		                		{% if event.event_type == 2 %}
-		                  			<h4 class="media-heading"><a href="/357/{{event.threeFiveSeven.id}}/" class="event-header">{{event.name}}</a></h4>
+		                  			<h4 class="media-heading"><a href="/357/{{event.threeFiveSeven.id}}/" class="event-header" onclick='mixpanel.track("Dashboard > 357", {"referrer": document.referrer });'>{{event.name}}</a></h4>
 		                		{% endif %}
 		                		{% if event.event_type == 3 %}
-		                  			<h4 class="media-heading"><a href="/event-fair/{{event.name|slugify}}/{{event.id}}/" class="event-header">{{event.name}}</a></h4>
+		                  			<h4 class="media-heading"><a href="/event-fair/{{event.name|slugify}}/{{event.id}}/" class="event-header" onclick='mixpanel.track("Dashboard > fair", {"referrer": document.referrer });'>{{event.name}}</a></h4>
 		                		{% endif %}
 		                		{{event.time_start|date:"D, j N P"}} - {{event.time_end|date:"D, j N, P"}}<br />
 		                		{{event.location.name}}
@@ -204,7 +206,7 @@
         	<div class="sidebar-body">
         		<div class="sidebar-subtitle">
 			    	<p>Leverage your current job offer and potentially receive more from competing companies looking to hire people in your field.</p>
-			    	<a class="btn btn-md btn-done pull-right" href="/offrhunt/">Apply</a>
+			    	<a class="btn btn-md btn-done pull-right" href="/offrhunt/" id="mp-dashboard-offrhunt">Apply</a>
 			    	<br /><br />
 			    </div>
         	</div>
@@ -219,7 +221,7 @@
 	        	<div class="sidebar-body">
 	        		<div class="sidebar-subtitle">
 				    	<h4 class="sidebar-subtitle-text">{{event.threeFiveSeven.name}}</h4>
-				    	<a class="btn btn-sm btn-warning sidebar-subtitle-button" href="/357/{{event.threeFiveSeven.id}}/">APPLY</a>
+				    	<a class="btn btn-sm btn-warning sidebar-subtitle-button" href="/357/{{event.threeFiveSeven.id}}/" onclick='mixpanel.track("Dashboard > 357", {"referrer": document.referrer });'>APPLY</a>
 				    </div>
 				    {% for company in event.threeFiveSeven.companies.all %}
 				    	<p class="sidebar-content">{{company.name}}</p>

@@ -248,6 +248,9 @@
         }
       }
     });
+    
+    // mixpanel tracking
+    mixpanel.track("357 > Apply to a company", {'referrer': document.referrer });
   }
 
   function addOffer(company_from_text_val, salary_range_val, offer_deadline_val) {
@@ -354,7 +357,7 @@
           <p class="company-description">
             {{company.company_description |truncatechars:200}}
           </p>
-          <a href='/company/{{company.id}}/' class="btn btn-md btn-link">More >></a>
+          <a href='/company/{{company.id}}/' class="btn btn-md btn-link" onclick='mixpanel.track("357 > More about company", {'referrer': document.referrer });'>More >></a>
           <hr>
           <h4>LOOKING FOR</h4>
           <p class="company-positions">
@@ -396,7 +399,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <a class='btn btn-md btn-danger' href="/login/linkedin/?next={{request.path}}">LOGIN TO DROP RESUME</a>
+        <a class='btn btn-md btn-danger' href="/login/linkedin/?next={{request.path}}" onclick='mixpanel.track("357 > Login", {'referrer': document.referrer });'>LOGIN TO DROP RESUME</a>
       </div>
     </div>
   </div>

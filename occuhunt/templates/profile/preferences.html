@@ -50,24 +50,27 @@
 	          		console.log(textStatus);
 	          		console.log(jsXHR);
 		          	// ui save user
-		          	$("#saveProfile").text("Saved profile! Edit and save again.")
+		          	$("#saveProfile").text("Saved profile! Edit and save again.");
 	        	},
 	        	500: function(data, textStatus, jsXHR){
 	          		console.log(data);
 	          		console.log(textStatus);
 	          		console.log(jsXHR);
 	          		// ui confirmation
-	          		alert("Oops, something wrong happened! Try saving again.")
+	          		alert("Oops, something wrong happened! Try saving again.");
 	        	},
 	        	404: function(data, textStatus, jsXHR){
 	          		console.log(data);
 	          		console.log(textStatus);
 	          		console.log(jsXHR);
 	          		// ui confirmation
-	          		alert("Oops, something wrong happened! Try saving again.")
+	          		alert("Oops, something wrong happened! Try saving again.");
 	        	}
 	      	}
 	    });
+	
+		// mixpanel tracking
+		mixpanel.track("Documents > Preferences", {'referrer': document.referrer });
 	}
 
 </script>

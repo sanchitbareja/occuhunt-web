@@ -198,6 +198,9 @@ function push_pill(id, name, category){
   } else {
     cat_div.append('<a class="pill-text" onclick=\'remove_pill(null,"'+name+'","'+category+'",this);\'>'+name+'<span class="glyphicon glyphicon-remove"></span>/</a>');
   }
+
+  // mixpanel tracking
+  mixpanel.track('Recruiter Offrhunt > push pill');
 }
 
 function remove_pill(id, name, category, elem){
@@ -233,6 +236,9 @@ function remove_pill(id, name, category, elem){
 
   $(elem).remove();
   get_candidates();
+
+  // mixpanel tracking
+  mixpanel.track('Recruiter Offrhunt > remove pill');
 }
 
 function get_candidates() {
@@ -328,6 +334,9 @@ function get_candidates() {
       },
     dataType: 'json',
   });
+
+  // mixpanel tracking
+  mixpanel.track('Recruiter Offrhunt > get candidates');
 }
 
 function clear_candidates(){
@@ -410,6 +419,9 @@ function get_candidate(application_id) {
       },
     dataType: 'json',
   });
+
+  // mixpanel tracking
+  mixpanel.track('Recruiter Offrhunt > get candidate');
 }
 
 function show_acceptance_message(application_id, first_name, last_name, company_name) {
@@ -482,6 +494,9 @@ function show_contact_message(application_id, first_name, last_name, company_nam
   // toggle the popover
   $("#contact_applicant_btn").popover('toggle');
 
+
+  // mixpanel tracking
+  mixpanel.track('Recruiter Offrhunt > contact candidate');
 }
 
 function contact_candidate(application_id){
@@ -514,57 +529,6 @@ function contact_candidate(application_id){
   }
 }
 
-function accept_candidate(application_id){
-  // check if recruiter email has been input
-  // if not, show error
-  // else, send msg
-    // get msg content
-
-  if($("#recruiter_email").val()){
-    var recruiter_email = $("#recruiter_email").val();
-    var recruiter_message = $("#recruiter_message").val()+"";
-
-    $.ajax({
-      url: '/api/v2/applications/'+String(application_id)+'/',
-      type: 'PUT',
-      data: JSON.stringify({
-        'status': 4,
-        'recruiter_email': recruiter_email,
-        'recruiter_message': recruiter_message
-      }),
-      dataType: 'json',
-      contentType: 'application/json',
-      success: function(data, textStatus, jsXHR){
-        console.log(data);
-        // remove person from list dom - never need to show again
-        next_application(false);
-        $("#applicant_list_id_"+String(application_id)).remove();
-        // hide popover as well
-        $("#accept_applicant_btn").popover('hide');
-      }
-    });
-  } else {
-    alert("Please input your email address!");
-  }
-}
-
-function reject_candidate(application_id){
-  $.ajax({
-    url: '/api/v2/applications/'+String(application_id)+'/',
-    type: 'PUT',
-    data: JSON.stringify({
-      'status': 3,
-    }),
-    dataType: 'json',
-    contentType: 'application/json',
-    success: function(data, textStatus, jsXHR){
-      console.log(data);
-      // remove person from list dom and send it to 
-      $("#applicant_list_id_"+String(application_id)).next().click();
-      $("#applicant_list_id_"+String(application_id)).remove();
-    }
-  });
-}
 
 function save_note(application_id) {
   if($("#application_note").val()){
@@ -586,6 +550,9 @@ function save_note(application_id) {
   } else {
     alert("your note is empty!");
   }
+
+  // mixpanel tracking
+  mixpanel.track('Recruiter Offrhunt > save note');
 }
 
 function download_pdf(application_id) {

@@ -66,6 +66,19 @@ typeof d?c=b[d]=[]:d="mixpanel";c.people=c.people||[];c.toString=function(b){var
 b._i.push([a,e,d])};b.__SV=1.2}})(document,window.mixpanel||[]);
 mixpanel.init("a84e2f34f22d01f012b63767216f0853");</script>
             <!-- end Mixpanel -->
+            <!-- Mixpanel track events -->
+            {% if request.user.is_authenticated %}
+              <script type="text/javascript">
+                  mixpanel.identify("{{request.user.id}}");
+                  mixpanel.people.set({
+                      "id": "{{request.user.id}}",
+                      "$first_name": "{{request.user.first_name}}",
+                      "$last_name": "{{request.user.last_name}}",
+                  });
+              </script>
+            {% endif %}
+            <script src="{% static "occuhunt/js/mixpanel.js" %}"></script>
+            <!-- end Mixpanel track events -->
 
             <!--Start of Zopim Live Chat Script-->
             <script type="text/javascript">

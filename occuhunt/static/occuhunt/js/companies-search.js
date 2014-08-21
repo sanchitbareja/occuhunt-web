@@ -35,6 +35,9 @@ function considerCompanyWithId(companyId){
       }
     }
   });
+
+  // mixpanel tacking
+  mixpanel.track("Search Results > Favorite a company", {'referrer': document.referrer });
 }
 
 function updateUIWithConfirmation(success){

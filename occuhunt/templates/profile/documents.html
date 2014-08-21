@@ -55,60 +55,6 @@ h4 {
 
 {% block content %}
 <script type="text/javascript" src="{% static 'zeroclipboard/ZeroClipboard.js' %}"></script>
-
-<!-- 
-<div class="col-lg-3">
-	<h4>Links<br /><span style="font-size:0.6em;"><i>Add personal links to your profile</i></span></h4>
-
-	<div id="link_pills">
-		{% for link in links %}
-			<div class="label label-link"><a style="color:#fdfdfd;" href="{{ link.url }}" target="_blank"><span>{{ link.link_name }}</span></a>&nbsp;<span class="glyphicon glyphicon-remove" id="delete_link" onclick="delete_link({{link.id}},this);"></span></div>
-		{% endfor %}
-	</div>
-
-	<div id="add_new_link">
-		<div style="display:inline-block;">
-			<input class="input-text" id="link_label" style="vertical-align:top; display:inline-block; width:25%;" type="text" placeholder="Label">&nbsp;&nbsp;
-			<input class="input-text" id="link_url" style="vertical-align:top; display:inline-block; width:50%;" type="text" placeholder="http://hello.com">
-			<button class="btn btn-sm btn-inverted-default" style="vertical-align:bottom; display:inline-block;" onclick="save_new_link(this);"><span class="glyphicon glyphicon-plus"></span></button>
-		</div>
-	</div>
-
-	<br />
-	<h4>Who's viewed your document?<br /><span style="font-size:0.6em;"><i>Click on &nbsp;<span style="color:grey;" class="glyphicon glyphicon-eye-open"></span>&nbsp; for a document to get insights</i></span></h4>
-	<div style="height:250px;width:100%;" id="map-canvas"></div>
-	<div class="list-group" id="visit_notifications">
-		<div class="list-group-item" id="total_views">
-			<span style="font-size:1em;"><i>Click on &nbsp;<span style="color:grey;" class="glyphicon glyphicon-eye-open"></span>&nbsp; for a document to get insights</i></span>
-		</div>
-	</div>
-	
-</div> -->
-
-
-<!-- Instruction for uploading pdf -->
-<!-- <div class="row">
-	<div class="col-lg-4 text-center">
-		<div class="circle">
-			<span style="color:black;" class="glyphicon glyphicon-plus"></span>
-		</div>
-		<p>Upload resumes, cover letters and other documents</p>
-	</div>
-	<div class="col-lg-4 text-center">
-		<div class="circle">
-			<span style="color:black;" class="glyphicon glyphicon-link"></span>
-		</div>
-		<p>Share link in emails with recruiters</p>
-	</div>
-	<div class="col-lg-4 text-center">
-		<div class="circle">
-			<span style="color:black;" class="glyphicon glyphicon-eye-open"></span>
-		</div>
-		<p>Reach out to recruiters when they view/download your document</p>
-	</div>
-</div>
-<hr /> -->
-
 	
 <!-- This is where the pdf renders -->
 <div class="row" id="canvas_div">

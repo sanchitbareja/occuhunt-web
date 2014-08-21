@@ -5,7 +5,7 @@ $(document).ready(function(){
     var e = $(this);
     mixpanel.track('Viewed company popup from Fair Page');
     $.ajax({
-        url: '/api/v1/companies/'+e.data('poload')+'/',
+        url: '/api/v2/companies/'+e.data('poload')+'/',
         data: {},
         dataType: 'json',
         success: function(data, textStatus, jqXHR){

@@ -232,8 +232,11 @@ h3 {
                 'Oops! You need to be logged in or have your resume uploaded to drop your resume with the employers!'+
               '</div>');
       } else {
-        resumeDrop(user_id, company_id, fair_id, position); 
+        resumeDrop(user_id, company_id, fair_id, position);
       }
+
+      // mixpanel tracking
+      mixpanel.track("Infosession > Apply to a company", {'referrer': document.referrer });
     });
 
     // enable countdown

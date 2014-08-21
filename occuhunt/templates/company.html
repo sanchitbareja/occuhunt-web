@@ -48,6 +48,9 @@
 	            }
 	        }
 	    });
+
+	    // mixpanel tracking
+	    mixpanel.track("Company Page > Favorite a company", {'referrer': document.referrer });
 	};
 
 </script>

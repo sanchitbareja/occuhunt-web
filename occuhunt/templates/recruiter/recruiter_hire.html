@@ -197,6 +197,9 @@ function push_pill(id, name, category){
   } else {
     cat_div.append('<a class="pill-text" onclick=\'remove_pill(null,"'+name+'","'+category+'",this);\'>'+name+'<span class="glyphicon glyphicon-remove"></span>/</a>');
   }
+
+  // mixpanel tracking
+  mixpanel.track('Recruiter Hire > push pill');
 }
 
 function remove_pill(id, name, category, elem){
@@ -232,6 +235,9 @@ function remove_pill(id, name, category, elem){
 
   $(elem).remove();
   get_candidates();
+
+  // mixpanel tracking
+  mixpanel.track('Recruiter Hire > remove pill');
 }
 
 function get_candidates() {
@@ -336,6 +342,9 @@ function get_candidates() {
       },
     dataType: 'json',
   });
+
+  // mixpanel tracking
+  mixpanel.track('Recruiter Hire > get candidates');
 }
 
 function clear_candidates(){
@@ -468,6 +477,9 @@ function get_candidate(application_id) {
       },
     dataType: 'json',
   });
+
+  // mixpanel tracking
+  mixpanel.track('Recruiter Hire > get candidate');
 }
 
 function show_acceptance_message(application_id, first_name, last_name, company_name) {
@@ -539,6 +551,9 @@ function accept_candidate(application_id){
   } else {
     alert("Please input your email address!");
   }
+
+  // mixpanel tracking
+  mixpanel.track('Recruiter Hire > accept candidate');
 }
 
 function reject_candidate(application_id){
@@ -557,6 +572,9 @@ function reject_candidate(application_id){
       $("#applicant_list_id_"+String(application_id)).remove();
     }
   });
+
+  // mixpanel tracking
+  mixpanel.track('Recruiter Hire > reject candidate');
 }
 
 function save_note(application_id) {
@@ -601,6 +619,9 @@ function download_pdf(application_id) {
       // ask them to give feedback or try again in a while.
     }
   });
+
+  // mixpanel tracking
+  mixpanel.track('Recruiter Hire > download pdf');
 }
 
 function enable_save_note(){

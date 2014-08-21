@@ -58,6 +58,19 @@ typeof d?c=b[d]=[]:d="mixpanel";c.people=c.people||[];c.toString=function(b){var
 b._i.push([a,e,d])};b.__SV=1.2}})(document,window.mixpanel||[]);
 mixpanel.init("a84e2f34f22d01f012b63767216f0853");</script>
             <!-- end Mixpanel -->
+            <!-- Mixpanel track events -->
+            {% if request.user.is_authenticated %}
+              <script type="text/javascript">
+                  mixpanel.identify("{{request.user.id}}");
+                  mixpanel.people.set({
+                      "id": "{{request.user.id}}",
+                      "$first_name": "{{request.user.first_name}}",
+                      "$last_name": "{{request.user.last_name}}",
+                  });
+              </script>
+            {% endif %}
+            <script src="{% static "occuhunt/js/mixpanel.js" %}"></script>
+            <!-- end Mixpanel track events -->
 
             <!-- Authorization Headers -->
             <script type="text/javascript">
@@ -95,20 +108,20 @@ mixpanel.init("a84e2f34f22d01f012b63767216f0853");</script>
             <div class="collapse navbar-collapse navbar-ex1-collapse">
               <ul class="nav navbar-nav navbar-right">
                 {% if request.user.is_authenticated %}
-                <li><a style="color:white;" href="/events/" id="mp-viewdiscover">DASHBOARD</a></li>
-                <li><a style="color:white;" href="/offrhunt/">OFFRHUNT</a></li>
-                <li><a style="color:white;" href="/profile/documents/">DOCUMENTS</a></li>
+                <li><a style="color:white;" href="/events/" id="mp-dashboard">DASHBOARD</a></li>
+                <li><a style="color:white;" href="/offrhunt/" id="mp-offrhunt">OFFRHUNT</a></li>
+                <li><a style="color:white;" href="/profile/documents/" id="mp-documents">DOCUMENTS</a></li>
                 <li class="dropdown">
-                  <a href="#" style="color:white;" class="dropdown-toggle" data-toggle="dropdown">{{request.user.first_name | upper}}
+                  <a href="#" style="color:white;" class="dropdown-toggle" data-toggle="dropdown" id="mp-name">{{request.user.first_name | upper}}
                     <b class="caret"></b></a>
                   <ul class="dropdown-menu">
-                    <li><a href="/profile/general/">Profile</a></li>
+                    <li><a href="/profile/general/" id="mp-profile">Profile</a></li>
                     <li><a href="/logout/" id="mp-loggedout">Logout</a></li>
                     <input type="hidden" name="user_id" value="{{user.id}}" id="user_id">
                   </ul>
                 </li>
                 {% else %}
-                  <li><div style="height:24px;margin-top:7px;"><a href="/login/linkedin/?next=/events/" id="mp-loggedin" class="btn btn-inverted-default" style="font-weight:500;">LOG IN</a></div></li>
+                  <li><div style="height:24px;margin-top:7px;"><a href="/login/linkedin/?next=/events/" id="mp-loggedin-main" class="btn btn-inverted-default" style="font-weight:500;">LOG IN</a></div></li>
                 {% endif %}
               </ul>
             </div><!--/.nav-collapse -->
@@ -129,7 +142,7 @@ mixpanel.init("a84e2f34f22d01f012b63767216f0853");</script>
             <br />
             <br />
             <br />
-            <a href="/login/linkedin/?next=/events/" class="btn btn-xlg btn-done" id="mp-signupsplash" style="margin-top:-15px; font-weight:900;">SIGN UP WITH LINKEDIN</a>
+            <a href="/login/linkedin/?next=/events/" class="btn btn-xlg btn-done" id="mp-signupsplash-top" style="margin-top:-15px; font-weight:900;">SIGN UP WITH LINKEDIN</a>
             <br />
             <br />
             <br />
@@ -235,7 +248,7 @@ mixpanel.init("a84e2f34f22d01f012b63767216f0853");</script>
           <br />
           <p style="font-size:43px; color:#005f69; font-weight:500; ">
             Enough talk, let's find some work! &nbsp;&nbsp;
-             <a href="/login/linkedin/?next=/events/" class="btn btn-xlg btn-done" id="mp-signupsplash" style="margin-top:-15px;">SIGN UP WITH LINKEDIN</a>
+             <a href="/login/linkedin/?next=/events/" class="btn btn-xlg btn-done" id="mp-signupsplash-bottom" style="margin-top:-15px;">SIGN UP WITH LINKEDIN</a>
           </p>
           <br />
           <br />

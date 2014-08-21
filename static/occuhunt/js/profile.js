@@ -270,6 +270,8 @@ function delete_document(user_id ,document_id, html_handle) {
         statusCode: {
             204: function(){
                 $(html_handle).parent().parent().parent().remove();
+                // mixpanel tracking
+                mixpanel.track("Documents > Delete document", {'referrer': document.referrer });
             },
             404: function(){
                 console.log(3);
@@ -297,6 +299,8 @@ function get_visits(document_id) {
                 // update the map and notification
                 console.log(data);
                 update_map_and_notifications(data['response']['visits'], data['meta']['total_count']);
+                // mixpanel tracking
+                mixpanel.track("Documents > Get document visits", {'referrer': document.referrer });
             },
             404: function(){
                 console.log(3);
@@ -525,6 +529,8 @@ function initialize_clipboard(){
     client.on( 'mousedown', function(event) {
         var newTitle = 'Copied!';
         $(this).attr('title', newTitle).tooltip('fixTitle').tooltip("show");
+        // mixpanel tracking
+        mixpanel.track("Documents > Copy document link", {'referrer': document.referrer });
     });
 
     // view analytics for resume
