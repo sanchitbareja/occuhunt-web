@@ -16,6 +16,14 @@
 	list-style-type: none;
 }
 
+.add-document {
+	width: 108px;
+	height: 168px;
+	display: inline-block;
+	position: absolute;
+	z-index: 9999;
+}
+
 .actions {
 	display: block;
 	float: left;

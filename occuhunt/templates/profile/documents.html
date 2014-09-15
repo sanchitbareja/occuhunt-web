@@ -65,8 +65,15 @@ h4 {
 	<div class="col-lg-3">
 	    <h4>Resumes</h4>	    
 	    <ul class="documents" id="resumes">
+	    	<!-- The first li is a hack here. Temporary fix of bug as first li wasn't clickable -->
+	    	<li class="document" style="display:none;">
+	    		<a id="file_select_button" href='javascript:;'>
+		      		<img class="document_image" src="{% static 'images/add-document.png' %}">
+		        	<input type="file" name="file_source" accept="application/pdf">
+		      	</a>
+	    	</li>
 	    	<li class="document">
-		      	<a id="file_select_button" href='javascript:;'>
+	    		<a id="file_select_button" href='javascript:;'>
 		      		<img class="document_image" src="{% static 'images/add-document.png' %}">
 		        	<input type="file" class="file_upload" name="file_source" accept="application/pdf" onchange='render_pdf(1);'>
 		      	</a>
@@ -87,7 +94,7 @@ h4 {
 	    <h4>Cover Letters</h4>
 	    <ul class="documents" id="cvs">
 	    	<li class="document">
-	    		<a id="file_select_button" href='javascript:;'>
+	    		<a id="file_select_button" href='javascript:;' class="add-document">
 		      		<img class="document_image" src="{% static 'images/add-document.png' %}">
 		        	<input type="file" class="file_upload" name="file_source" accept="application/pdf" onchange='render_pdf(2);'>
 		      	</a>
@@ -108,7 +115,7 @@ h4 {
 	    <h4>Additional Documents</h4>
 	    <ul class="documents" id="portfolio">
 	    	<li class="document">
-	    		<a id="file_select_button" href='javascript:;'>
+	    		<a id="file_select_button" href='javascript:;' class="add-document">
 		      		<img class="document_image" src="{% static 'images/add-document.png' %}">
 		        	<input type="file" class="file_upload" name="file_source" accept="application/pdf" onchange='render_pdf(3);'>
 		      	</a>
