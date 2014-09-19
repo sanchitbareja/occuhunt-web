@@ -429,15 +429,16 @@ function show_acceptance_message(application_id, first_name, last_name, company_
   console.log(application_id);
   console.log(first_name);
   console.log(last_name);
-  var html_content = "<label>Your email</label><br /><input class='form-control input-sm' type='text' id='recruiter_email' placeholder='Email' value='{{request.user.email}}'/><br /><label>Email Body</label><br /><div id='application_message'>Hello <span id='msg_first_name'>"+String(first_name)+"</span> <span id='msg_last_name'>"+String(last_name)+"</span>, <br /><br />"+
-    ""+String(company_name)+" has indicated an interest in interviewing you. We've CC'ed the contact person in this email. Please connect with them to find a common time.<br /><br />"+
+  close_acceptance_modal();
+  var html_content = "<div class='acceptance_message'><label>Your email</label><br /><input class='form-control input-sm' type='text' id='recruiter_email' placeholder='Email' value='{{request.user.email}}'/><br /><label>Email Body</label><br /><div id='application_message'>Hello <span id='msg_first_name'></span> <span id='msg_last_name'></span>, <br /><br />"+
+    " has indicated an interest in interviewing you. We've CC'ed the contact person in this email. Please connect with them to find a common time.<br /><br />"+
     "<textarea style='width:350px;height:100px;' id='recruiter_message'>Here are some times suggested by the recruiter:\n\n</textarea><br /><br />"+
     "Keep up the good work!<br /><br />"+
     "Visit Occuhunt to stay up-to-date with your applications.<br /><br />"+
     "Good luck!<br />"+
-    ""+String(company_name)+"<br />"+
+    "<br />"+
     "via Occuhunt</div><br />"+
-    "<button class='btn btn-md btn-success' id='send_application_email' onclick='accept_candidate("+application_id+")'>Send Message</button>";
+    "<button class='btn btn-md btn-success' id='send_application_email'>Send Message</button></div>";
 
   $("#accept_applicant_btn").popover({
     animation: 'true', 
@@ -449,15 +450,18 @@ function show_acceptance_message(application_id, first_name, last_name, company_
     container:'body'
   });
 
+  // toggle the popover
+  $("#accept_applicant_btn").popover('toggle');
+
   // set the attributes for the popover
   $("#msg_first_name").text(first_name);
   $("#msg_last_name").text(last_name);
   $("#msg_company_name").text(company_name);
   $("#send_application_email").attr({'onclick':'accept_candidate('+application_id+');'});
+}
 
-  // toggle the popover
-  $("#accept_applicant_btn").popover('toggle');
-
+function close_acceptance_modal() {
+  $(".acceptance_message").remove();
 }
 
 function show_contact_message(application_id, first_name, last_name, company_name) {
@@ -596,6 +600,7 @@ function next_application(select_first){
   } else {
     $("#applicant_list_id_"+String(current_selected_candidate)).next().click();
   }
+  close_acceptance_modal();
 }
 
 function previous_application(select_first){
@@ -607,6 +612,7 @@ function previous_application(select_first){
   } else {
     $("#applicant_list_id_"+String(current_selected_candidate)).prev().click();
   }
+  close_acceptance_modal();
 }
 
 $(document).ready(function() {
