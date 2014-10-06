@@ -112,19 +112,40 @@ def career_fair_handler(request, event_name, fair_id):
 	try:
 		event = Fair.objects.get(id=int(fair_id))
 		career_fair_render = 'CareerFairs/UCBerkeley/'+str(fair_id)+'.html'
-		if request.user.is_anonymous():
-			# if it's anonymous user
-			return render_to_response(career_fair_render, {'resume_url':False}, RequestContext(request))
+		time_now = datetime.now()
+		if request.user.is_authenticated():
+			# if logged in
+			resumes = Document.objects.filter(user=request.user, document_type=1, delete=False)
+			cvs = Document.objects.filter(user=request.user, document_type=2, delete=False)
+			portfolios = Document.objects.filter(user=request.user, document_type=3, delete=False)
+			links = Link.objects.filter(user=request.user, delete=False)
+
+			majors = Major.objects.all()
+			degree_types = Degree.objects.all()
+
+			data_to_send = {
+				'event':event,
+				'majors':majors,
+				'degree_types':degree_types,
+				'time_now':time_now,
+				'resumes': resumes,
+				'cvs': cvs,
+				'portfolios': portfolios,
+				'links': links
+			}
+			return render_to_response(career_fair_render, data_to_send, RequestContext(request))
 		else:
-			resume = Resume.objects.filter(user=request.user, showcase=True, original=False).order_by('-timestamp')
-			if len(resume) > 0:
-				# if user has a resume - yay!
-				resume = resume[0]
-				return render_to_response(career_fair_render, {'resume_url':resume.url}, RequestContext(request))
-			else:
-				# if user doesn't have a resume on file, boo :(
-				resume = None
-				return render_to_response(career_fair_render, {'resume_url':False}, RequestContext(request))
-	except:
+			# if anonymous user
+			data_to_send = {
+				'event':event,
+				'time_now':time_now,
+				'resumes': None,
+				'cvs': None,
+				'portfolios': None,
+				'links': None
+			}
+			return render_to_response(career_fair_render, data_to_send, RequestContext(request))
+	except Exception, e:
+		print e
 		raise Http404()
 
