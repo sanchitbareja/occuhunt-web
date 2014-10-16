@@ -232,11 +232,11 @@
         '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'+
         message+
       '</div>');
-    }
+    };
 
     function clearModalMessages(){
       $("#modalMessages").empty();
-    }
+    };
 
     function notLoggedIn(){
       $("#messages").append('<div class="alert alert-danger alert-dismissable">'+
@@ -244,6 +244,10 @@
         'Oops! You need to be logged in to drop your resume with the employers!'+
       '</div>');
     }
+
+    function closeModal(id){
+      $('[data-poload='+id+']').click();
+    };
 
     function resumeDrop(company_id, fair_id, selected_resume, selected_cv, selected_docs, position, reason_given, majors, grad_year, degree_type){
       console.log("CONFIRMED");
@@ -343,10 +347,6 @@
         dataType: 'json',
       });
     };
-
-  function closeModal(id){
-    $('[data-poload='+id+']').click();
-  }
 
   });
 
