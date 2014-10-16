@@ -71,7 +71,7 @@
               html:true,
               trigger: 'click',
               container: $(this).attr('id'),
-              title:"<a class='btn-link pull-left' onclick='closeModal("+data['id']+")'><b>X</b></a><h3 class='text-center'>"+data["name"]+"</h3><a class='btn-link' id='modal-plus' onclick='favoriteCompanyWithId("+data['id']+",this, null);' style='right:17px; top:10px;position:absolute; float:right; '><span class='glyphicon glyphicon-plus'></span></a>",
+              title:"<a class='btn-link pull-left' onclick='closeModal("+data['id']+")'><b>X</b></a><h3 class='text-center'>"+data["name"]+"</h3>",
               content:"<div class='popover-company-info'><img id='background_banner' src='"+data["banner_image"]+"'/><img id='foreground_banner' src='"+data['logo']+"'><p>"+data["company_description"].slice(0,140)+"...</p><div><a class='btn btn-done' style='display:inline-block; margin-right:10px;' id='mp-viewjobs' href='/company/"+data['id']+" /'>VIEW JOBS</a><a class='btn btn-danger' id='resume_drop_"+data['id']+"' style='display:inline-block;' value='"+data['id']+"' name='"+data['name']+"'>DROP RESUME</a></div></div>"
             }).popover("show");
 
@@ -317,10 +317,6 @@
       mixpanel.track("Career Fair > Apply to a company", {'referrer': document.referrer });
     }
 
-    function closeModal(id){
-      $('[data-poload='+id+']').click();
-    }
-
     function getApplications(){
       user_id = $("#user_id").val();
       fair_id = $("#fair_id").val();
@@ -347,6 +343,10 @@
         dataType: 'json',
       });
     };
+
+  function closeModal(id){
+    $('[data-poload='+id+']').click();
+  }
 
   });
 
