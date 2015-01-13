@@ -145,8 +145,8 @@ def individual_resume(request, hashstr):
 		return render_to_response('individual_resume.html', {'resume_exists':False}, RequestContext(request))
 
 def sign_s3_upload(request):
-	AWS_ACCESS_KEY = 'AKIAJMUV3JF5IGAOPF3A'
-	AWS_SECRET_KEY = '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'
+	AWS_ACCESS_KEY = 'GOOD ONE!'
+	AWS_SECRET_KEY = 'COPY ME IF YOU CAN'
 	S3_BUCKET = 'resumefeed'
 
 	digest = '+'
